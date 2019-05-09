@@ -1,0 +1,131 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=1]
+[ext_resource path="res://res/txrs/bricks.jpg" type="Texture" id=2]
+[ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=3]
+[ext_resource path="res://scripts/Grid.gd" type="Script" id=4]
+
+[sub_resource type="ProceduralSky" id=1]
+sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
+sky_horizon_color = Color( 1, 1, 1, 1 )
+ground_bottom_color = Color( 0.133333, 0.509804, 0.882353, 1 )
+ground_horizon_color = Color( 0.698039, 0.882353, 0.843137, 1 )
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
+ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
+tonemap_mode = 1
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 0.8
+ssao_intensity = 2.0
+ssao_radius2 = 1.6
+ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+dof_blur_far_distance = 0.58
+dof_blur_far_transition = 14.25
+dof_blur_near_distance = 3.64
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="PlaneMesh" id=4]
+material = SubResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=6]
+material = SubResource( 5 )
+
+[sub_resource type="MeshLibrary" id=7]
+item/0/name = "Hey"
+item/0/mesh = SubResource( 4 )
+item/0/shapes = [  ]
+item/1/name = "Brick"
+item/1/mesh = SubResource( 6 )
+item/1/shapes = [  ]
+
+[sub_resource type="SpatialMaterial" id=8]
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="PlaneMesh" id=9]
+material = SubResource( 8 )
+
+[sub_resource type="CubeMesh" id=10]
+
+[sub_resource type="SpatialMaterial" id=11]
+
+[node name="Spatial" type="Spatial"]
+
+[node name="Environment" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="Environment"]
+environment = SubResource( 2 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Environment"]
+transform = Transform( 0.591862, -0.255109, -0.764604, 0.155017, -0.89486, 0.418564, -0.790993, -0.366259, -0.490087, 0, 3.77881, 0 )
+light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
+shadow_enabled = true
+shadow_bias = -0.1
+shadow_contact = 0.18
+
+[node name="TestArea" type="Spatial" parent="."]
+
+[node name="GridMap" type="GridMap" parent="TestArea"]
+transform = Transform( 1.10958, 0, 0, 0, 1.10958, 0, 0, 0, 1.10958, 0, 0, 0 )
+mesh_library = SubResource( 7 )
+data = {
+"cells": PoolIntArray( 0, 0, 1610612736, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 1610612736, 0, 1, 1610612736, 65533, 1, 1376257, 65534, 1, 0, 65535, 1, 536870912, 0, 2, -1610612736, 65533, 2, -1609236479, 65534, 2, 0, 65535, 2, 0, 0, 3, 0, 65533, 3, -1609236479, 65534, 3, 536870912, 65535, 3, 0, 65533, 4, 538247169, 65533, 5, 1376257, 65533, 6, 1376257, 65533, 7, -1609170944, 0, 65535, 1610612736, 65535, 65535, 0 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="Spatial" type="Spatial" parent="TestArea"]
+editor/display_folded = true
+
+[node name="MeshInstance3" type="MeshInstance" parent="TestArea/Spatial"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="MeshInstance4" type="MeshInstance" parent="TestArea/Spatial"]
+transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="Spatial2" type="Spatial" parent="TestArea"]
+editor/display_folded = true
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.415, 6.25, 0.005 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="TestArea/Spatial2"]
+transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="MeshInstance4" type="MeshInstance" parent="TestArea/Spatial2"]
+transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="TestArea"]
+transform = Transform( 1, 0, 0, 0, 0.807199, 0.590279, 0, -0.590279, 0.807199, 0, 1.63266, 0 )
+mesh = SubResource( 9 )
+material/0 = null
+
+[node name="MeshInstance2" type="MeshInstance" parent="TestArea"]
+transform = Transform( 1, 0, 0, 0, -0.762921, -0.646492, 0, 0.646492, -0.762921, 0.13357, 1.74578, 6.68922 )
+mesh = SubResource( 10 )
+material/0 = SubResource( 11 )
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( -4.37114e-08, -0.5, 0.866025, 0, 0.866025, 0.5, -1, 2.18557e-08, -3.78552e-08, 5.91994, 6.22629, 2.7824 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -5.48079, 3.85662, 2.45668 )
+script = ExtResource( 4 )
+
