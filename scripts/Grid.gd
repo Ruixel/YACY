@@ -1,33 +1,37 @@
 extends MeshInstance
 
-func _ready():
-	var surface_tool = SurfaceTool.new();
+func generate_grid_mesh(num_x, num_y, space_x, space_y):
+	var surface_tool = SurfaceTool.new()
 	
-	surface_tool.begin(Mesh.PRIMITIVE_LINE_LOOP);
+	surface_tool.begin(Mesh.PRIMITIVE_LINES)
 	
-	surface_tool.add_normal(Vector3(0, 0, -1));
-	surface_tool.add_color(Color(0, 0, 0, 1));
-	surface_tool.add_vertex(Vector3(-1, 2, 1));
-	
-	surface_tool.add_normal(Vector3(0, 0, -1));
-	surface_tool.add_color(Color(1, 0, 0, 1));
-	surface_tool.add_vertex(Vector3(-1, 0, -1));
-	
-	surface_tool.add_normal(Vector3(0, 0, -1));
-	surface_tool.add_color(Color(1, 0, 0, 1));
-	surface_tool.add_vertex(Vector3(1, 0, -1));
-	
-	surface_tool.add_normal(Vector3(0, 0, -1));
-	surface_tool.add_color(Color(0, 0, 0, 1));
-	surface_tool.add_vertex(Vector3(1, 2, 1));
+	var index = 0
+	for x in range(0, num_x +1):
+		surface_tool.add_color(Color(1, 0, 0, 1))
+		surface_tool.add_vertex(Vector3((num_x/2)*space_x, 0, (x - num_x/2)*space_x))
+		
+		surface_tool.add_color(Color(1, 0, 0, 1));
+		surface_tool.add_vertex(Vector3(-(num_x/2)*space_x, 0, (x - num_x/2)*space_x))
 
-	surface_tool.add_index(0);
-	surface_tool.add_index(1);
-	surface_tool.add_index(2);
+		surface_tool.add_index(index);
+		surface_tool.add_index(index+1);
+		
+		index += 2
 	
-	surface_tool.add_index(0);
-	surface_tool.add_index(2);
-	surface_tool.add_index(3);
+	for y in range(0, num_y + 1):
+		surface_tool.add_color(Color(1, 0, 0, 1))
+		surface_tool.add_vertex(Vector3((y - num_y/2)*space_x, 0, (num_y/2)*space_y))
+		
+		surface_tool.add_color(Color(1, 0, 0, 1));
+		surface_tool.add_vertex(Vector3((y - num_y/2)*space_x, 0, -(num_y/2)*space_y))
+
+		surface_tool.add_index(index);
+		surface_tool.add_index(index+1);
+		
+		index += 2
 	
-	mesh = surface_tool.commit();
+	return surface_tool
+
+func _ready():
+	mesh = generate_grid_mesh(20, 20, 1, 1).commit()
 
