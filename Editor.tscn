@@ -1,10 +1,11 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=1]
 [ext_resource path="res://res/txrs/bricks.jpg" type="Texture" id=2]
 [ext_resource path="res://res/txrs/stone256.jpg" type="Texture" id=3]
 [ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=4]
-[ext_resource path="res://scripts/Grid.gd" type="Script" id=5]
+[ext_resource path="res://scripts/Camera.gd" type="Script" id=5]
+[ext_resource path="res://scripts/Grid.gd" type="Script" id=6]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
@@ -116,7 +117,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
 mesh_library = SubResource( 7 )
 baked_meshes = [ null, SubResource( 8 ) ]
 data = {
-"cells": PoolIntArray( 0, 0, 536870912, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 1376257, 65534, 1, 1610612736, 65535, 1, -1610612736, 0, 2, -1610612736, 65533, 2, -1609236479, 65534, 2, 0, 65535, 2, -1610612736, 0, 3, 0, 65533, 3, 538247169, 65534, 3, 0, 65535, 3, 0, 65533, 4, 538247169, 65533, 5, 538247169, 65533, 6, 1376257, 65533, 7, 1441792, 0, 65535, 1610612736, 65535, 65535, 536870912 )
+"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, -2147483648, 0, 1, 0, 65533, 1, 1376257, 65534, 1, 0, 65535, 1, 0, 0, 2, 0, 65533, 2, 1376257, 65534, 2, 0, 65535, 2, 536870912, 0, 3, -1610612736, 65533, 3, 1376257, 65534, 3, -1610612736, 65535, 3, -1610612736, 65533, 4, 538247169, 65533, 5, -1609236479, 65533, 6, 538247169, 65533, 7, 1441792, 0, 65535, 536870912, 65535, 65535, 1610612736 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -201,8 +202,9 @@ omni_attenuation = 5.85634
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( -4.37114e-08, -0.707107, 0.707107, 0, 0.707107, 0.707107, -1, 3.09086e-08, -3.09086e-08, 3.011, 4.99314, -1.40465 )
+script = ExtResource( 5 )
 
 [node name="Grid" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01, 0 )
-script = ExtResource( 5 )
+script = ExtResource( 6 )
 
