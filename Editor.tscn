@@ -4,8 +4,8 @@
 [ext_resource path="res://res/txrs/bricks.jpg" type="Texture" id=2]
 [ext_resource path="res://res/txrs/stone256.jpg" type="Texture" id=3]
 [ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=4]
-[ext_resource path="res://scripts/Camera.gd" type="Script" id=5]
-[ext_resource path="res://scripts/Grid.gd" type="Script" id=6]
+[ext_resource path="res://scripts/Grid.gd" type="Script" id=5]
+[ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=6]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
@@ -101,7 +101,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547
 environment = SubResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Environment"]
-transform = Transform( 0.591862, -0.255109, -0.764604, 0.155017, -0.89486, 0.418564, -0.790993, -0.366259, -0.490087, 0, 3.77881, 0 )
+transform = Transform( -0.554536, 0.271822, 0.786513, 0.15502, -0.894859, 0.418565, 0.817594, 0.354034, 0.454094, 0, 3.77881, 0 )
 light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 light_energy = 1.7
 shadow_enabled = true
@@ -111,13 +111,13 @@ directional_shadow_normal_bias = 0.6
 
 [node name="TestArea" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, 0, 17 )
 
 [node name="GridMap" type="GridMap" parent="TestArea"]
 mesh_library = SubResource( 7 )
 baked_meshes = [ null, SubResource( 8 ) ]
 data = {
-"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, -2147483648, 0, 1, 0, 65533, 1, 1376257, 65534, 1, 0, 65535, 1, 0, 0, 2, 0, 65533, 2, 1376257, 65534, 2, 0, 65535, 2, 536870912, 0, 3, -1610612736, 65533, 3, 1376257, 65534, 3, -1610612736, 65535, 3, -1610612736, 65533, 4, 538247169, 65533, 5, -1609236479, 65533, 6, 538247169, 65533, 7, 1441792, 0, 65535, 536870912, 65535, 65535, 1610612736 )
+"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 1611988993, 65534, 1, 1610612736, 65535, 1, -1610612736, 0, 2, -1610612736, 65533, 2, 1376257, 65534, 2, 0, 65535, 2, -1610612736, 0, 3, 0, 65533, 3, 538247169, 65534, 3, 0, 65535, 3, -1610612736, 65533, 4, 538247169, 65533, 5, 538247169, 65533, 6, 1376257, 65533, 7, 1441792, 0, 65535, 0, 65535, 65535, -1073741824 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -200,11 +200,8 @@ shadow_enabled = true
 shadow_contact = 0.15
 omni_attenuation = 5.85634
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( -4.37114e-08, -0.707107, 0.707107, 0, 0.707107, 0.707107, -1, 3.09086e-08, -3.09086e-08, 3.011, 4.99314, -1.40465 )
-script = ExtResource( 5 )
-
 [node name="Grid" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01, 0 )
-script = ExtResource( 6 )
+script = ExtResource( 5 )
 
+[node name="EditorCamera" parent="." instance=ExtResource( 6 )]
