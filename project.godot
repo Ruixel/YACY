@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="testcy"
-run/main_scene="res://Editor.tscn"
+run/main_scene="res://Scenes/Editor.tscn"
 config/icon="res://icon.png"
 
 [input]

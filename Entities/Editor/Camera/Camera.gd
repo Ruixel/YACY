@@ -1,7 +1,7 @@
 extends Spatial
 
-const CAM_ZOOM_MIN = 3
-const CAM_ZOOM_MAX = 10
+const CAM_ZOOM_MIN = 5
+const CAM_ZOOM_MAX = 20
 
 const CAM_ANGLE_MIN = 15.0
 const CAM_ANGLE_MAX = 85.0
