@@ -8,7 +8,7 @@ const CAM_ANGLE_MAX = 85.0
 
 const CAM_DRAG_SPEED = 0.5
 
-var camPosition = Vector2(0, 0)
+var camPosition = Vector2(0, 10)
 var camAngle = 35.0
 var camZoom = 6
 
@@ -44,7 +44,7 @@ func _process(delta: float) -> void:
 	
 	# Lerp camera to match grid position
 	var finalPos = Vector3(camPosition.x, 0, camPosition.y)
-	self.global_transform.origin = lerp(self.global_transform.origin, finalPos, 0.5)
+	self.global_transform.origin = lerp(self.global_transform.origin, finalPos, 0.1)
 	
 	# Reset mouse movement
 	mouse_motion = Vector2(0, 0)

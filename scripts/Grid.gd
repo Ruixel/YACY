@@ -1,5 +1,8 @@
 extends MeshInstance
 
+func _ready():
+	mesh = generate_grid_mesh(20, 20, 1, 1).commit()
+
 func generate_grid_mesh(num_x: int, num_y: int, space_x: float, space_y: float) -> SurfaceTool:
 	var surface_tool = SurfaceTool.new()
 	
@@ -32,6 +35,4 @@ func generate_grid_mesh(num_x: int, num_y: int, space_x: float, space_y: float) 
 	
 	return surface_tool
 
-func _ready():
-	mesh = generate_grid_mesh(20, 20, 1, 1).commit()
 

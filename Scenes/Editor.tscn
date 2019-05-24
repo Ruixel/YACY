@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=1]
 [ext_resource path="res://res/txrs/bricks.jpg" type="Texture" id=2]
@@ -91,6 +91,19 @@ material = SubResource( 11 )
 
 [sub_resource type="SpatialMaterial" id=14]
 
+[sub_resource type="CylinderMesh" id=15]
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.1
+
+[sub_resource type="SpatialMaterial" id=16]
+albedo_color = Color( 0.627451, 0.152941, 0.152941, 1 )
+emission_enabled = true
+emission = Color( 1, 0, 0, 1 )
+emission_energy = 1.0
+emission_operator = 0
+emission_on_uv2 = false
+
 [node name="Spatial" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00506687, 0.00805092, 0.000213623 )
 
@@ -111,13 +124,13 @@ directional_shadow_normal_bias = 0.6
 
 [node name="TestArea" type="Spatial" parent="."]
 editor/display_folded = true
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, 0, 17 )
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.01, 17 )
 
 [node name="GridMap" type="GridMap" parent="TestArea"]
 mesh_library = SubResource( 7 )
 baked_meshes = [ null, SubResource( 8 ) ]
 data = {
-"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 1611988993, 65534, 1, 1610612736, 65535, 1, -1610612736, 0, 2, -1610612736, 65533, 2, 1376257, 65534, 2, 0, 65535, 2, -1610612736, 0, 3, 0, 65533, 3, 538247169, 65534, 3, 0, 65535, 3, -1610612736, 65533, 4, 538247169, 65533, 5, 538247169, 65533, 6, 1376257, 65533, 7, 1441792, 0, 65535, 0, 65535, 65535, -1073741824 )
+"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, -1072365567, 65534, 1, 0, 65535, 1, 0, 0, 2, 536870912, 65533, 2, -1609236479, 65534, 2, -1610612736, 65535, 2, -1610612736, 0, 3, 0, 65533, 3, -1609236479, 65534, 3, 0, 65535, 3, 0, 65533, 4, 1376257, 65533, 5, 1376257, 65533, 6, 538247169, 65533, 7, 538312704, 0, 65535, 0, 65535, 65535, 0 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -201,7 +214,67 @@ shadow_contact = 0.15
 omni_attenuation = 5.85634
 
 [node name="Grid" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.01, 0 )
 script = ExtResource( 5 )
 
 [node name="EditorCamera" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
+
+[node name="3DCursor" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 12 )
+
+[node name="MeshInstance" type="MeshInstance" parent="3DCursor"]
+mesh = SubResource( 15 )
+material/0 = SubResource( 16 )
+
+[node name="GUI" type="Control" parent="."]
+anchor_right = 1.0
+margin_right = -984.0
+margin_bottom = 40.0
+
+[node name="ObjectList" type="Panel" parent="GUI"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 265.0
+margin_bottom = 60.0
+
+[node name="Wall" type="Button" parent="GUI/ObjectList"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 80.0
+margin_bottom = 35.0
+text = "Wall"
+
+[node name="Platform" type="Button" parent="GUI/ObjectList"]
+margin_left = 85.0
+margin_top = 5.0
+margin_right = 160.0
+margin_bottom = 35.0
+text = "Platform"
+
+[node name="Start" type="Button" parent="GUI/ObjectList"]
+margin_left = 165.0
+margin_top = 5.0
+margin_right = 240.0
+margin_bottom = 35.0
+text = "Start"
+
+[node name="EditorLevel" type="Panel" parent="GUI"]
+anchor_right = 1.0
+margin_left = 756.0
+margin_top = 20.0
+margin_right = 961.0
+margin_bottom = 60.0
+
+[node name="Wall" type="Button" parent="GUI/EditorLevel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 80.0
+margin_bottom = 35.0
+text = "Wall"
+
+[node name="Start" type="Button" parent="GUI/EditorLevel"]
+margin_left = 165.0
+margin_top = 5.0
+margin_right = 240.0
+margin_bottom = 35.0
+text = "Start"

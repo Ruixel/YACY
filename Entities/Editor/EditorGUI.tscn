@@ -1,0 +1,64 @@
+[gd_scene format=2]
+
+[node name="GUI" type="Control"]
+editor/display_folded = true
+anchor_right = 1.0
+margin_right = -984.0
+margin_bottom = 40.0
+
+[node name="ObjectList" type="Panel" parent="."]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 265.0
+margin_bottom = 60.0
+
+[node name="Wall" type="Button" parent="ObjectList"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 80.0
+margin_bottom = 35.0
+text = "Wall"
+
+[node name="Platform" type="Button" parent="ObjectList"]
+margin_left = 85.0
+margin_top = 5.0
+margin_right = 160.0
+margin_bottom = 35.0
+text = "Platform"
+
+[node name="Start" type="Button" parent="ObjectList"]
+margin_left = 165.0
+margin_top = 5.0
+margin_right = 240.0
+margin_bottom = 35.0
+text = "Start"
+
+[node name="MapLevel" type="Panel" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = 716.0
+margin_top = 20.0
+margin_right = 911.0
+margin_bottom = 60.0
+
+[node name="Up" type="Button" parent="MapLevel"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 45.0
+margin_bottom = 35.0
+text = "Up"
+
+[node name="Down" type="Button" parent="MapLevel"]
+margin_left = 140.0
+margin_top = 5.0
+margin_right = 188.0
+margin_bottom = 35.0
+text = "Down"
+
+[node name="Label" type="Label" parent="MapLevel"]
+margin_left = 60.0
+margin_right = 135.0
+margin_bottom = 40.0
+text = "Level 1"
+align = 1
+valign = 1
