@@ -45,7 +45,7 @@ func _process(delta: float) -> void:
 	
 	# Lerp camera to match grid position
 	var finalPos = Vector3(camPosition.x, 0, camPosition.y)
-	self.global_transform.origin = lerp(self.global_transform.origin, finalPos, 0.1)
+	self.global_transform.origin = lerp(self.global_transform.origin, finalPos, 0.4)
 	
 	# Reset mouse movement
 	mouse_motion = Vector2(0, 0)
