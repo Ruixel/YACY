@@ -34,6 +34,7 @@ func _process(delta: float) -> void:
 		
 		wall = MeshInstance.new()
 		get_node("../World").add_child(wall)
+		wall.set_owner(get_node(".."))
 	
 	if Input.is_action_pressed("editor_place"):
 		placement_end = grid_pos
@@ -53,16 +54,23 @@ func _input(event: InputEvent) -> void:
 
 var quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 func createQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int) -> void:
+	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
+	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1]).normalized()
+	
 	# Add Vertices
+	
+	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
+	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
+	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
+	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	
-	# Calculate Normal
-	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1])
-	for x in range(1, 4):
-		surface_tool.add_normal(normal)
+	# Add Normal
+	#for x in range(0, 4):
+	#	surface_tool.add_normal(normal)
 	
 	# Quad Indices
 	for idx in quad_indices:
@@ -83,6 +91,7 @@ func buildWall(meshRef : MeshInstance) -> void:
 	wall_vertices.insert(3, Vector3(placement_end.x, minHeight, placement_end.y))
 	createQuadMesh(surface_tool, wall_vertices, 0)
 	
+	# Rearrange vertices for the backwall
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
 	createQuadMesh(surface_tool, bVertices, 4)
 	

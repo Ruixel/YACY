@@ -5,27 +5,27 @@
 [ext_resource path="res://res/txrs/stone256.jpg" type="Texture" id=3]
 [ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=4]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 1 )
+
+[sub_resource type="PlaneMesh" id=2]
+material = SubResource( 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 2 )
 
 [sub_resource type="PlaneMesh" id=4]
 material = SubResource( 3 )
 
-[sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 2 )
-
-[sub_resource type="PlaneMesh" id=6]
-material = SubResource( 5 )
-
-[sub_resource type="MeshLibrary" id=7]
+[sub_resource type="MeshLibrary" id=5]
 item/0/name = "Hey"
-item/0/mesh = SubResource( 4 )
+item/0/mesh = SubResource( 2 )
 item/0/shapes = [  ]
 item/1/name = "Brick"
-item/1/mesh = SubResource( 6 )
+item/1/mesh = SubResource( 4 )
 item/1/shapes = [  ]
 
-[sub_resource type="ArrayMesh" id=8]
+[sub_resource type="ArrayMesh" id=6]
 lightmap_size_hint = Vector2( 160, 92 )
 surfaces/0 = {
 "aabb": AABB( -5, 0, 0, 1.00136e-05, 2.00001, 14 ),
@@ -34,7 +34,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97591,
 "index_count": 42,
-"material": SubResource( 5 ),
+"material": SubResource( 3 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 28
@@ -46,38 +46,36 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97591,
 "index_count": 90,
-"material": SubResource( 3 ),
+"material": SubResource( 1 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 60
 }
 
-[sub_resource type="CubeMesh" id=9]
+[sub_resource type="CubeMesh" id=7]
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_texture = ExtResource( 3 )
 uv1_scale = Vector3( 3, 0.2, 0.2 )
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_texture = ExtResource( 4 )
 
-[sub_resource type="PlaneMesh" id=12]
-material = SubResource( 11 )
+[sub_resource type="PlaneMesh" id=10]
+material = SubResource( 9 )
 
-[sub_resource type="CubeMesh" id=13]
+[sub_resource type="CubeMesh" id=11]
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=12]
 
 [node name="TestArea" type="Spatial"]
-editor/display_folded = true
 transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.01, 17 )
-visible = false
 
 [node name="GridMap" type="GridMap" parent="."]
-mesh_library = SubResource( 7 )
-baked_meshes = [ null, SubResource( 8 ) ]
+mesh_library = SubResource( 5 )
+baked_meshes = [ null, SubResource( 6 ) ]
 data = {
-"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 1611988993, 65534, 1, 536870912, 65535, 1, 0, 0, 2, 0, 65533, 2, -1609236479, 65534, 2, 536870912, 65535, 2, 0, 0, 3, 0, 65533, 3, 1376257, 65534, 3, -1610612736, 65535, 3, 0, 65533, 4, 538247169, 65533, 5, 538247169, 65533, 6, -1609236479, 65533, 7, 1441792, 0, 65535, 0, 65535, 65535, 0 )
+"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 1376257, 65534, 1, 0, 65535, 1, 0, 0, 2, 0, 65533, 2, 538247169, 65534, 2, 536870912, 65535, 2, 536870912, 0, 3, 0, 65533, 3, 1376257, 65534, 3, 0, 65535, 3, 0, 65533, 4, 538247169, 65533, 5, 538247169, 65533, 6, 1376257, 65533, 7, 1441792, 0, 65535, 0, 65535, 65535, 536870912 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -86,25 +84,25 @@ __meta__ = {
 
 [node name="MeshInstance5" type="MeshInstance" parent="."]
 transform = Transform( -4.37114e-08, -0.1, 0, 1, -4.37114e-09, 0, 0, 0, 0.1, -3.00228, 1.92902, 1.96194 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="MeshInstance6" type="MeshInstance" parent="."]
 transform = Transform( -4.37114e-08, -0.1, 0, 1, -4.37114e-09, 0, 0, 0, 0.1, -3.00228, 1.92902, 3.92462 )
-mesh = SubResource( 9 )
-material/0 = SubResource( 10 )
+mesh = SubResource( 7 )
+material/0 = SubResource( 8 )
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.339869, 0, 0.593679 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Spatial"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MeshInstance4" type="MeshInstance" parent="Spatial"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="Spatial3" type="Spatial" parent="."]
@@ -112,12 +110,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32465, -0.017353, 0.59591 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Spatial3"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MeshInstance4" type="MeshInstance" parent="Spatial3"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="Spatial2" type="Spatial" parent="."]
@@ -126,23 +124,23 @@ transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0751
 
 [node name="MeshInstance3" type="MeshInstance" parent="Spatial2"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MeshInstance4" type="MeshInstance" parent="Spatial2"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.807199, 0.590279, 0, -0.590279, 0.807199, 0, 1.63266, -0.215308 )
-mesh = SubResource( 12 )
+mesh = SubResource( 10 )
 material/0 = null
 
 [node name="MeshInstance2" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, -0.762921, -0.646492, 0, 0.646492, -0.762921, 0.13357, 1.74578, 6.68922 )
-mesh = SubResource( 13 )
-material/0 = SubResource( 14 )
+mesh = SubResource( 11 )
+material/0 = SubResource( 12 )
 
 [node name="OmniLight" type="OmniLight" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70281, 2.12039, 1.79636 )
