@@ -17,7 +17,7 @@ var mouse_motion = Vector2()
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("editor_camera_pan"):
-		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		# Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 		
 		# Drag across level relative to camera angle
 		var ang = self.rotation.y
@@ -35,7 +35,8 @@ func _process(delta: float) -> void:
 		self.rotate_y(-mouse_motion.x * delta * 0.2)
 	else:
 		# Show mouse if doing nothing
-		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		# Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		pass
 	
 	# Move the camera away from the target (zoom distance)
 	$Camera.transform.origin.y = sin(deg2rad(camAngle)) * camZoom

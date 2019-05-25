@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=1]
 [ext_resource path="res://res/txrs/bricks.jpg" type="Texture" id=2]
@@ -6,6 +6,8 @@
 [ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=4]
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=5]
 [ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=6]
+[ext_resource path="res://scripts/3DCursor.gd" type="Script" id=7]
+[ext_resource path="res://Entities/Editor/EditorGUI.tscn" type="PackedScene" id=8]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
@@ -130,7 +132,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.0
 mesh_library = SubResource( 7 )
 baked_meshes = [ null, SubResource( 8 ) ]
 data = {
-"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, -1072365567, 65534, 1, 0, 65535, 1, 0, 0, 2, 536870912, 65533, 2, -1609236479, 65534, 2, -1610612736, 65535, 2, -1610612736, 0, 3, 0, 65533, 3, -1609236479, 65534, 3, 0, 65535, 3, 0, 65533, 4, 1376257, 65533, 5, 1376257, 65533, 6, 538247169, 65533, 7, 538312704, 0, 65535, 0, 65535, 65535, 0 )
+"cells": PoolIntArray( 0, 0, 0, 65533, 0, 1376257, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65533, 1, 538247169, 65534, 1, 536870912, 65535, 1, 536870912, 0, 2, 536870912, 65533, 2, -1609236479, 65534, 2, 536870912, 65535, 2, -1610612736, 0, 3, -1610612736, 65533, 3, 1376257, 65534, 3, 0, 65535, 3, 0, 65533, 4, 1376257, 65533, 5, 1376257, 65533, 6, -1609236479, 65533, 7, 1441792, 0, 65535, 0, 65535, 65535, 0 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -220,61 +222,16 @@ script = ExtResource( 5 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
 
 [node name="3DCursor" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 12 )
+script = ExtResource( 7 )
 
 [node name="MeshInstance" type="MeshInstance" parent="3DCursor"]
 mesh = SubResource( 15 )
 material/0 = SubResource( 16 )
 
-[node name="GUI" type="Control" parent="."]
-anchor_right = 1.0
-margin_right = -984.0
-margin_bottom = 40.0
+[node name="RayCast" type="RayCast" parent="3DCursor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7, 0, -12 )
+enabled = true
+collision_mask = 0
+collide_with_bodies = false
 
-[node name="ObjectList" type="Panel" parent="GUI"]
-margin_left = 20.0
-margin_top = 20.0
-margin_right = 265.0
-margin_bottom = 60.0
-
-[node name="Wall" type="Button" parent="GUI/ObjectList"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 80.0
-margin_bottom = 35.0
-text = "Wall"
-
-[node name="Platform" type="Button" parent="GUI/ObjectList"]
-margin_left = 85.0
-margin_top = 5.0
-margin_right = 160.0
-margin_bottom = 35.0
-text = "Platform"
-
-[node name="Start" type="Button" parent="GUI/ObjectList"]
-margin_left = 165.0
-margin_top = 5.0
-margin_right = 240.0
-margin_bottom = 35.0
-text = "Start"
-
-[node name="EditorLevel" type="Panel" parent="GUI"]
-anchor_right = 1.0
-margin_left = 756.0
-margin_top = 20.0
-margin_right = 961.0
-margin_bottom = 60.0
-
-[node name="Wall" type="Button" parent="GUI/EditorLevel"]
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 80.0
-margin_bottom = 35.0
-text = "Wall"
-
-[node name="Start" type="Button" parent="GUI/EditorLevel"]
-margin_left = 165.0
-margin_top = 5.0
-margin_right = 240.0
-margin_bottom = 35.0
-text = "Start"
+[node name="GUI" parent="." instance=ExtResource( 8 )]
