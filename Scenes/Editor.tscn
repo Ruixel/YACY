@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/3DCursor.gd" type="Script" id=2]
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=3]
 [ext_resource path="res://Entities/Editor/EditorGUI.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Scenes/TestArea.tscn" type="PackedScene" id=5]
 
 [sub_resource type="ProceduralSky" id=1]
 sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
@@ -22,16 +23,17 @@ ssao_radius = 0.8
 ssao_intensity = 2.0
 ssao_radius2 = 1.6
 ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+ssao_quality = 2
 dof_blur_far_distance = 0.58
 dof_blur_far_transition = 14.25
 dof_blur_near_distance = 3.64
 
-[sub_resource type="CylinderMesh" id=15]
+[sub_resource type="CylinderMesh" id=3]
 top_radius = 0.3
 bottom_radius = 0.3
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.627451, 0.152941, 0.152941, 1 )
 emission_enabled = true
 emission = Color( 1, 0, 0, 1 )
@@ -53,8 +55,8 @@ transform = Transform( -0.554536, 0.271822, 0.786513, 0.15502, -0.894859, 0.4185
 light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 light_energy = 1.7
 shadow_enabled = true
-shadow_bias = -0.1
-shadow_contact = 0.25
+shadow_bias = -0.05
+shadow_contact = 0.3
 directional_shadow_normal_bias = 0.6
 
 [node name="World" type="Spatial" parent="."]
@@ -64,14 +66,16 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.86265e-09, 4.36557e-11 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
 
 [node name="3DCursor" type="Spatial" parent="."]
-editor/display_folded = true
 script = ExtResource( 2 )
 
 [node name="MeshInstance" type="MeshInstance" parent="3DCursor"]
-mesh = SubResource( 15 )
-material/0 = SubResource( 16 )
+mesh = SubResource( 3 )
+material/0 = SubResource( 4 )
 
 [node name="Grid" type="MeshInstance" parent="."]
 script = ExtResource( 3 )
 
 [node name="GUI" parent="." instance=ExtResource( 4 )]
+
+[node name="TestArea" parent="." instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, -1, 5 )

@@ -13,6 +13,10 @@ var placement_start = Vector2()
 var placement_end = Vector2()
 
 var wall
+const wall_height = 2.1
+
+onready var brick_mat = load("res://res/materials/brickwall.tres")
+const TEXTURE_SIZE = 0.5
 
 func _process(delta: float) -> void:
 	if mouse_motion != Vector2():
@@ -57,14 +61,23 @@ func createQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: i
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1]).normalized()
 	
-	# Add Vertices
+	# Texture constants
+	var wall_length = sqrt(pow(placement_end.y - placement_start.y, 2) + pow(placement_end.x - placement_start.x, 2))
 	
+	# Add Vertices
+	surface_tool.add_uv(Vector2(0 * 2.5 * TEXTURE_SIZE,  wall_vertices[2].y * 2.667 * TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
+	
+	surface_tool.add_uv(Vector2(wall_length * 2.5 * TEXTURE_SIZE,  wall_vertices[2].y * 2.667 * TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
+	
+	surface_tool.add_uv(Vector2(wall_length * 2.5 * TEXTURE_SIZE,  wall_vertices[0].y * 2.667 * TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
+	
+	surface_tool.add_uv(Vector2(0 * 2.5 * TEXTURE_SIZE,  wall_vertices[0].y * 2.667 * TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	
@@ -81,12 +94,12 @@ func buildWall(meshRef : MeshInstance) -> void:
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var minHeight = 0
-	var maxHeight = 2
+	var maxHeight = wall_height
 	
 	# Calculate wall vertices
 	var wall_vertices = []
 	wall_vertices.insert(0, Vector3(placement_start.x, minHeight, placement_start.y))
-	wall_vertices.insert(1, Vector3(placement_start.x,  maxHeight, placement_start.y))
+	wall_vertices.insert(1, Vector3(placement_start.x, maxHeight, placement_start.y))
 	wall_vertices.insert(2, Vector3(placement_end.x, maxHeight, placement_end.y))
 	wall_vertices.insert(3, Vector3(placement_end.x, minHeight, placement_end.y))
 	createQuadMesh(surface_tool, wall_vertices, 0)
@@ -95,4 +108,5 @@ func buildWall(meshRef : MeshInstance) -> void:
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
 	createQuadMesh(surface_tool, bVertices, 4)
 	
+	surface_tool.set_material(brick_mat)
 	meshRef.mesh = surface_tool.commit()
