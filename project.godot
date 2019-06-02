@@ -19,6 +19,10 @@ config/name="testcy"
 run/main_scene="res://Scenes/Editor.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
+
 [input]
 
 editor_camera_pan={
