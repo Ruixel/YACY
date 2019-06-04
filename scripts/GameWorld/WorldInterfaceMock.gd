@@ -1,6 +1,7 @@
 extends Spatial
 
 onready var wallGenerator = get_node("ObjGenFunc/Wall")
+onready var platGenerator = get_node("ObjGenFunc/Platform")
 
 var selection : Node # Selected object (To be modified)
 
@@ -20,3 +21,6 @@ func selection_delete():
 
 func selection_buildWall(start : Vector2, end : Vector2):
 	wallGenerator.buildWall(start, end, selection)
+
+func selection_buildPlat(pos : Vector2):
+	platGenerator.buildPlatform(pos, selection)

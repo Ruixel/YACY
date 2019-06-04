@@ -14,7 +14,6 @@ var camZoom = 6
 
 var mouse_motion = Vector2()
 
-
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("editor_camera_pan"):
 		# Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -49,7 +48,6 @@ func _process(delta: float) -> void:
 	
 	# Reset mouse movement
 	mouse_motion = Vector2(0, 0)
-
 
 func _input(event: InputEvent) -> void:
 	# Mouse movement

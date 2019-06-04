@@ -1,8 +1,15 @@
 extends Spatial
 
-onready var camera = get_node("../EditorCamera/Camera")
-onready var WorldAPI = get_node("../WorldInterface")
+onready var camera    = get_node("../EditorCamera/Camera")
+onready var WorldAPI  = get_node("../WorldInterface")
+onready var EditorGUI = get_node("../GUI")
 
+enum CursorStates { 
+	WALL, PLATFORM, OBJECT
+}
+var state = CursorStates.WALL
+
+# For detecting movement
 var mouse_motion = Vector2()
 
 var grid_plane = Plane(Vector3(0,-1,0), 0.0)
@@ -10,10 +17,12 @@ var grid_spacing = 1
 var grid_num = 20
 var grid_pos = Vector2()
 
+# Wall
 var placement_start = Vector2()
 var placement_end = Vector2()
 
-var wall
+func _ready():
+	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 
 func _process(delta: float) -> void:
 	if mouse_motion != Vector2():
@@ -30,6 +39,15 @@ func _process(delta: float) -> void:
 			
 			self.transform.origin = Vector3(grid_pos.x * grid_spacing, 0, grid_pos.y * grid_spacing)
 	
+	match (state):
+		CursorStates.WALL:
+			_wall_process()
+		CursorStates.PLATFORM:
+			_plat_process()
+	
+	mouse_motion = Vector2()
+
+func _wall_process():
 	if Input.is_action_just_pressed("editor_place"):
 		placement_start = grid_pos
 		
@@ -43,11 +61,25 @@ func _process(delta: float) -> void:
 	
 	if Input.is_action_just_released("editor_place"):
 		pass
+
+func _plat_process():
+	if Input.is_action_just_pressed("editor_place"):
+		WorldAPI.selection_create()
 	
-	mouse_motion = Vector2()
+	if Input.is_action_pressed("editor_place"):
+		WorldAPI.selection_buildPlat(grid_pos)
+	
+	if Input.is_action_just_released("editor_place"):
+		pass
 
 func _input(event: InputEvent) -> void:
 	# Mouse movement
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
+func on_tool_change(type):
+	match (type):
+		WorldConstants.Tools.WALL:
+			state = CursorStates.WALL
+		WorldConstants.Tools.PLATFORM:
+			state = CursorStates.PLATFORM
