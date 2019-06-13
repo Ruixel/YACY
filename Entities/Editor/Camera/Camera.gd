@@ -8,11 +8,20 @@ const CAM_ANGLE_MAX = 85.0
 
 const CAM_DRAG_SPEED = 0.5
 
+onready var EditorGUI = get_node("../GUI")
+
 var camPosition = Vector2(0, 10)
 var camAngle = 35.0
 var camZoom = 6
+var camHeight = 0
 
 var mouse_motion = Vector2()
+
+func _ready() -> void:
+	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+
+func on_level_change(level):
+	camHeight = WorldConstants.LEVEL_HEIGHT * (level - 1)
 
 func _process(delta: float) -> void:
 	if Input.is_action_pressed("editor_camera_pan"):
@@ -43,7 +52,7 @@ func _process(delta: float) -> void:
 	$Camera.rotation.x         = -deg2rad(camAngle)
 	
 	# Lerp camera to match grid position
-	var finalPos = Vector3(camPosition.x, 0, camPosition.y)
+	var finalPos = Vector3(camPosition.x, camHeight, camPosition.y)
 	self.global_transform.origin = lerp(self.global_transform.origin, finalPos, 0.4)
 	
 	# Reset mouse movement
