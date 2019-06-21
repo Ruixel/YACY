@@ -29,7 +29,7 @@ var placement_end = Vector2()
 # This shows a preview of what will be placed and where
 var prototype = null
 var prototype_size = Vector2()
-var prototype_placements = PoolVector2Array()
+var prototype_placements = Array()
 
 # Connect signals
 func _ready():
@@ -87,9 +87,16 @@ func _plat_process():
 	
 	if Input.is_action_just_pressed("editor_place"):
 		WorldAPI.selection_create()
+		WorldAPI.selection_buildPlat(grid_pos)
+		
+		prototype_placements.clear()
 	
 	if Input.is_action_pressed("editor_place"):
-		WorldAPI.selection_buildPlat(grid_pos)
+		if motion_detected:
+			if check_prototype_placements(grid_pos, prototype_size):
+				WorldAPI.selection_create()
+				WorldAPI.selection_buildPlat(grid_pos)
+				add_prototype_placements(grid_pos, prototype_size)
 	else:
 		# Show prototype 
 		grid_pos.x = clamp(grid_pos.x, floor(prototype_size.x / 2), grid_num - floor(prototype_size.x / 2))
@@ -104,7 +111,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
-func on_tool_change(type):
+func on_tool_change(type) -> void:
 	if prototype != null:
 		prototype.queue_free()
 		prototype = null
@@ -116,8 +123,21 @@ func on_tool_change(type):
 		WorldConstants.Tools.PLATFORM:
 			state = CursorStates.PLATFORM
 
-func on_level_change(level):
+func on_level_change(level) -> void:
 	grid_height = (level - 1) * WorldConstants.LEVEL_HEIGHT
 	grid_plane = Plane(Vector3(0,1,0), grid_height)
 	
 	prototype = null # Recreate prototype with correct height
+
+# Iterates through the placements to make sure it doesn't place objects overlapping
+func check_prototype_placements(pos : Vector2, size : Vector2) -> bool:
+	for x in range(pos.x - size.x/2, pos.x + size.x/2):
+		for y in range(pos.y - size.y/2, pos.y + size.y/2):
+			if prototype_placements.has(x + (grid_num * y)):
+				return false
+	return true
+	
+func add_prototype_placements(pos : Vector2, size : Vector2) -> void:
+	for x in range(pos.x - size.x/2, pos.x + size.x/2):
+		for y in range(pos.y - size.y/2, pos.y + size.y/2):
+			prototype_placements.append(x + (grid_num * y))
