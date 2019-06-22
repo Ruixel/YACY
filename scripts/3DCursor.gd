@@ -10,9 +10,14 @@ enum CursorStates {
 }
 var state = CursorStates.WALL
 
+# Input
 # For detecting mouse movement
 var mouse_motion = Vector2()
 var motion_detected = false
+
+var mouse_place_just_pressed = false
+var mouse_place_pressed      = false
+var mouse_place_released     = false
 
 # Grid information for placing geometry / objects
 var grid_plane = Plane(Vector3(0,-1,0), 0.0)
@@ -64,18 +69,18 @@ func _process(delta: float) -> void:
 	mouse_motion = Vector2()
 
 func _wall_process():
-	if Input.is_action_just_pressed("editor_place"):
+	if mouse_place_just_pressed:
 		placement_start = grid_pos
-		
 		WorldAPI.selection_create()
+		mouse_place_just_pressed = false
 	
-	if Input.is_action_pressed("editor_place"):
+	if mouse_place_pressed:
 		placement_end = grid_pos
 		
 		if placement_start != placement_end:
 			WorldAPI.selection_buildWall(placement_start, placement_end)
 	
-	if Input.is_action_just_released("editor_place"):
+	if mouse_place_released:
 		pass
 
 func _plat_process():
@@ -85,13 +90,14 @@ func _plat_process():
 		prototype_size     = prototype_info[1]
 		self.visible = false
 	
-	if Input.is_action_just_pressed("editor_place"):
+	if mouse_place_just_pressed:
 		WorldAPI.selection_create()
 		WorldAPI.selection_buildPlat(grid_pos)
 		
 		prototype_placements.clear()
+		mouse_place_just_pressed = false
 	
-	if Input.is_action_pressed("editor_place"):
+	if mouse_place_pressed:
 		if motion_detected:
 			if check_prototype_placements(grid_pos, prototype_size):
 				WorldAPI.selection_create()
@@ -103,7 +109,7 @@ func _plat_process():
 		grid_pos.y = clamp(grid_pos.y, floor(prototype_size.y / 2), grid_num - floor(prototype_size.y / 2))
 		prototype.transform.origin = Vector3(grid_pos.x, 0, grid_pos.y)
 	
-	if Input.is_action_just_released("editor_place"):
+	if mouse_place_released:
 		pass
 
 func _input(event: InputEvent) -> void:
@@ -111,10 +117,25 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
-func on_tool_change(type) -> void:
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton:
+		if event.get_button_index() == BUTTON_LEFT:
+			if event.is_pressed():
+				if mouse_place_pressed == false:
+					mouse_place_just_pressed = true
+				mouse_place_pressed = true
+			else:
+				if mouse_place_released == false and mouse_place_pressed == true:
+					mouse_place_released = false
+				mouse_place_pressed = false
+
+func destroy_prototype() -> void:
 	if prototype != null:
 		prototype.queue_free()
 		prototype = null
+
+func on_tool_change(type) -> void:
+	destroy_prototype()
 	
 	match (type):
 		WorldConstants.Tools.WALL:
@@ -124,6 +145,7 @@ func on_tool_change(type) -> void:
 			state = CursorStates.PLATFORM
 
 func on_level_change(level) -> void:
+	destroy_prototype()
 	grid_height = (level - 1) * WorldConstants.LEVEL_HEIGHT
 	grid_plane = Plane(Vector3(0,1,0), grid_height)
 	
