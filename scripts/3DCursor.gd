@@ -3,6 +3,7 @@ extends Spatial
 onready var camera    = get_node("../EditorCamera/Camera")
 onready var WorldAPI  = get_node("../WorldInterface")
 onready var EditorGUI = get_node("../GUI")
+const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # For handling different methods of placement
 enum CursorStates { 
@@ -12,29 +13,30 @@ var state = CursorStates.WALL
 
 # Input
 # For detecting mouse movement
-var mouse_motion = Vector2()
-var motion_detected = false
+var mouse_motion := Vector2()
+var motion_detected := false
 
-var mouse_place_just_pressed = false
-var mouse_place_pressed      = false
-var mouse_place_released     = false
+var mouse_place_just_pressed := false
+var mouse_place_pressed      := false
+var mouse_place_released     := false
 
 # Grid information for placing geometry / objects
-var grid_plane = Plane(Vector3(0,-1,0), 0.0)
-var grid_spacing = 1
-var grid_num = 20
-var grid_pos = Vector2()
-var grid_height = 0
+var grid_plane   := Plane(Vector3(0,-1,0), 0.0)
+var grid_pos     = Vector2i.new()
+var grid_spacing : int = 1
+var grid_num     : int = 20
+var grid_height  : int = 0
 
 # Wall creation info
-var placement_start = Vector2()
-var placement_end = Vector2()
+var placement_start = Vector2i.new()
+var placement_end = Vector2i.new()
 
 # Prototype
 # This shows a preview of what will be placed and where
-var prototype = null
-var prototype_size = Vector2()
-var prototype_placements = Array()
+var prototype      = null
+var prototype_size = Vector2i.new(2, 2)
+var prototype_placements       = Array()
+var prototype_placement_offset = Vector2i.new()
 
 # Connect signals
 func _ready():
@@ -43,7 +45,7 @@ func _ready():
 
 func _process(delta: float) -> void:
 	motion_detected = false
-	
+
 	if mouse_motion != Vector2():
 		# Cast ray directly from camera
 		var ray_origin = camera.get_camera_transform().origin
@@ -53,8 +55,8 @@ func _process(delta: float) -> void:
 		var grid_intersection = grid_plane.intersects_ray(ray_origin, ray_direction)
 		if grid_intersection != null:
 			# Calculate nearest grid edge
-			grid_pos.x = clamp(round(grid_intersection.x / grid_spacing), 0, grid_num)
-			grid_pos.y = clamp(round(grid_intersection.z / grid_spacing), 0, grid_num)
+			grid_pos.x = clamp(round(grid_intersection.x / grid_spacing), 0, grid_num) as int
+			grid_pos.y = clamp(round(grid_intersection.z / grid_spacing), 0, grid_num) as int
 			
 			self.transform.origin = Vector3(grid_pos.x * grid_spacing, grid_height, grid_pos.y * grid_spacing)
 		
@@ -70,15 +72,15 @@ func _process(delta: float) -> void:
 
 func _wall_process():
 	if mouse_place_just_pressed:
-		placement_start = grid_pos
+		placement_start.assign(grid_pos)
 		WorldAPI.selection_create()
 		mouse_place_just_pressed = false
 	
 	if mouse_place_pressed:
-		placement_end = grid_pos
+		placement_end.assign(grid_pos)
 		
-		if placement_start != placement_end:
-			WorldAPI.selection_buildWall(placement_start, placement_end)
+		if not placement_start.equals(placement_end):
+			WorldAPI.selection_buildWall(placement_start.cast_to_v2(), placement_end.cast_to_v2())
 	
 	if mouse_place_released:
 		pass
@@ -87,26 +89,29 @@ func _plat_process():
 	if prototype == null:
 		var prototype_info = WorldAPI.get_prototype(WorldConstants.Tools.PLATFORM)
 		prototype          = prototype_info[0]
-		prototype_size     = prototype_info[1]
+		prototype_size     = Vector2i.new(prototype_info[1])
 		self.visible = false
 	
 	if mouse_place_just_pressed:
 		WorldAPI.selection_create()
-		WorldAPI.selection_buildPlat(grid_pos)
+		WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 		
 		prototype_placements.clear()
+		prototype_placement_offset.x = grid_pos.x % prototype_size.x
+		prototype_placement_offset.y = grid_pos.y % prototype_size.y
+		
 		mouse_place_just_pressed = false
 	
 	if mouse_place_pressed:
 		if motion_detected:
 			if check_prototype_placements(grid_pos, prototype_size):
 				WorldAPI.selection_create()
-				WorldAPI.selection_buildPlat(grid_pos)
+				WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 				add_prototype_placements(grid_pos, prototype_size)
 	else:
 		# Show prototype 
-		grid_pos.x = clamp(grid_pos.x, floor(prototype_size.x / 2), grid_num - floor(prototype_size.x / 2))
-		grid_pos.y = clamp(grid_pos.y, floor(prototype_size.y / 2), grid_num - floor(prototype_size.y / 2))
+		grid_pos.x = clamp(grid_pos.x, floor(prototype_size.x / 2), grid_num - floor(prototype_size.x / 2)) as int 
+		grid_pos.y = clamp(grid_pos.y, floor(prototype_size.y / 2), grid_num - floor(prototype_size.y / 2)) as int
 		prototype.transform.origin = Vector3(grid_pos.x, 0, grid_pos.y)
 	
 	if mouse_place_released:
@@ -152,14 +157,13 @@ func on_level_change(level) -> void:
 	prototype = null # Recreate prototype with correct height
 
 # Iterates through the placements to make sure it doesn't place objects overlapping
-func check_prototype_placements(pos : Vector2, size : Vector2) -> bool:
-	for x in range(pos.x - size.x/2, pos.x + size.x/2):
-		for y in range(pos.y - size.y/2, pos.y + size.y/2):
-			if prototype_placements.has(x + (grid_num * y)):
-				return false
-	return true
+func check_prototype_placements(pos, size ) -> bool:
+	#for x in range(pos.x - size.x/2, pos.x + size.x/2):
+	print("x: ", pos.x % size.x, ", offset: ", prototype_placement_offset.x)
+	if ((pos.x % size.x == prototype_placement_offset.x) and (pos.y % size.y == prototype_placement_offset.y)):
+		if not prototype_placements.has(pos.x + (grid_num * pos.y)):
+			return true
+	return false
 	
-func add_prototype_placements(pos : Vector2, size : Vector2) -> void:
-	for x in range(pos.x - size.x/2, pos.x + size.x/2):
-		for y in range(pos.y - size.y/2, pos.y + size.y/2):
-			prototype_placements.append(x + (grid_num * y))
+func add_prototype_placements(pos , size ) -> void:
+	prototype_placements.append(pos.x + (grid_num * pos.y))
