@@ -1,7 +1,23 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scripts/gui/ToolButton.gd" type="Script" id=1]
 [ext_resource path="res://scripts/gui/MapLevel.gd" type="Script" id=2]
+[ext_resource path="res://res/gui_theme.tres" type="Theme" id=3]
+[ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=4]
+[ext_resource path="res://scripts/gui/TextureList.gd" type="Script" id=5]
+[ext_resource path="res://res/txrs/bark256.jpg" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=1]
+
+[sub_resource type="StyleBoxFlat" id=2]
+draw_center = false
+border_width_bottom = 1
+shadow_color = Color( 0.101961, 0.0352941, 0.0352941, 0.360784 )
+shadow_size = 3
+
+[sub_resource type="DynamicFont" id=3]
+size = 24
+font_data = ExtResource( 4 )
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
@@ -73,6 +89,42 @@ margin_bottom = 40.0
 text = "Level 1/5"
 align = 1
 valign = 1
+
+[node name="MapLevel2" type="Panel" parent="."]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = 769.0
+margin_top = 70.0
+margin_right = 964.0
+margin_bottom = 110.0
+grow_horizontal = 0
+theme = ExtResource( 3 )
+custom_styles/panel = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MapLevel2"]
+margin_right = 195.0
+margin_bottom = 310.0
+theme = ExtResource( 3 )
+
+[node name="Label" type="Label" parent="MapLevel2/VBoxContainer"]
+margin_right = 195.0
+margin_bottom = 31.0
+custom_styles/normal = SubResource( 2 )
+custom_fonts/font = SubResource( 3 )
+custom_colors/font_outline_modulate = Color( 0, 0, 0, 1 )
+text = "Wall"
+align = 1
+
+[node name="ItemList" type="ItemList" parent="MapLevel2/VBoxContainer"]
+margin_top = 35.0
+margin_right = 195.0
+margin_bottom = 44.0
+auto_height = true
+max_columns = 3
+fixed_icon_size = Vector2( 64, 64 )
+script = ExtResource( 5 )
+texture = ExtResource( 6 )
 [connection signal="pressed" from="ObjectList/Wall" to="ObjectList" method="_on_Wall_pressed"]
 [connection signal="pressed" from="ObjectList/Platform" to="ObjectList" method="_on_Platform_pressed"]
 [connection signal="pressed" from="ObjectList/Start" to="ObjectList" method="_on_Start_pressed"]

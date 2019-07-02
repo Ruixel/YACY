@@ -20,7 +20,6 @@ background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
 ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 tonemap_mode = 1
 tonemap_exposure = 0.9
-ssao_enabled = true
 ssao_radius = 0.8
 ssao_intensity = 2.0
 ssao_radius2 = 1.6
@@ -59,6 +58,7 @@ light_energy = 1.7
 shadow_enabled = true
 shadow_bias = -0.05
 shadow_contact = 0.3
+shadow_reverse_cull_face = true
 directional_shadow_normal_bias = 0.6
 
 [node name="WorldInterface" type="Spatial" parent="."]

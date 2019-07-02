@@ -1,8 +1,8 @@
 [remap]
 
-importer="texture"
-type="StreamTexture"
-path="res://.import/bookshelf.jpg-c72529b0527904de3aa9f379c74962f6.stex"
+importer="texture_array"
+type="TextureArray"
+path="res://.import/bookshelf.jpg-c72529b0527904de3aa9f379c74962f6.texarr"
 metadata={
 "vram_texture": false
 }
@@ -10,25 +10,15 @@ metadata={
 [deps]
 
 source_file="res://res/txrs/bookshelf.jpg"
-dest_files=[ "res://.import/bookshelf.jpg-c72529b0527904de3aa9f379c74962f6.stex" ]
+dest_files=[ "res://.import/bookshelf.jpg-c72529b0527904de3aa9f379c74962f6.texarr" ]
 
 [params]
 
 compress/mode=0
-compress/lossy_quality=0.7
-compress/hdr_mode=0
-compress/bptc_ldr=0
-compress/normal_map=0
+compress/no_bptc_if_rgb=false
 flags/repeat=0
 flags/filter=true
 flags/mipmaps=false
-flags/anisotropic=false
 flags/srgb=2
-process/fix_alpha_border=true
-process/premult_alpha=false
-process/HDR_as_SRGB=false
-process/invert_color=false
-stream=false
-size_limit=0
-detect_3d=true
-svg/scale=1.0
+slices/horizontal=8
+slices/vertical=8

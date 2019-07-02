@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 [autoload]
 
 WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
+WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 
 [input]
 
