@@ -3,7 +3,7 @@ extends Node
 onready var brick_mat = load("res://res/materials/brickwall.tres") # Brick Texture
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
 
-var tex : int = 2
+var tex : int = 15
 
 var quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 func _createWallQuadMesh(start : Vector2, end : Vector2, 
