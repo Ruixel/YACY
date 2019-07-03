@@ -157,7 +157,7 @@ func on_level_change(level) -> void:
 	prototype = null # Recreate prototype with correct height
 
 # Iterates through the placements to make sure it doesn't place objects overlapping
-func check_prototype_placements(pos, size ) -> bool:
+func check_prototype_placements(pos, size) -> bool:
 	#for x in range(pos.x - size.x/2, pos.x + size.x/2):
 	print("x: ", pos.x % size.x, ", offset: ", prototype_placement_offset.x)
 	if ((pos.x % size.x == prototype_placement_offset.x) and (pos.y % size.y == prototype_placement_offset.y)):
@@ -165,5 +165,5 @@ func check_prototype_placements(pos, size ) -> bool:
 			return true
 	return false
 	
-func add_prototype_placements(pos , size ) -> void:
+func add_prototype_placements(pos , size) -> void:
 	prototype_placements.append(pos.x + (grid_num * pos.y))

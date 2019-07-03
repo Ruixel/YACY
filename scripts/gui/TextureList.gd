@@ -2,6 +2,8 @@ extends ItemList
 
 var textures : Array
 
+signal s_wallTextureChange
+
 func loadTexturesAsItems():
 	for item in WorldTextures.textures:
 		var new_tex = ImageTexture.new()
@@ -13,3 +15,6 @@ func loadTexturesAsItems():
 func _ready():
 	loadTexturesAsItems()
 
+
+func _on_TextureList_item_selected(index):
+	emit_signal("s_wallTextureChange", index)

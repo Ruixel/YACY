@@ -108,7 +108,7 @@ margin_bottom = 200.0
 rect_min_size = Vector2( 195, 200 )
 scroll_horizontal_enabled = false
 
-[node name="ItemList" type="ItemList" parent="WallProperties/VBoxContainer/ScrollContainer"]
+[node name="TextureList" type="ItemList" parent="WallProperties/VBoxContainer/ScrollContainer"]
 margin_right = 182.0
 margin_bottom = 200.0
 rect_min_size = Vector2( 182, 200 )
@@ -121,3 +121,4 @@ script = ExtResource( 3 )
 [connection signal="pressed" from="ObjectList/Start" to="ObjectList" method="_on_Start_pressed"]
 [connection signal="pressed" from="MapLevel/Up" to="MapLevel" method="_on_Up_pressed"]
 [connection signal="pressed" from="MapLevel/Down" to="MapLevel" method="_on_Down_pressed"]
+[connection signal="item_selected" from="WallProperties/VBoxContainer/ScrollContainer/TextureList" to="WallProperties/VBoxContainer/ScrollContainer/TextureList" method="_on_TextureList_item_selected"]

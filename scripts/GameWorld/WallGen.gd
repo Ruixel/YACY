@@ -1,9 +1,15 @@
 extends Node
 
+onready var EditorGUI = get_node("/root/Spatial/GUI")
+
 onready var brick_mat = load("res://res/materials/brickwall.tres") # Brick Texture
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
 
-var tex : int = 15
+var tex : int = 4
+
+func _ready():
+	var texList = EditorGUI.get_node("WallProperties/VBoxContainer/ScrollContainer/TextureList")
+	texList.connect("s_wallTextureChange", self, "on_texture_change")
 
 var quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 func _createWallQuadMesh(start : Vector2, end : Vector2, 
@@ -68,3 +74,7 @@ func buildWall(start : Vector2, end : Vector2, level : int, meshRef : MeshInstan
 	
 	surface_tool.set_material(aTexture_mat)
 	meshRef.mesh = surface_tool.commit()
+
+func on_texture_change(index : int):
+	print("lol")
+	tex = index
