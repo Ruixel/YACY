@@ -63,6 +63,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
+func _unhandled_input(event: InputEvent) -> void:
 	# Mouse scroll
 	if event.is_action_pressed("editor_camera_zoom_in"):
 		camZoom -= 1

@@ -1,14 +1,15 @@
 extends ItemList
 
-export(Texture) var texture
+var textures : Array
+
+func loadTexturesAsItems():
+	for item in WorldTextures.textures:
+		var new_tex = ImageTexture.new()
+		new_tex.create_from_image(item.img)
+		
+		add_item(item.name, new_tex)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	add_icon_item(texture)
-	add_icon_item(texture)
-	add_icon_item(texture)
-	add_icon_item(texture)
+	loadTexturesAsItems()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
