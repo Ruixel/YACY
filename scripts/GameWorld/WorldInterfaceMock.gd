@@ -30,6 +30,9 @@ class Wall:
 	var texture : int = 4
 	var level : int
 	
+	var min_height : float = 0.0
+	var max_height : float = 1.0
+	
 	var mesh : MeshInstance
 	var meshGenObj
 	func _init(meshGen):
@@ -42,9 +45,44 @@ class Wall:
 	func change_end_pos(pos : Vector2):
 		end = pos
 		_genMesh()
-		
+	
+	func change_height_value(h : int):
+		match(h):
+			2:  
+				max_height = 3 / 4.0
+				min_height = 0 / 4.0
+			3:
+				max_height = 2 / 4.0
+				min_height = 0 / 4.0
+			4:  
+				max_height = 1 / 4.0
+				min_height = 0 / 4.0
+			5:  
+				max_height = 2 / 4.0
+				min_height = 1 / 4.0
+			6:  
+				max_height = 3/ 4.0
+				min_height = 2 / 4.0
+			7:  
+				max_height = 4 / 4.0
+				min_height = 3 / 4.0
+			8:  
+				max_height = 4 / 4.0
+				min_height = 2 / 4.0
+			9:  
+				max_height = 4 / 4.0
+				min_height = 1 / 4.0
+			0:  
+				max_height = 3 / 4.0
+				min_height = 1 / 4.0
+			_:  
+				max_height = 4 / 4.0
+				min_height = 0 / 4.0
+
+		_genMesh()
+	
 	func _genMesh():
-		mesh.mesh = meshGenObj.buildWall(start, end, level)
+		mesh.mesh = meshGenObj.buildWall(start, end, level, min_height, max_height)
 
 class Plat:
 	var pos : Vector2
@@ -52,17 +90,28 @@ class Plat:
 	var texture : int = 1
 	var level : int
 	
+	var height_offset : float = 0.0
+	
 	var mesh : MeshInstance
 	var meshGenObj
 	func _init(meshGen):
 		mesh = MeshInstance.new()
 		meshGenObj = meshGen
 	
+	func change_height_value(h : int):
+		match(h):
+			2:  height_offset = 1 / 4.0
+			3:  height_offset = 2 / 4.0
+			4:  height_offset = 3 / 4.0
+			_:  height_offset = 0 / 4.0
+		
+		_genMesh()
+	
 	func get_type():
-		return "wall"
+		return "plat"
 		
 	func _genMesh():
-		mesh.mesh = meshGenObj.buildPlatform(pos, level, false)
+		mesh.mesh = meshGenObj.buildPlatform(pos, level, height_offset, false)
 
 var default_wall : Wall
 
@@ -111,7 +160,7 @@ func get_prototype(type) -> Array:
 	
 	match type:
 		WorldConstants.Tools.PLATFORM:
-			prototype.mesh = platGenerator.buildPlatform(Vector2(0,0), level, true)
+			prototype.mesh = platGenerator.buildPlatform(Vector2(0,0), level, 0, true)
 			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing
@@ -134,3 +183,6 @@ func on_level_change(new_level):
 	
 func property_end_vector(endVec : Vector2):
 	selection.change_end_pos(endVec)
+
+func property_height_value(key : int):
+	selection.change_height_value(key)

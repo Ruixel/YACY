@@ -53,12 +53,12 @@ func _createWallQuadMesh(start : Vector2, end : Vector2,
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-func buildWall(start : Vector2, end : Vector2, level : int) -> Mesh:
+func buildWall(start : Vector2, end : Vector2, level : int, min_height : float, max_height : float) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var minHeight = (level - 1) * WorldConstants.LEVEL_HEIGHT
-	var maxHeight = level * WorldConstants.LEVEL_HEIGHT
+	var minHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT
+	var maxHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT
 	
 	# Calculate wall vertices
 	var wall_vertices = []

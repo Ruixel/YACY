@@ -39,11 +39,11 @@ func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sInd
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-func buildPlatform(pos : Vector2, level : int, is_prototype : bool) -> Mesh:
+func buildPlatform(pos : Vector2, level : int, height_offset : float, is_prototype : bool) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var height = (level - 1) * WorldConstants.LEVEL_HEIGHT
+	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
 	var start = Vector2(pos.x - 1, pos.y - 1)
 	var end   = Vector2(pos.x + 1, pos.y + 1)
 	

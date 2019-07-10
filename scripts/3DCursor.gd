@@ -92,8 +92,6 @@ func _wall_create_process():
 		
 		if not placement_start.equals(placement_end):
 			WorldAPI.property_end_vector(placement_end.cast_to_v2())
-			#emit_signal("s_changeEndVector", placement_end.cast_to_v2())
-			#WorldAPI.selection_buildWall(placement_start.cast_to_v2(), placement_end.cast_to_v2())
 	
 	if mouse_place_released:
 		pass
@@ -107,7 +105,6 @@ func _plat_create_process():
 	
 	if mouse_place_just_pressed:
 		WorldAPI.obj_create(grid_pos.cast_to_v2())
-		#WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 		
 		prototype_placements.clear()
 		prototype_placement_offset.x = grid_pos.x % prototype_size.x
@@ -119,7 +116,6 @@ func _plat_create_process():
 		if motion_detected:
 			if check_prototype_placements(grid_pos, prototype_size):
 				WorldAPI.obj_create(grid_pos.cast_to_v2())
-				#WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 				add_prototype_placements(grid_pos, prototype_size)
 	else:
 		# Show prototype 
@@ -135,6 +131,7 @@ func _input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		mouse_motion = event.relative
 
+# This takes in any input that wasn't used in the GUI 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.get_button_index() == BUTTON_LEFT:
@@ -146,6 +143,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				if mouse_place_released == false and mouse_place_pressed == true:
 					mouse_place_released = false
 				mouse_place_pressed = false
+				
+	elif event is InputEventKey:
+		# Change the height property of an object via shortcut
+		if event.get_scancode() >= KEY_0 and event.get_scancode() <= KEY_9:
+			if event.is_echo() == false:
+				# Return a number between 0 and 9
+				WorldAPI.property_height_value(event.get_scancode() - KEY_0)
 
 func destroy_prototype() -> void:
 	if prototype != null:
