@@ -80,6 +80,6 @@ func getWallTexture(id : int) -> LevelTexture:
 		11: return TextureID.SCIFI
 		12: return TextureID.TILES
 		13: return TextureID.ROCK
-		14: return TextureID.BOOKSHELF	
+		14: return TextureID.BOOKSHELF
 		16: return TextureID.PARQUET
 		_:  return TextureID.WColor

@@ -6,10 +6,17 @@ onready var EditorGUI = get_node("../GUI")
 const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # For handling different methods of placement
-enum CursorStates { 
+enum CursorMode {
+	SELECT, MULTISELECT, CREATE, EDIT
+}
+
+# How the object interacts in the editor
+enum CursorType { 
 	WALL, PLATFORM, OBJECT
 }
-var state = CursorStates.WALL
+
+var cMode = CursorMode.CREATE
+var cType = CursorType.WALL
 
 # Input
 # For detecting mouse movement
@@ -43,9 +50,15 @@ func _ready():
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 
+# Create object 
 func _process(delta: float) -> void:
 	motion_detected = false
 
+	_create_process(delta)
+	
+	mouse_motion = Vector2()
+
+func _create_process(delta: float) -> void:
 	if mouse_motion != Vector2():
 		# Cast ray directly from camera
 		var ray_origin = camera.get_camera_transform().origin
@@ -62,30 +75,30 @@ func _process(delta: float) -> void:
 		
 		motion_detected = true
 	
-	match (state):
-		CursorStates.WALL:
-			_wall_process()
-		CursorStates.PLATFORM:
-			_plat_process()
-	
-	mouse_motion = Vector2()
+	match (cType):
+		CursorType.WALL:
+			_wall_create_process()
+		CursorType.PLATFORM:
+			_plat_create_process()
 
-func _wall_process():
+func _wall_create_process():
 	if mouse_place_just_pressed:
 		placement_start.assign(grid_pos)
-		WorldAPI.selection_create()
+		WorldAPI.obj_create(grid_pos.cast_to_v2())
 		mouse_place_just_pressed = false
 	
 	if mouse_place_pressed:
 		placement_end.assign(grid_pos)
 		
 		if not placement_start.equals(placement_end):
-			WorldAPI.selection_buildWall(placement_start.cast_to_v2(), placement_end.cast_to_v2())
+			WorldAPI.property_end_vector(placement_end.cast_to_v2())
+			#emit_signal("s_changeEndVector", placement_end.cast_to_v2())
+			#WorldAPI.selection_buildWall(placement_start.cast_to_v2(), placement_end.cast_to_v2())
 	
 	if mouse_place_released:
 		pass
 
-func _plat_process():
+func _plat_create_process():
 	if prototype == null:
 		var prototype_info = WorldAPI.get_prototype(WorldConstants.Tools.PLATFORM)
 		prototype          = prototype_info[0]
@@ -93,8 +106,8 @@ func _plat_process():
 		self.visible = false
 	
 	if mouse_place_just_pressed:
-		WorldAPI.selection_create()
-		WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
+		WorldAPI.obj_create(grid_pos.cast_to_v2())
+		#WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 		
 		prototype_placements.clear()
 		prototype_placement_offset.x = grid_pos.x % prototype_size.x
@@ -105,8 +118,8 @@ func _plat_process():
 	if mouse_place_pressed:
 		if motion_detected:
 			if check_prototype_placements(grid_pos, prototype_size):
-				WorldAPI.selection_create()
-				WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
+				WorldAPI.obj_create(grid_pos.cast_to_v2())
+				#WorldAPI.selection_buildPlat(grid_pos.cast_to_v2())
 				add_prototype_placements(grid_pos, prototype_size)
 	else:
 		# Show prototype 
@@ -144,10 +157,10 @@ func on_tool_change(type) -> void:
 	
 	match (type):
 		WorldConstants.Tools.WALL:
-			state = CursorStates.WALL
+			cType = CursorType.WALL
 			self.visible = true
 		WorldConstants.Tools.PLATFORM:
-			state = CursorStates.PLATFORM
+			cType = CursorType.PLATFORM
 
 func on_level_change(level) -> void:
 	destroy_prototype()

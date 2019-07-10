@@ -53,7 +53,7 @@ func _createWallQuadMesh(start : Vector2, end : Vector2,
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-func buildWall(start : Vector2, end : Vector2, level : int, meshRef : MeshInstance) -> void:
+func buildWall(start : Vector2, end : Vector2, level : int) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -73,8 +73,16 @@ func buildWall(start : Vector2, end : Vector2, level : int, meshRef : MeshInstan
 	_createWallQuadMesh(start, end, surface_tool, bVertices, 4)
 	
 	surface_tool.set_material(aTexture_mat)
-	meshRef.mesh = surface_tool.commit()
+	return surface_tool.commit()
+	
+
+func create_selection_mesh(meshRef : MeshInstance):
+	var o_mesh = meshRef.mesh.create_outline(0.05)
+	
+	var s_mesh = MeshInstance.new()
+	#s_mesh.set_scale(Vector3(1, 1, 1.1))
+	s_mesh.mesh = o_mesh
+	meshRef.add_child(s_mesh)
 
 func on_texture_change(index : int):
-	print("lol")
 	tex = index

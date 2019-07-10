@@ -39,7 +39,7 @@ func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sInd
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-func buildPlatform(pos : Vector2, level : int, meshRef : MeshInstance, is_prototype : bool) -> void:
+func buildPlatform(pos : Vector2, level : int, is_prototype : bool) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -64,4 +64,4 @@ func buildPlatform(pos : Vector2, level : int, meshRef : MeshInstance, is_protot
 	else: 
 		surface_tool.set_material(grass_mat)
 	
-	meshRef.mesh = surface_tool.commit()
+	return surface_tool.commit()
