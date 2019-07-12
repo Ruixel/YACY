@@ -4,6 +4,7 @@ onready var EditorGUI = get_node("/root/Spatial/GUI")
 
 onready var brick_mat = load("res://res/materials/brickwall.tres") # Brick Texture
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
+onready var selection_mat = load("res://res/materials/selection.tres")
 
 var tex : int = 4
 
@@ -74,15 +75,42 @@ func buildWall(start : Vector2, end : Vector2, level : int, min_height : float, 
 	
 	surface_tool.set_material(aTexture_mat)
 	return surface_tool.commit()
-	
 
-func create_selection_mesh(meshRef : MeshInstance):
-	var o_mesh = meshRef.mesh.create_outline(0.05)
+func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_height : float, max_height : float,
+	outlineWidth : float) -> Mesh:
+	var surface_tool = SurfaceTool.new()
+	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var s_mesh = MeshInstance.new()
-	#s_mesh.set_scale(Vector3(1, 1, 1.1))
-	s_mesh.mesh = o_mesh
-	meshRef.add_child(s_mesh)
+	var minHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT + outlineWidth
+	var maxHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT - outlineWidth
+	
+	# Get Vector 
+	var wall_vec = (end - start).normalized()
+	end   = end   + wall_vec * outlineWidth
+	start = start - wall_vec * outlineWidth
+	
+	var normal_vec = Vector3(wall_vec.x, 0, wall_vec.y).cross(Vector3(0, 1, 0))
+	
+	var wall_vertices = []
+	wall_vertices.insert(0, Vector3(start.x, minHeight, start.y))
+	wall_vertices.insert(1, Vector3(start.x, maxHeight, start.y))
+	wall_vertices.insert(2, Vector3(end.x, maxHeight, end.y))
+	wall_vertices.insert(3, Vector3(end.x, minHeight, end.y))
+	
+	var new_vertices = []
+	for vertex in wall_vertices:
+		new_vertices.append(vertex - normal_vec * 0.02)
+	
+	_createWallQuadMesh(start, end, surface_tool, new_vertices, 0)
+	
+	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
+	var new_bVertices = []
+	for vertex in bVertices:
+		new_bVertices.append(vertex + normal_vec * 0.02)
+	_createWallQuadMesh(start, end, surface_tool, new_bVertices, 4)
+	
+	surface_tool.set_material(selection_mat)
+	return surface_tool.commit()
 
 func on_texture_change(index : int):
 	tex = index

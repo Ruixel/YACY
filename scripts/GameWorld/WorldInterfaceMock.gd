@@ -34,6 +34,7 @@ class Wall:
 	var max_height : float = 1.0
 	
 	var mesh : MeshInstance
+	var selection_mesh : MeshInstance 
 	var meshGenObj
 	func _init(meshGen):
 		mesh = MeshInstance.new()
@@ -83,6 +84,10 @@ class Wall:
 	
 	func _genMesh():
 		mesh.mesh = meshGenObj.buildWall(start, end, level, min_height, max_height)
+	
+	func selectObj():
+		selection_mesh = MeshInstance.new()
+		selection_mesh.mesh = meshGenObj.buildWallSelectionMesh(start, end, level, min_height, max_height, 0.05)
 
 class Plat:
 	var pos : Vector2
@@ -120,6 +125,9 @@ func obj_create(pos : Vector2):
 	if mode == WorldConstants.Tools.WALL:
 		var new_wall = Wall.new(wallGenerator)
 		objects.append(new_wall)
+		
+		# Select
+		deselect()
 		selection = new_wall
 		
 		# Apply default properties
@@ -147,6 +155,20 @@ func obj_create(pos : Vector2):
 func selection_delete():
 	selection.queue_free()
 	selection = null
+
+func deselect():
+	if (selection != null) and (selection.selection_mesh != null):
+		selection.selection_mesh.queue_free()
+		selection.selection_mesh = null
+	
+	selection = null
+
+func select_update_mesh():
+	if (selection.selection_mesh != null):
+		selection.selection_mesh.queue_free()
+		selection.selection_mesh = null
+	selection.selectObj()
+	add_child(selection.selection_mesh)
 
 # Prototype functions
 func get_prototype(type) -> Array:
@@ -183,6 +205,8 @@ func on_level_change(new_level):
 	
 func property_end_vector(endVec : Vector2):
 	selection.change_end_pos(endVec)
+	select_update_mesh()
 
 func property_height_value(key : int):
 	selection.change_height_value(key)
+	select_update_mesh()
