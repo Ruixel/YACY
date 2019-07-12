@@ -1,6 +1,7 @@
 extends Node
 
 onready var grass_mat = load("res://res/materials/grass.tres") # Grass Texture
+onready var selection_mat = load("res://res/materials/selection.tres")
 var prototype_grass_mat 
 
 func _ready():
@@ -63,5 +64,33 @@ func buildPlatform(pos : Vector2, level : int, height_offset : float, is_prototy
 		surface_tool.set_material(prototype_grass_mat)
 	else: 
 		surface_tool.set_material(grass_mat)
+	
+	return surface_tool.commit()
+
+func buildPlatSelectionMesh(pos : Vector2, level : int, height_offset : float, outlineWidth : float) -> Mesh:
+	var surface_tool = SurfaceTool.new()
+	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	
+	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
+	var start = Vector2(pos.x - 1 - outlineWidth, pos.y - 1 - outlineWidth)
+	var end   = Vector2(pos.x + 1 + outlineWidth, pos.y + 1 + outlineWidth)
+	
+	# Calculate wall vertices
+	var plat_vertices = []
+	plat_vertices.insert(0, Vector3(start.x, height, start.y))
+	plat_vertices.insert(1, Vector3(end.x,   height, start.y))
+	plat_vertices.insert(2, Vector3(end.x,   height, end.y))
+	plat_vertices.insert(3, Vector3(start.x, height, end.y))
+	for i in range(0, 4):
+		plat_vertices[i].y = plat_vertices[i].y + 0.02
+	_createPlatQuadMesh(surface_tool, plat_vertices, 0)
+	
+	# Rearrange vertices for the backwall
+	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
+	for i in range(0, 4):
+		bVertices[i].y = bVertices[i].y - (0.02 * 2)
+	_createPlatQuadMesh(surface_tool, bVertices, 4)
+	
+	surface_tool.set_material(selection_mat)
 	
 	return surface_tool.commit()

@@ -99,6 +99,7 @@ class Plat:
 	
 	var mesh : MeshInstance
 	var meshGenObj
+	var selection_mesh : MeshInstance 
 	func _init(meshGen):
 		mesh = MeshInstance.new()
 		meshGenObj = meshGen
@@ -117,6 +118,11 @@ class Plat:
 		
 	func _genMesh():
 		mesh.mesh = meshGenObj.buildPlatform(pos, level, height_offset, false)
+	
+	func selectObj():
+		selection_mesh = MeshInstance.new()
+		selection_mesh.mesh = meshGenObj.buildPlatSelectionMesh(pos, level, height_offset, 0.05)
+
 
 var default_wall : Wall
 
@@ -141,6 +147,9 @@ func obj_create(pos : Vector2):
 	elif mode == WorldConstants.Tools.PLATFORM:
 		var new_plat = Plat.new(platGenerator)
 		objects.append(new_plat)
+		
+		# Select
+		deselect()
 		selection = new_plat
 		
 		# Apply default properties
@@ -151,6 +160,7 @@ func obj_create(pos : Vector2):
 		add_child(new_plat.mesh)
 		new_plat.mesh.set_owner(self)
 		new_plat._genMesh()
+		select_update_mesh()
 
 func selection_delete():
 	selection.queue_free()
