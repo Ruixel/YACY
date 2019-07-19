@@ -6,16 +6,13 @@ onready var EditorGUI = get_node("../GUI")
 const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # For handling different methods of placement
-enum CursorMode {
-	SELECT, MULTISELECT, CREATE, EDIT
-}
 
 # How the object interacts in the editor
 enum CursorType { 
 	WALL, PLATFORM, OBJECT
 }
 
-var cMode = CursorMode.CREATE
+var cMode = WorldConstants.Mode.CREATE
 var cType = CursorType.WALL
 
 # Input
@@ -48,16 +45,29 @@ var prototype_placement_offset = Vector2i.new()
 # Connect signals
 func _ready():
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
+	EditorGUI.get_node("ObjectList").connect("s_changeMode", self, "on_mode_change")
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 
-# Create object 
+# Process every game frame
 func _process(delta: float) -> void:
 	motion_detected = false
-
-	_create_process(delta)
 	
-	mouse_motion = Vector2()
+	match(cMode):
+		WorldConstants.Mode.CREATE: _create_process(delta)
+		WorldConstants.Mode.SELECT: _select_process(delta)
+		_: pass
+	
+	mouse_motion = Vector2() # Reset
 
+func _select_process(delta: float) -> void:
+	if mouse_place_pressed:
+		var ray_origin = camera.get_camera_transform().origin
+		var ray_direction = camera.project_ray_normal(get_viewport().get_mouse_position()).normalized()
+		
+		WorldAPI.deselect()
+		WorldAPI.select_obj_from_raycast(ray_origin, ray_direction)
+
+# Create object 
 func _create_process(delta: float) -> void:
 	if mouse_motion != Vector2():
 		# Cast ray directly from camera
@@ -165,6 +175,14 @@ func on_tool_change(type) -> void:
 			self.visible = true
 		WorldConstants.Tools.PLATFORM:
 			cType = CursorType.PLATFORM
+
+func on_mode_change(mode) -> void:
+	destroy_prototype()
+	cMode = mode
+	
+	match (mode):
+		WorldConstants.Mode.SELECT:
+			self.set_visible(false)
 
 func on_level_change(level) -> void:
 	destroy_prototype()

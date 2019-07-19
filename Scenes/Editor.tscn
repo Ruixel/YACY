@@ -102,7 +102,10 @@ shadow_contact = 0.3
 shadow_reverse_cull_face = true
 directional_shadow_normal_bias = 0.6
 
-[node name="WorldInterface" type="Spatial" parent="."]
+[node name="WorldInterface" type="Spatial" parent="." groups=[
+"ToolChangeListener",
+"PropertyListener",
+]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.86265e-09, 4.36557e-11 )
 script = ExtResource( 1 )
 
@@ -117,7 +120,9 @@ script = ExtResource( 3 )
 [node name="EditorCamera" parent="." instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
 
-[node name="3DCursor" type="Spatial" parent="."]
+[node name="3DCursor" type="Spatial" parent="." groups=[
+"ToolChangeListener",
+]]
 script = ExtResource( 5 )
 
 [node name="MeshInstance" type="MeshInstance" parent="3DCursor"]

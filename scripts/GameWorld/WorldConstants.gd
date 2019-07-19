@@ -9,3 +9,7 @@ const LEVEL_SIZE   = Vector2(1, 1)
 enum Tools {
 	WALL, PLATFORM, SPAWN
 }
+
+enum Mode {
+	SELECT, MULTISELECT, CREATE, EDIT
+}
