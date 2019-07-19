@@ -15,6 +15,5 @@ func loadTexturesAsItems():
 func _ready():
 	loadTexturesAsItems()
 
-
 func _on_TextureList_item_selected(index):
 	emit_signal("s_wallTextureChange", index)

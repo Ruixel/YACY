@@ -95,8 +95,12 @@ class Wall:
 
 		_genMesh()
 	
+	func change_texture(index: int):
+		texture = index
+		_genMesh()
+	
 	func _genMesh():
-		mesh.mesh = meshGenObj.buildWall(start, end, level, min_height, max_height)
+		mesh.mesh = meshGenObj.buildWall(start, end, level, min_height, max_height, texture)
 		collision_shape.shape = mesh.mesh.create_convex_shape()
 	
 	func selectObj():
@@ -239,6 +243,9 @@ func get_prototype(type) -> Array:
 func _ready(): # Connect signals
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
+	
+	var PropertyGUI = EditorGUI.get_node("ObjProperties")
+	PropertyGUI.connect("s_changeTexture", self, "property_texture")
 
 func on_tool_change(type) -> void:
 	mode = type
@@ -254,4 +261,9 @@ func property_end_vector(endVec : Vector2):
 func property_height_value(key : int):
 	if selection != null:
 		selection.change_height_value(key)
+		select_update_mesh()
+
+func property_texture(index : int):
+	if selection != null:
+		selection.change_texture(index)
 		select_update_mesh()
