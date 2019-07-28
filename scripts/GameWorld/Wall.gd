@@ -107,28 +107,30 @@ func _createWallQuadMesh(v1 : Vector3, v2 : Vector3, v3 : Vector3, v4 : Vector3,
 	var texture_float = (texture+1.0)/256
 	var texture_scale = WorldTextures.textures[texture].texScale
 	
+	var dir = normal.cross(Vector3(0, 1, 0))
+	
 	# Add Vertices
 	surface_tool.add_color(Color(1, 1, 1, texture_float))
 	surface_tool.add_normal(normal)
-	surface_tool.add_uv(Vector2((v1.x + v1.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	surface_tool.add_uv(Vector2((dir.x * v1.x + dir.z * v1.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            -v1.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_vertex(v1)
 	
 	surface_tool.add_color(Color(1, 1, 1, texture_float))
 	surface_tool.add_normal(normal)
-	surface_tool.add_uv(Vector2((v2.x + v2.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	surface_tool.add_uv(Vector2((dir.x * v2.x + dir.z * v2.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            -v2.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_vertex(v2)
 	
 	surface_tool.add_color(Color(1, 1, 1, texture_float))
 	surface_tool.add_normal(normal)
-	surface_tool.add_uv(Vector2((v3.x + v3.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	surface_tool.add_uv(Vector2((dir.x * v3.x + dir.z * v3.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            -v3.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_vertex(v3)
 	
 	surface_tool.add_color(Color(1, 1, 1, texture_float))
 	surface_tool.add_normal(normal)
-	surface_tool.add_uv(Vector2((v4.x + v4.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	surface_tool.add_uv(Vector2((dir.x * v4.x + dir.z * v4.z) * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            -v4.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_vertex(v4)
 	
