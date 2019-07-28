@@ -5,7 +5,7 @@ onready var Cursor = get_node("../3DCursor")
 onready var wallGenerator = get_node("ObjGenFunc/Wall")
 onready var platGenerator = get_node("ObjGenFunc/Platform")
 
-const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
+const Wall = preload("res://scripts/GameWorld/Wall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 
 var selection # Selected object (To be modified)

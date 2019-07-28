@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scripts/GameWorld/WorldInterfaceMock.gd" type="Script" id=1]
 [ext_resource path="res://scripts/GameWorld/WallGen.gd" type="Script" id=2]
@@ -9,19 +9,17 @@
 [ext_resource path="res://Entities/Editor/EditorGUI.tscn" type="PackedScene" id=7]
 [ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=8]
 [ext_resource path="res://res/materials/selection.tres" type="Material" id=9]
+[ext_resource path="res://Entities/Penguin/Penguin.dae" type="PackedScene" id=10]
 
-[sub_resource type="ProceduralSky" id=1]
-sky_top_color = Color( 0.788235, 0.858824, 0.898039, 1 )
-sky_horizon_color = Color( 1, 1, 1, 1 )
-ground_bottom_color = Color( 0.133333, 0.509804, 0.882353, 1 )
-ground_horizon_color = Color( 0.698039, 0.882353, 0.843137, 1 )
+[sub_resource type="ProceduralSky" id=9]
 
 [sub_resource type="Environment" id=2]
-background_sky = SubResource( 1 )
+background_sky = SubResource( 9 )
 background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
 ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 tonemap_mode = 1
 tonemap_exposure = 0.9
+ssao_enabled = true
 ssao_radius = 0.8
 ssao_intensity = 2.0
 ssao_radius2 = 1.6
@@ -93,13 +91,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547
 environment = SubResource( 2 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="Environment"]
-transform = Transform( -0.554536, 0.271822, 0.786513, 0.15502, -0.894859, 0.418565, 0.817594, 0.354034, 0.454094, 0, 3.77881, 0 )
+transform = Transform( -0.554536, 0.271822, 0.786513, 0.15502, -0.894859, 0.418564, 0.817594, 0.354034, 0.454093, 0, 3.77881, 0 )
 light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 light_energy = 1.7
 shadow_enabled = true
-shadow_bias = -0.05
-shadow_contact = 0.3
-shadow_reverse_cull_face = true
+shadow_bias = 0.0
+shadow_contact = 0.2
 directional_shadow_normal_bias = 0.6
 
 [node name="WorldInterface" type="Spatial" parent="." groups=[
@@ -165,3 +162,8 @@ material/0 = null
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -2.6904, 2.68266, 2.34577 )
 mesh = SubResource( 6 )
 material/0 = null
+
+[node name="Scene Root" parent="." instance=ExtResource( 10 )]
+transform = Transform( 25, 0, 0, 0, 25, 0, 0, 0, 25, 2.48929, -0.00473465, 3.46994 )
+
+[editable path="Scene Root"]
