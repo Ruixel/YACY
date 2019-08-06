@@ -16,10 +16,13 @@ var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
 var meshGenObj
-func _init(parent):
+func _init(parent, position : Vector2, lvl : int):
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
+	
+	pos = position
+	level = lvl 
 	
 	add_child(mesh)
 	add_child(collision_mesh)

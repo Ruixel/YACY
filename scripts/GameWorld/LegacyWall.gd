@@ -1,7 +1,7 @@
 extends Node
 
 var start : Vector2
-var end : Vector2
+var end : Vector2 = Vector2(-1, -1) # Invalid vector
 var level : int
 
 var texture : int = 4
@@ -16,10 +16,13 @@ var selection_mesh : MeshInstance
 var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
-func _init(parent):
+func _init(parent, position : Vector2, lvl : int):
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
+	
+	start = position
+	level = lvl
 	
 	add_child(mesh)
 	add_child(collision_mesh)
@@ -100,6 +103,11 @@ static func _createWallQuadMesh(start : Vector2, end : Vector2,
 # Build Mesh
 static func buildWall(start : Vector2, end : Vector2, level : int, min_height : float, 
 	max_height : float, tex : int) -> Mesh:
+	
+	# Only create mesh for valid walls
+	if end.x == -1:
+		return Mesh.new()
+	
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -123,6 +131,11 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 
 func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_height : float, max_height : float,
 	outlineWidth : float) -> Mesh:
+	
+	# Only create mesh for valid walls
+	if end.x == -1:
+		return Mesh.new()
+		
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	

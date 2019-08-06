@@ -29,38 +29,24 @@ var objects : Array = []
 
 var default_wall : Wall
 
+const toolToObjectDict = {
+		WorldConstants.Tools.WALL: Wall,
+		WorldConstants.Tools.PLATFORM: Plat
+	}
+
 # Object functions
 func obj_create(pos : Vector2):
-	if mode == WorldConstants.Tools.WALL:
-		var new_wall = Wall.new(self)
-		objects.append(new_wall)
-		
-		# Select
-		deselect()
-		selection = new_wall
-		
-		# Apply default properties
-		new_wall.start = pos
-		new_wall.level = level
-		
-		# Apply 
-		new_wall.mesh.set_owner(self)
-		
-	elif mode == WorldConstants.Tools.PLATFORM:
-		var new_plat = Plat.new(self)
-		objects.append(new_plat)
-		
-		# Select
-		deselect()
-		selection = new_plat
-		
-		# Apply default properties
-		new_plat.pos = pos
-		new_plat.level = level
-		
-		# Apply 
-		new_plat._genMesh()
-		select_update_mesh()
+	var objectType = toolToObjectDict.get(mode)
+	var new_obj = objectType.new(self, pos, level)
+	objects.append(new_obj)
+	
+	# Select
+	deselect()
+	selection = new_obj
+	
+	# Apply 
+	new_obj._genMesh()
+	select_update_mesh()
 
 func selection_delete():
 	selection.queue_free()
