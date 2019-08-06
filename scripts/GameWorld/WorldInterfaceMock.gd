@@ -5,10 +5,12 @@ onready var Cursor = get_node("../3DCursor")
 onready var wallGenerator = get_node("ObjGenFunc/Wall")
 onready var platGenerator = get_node("ObjGenFunc/Platform")
 
-const Wall = preload("res://scripts/GameWorld/Wall.gd")
+const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 
 var selection # Selected object (To be modified)
+
+signal change_selection
 
 # WorldInterfaceMock, 2019
 # This is a mock of the world interface, in which GDScript can interact with the world
@@ -30,7 +32,7 @@ var default_wall : Wall
 # Object functions
 func obj_create(pos : Vector2):
 	if mode == WorldConstants.Tools.WALL:
-		var new_wall = Wall.new(self, wallGenerator)
+		var new_wall = Wall.new(self)
 		objects.append(new_wall)
 		
 		# Select
@@ -45,7 +47,7 @@ func obj_create(pos : Vector2):
 		new_wall.mesh.set_owner(self)
 		
 	elif mode == WorldConstants.Tools.PLATFORM:
-		var new_plat = Plat.new(self, platGenerator)
+		var new_plat = Plat.new(self)
 		objects.append(new_plat)
 		
 		# Select
@@ -98,7 +100,7 @@ func get_prototype(type) -> Array:
 	
 	match type:
 		WorldConstants.Tools.PLATFORM:
-			prototype.mesh = platGenerator.buildPlatform(Vector2(0,0), level, 0, true)
+			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, true)
 			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing

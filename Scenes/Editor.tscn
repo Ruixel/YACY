@@ -1,20 +1,18 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scripts/GameWorld/WorldInterfaceMock.gd" type="Script" id=1]
-[ext_resource path="res://scripts/GameWorld/WallGen.gd" type="Script" id=2]
-[ext_resource path="res://scripts/GameWorld/PlatformGen.gd" type="Script" id=3]
-[ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scripts/3DCursor.gd" type="Script" id=5]
-[ext_resource path="res://scripts/Grid.gd" type="Script" id=6]
-[ext_resource path="res://Entities/Editor/EditorGUI.tscn" type="PackedScene" id=7]
-[ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=8]
-[ext_resource path="res://res/materials/selection.tres" type="Material" id=9]
-[ext_resource path="res://Entities/Penguin/Penguin.dae" type="PackedScene" id=10]
+[ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scripts/3DCursor.gd" type="Script" id=3]
+[ext_resource path="res://scripts/Grid.gd" type="Script" id=4]
+[ext_resource path="res://Entities/Editor/EditorGUI.tscn" type="PackedScene" id=5]
+[ext_resource path="res://res/txrs/wood256.jpg" type="Texture" id=6]
+[ext_resource path="res://res/materials/selection.tres" type="Material" id=7]
+[ext_resource path="res://Entities/Penguin/Penguin.dae" type="PackedScene" id=8]
 
-[sub_resource type="ProceduralSky" id=9]
+[sub_resource type="ProceduralSky" id=1]
 
 [sub_resource type="Environment" id=2]
-background_sky = SubResource( 9 )
+background_sky = SubResource( 1 )
 background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
 ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 tonemap_mode = 1
@@ -50,7 +48,7 @@ emission_operator = 0
 emission_on_uv2 = false
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 8 )
+albedo_texture = ExtResource( 6 )
 
 [sub_resource type="PlaneMesh" id=6]
 material = SubResource( 5 )
@@ -106,21 +104,13 @@ directional_shadow_normal_bias = 0.6
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.86265e-09, 4.36557e-11 )
 script = ExtResource( 1 )
 
-[node name="ObjGenFunc" type="Node" parent="WorldInterface"]
-
-[node name="Wall" type="Node" parent="WorldInterface/ObjGenFunc"]
-script = ExtResource( 2 )
-
-[node name="Platform" type="Node" parent="WorldInterface/ObjGenFunc"]
-script = ExtResource( 3 )
-
-[node name="EditorCamera" parent="." instance=ExtResource( 4 )]
+[node name="EditorCamera" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
 
 [node name="3DCursor" type="Spatial" parent="." groups=[
 "ToolChangeListener",
 ]]
-script = ExtResource( 5 )
+script = ExtResource( 3 )
 
 [node name="MeshInstance" type="MeshInstance" parent="3DCursor"]
 mesh = SubResource( 3 )
@@ -128,9 +118,9 @@ material/0 = SubResource( 4 )
 
 [node name="Grid" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0 )
-script = ExtResource( 6 )
+script = ExtResource( 4 )
 
-[node name="GUI" parent="." instance=ExtResource( 7 )]
+[node name="GUI" parent="." instance=ExtResource( 5 )]
 
 [node name="Spatial2" type="Spatial" parent="."]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0751307, 6.25, 0.598679 )
@@ -145,7 +135,7 @@ material/0 = null
 transform = Transform( 1.1, 0, 0, 0, 1, 0, 0, 0, 1.1, 0, 0, 0 )
 cast_shadow = 0
 mesh = SubResource( 7 )
-material/0 = ExtResource( 9 )
+material/0 = ExtResource( 7 )
 
 [node name="MeshInstance4" type="MeshInstance" parent="Spatial2"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
@@ -163,7 +153,7 @@ transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -2.6904, 
 mesh = SubResource( 6 )
 material/0 = null
 
-[node name="Scene Root" parent="." instance=ExtResource( 10 )]
+[node name="Scene Root" parent="." instance=ExtResource( 8 )]
 transform = Transform( 25, 0, 0, 0, 25, 0, 0, 0, 25, 2.48929, -0.00473465, 3.46994 )
 
 [editable path="Scene Root"]
