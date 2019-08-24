@@ -7,7 +7,7 @@ const LEVEL_SIZE   = Vector2(1, 1)
 
 # Tool names
 enum Tools {
-	WALL, PLATFORM, SPAWN
+	NOTHING, WALL, PLATFORM, SPAWN
 }
 
 enum Mode {

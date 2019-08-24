@@ -18,4 +18,5 @@ func _on_Platform_pressed():
 
 func _on_Select_pressed():
 	$ToolSelected.set_text("Selecting...")
+	emit_signal("s_changeTool", WorldConstants.Tools.NOTHING)
 	emit_signal("s_changeMode", WorldConstants.Mode.SELECT)

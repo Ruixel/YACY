@@ -1,4 +1,5 @@
 extends Node
+const toolType = WorldConstants.Tools.WALL
 
 var start : Vector2
 var end : Vector2 = Vector2(-1, -1) # Invalid vector
@@ -54,6 +55,12 @@ func _genMesh():
 func selectObj():
 	selection_mesh = MeshInstance.new()
 	selection_mesh.mesh = buildWallSelectionMesh(start, end, level, min_height, max_height, 0.05)
+
+func get_property_dict() -> Dictionary:
+	var dict : Dictionary
+	dict["Texture"] = texture 
+	
+	return dict
 
 # Static Mesh Creation Functions
 

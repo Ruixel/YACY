@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/gui/TextureList.gd" type="Script" id=1]
+
+[sub_resource type="Theme" id=1]
+
+[node name="TextureList" type="ItemList"]
+margin_right = 212.0
+margin_bottom = 200.0
+rect_min_size = Vector2( 212, 200 )
+theme = SubResource( 1 )
+fixed_column_width = 182
+fixed_icon_size = Vector2( 32, 32 )
+script = ExtResource( 1 )
+[connection signal="item_selected" from="." to="." method="_on_TextureList_item_selected"]

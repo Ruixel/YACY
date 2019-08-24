@@ -11,6 +11,10 @@ func loadTexturesAsItems():
 		
 		add_item(item.name, new_tex)
 
+func select_texture(index : int):
+	select(index)
+	ensure_current_is_visible()
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	loadTexturesAsItems()

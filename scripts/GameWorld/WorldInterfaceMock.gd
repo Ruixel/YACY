@@ -1,5 +1,6 @@
 extends Spatial
 onready var EditorGUI = get_node("../GUI")
+onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
 onready var Cursor = get_node("../3DCursor")
 
 onready var wallGenerator = get_node("ObjGenFunc/Wall")
@@ -30,9 +31,9 @@ var objects : Array = []
 var default_wall : Wall
 
 const toolToObjectDict = {
-		WorldConstants.Tools.WALL: Wall,
-		WorldConstants.Tools.PLATFORM: Plat
-	}
+	WorldConstants.Tools.WALL: Wall,
+	WorldConstants.Tools.PLATFORM: Plat
+}
 
 # Object functions
 func obj_create(pos : Vector2):
@@ -47,6 +48,8 @@ func obj_create(pos : Vector2):
 	# Apply 
 	new_obj._genMesh()
 	select_update_mesh()
+	
+	update_property_gui(new_obj)
 
 func selection_delete():
 	selection.queue_free()
@@ -59,6 +62,7 @@ func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	if result.empty() == false:
 		selection = objects[objects.find(result.collider.get_parent())]
 		select_update_mesh()
+		update_property_gui(selection)
 
 func deselect():
 	if (selection != null) and (selection.selection_mesh != null):
@@ -86,7 +90,7 @@ func get_prototype(type) -> Array:
 	
 	match type:
 		WorldConstants.Tools.PLATFORM:
-			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, true)
+			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, 0, true)
 			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing
@@ -109,7 +113,11 @@ func on_tool_change(type) -> void:
 
 func on_level_change(new_level):
 	level = new_level
-	
+
+func update_property_gui(obj):
+	if obj != null and obj.has_method("get_property_dict"):
+		PropertyGUI.update_properties(obj.get_property_dict(), obj.toolType)
+
 func property_end_vector(endVec : Vector2):
 	if selection != null and selection.has_method("change_end_pos"):
 		selection.change_end_pos(endVec)
