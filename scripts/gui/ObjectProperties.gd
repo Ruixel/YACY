@@ -5,6 +5,8 @@ onready var EditorGUI = get_parent()
 signal s_changeTexture
 signal s_changeColor
 
+signal s_deleteObject
+
 const PropertyLabelEntity = preload("res://Entities/Editor/PropertyEditor/PropertyLabel.tscn")
 const ColourPropertyEntity = preload("res://Entities/Editor/PropertyEditor/ColourProperty.tscn")
 const NumericalPropertyEntity = preload("res://Entities/Editor/PropertyEditor/NumericalProperty.tscn")
@@ -41,7 +43,7 @@ func on_tool_change(nTool):
 	toolSelected = nTool
 	
 	# Where to add the next property
-	var next_node = $MarginContainer/VSplitContainer/Values/ObjectName
+	var next_node = $MarginContainer/Values/ObjectName
 	
 	# Iterate through 
 	var propArray = ObjectProperties.get(nTool)
@@ -56,12 +58,12 @@ func on_tool_change(nTool):
 			var propLabel = PropertyLabelEntity.instance()
 			propLabel.set_text(propName)
 			
-			$MarginContainer/VSplitContainer/Values.add_child_below_node(next_node, propLabel)
+			$MarginContainer/Values.add_child_below_node(next_node, propLabel)
 			next_node = propLabel
 			properties[properties.size()] = propLabel
 		
 		var propScene = propSceneObj.instance()
-		$MarginContainer/VSplitContainer/Values.add_child_below_node(next_node, propScene)
+		$MarginContainer/Values.add_child_below_node(next_node, propScene)
 		next_node = propScene
 		properties[propName] = propScene
 		
@@ -112,3 +114,6 @@ func set_properties(propList : Dictionary, nTool):
 	var propArray = ObjectProperties.get(nTool)
 	for propName in propArray:
 		pass
+
+func _on_DeleteButton_pressed():
+	emit_signal("s_deleteObject")

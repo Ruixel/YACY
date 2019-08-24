@@ -51,10 +51,6 @@ func obj_create(pos : Vector2):
 	
 	update_property_gui(new_obj)
 
-func selection_delete():
-	selection.queue_free()
-	selection = null
-
 func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	var space_state = get_world().direct_space_state
 	var result = space_state.intersect_ray(ray_origin, (ray_direction*50) + ray_origin)
@@ -72,11 +68,19 @@ func deselect():
 	selection = null
 
 func select_update_mesh():
-	if (selection.selection_mesh != null):
+	if selection.selection_mesh != null:
 		selection.selection_mesh.queue_free()
 		selection.selection_mesh = null
 	selection.selectObj()
 	add_child(selection.selection_mesh)
+
+func selection_delete():
+	if selection != null:
+		var objRef = selection
+		deselect()
+		
+		objects.erase(objRef)
+		objRef.queue_free()
 
 # Prototype functions
 func get_prototype(type) -> Array:
@@ -107,6 +111,7 @@ func _ready(): # Connect signals
 	
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
 	PropertyGUI.connect("s_changeTexture", self, "property_texture")
+	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 
 func on_tool_change(type) -> void:
 	mode = type

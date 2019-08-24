@@ -66,6 +66,9 @@ func _select_process(delta: float) -> void:
 		
 		WorldAPI.deselect()
 		WorldAPI.select_obj_from_raycast(ray_origin, ray_direction)
+	
+	if Input.is_action_just_pressed("editor_delete"):
+		WorldAPI.selection_delete()
 
 # Create object 
 func _create_process(delta: float) -> void:
@@ -90,6 +93,9 @@ func _create_process(delta: float) -> void:
 			_wall_create_process()
 		CursorType.PLATFORM:
 			_plat_create_process()
+	
+	if Input.is_action_just_pressed("editor_delete"):
+		WorldAPI.selection_delete()
 
 func _wall_create_process():
 	if mouse_place_just_pressed:
