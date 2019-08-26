@@ -58,6 +58,7 @@ func selectObj():
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary
 	dict["Texture"] = texture 
+	dict["Colour"] = colour
 	
 	return dict
 
@@ -110,17 +111,22 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	var start = Vector2(pos.x - 1, pos.y - 1)
 	var end   = Vector2(pos.x + 1, pos.y + 1)
 	
+	# Set colour to white if not using the colour wall
+	var meshColor = colour
+	if tex != WorldTextures.TextureID.COLOR:
+		meshColor = Color(1,1,1)
+	
 	# Calculate wall vertices
 	var plat_vertices = []
 	plat_vertices.insert(0, Vector3(start.x, height, start.y))
 	plat_vertices.insert(1, Vector3(end.x,   height, start.y))
 	plat_vertices.insert(2, Vector3(end.x,   height, end.y))
 	plat_vertices.insert(3, Vector3(start.x, height, end.y))
-	_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex, colour)
+	_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex, meshColor)
 	
 	# Rearrange vertices for the backwall
 	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
-	_createPlatQuadMesh(surface_tool, bVertices, 4, tex, colour)
+	_createPlatQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
 	
 	if is_prototype:
 		surface_tool.set_material(WorldTextures.prototype_grass_mat)

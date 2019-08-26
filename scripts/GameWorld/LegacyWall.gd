@@ -127,17 +127,22 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 	var minHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT
 	var maxHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT
 	
+	# Set colour to white if not using the colour wall
+	var meshColor = colour
+	if tex != WorldTextures.TextureID.COLOR:
+		meshColor = Color(1,1,1)
+	
 	# Calculate wall vertices
 	var wall_vertices = []
 	wall_vertices.insert(0, Vector3(start.x, minHeight, start.y))
 	wall_vertices.insert(1, Vector3(start.x, maxHeight, start.y))
 	wall_vertices.insert(2, Vector3(end.x, maxHeight, end.y))
 	wall_vertices.insert(3, Vector3(end.x, minHeight, end.y))
-	_createWallQuadMesh(start, end, surface_tool, wall_vertices, 0, tex, colour)
+	_createWallQuadMesh(start, end, surface_tool, wall_vertices, 0, tex, meshColor)
 	
 	# Rearrange vertices for the backwall
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
-	_createWallQuadMesh(start, end, surface_tool, bVertices, 4, tex, colour)
+	_createWallQuadMesh(start, end, surface_tool, bVertices, 4, tex, meshColor)
 	
 	surface_tool.set_material(WorldTextures.aTexture_mat)
 	return surface_tool.commit()

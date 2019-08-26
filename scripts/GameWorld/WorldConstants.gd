@@ -13,3 +13,10 @@ enum Tools {
 enum Mode {
 	SELECT, MULTISELECT, CREATE, EDIT
 }
+
+const ToolToString = {
+	Tools.NOTHING: "Nothing",
+	Tools.WALL: "Wall",
+	Tools.PLATFORM: "Platform",
+	Tools.SPAWN: "Spawn Location"
+}

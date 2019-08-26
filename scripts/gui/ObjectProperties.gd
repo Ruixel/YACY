@@ -16,7 +16,7 @@ var properties : Dictionary
 var toolSelected = WorldConstants.Tools.NOTHING
 
 const BasicProperty = {
-	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false,  "init_func": "setup_colourProperty", "select_func": "set_pick_color"},
+	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false,  "init_func": "setup_colourProperty", "select_func": "set_colour"},
 	"NumericalProperty": {"obj": NumericalPropertyEntity, "use_label": false, "init_func": "setup_numericalProperty"},
 	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "init_func": "setup_textureProperty", "select_func": "select_texture"}
 }
@@ -41,6 +41,9 @@ func on_tool_change(nTool):
 	# Clear the GUI
 	reset()
 	toolSelected = nTool
+	
+	# Set name of object
+	$MarginContainer/Values/ObjectName.set_text(WorldConstants.ToolToString[nTool])
 	
 	# Where to add the next property
 	var next_node = $MarginContainer/Values/ObjectName
@@ -108,6 +111,7 @@ func on_select_texture(texIndex):
 
 func on_select_colour(colour):
 	emit_signal("s_changeColour", colour)
+	emit_signal("s_changeTexture", WorldTextures.TextureID.COLOR) # Set the texture to colour
 
 func set_properties(propList : Dictionary, nTool):
 	var propArray = ObjectProperties.get(nTool)

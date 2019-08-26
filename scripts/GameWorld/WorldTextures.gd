@@ -6,7 +6,7 @@ var textures : Array
 const numberOfTextures : int = 16
 const imgFormat = Image.FORMAT_RGBA8
 enum TextureID {
-	WCOLOR, GRASS, STUCCO, BRICK, STONE, WOOD, HAPPY, EGYPT, BARK, SCIFI, TILES, ROCK, PARQUET, BOOKSHELF, BAR, GLASS
+	COLOR, GRASS, STUCCO, BRICK, STONE, WOOD, HAPPY, EGYPT, BARK, SCIFI, TILES, ROCK, PARQUET, BOOKSHELF, BAR, GLASS
 }
 
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
