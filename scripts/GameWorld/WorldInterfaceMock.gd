@@ -94,7 +94,7 @@ func get_prototype(type) -> Array:
 	
 	match type:
 		WorldConstants.Tools.PLATFORM:
-			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, 0, true)
+			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, 0, Color(1,1,1), true)
 			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing
@@ -111,6 +111,7 @@ func _ready(): # Connect signals
 	
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
 	PropertyGUI.connect("s_changeTexture", self, "property_texture")
+	PropertyGUI.connect("s_changeColour", self, "property_colour")
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 
 func on_tool_change(type) -> void:
@@ -136,4 +137,9 @@ func property_height_value(key : int):
 func property_texture(index : int):
 	if selection != null and selection.has_method("change_texture"):
 		selection.change_texture(index)
+		select_update_mesh()
+
+func property_colour(colour : Color):
+	if selection != null and selection.has_method("change_colour"):
+		selection.change_colour(colour)
 		select_update_mesh()

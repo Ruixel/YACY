@@ -6,6 +6,7 @@ var end : Vector2 = Vector2(-1, -1) # Invalid vector
 var level : int
 
 var texture : int = 4
+var colour := Color(1, 1, 1)
 
 var max_height : float = 1.0
 var min_height : float = 0.0
@@ -48,8 +49,12 @@ func change_texture(index: int):
 	texture = index
 	_genMesh()
 
+func change_colour(newColour : Color):
+	colour = newColour
+	_genMesh()
+
 func _genMesh():
-	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture)
+	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture, colour)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
 
 func selectObj():
@@ -59,6 +64,7 @@ func selectObj():
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary
 	dict["Texture"] = texture 
+	dict["Colour"] = colour
 	
 	return dict
 
@@ -67,7 +73,7 @@ func get_property_dict() -> Dictionary:
 # Single face
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createWallQuadMesh(start : Vector2, end : Vector2, 
-	surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, tex : int) -> void:
+	surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, tex : int, colour : Color) -> void:
 	
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1]).normalized()
@@ -79,25 +85,25 @@ static func _createWallQuadMesh(start : Vector2, end : Vector2,
 	var texture_scale = WorldTextures.textures[tex].texScale
 	
 	# Add Vertices
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 	
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
@@ -109,7 +115,7 @@ static func _createWallQuadMesh(start : Vector2, end : Vector2,
 
 # Build Mesh
 static func buildWall(start : Vector2, end : Vector2, level : int, min_height : float, 
-	max_height : float, tex : int) -> Mesh:
+	max_height : float, tex : int, colour : Color) -> Mesh:
 	
 	# Only create mesh for valid walls
 	if end.x == -1:
@@ -127,11 +133,11 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 	wall_vertices.insert(1, Vector3(start.x, maxHeight, start.y))
 	wall_vertices.insert(2, Vector3(end.x, maxHeight, end.y))
 	wall_vertices.insert(3, Vector3(end.x, minHeight, end.y))
-	_createWallQuadMesh(start, end, surface_tool, wall_vertices, 0, tex)
+	_createWallQuadMesh(start, end, surface_tool, wall_vertices, 0, tex, colour)
 	
 	# Rearrange vertices for the backwall
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
-	_createWallQuadMesh(start, end, surface_tool, bVertices, 4, tex)
+	_createWallQuadMesh(start, end, surface_tool, bVertices, 4, tex, colour)
 	
 	surface_tool.set_material(WorldTextures.aTexture_mat)
 	return surface_tool.commit()
@@ -166,13 +172,13 @@ func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_hei
 	for vertex in wall_vertices:
 		new_vertices.append(vertex - normal_vec * 0.02)
 	
-	_createWallQuadMesh(start, end, surface_tool, new_vertices, 0, 1)
+	_createWallQuadMesh(start, end, surface_tool, new_vertices, 0, 1, Color(1,1,1))
 	
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
 	var new_bVertices = []
 	for vertex in bVertices:
 		new_bVertices.append(vertex + normal_vec * 0.02)
-	_createWallQuadMesh(start, end, surface_tool, new_bVertices, 4, 1)
+	_createWallQuadMesh(start, end, surface_tool, new_bVertices, 4, 1, Color(1,1,1))
 	
 	surface_tool.set_material(WorldTextures.selection_mat)
 	return surface_tool.commit()

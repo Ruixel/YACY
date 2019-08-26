@@ -5,6 +5,8 @@ var pos : Vector2
 var level : int
 
 var texture : int = 1
+var colour := Color(1, 1, 1)
+
 onready var selection_mat = load("res://res/materials/selection.tres")
 var prototype_grass_mat 
 
@@ -41,11 +43,12 @@ func change_texture(index: int):
 	texture = index
 	_genMesh()
 
-func get_type():
-	return "plat"
-	
+func change_colour(newColour : Color):
+	colour = newColour
+	_genMesh()
+
 func _genMesh():
-	mesh.mesh = buildPlatform(pos, level, height_offset, texture, false)
+	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
 
 func selectObj():
@@ -59,7 +62,8 @@ func get_property_dict() -> Dictionary:
 	return dict
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
-static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, tex : int) -> void:
+static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
+	tex : int, colour : Color) -> void:
 	
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1]).normalized()
@@ -68,25 +72,25 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	var texture_scale = WorldTextures.textures[tex].texScale
 	
 	# Add Vertices
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[3].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
-	surface_tool.add_color(Color(1, 1, 1, texture_float))
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
 	                            wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
@@ -96,7 +100,9 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, is_prototype : bool) -> Mesh:
+static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, colour : Color,
+	is_prototype : bool) -> Mesh:
+		
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
@@ -110,11 +116,11 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	plat_vertices.insert(1, Vector3(end.x,   height, start.y))
 	plat_vertices.insert(2, Vector3(end.x,   height, end.y))
 	plat_vertices.insert(3, Vector3(start.x, height, end.y))
-	_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex)
+	_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex, colour)
 	
 	# Rearrange vertices for the backwall
 	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
-	_createPlatQuadMesh(surface_tool, bVertices, 4, tex)
+	_createPlatQuadMesh(surface_tool, bVertices, 4, tex, colour)
 	
 	if is_prototype:
 		surface_tool.set_material(WorldTextures.prototype_grass_mat)
@@ -139,13 +145,13 @@ static func buildPlatSelectionMesh(pos : Vector2, level : int, height_offset : f
 	plat_vertices.insert(3, Vector3(start.x, height, end.y))
 	for i in range(0, 4):
 		plat_vertices[i].y = plat_vertices[i].y + 0.02
-	_createPlatQuadMesh(surface_tool, plat_vertices, 0, 0)
+	_createPlatQuadMesh(surface_tool, plat_vertices, 0, 0, Color(1,1,1))
 	
 	# Rearrange vertices for the backwall
 	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
 	for i in range(0, 4):
 		bVertices[i].y = bVertices[i].y - (0.02 * 2)
-	_createPlatQuadMesh(surface_tool, bVertices, 4, 0)
+	_createPlatQuadMesh(surface_tool, bVertices, 4, 0, Color(1,1,1))
 	
 	surface_tool.set_material(WorldTextures.selection_mat)
 	

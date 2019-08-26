@@ -3,7 +3,7 @@ extends Panel
 onready var EditorGUI = get_parent()
 
 signal s_changeTexture
-signal s_changeColor
+signal s_changeColour
 
 signal s_deleteObject
 
@@ -16,7 +16,7 @@ var properties : Dictionary
 var toolSelected = WorldConstants.Tools.NOTHING
 
 const BasicProperty = {
-	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false,  "init_func": "setup_colourProperty"},
+	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false,  "init_func": "setup_colourProperty", "select_func": "set_pick_color"},
 	"NumericalProperty": {"obj": NumericalPropertyEntity, "use_label": false, "init_func": "setup_numericalProperty"},
 	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "init_func": "setup_textureProperty", "select_func": "select_texture"}
 }
@@ -98,17 +98,16 @@ func update_properties(dict : Dictionary, tType):
 
 func setup_textureProperty(propScene, propInfo : Dictionary, propName : String):
 	# propScene.get_node("TextureList").connect("s_wallTextureChange", self, "on_select_texture")
-	propScene.connect("s_wallTextureChange", self, "on_select_texture")
+	propScene.connect("s_textureChange", self, "on_select_texture")
 
 func setup_colourProperty(propScene, propInfo : Dictionary, propName : String):
-	pass
+	propScene.get_node("ColorPickerButton").connect("color_changed", self, "on_select_colour")
 
 func on_select_texture(texIndex):
-	print("hey", texIndex)
 	emit_signal("s_changeTexture", texIndex)
 
-func _on_ColorPickerButton_color_changed(color):
-	emit_signal("s_changeColor", color)
+func on_select_colour(colour):
+	emit_signal("s_changeColour", colour)
 
 func set_properties(propList : Dictionary, nTool):
 	var propArray = ObjectProperties.get(nTool)
