@@ -10,6 +10,7 @@ enum TextureID {
 }
 
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
+onready var aTexturePrototype_mat = load("res://res/materials/ArrayTexture_transparent.tres")
 onready var selection_mat = load("res://res/materials/selection.tres")
 onready var grass_mat = load("res://res/materials/grass.tres")
 var prototype_grass_mat
@@ -57,12 +58,6 @@ func loadTexturesToArray():
 	textures.append(LevelTexture.new("Glass", "res://res/txrs/glass256.png", Vector2(1, 1), tArray, 15))
 
 func _ready():
-	# TODO: Use array texture for platforms
-	# This creates the transparent material for the platform
-	prototype_grass_mat = grass_mat.duplicate()
-	prototype_grass_mat.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, true)
-	prototype_grass_mat.set_albedo(Color(1, 1, 1, 0.5))
-	
 	# Create an empty texture array and initialise it
 	tArray = TextureArray.new()
 	tArray.create(256, 256, numberOfTextures, imgFormat, 7)
@@ -72,6 +67,7 @@ func _ready():
 	
 	# Add texture array to the material
 	aTexture_mat.set_shader_param("texture_array", tArray)
+	aTexturePrototype_mat.set_shader_param("texture_array", tArray)
 
 func getWallTexture(id : int) -> LevelTexture:
 	match id:

@@ -47,6 +47,8 @@ func _ready():
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeMode", self, "on_mode_change")
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+	
+	WorldAPI.connect("update_prototype", self, "on_update_prototype")
 
 # Process every game frame
 func _process(delta: float) -> void:
@@ -181,6 +183,9 @@ func on_tool_change(type) -> void:
 			self.visible = true
 		WorldConstants.Tools.PLATFORM:
 			cType = CursorType.PLATFORM
+	
+	mouse_place_just_pressed = false
+	mouse_place_pressed = false
 
 func on_mode_change(mode) -> void:
 	destroy_prototype()
@@ -194,8 +199,9 @@ func on_level_change(level) -> void:
 	destroy_prototype()
 	grid_height = (level - 1) * WorldConstants.LEVEL_HEIGHT
 	grid_plane = Plane(Vector3(0,1,0), grid_height)
-	
-	prototype = null # Recreate prototype with correct height
+
+func on_update_prototype():
+	destroy_prototype()
 
 # Iterates through the placements to make sure it doesn't place objects overlapping
 func check_prototype_placements(pos, size) -> bool:

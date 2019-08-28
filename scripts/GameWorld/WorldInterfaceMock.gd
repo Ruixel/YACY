@@ -12,6 +12,7 @@ const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 var selection # Selected object (To be modified)
 
 signal change_selection
+signal update_prototype
 
 # WorldInterfaceMock, 2019
 # This is a mock of the world interface, in which GDScript can interact with the world
@@ -28,7 +29,7 @@ var mode = WorldConstants.Tools.WALL
 var level : int = 1
 var objects : Array = []
 
-var default_wall : Wall
+var default_objs : Dictionary
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
@@ -44,6 +45,9 @@ func obj_create(pos : Vector2):
 	# Select
 	deselect()
 	selection = new_obj
+	
+	# Give default properties
+	new_obj.set_property_dict(default_objs[new_obj.toolType].get_property_dict())
 	
 	# Apply 
 	new_obj._genMesh()
@@ -66,6 +70,7 @@ func deselect():
 		selection.selection_mesh = null
 	
 	selection = null
+	
 
 func select_update_mesh():
 	if selection.selection_mesh != null:
@@ -82,6 +87,15 @@ func selection_delete():
 		objects.erase(objRef)
 		objRef.queue_free()
 
+func selection_set_default():
+	if selection != null:
+		default_objs[selection.toolType].set_property_dict(selection.get_property_dict())
+		
+	# If it uses a prototype then update it
+	if default_objs[mode].has_method("genPrototypeMesh"):
+		emit_signal("update_prototype")
+
+
 # Prototype functions
 func get_prototype(type) -> Array:
 	var prototype_size = Vector2()
@@ -94,7 +108,7 @@ func get_prototype(type) -> Array:
 	
 	match type:
 		WorldConstants.Tools.PLATFORM:
-			prototype.mesh = Plat.buildPlatform(Vector2(0,0), level, 0, 0, Color(1,1,1), true)
+			prototype.mesh = default_objs[WorldConstants.Tools.PLATFORM].genPrototypeMesh(level)
 			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing
@@ -105,14 +119,22 @@ func get_prototype(type) -> Array:
 	return [prototype, prototype_size]
 
 # Signals
-func _ready(): # Connect signals
+func _ready(): 
+	# Connect GUI signals
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	
+	# Connect property change signals
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
 	PropertyGUI.connect("s_changeTexture", self, "property_texture")
 	PropertyGUI.connect("s_changeColour", self, "property_colour")
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
+	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
+	
+	# Initialise default objects
+	for obj in toolToObjectDict.keys():
+		var objectType = toolToObjectDict.get(obj)
+		default_objs[obj] = objectType.new(self, Vector2(0,0), 0)
 
 func on_tool_change(type) -> void:
 	mode = type
@@ -128,18 +150,34 @@ func property_end_vector(endVec : Vector2):
 	if selection != null and selection.has_method("change_end_pos"):
 		selection.change_end_pos(endVec)
 		select_update_mesh()
+		selection._genMesh()
 
 func property_height_value(key : int):
 	if selection != null and selection.has_method("change_height_value"):
 		selection.change_height_value(key)
 		select_update_mesh()
+		selection._genMesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
+			default_objs[mode].change_height_value(key)
+			emit_signal("update_prototype")
 
 func property_texture(index : int):
 	if selection != null and selection.has_method("change_texture"):
 		selection.change_texture(index)
 		select_update_mesh()
+		selection._genMesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
+			default_objs[mode].change_texture(index)
+			emit_signal("update_prototype")
 
 func property_colour(colour : Color):
 	if selection != null and selection.has_method("change_colour"):
 		selection.change_colour(colour)
 		select_update_mesh()
+		selection._genMesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
+			default_objs[mode].change_colour(colour)
+			emit_signal("update_prototype")

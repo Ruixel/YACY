@@ -37,21 +37,16 @@ func get_type():
 
 func change_end_pos(pos : Vector2):
 	end = pos
-	_genMesh()
 
 func change_height_value(h : int):
 	max_height = max_height_list[h - 1] / 4.0
 	min_height = min_height_list[h - 1] / 4.0
 
-	_genMesh()
-
 func change_texture(index: int):
 	texture = index
-	_genMesh()
 
 func change_colour(newColour : Color):
 	colour = newColour
-	_genMesh()
 
 func _genMesh():
 	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture, colour)
@@ -65,8 +60,15 @@ func get_property_dict() -> Dictionary:
 	var dict : Dictionary
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
+	dict["MinMaxHeight"] = Vector2(min_height, max_height)
 	
 	return dict
+
+func set_property_dict(dict : Dictionary):
+	texture = dict["Texture"]
+	colour = dict["Colour"]
+	min_height = dict["MinMaxHeight"].x
+	max_height = dict["MinMaxHeight"].y
 
 # Static Mesh Creation Functions
 

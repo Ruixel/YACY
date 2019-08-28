@@ -8,7 +8,6 @@ var texture : int = 1
 var colour := Color(1, 1, 1)
 
 onready var selection_mat = load("res://res/materials/selection.tres")
-var prototype_grass_mat 
 
 var height_offset : float = 0.0
 const h_offset_list = [0, 1, 2, 3]
@@ -36,20 +35,19 @@ func _init(parent, position : Vector2, lvl : int):
 func change_height_value(h : int):
 	if h <= 4:
 		height_offset = h_offset_list[h-1] / 4.0
-	
-	_genMesh()
 
 func change_texture(index: int):
 	texture = index
-	_genMesh()
 
 func change_colour(newColour : Color):
 	colour = newColour
-	_genMesh()
 
 func _genMesh():
 	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
+
+func genPrototypeMesh(pLevel : int) -> Mesh:
+	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, true)
 
 func selectObj():
 	selection_mesh = MeshInstance.new()
@@ -59,8 +57,14 @@ func get_property_dict() -> Dictionary:
 	var dict : Dictionary
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
+	dict["Height"] = height_offset
 	
 	return dict
+
+func set_property_dict(dict : Dictionary):
+	texture = dict["Texture"]
+	colour = dict["Colour"]
+	height_offset = dict["Height"]
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
@@ -129,7 +133,7 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	_createPlatQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
 	
 	if is_prototype:
-		surface_tool.set_material(WorldTextures.prototype_grass_mat)
+		surface_tool.set_material(WorldTextures.aTexturePrototype_mat)
 	else: 
 		surface_tool.set_material(WorldTextures.aTexture_mat)
 	

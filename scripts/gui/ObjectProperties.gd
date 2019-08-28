@@ -6,6 +6,7 @@ signal s_changeTexture
 signal s_changeColour
 
 signal s_deleteObject
+signal s_setDefault
 
 const PropertyLabelEntity = preload("res://Entities/Editor/PropertyEditor/PropertyLabel.tscn")
 const ColourPropertyEntity = preload("res://Entities/Editor/PropertyEditor/ColourProperty.tscn")
@@ -24,7 +25,7 @@ const BasicProperty = {
 const Property = {
 	"Size": {"type": BasicProperty.NumericalProperty, "min":1, "max":4},
 	"Texture": {"type": BasicProperty.TextureProperty},
-	"Colour": {"type": BasicProperty.ColourProperty}
+	"Colour": {"type": BasicProperty.ColourProperty},
 }
 
 const ObjectProperties = { 
@@ -52,6 +53,8 @@ func on_tool_change(nTool):
 	var propArray = ObjectProperties.get(nTool)
 	for propName in propArray:
 		var propInfo = Property.get(propName)
+		if propInfo == null:
+			continue
 		
 		# Get the scene for the property
 		var propBasic = propInfo.get("type")
@@ -91,9 +94,10 @@ func update_properties(dict : Dictionary, tType):
 	
 	for key in dict.keys():
 		var property = Property.get(key)
-		var basicProperty = property.get("type")
+		if property == null:
+			continue
 		
-		# var selectNode = properties.get(key).get_node(basicProperty.get("select_node"))
+		var basicProperty = property.get("type")
 		var selectNode = properties.get(key)
 		if selectNode != null:
 			var selectFunc = basicProperty.get("select_func")
@@ -120,3 +124,6 @@ func set_properties(propList : Dictionary, nTool):
 
 func _on_DeleteButton_pressed():
 	emit_signal("s_deleteObject")
+
+func _on_DefaultButton_pressed():
+	emit_signal("s_setDefault")
