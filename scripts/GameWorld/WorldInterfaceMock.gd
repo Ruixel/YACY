@@ -61,8 +61,12 @@ func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	
 	if result.empty() == false:
 		selection = objects[objects.find(result.collider.get_parent())]
+		mode = selection.toolType
 		select_update_mesh()
 		update_property_gui(selection)
+	else:
+		mode = WorldConstants.Tools.NOTHING
+		PropertyGUI.update_properties({}, mode)
 
 func deselect():
 	if (selection != null) and (selection.selection_mesh != null):
@@ -70,7 +74,6 @@ func deselect():
 		selection.selection_mesh = null
 	
 	selection = null
-	
 
 func select_update_mesh():
 	if selection.selection_mesh != null:
@@ -138,6 +141,12 @@ func _ready():
 
 func on_tool_change(type) -> void:
 	mode = type
+	
+	if selection != null: 
+		deselect()
+		
+		if mode == WorldConstants.Tools.NOTHING:
+			PropertyGUI.update_properties({}, mode)
 
 func on_level_change(new_level):
 	level = new_level
@@ -168,9 +177,10 @@ func property_texture(index : int):
 		select_update_mesh()
 		selection._genMesh()
 	else:
-		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
+		if mode != WorldConstants.Tools.NOTHING:
 			default_objs[mode].change_texture(index)
-			emit_signal("update_prototype")
+			if default_objs[mode].has_method("genPrototypeMesh"):
+				emit_signal("update_prototype")
 
 func property_colour(colour : Color):
 	if selection != null and selection.has_method("change_colour"):

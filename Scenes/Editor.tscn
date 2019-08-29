@@ -157,4 +157,6 @@ material/0 = null
 [node name="Scene Root" parent="." instance=ExtResource( 8 )]
 transform = Transform( 25, 0, 0, 0, 25, 0, 0, 0, 25, 2.48929, -0.00473465, 3.46994 )
 
+[node name="Node" type="Node" parent="."]
+
 [editable path="Scene Root"]

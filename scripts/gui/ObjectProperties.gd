@@ -43,6 +43,11 @@ func on_tool_change(nTool):
 	reset()
 	toolSelected = nTool
 	
+	if nTool == WorldConstants.Tools.NOTHING:
+		set_visible(false)
+	else:
+		set_visible(true)
+	
 	# Set name of object
 	$MarginContainer/Values/ObjectName.set_text(WorldConstants.ToolToString[nTool])
 	
