@@ -12,8 +12,6 @@ enum TextureID {
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
 onready var aTexturePrototype_mat = load("res://res/materials/ArrayTexture_transparent.tres")
 onready var selection_mat = load("res://res/materials/selection.tres")
-onready var grass_mat = load("res://res/materials/grass.tres")
-var prototype_grass_mat
 
 class LevelTexture:
 	var name : String

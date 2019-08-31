@@ -7,7 +7,8 @@ var level : int
 var texture : int = 1
 var colour := Color(1, 1, 1)
 
-onready var selection_mat = load("res://res/materials/selection.tres")
+var size : int = 1
+const size_list = [2, 4, 8, 16]
 
 var height_offset : float = 0.0
 const h_offset_list = [0, 1, 2, 3]
@@ -17,7 +18,6 @@ var selection_mesh : MeshInstance
 var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
-var meshGenObj
 func _init(parent, position : Vector2, lvl : int):
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
@@ -42,22 +42,26 @@ func change_texture(index: int):
 func change_colour(newColour : Color):
 	colour = newColour
 
+func change_size(newSize : int):
+	size = newSize
+
 func _genMesh():
-	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, false)
+	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, size, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
-	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, true)
+	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, size, true)
 
 func selectObj():
 	selection_mesh = MeshInstance.new()
-	selection_mesh.mesh = buildPlatSelectionMesh(pos, level, height_offset, 0.05)
+	selection_mesh.mesh = buildPlatSelectionMesh(pos, level, size, height_offset, 0.05)
 
 func get_property_dict() -> Dictionary:
-	var dict : Dictionary
+	var dict : Dictionary = {}
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
 	dict["Height"] = height_offset
+	dict["Size"] = size
 	
 	return dict
 
@@ -65,6 +69,8 @@ func set_property_dict(dict : Dictionary):
 	texture = dict["Texture"]
 	colour = dict["Colour"]
 	height_offset = dict["Height"]
+	size = dict["Size"]
+	print(dict["Texture"])
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
@@ -106,14 +112,16 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 		surface_tool.add_index(sIndex + idx)
 
 static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, colour : Color,
-	is_prototype : bool) -> Mesh:
+	size : int, is_prototype : bool) -> Mesh:
 		
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
-	var start = Vector2(pos.x - 1, pos.y - 1)
-	var end   = Vector2(pos.x + 1, pos.y + 1)
+	
+	var halfSize = size_list[size-1] / 2
+	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
+	var end   = Vector2(pos.x + halfSize, pos.y + halfSize)
 	
 	# Set colour to white if not using the colour wall
 	var meshColor = colour
@@ -139,13 +147,15 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	
 	return surface_tool.commit()
 
-static func buildPlatSelectionMesh(pos : Vector2, level : int, height_offset : float, outlineWidth : float) -> Mesh:
+static func buildPlatSelectionMesh(pos : Vector2, level : int, size : int, height_offset : float, outlineWidth : float) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
 	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
-	var start = Vector2(pos.x - 1 - outlineWidth, pos.y - 1 - outlineWidth)
-	var end   = Vector2(pos.x + 1 + outlineWidth, pos.y + 1 + outlineWidth)
+	
+	var halfSize = size_list[size-1] / 2
+	var start = Vector2(pos.x - halfSize - outlineWidth, pos.y - halfSize - outlineWidth)
+	var end   = Vector2(pos.x + halfSize + outlineWidth, pos.y + halfSize + outlineWidth)
 	
 	# Calculate wall vertices
 	var plat_vertices = []

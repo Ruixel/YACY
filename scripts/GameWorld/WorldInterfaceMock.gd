@@ -3,9 +3,6 @@ onready var EditorGUI = get_node("../GUI")
 onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
 onready var Cursor = get_node("../3DCursor")
 
-onready var wallGenerator = get_node("ObjGenFunc/Wall")
-onready var platGenerator = get_node("ObjGenFunc/Platform")
-
 const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 
@@ -131,6 +128,8 @@ func _ready():
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
 	PropertyGUI.connect("s_changeTexture", self, "property_texture")
 	PropertyGUI.connect("s_changeColour", self, "property_colour")
+	PropertyGUI.connect("s_changeSize", self, "property_size")
+	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
 	
@@ -141,12 +140,13 @@ func _ready():
 
 func on_tool_change(type) -> void:
 	mode = type
+	deselect()
 	
-	if selection != null: 
-		deselect()
-		
-		if mode == WorldConstants.Tools.NOTHING:
-			PropertyGUI.update_properties({}, mode)
+	if mode == WorldConstants.Tools.NOTHING:
+		#if selection != null: 
+		PropertyGUI.update_properties({}, mode)
+	else:
+		update_property_gui(default_objs[mode])
 
 func on_level_change(new_level):
 	level = new_level
@@ -181,6 +181,18 @@ func property_texture(index : int):
 			default_objs[mode].change_texture(index)
 			if default_objs[mode].has_method("genPrototypeMesh"):
 				emit_signal("update_prototype")
+
+func property_size(size : int):
+	if selection != null and selection.has_method("change_size"):
+		selection.change_size(size)
+		select_update_mesh()
+		selection._genMesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("change_size"):
+			default_objs[mode].change_size(size)
+			if default_objs[mode].has_method("genPrototypeMesh"):
+				emit_signal("update_prototype")
+	print("ok then ", default_objs[mode].size)
 
 func property_colour(colour : Color):
 	if selection != null and selection.has_method("change_colour"):
