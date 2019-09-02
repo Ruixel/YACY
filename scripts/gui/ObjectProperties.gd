@@ -5,6 +5,7 @@ onready var EditorGUI = get_parent()
 signal s_changeTexture
 signal s_changeColour
 signal s_changeSize
+signal s_changeWallShape
 
 signal s_deleteObject
 signal s_setDefault
@@ -13,6 +14,7 @@ const PropertyLabelEntity = preload("res://Entities/Editor/PropertyEditor/Proper
 const ColourPropertyEntity = preload("res://Entities/Editor/PropertyEditor/ColourProperty.tscn")
 const NumericalPropertyEntity = preload("res://Entities/Editor/PropertyEditor/NumericalProperty.tscn")
 const TexturePropertyEntity = preload("res://Entities/Editor/PropertyEditor/TextureProperty.tscn")
+const WallShapePropertyEntity = preload("res://Entities/Editor/PropertyEditor/WallShapeProperty.tscn")
 
 var properties : Dictionary
 var toolSelected = WorldConstants.Tools.NOTHING
@@ -20,18 +22,20 @@ var toolSelected = WorldConstants.Tools.NOTHING
 const BasicProperty = {
 	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false, "select_func": "set_colour"},
 	"NumericalProperty": {"obj": NumericalPropertyEntity, "use_label": false, "select_func": "set_number"},
-	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "select_func": "select_texture"}
+	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "select_func": "select_texture"},
+	"WallShapeProperty": {"obj": WallShapePropertyEntity, "use_label": false, "select_func": "set_wallShape"}
 }
 
 const Property = {
 	"Size": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":4},
 	"Texture": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
 	"Colour": {"type": BasicProperty.ColourProperty, "init_func": "setup_colourProperty"},
+	"WallShape": {"type": BasicProperty.WallShapeProperty, "init_func": "setup_wallShapeProperty"},
 }
 
 const ObjectProperties = { 
 	WorldConstants.Tools.NOTHING: [],
-	WorldConstants.Tools.WALL: ["Colour", "Texture"],
+	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
 	WorldConstants.Tools.PLATFORM: ["Size", "Colour", "Texture"]
 }
 
@@ -101,7 +105,6 @@ func update_properties(dict : Dictionary, tType):
 		if selectNode != null:
 			var selectFunc = basicProperty.get("select_func")
 			selectNode.call_deferred(selectFunc, dict.get(key))
-			print("gaming: ", selectNode, dict.get(key))
 
 func setup_sizeProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("Label").set_text(propName)
@@ -118,11 +121,17 @@ func setup_textureProperty(propScene, propInfo : Dictionary, propName : String):
 func setup_colourProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("ColorPickerButton").connect("color_changed", self, "on_select_colour")
 
+func setup_wallShapeProperty(propScene, propInfo : Dictionary, propName : String):
+	propScene.connect("s_changeWallShape", self, "on_select_wallShape")
+
 func on_change_size(size):
 	emit_signal("s_changeSize", size)
 
 func on_select_texture(texIndex):
 	emit_signal("s_changeTexture", texIndex)
+
+func on_select_wallShape(wallShape):
+	emit_signal("s_changeWallShape", wallShape)
 
 func on_select_colour(colour):
 	emit_signal("s_changeColour", colour)

@@ -129,6 +129,7 @@ func _ready():
 	PropertyGUI.connect("s_changeTexture", self, "property_texture")
 	PropertyGUI.connect("s_changeColour", self, "property_colour")
 	PropertyGUI.connect("s_changeSize", self, "property_size")
+	PropertyGUI.connect("s_changeWallShape", self, "property_wallShape")
 	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
@@ -143,7 +144,6 @@ func on_tool_change(type) -> void:
 	deselect()
 	
 	if mode == WorldConstants.Tools.NOTHING:
-		#if selection != null: 
 		PropertyGUI.update_properties({}, mode)
 	else:
 		update_property_gui(default_objs[mode])
@@ -182,6 +182,17 @@ func property_texture(index : int):
 			if default_objs[mode].has_method("genPrototypeMesh"):
 				emit_signal("update_prototype")
 
+func property_wallShape(shape : int):
+	if selection != null and selection.has_method("change_wallShape"):
+		selection.change_wallShape(shape)
+		select_update_mesh()
+		selection._genMesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING:
+			default_objs[mode].change_wallShape(shape)
+			if default_objs[mode].has_method("genPrototypeMesh"):
+				emit_signal("update_prototype")
+
 func property_size(size : int):
 	if selection != null and selection.has_method("change_size"):
 		selection.change_size(size)
@@ -192,7 +203,6 @@ func property_size(size : int):
 			default_objs[mode].change_size(size)
 			if default_objs[mode].has_method("genPrototypeMesh"):
 				emit_signal("update_prototype")
-	print("ok then ", default_objs[mode].size)
 
 func property_colour(colour : Color):
 	if selection != null and selection.has_method("change_colour"):

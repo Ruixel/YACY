@@ -20,3 +20,7 @@ const ToolToString = {
 	Tools.PLATFORM: "Platform",
 	Tools.SPAWN: "Spawn Location"
 }
+
+enum WallShape {
+	FULLWALL, HALFWALLBOTTOM, HALFWALLTOP, QCIRCLEWALL, ARCHWALL
+}

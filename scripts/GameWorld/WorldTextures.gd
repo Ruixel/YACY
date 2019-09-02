@@ -6,11 +6,12 @@ var textures : Array
 const numberOfTextures : int = 16
 const imgFormat = Image.FORMAT_RGBA8
 enum TextureID {
-	COLOR, GRASS, STUCCO, BRICK, STONE, WOOD, HAPPY, EGYPT, BARK, SCIFI, TILES, ROCK, PARQUET, BOOKSHELF, BAR, GLASS
+	COLOR, GRASS, STUCCO, BRICK, STONE, WOOD, HAPPY, EGYPT, BARK, SCIFI, TILES, ROCK, PARQUET, BOOKSHELF, BARS, GLASS
 }
 
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
-onready var aTexturePrototype_mat = load("res://res/materials/ArrayTexture_transparent.tres")
+onready var aTextureTranslucent_mat = load("res://res/materials/ArrayTexture_translucent.tres")
+onready var aTexturePrototype_mat = load("res://res/materials/ArrayTexture_prototype.tres")
 onready var selection_mat = load("res://res/materials/selection.tres")
 
 class LevelTexture:
@@ -65,6 +66,7 @@ func _ready():
 	
 	# Add texture array to the material
 	aTexture_mat.set_shader_param("texture_array", tArray)
+	aTextureTranslucent_mat.set_shader_param("texture_array", tArray)
 	aTexturePrototype_mat.set_shader_param("texture_array", tArray)
 
 func getWallTexture(id : int) -> LevelTexture:
@@ -85,3 +87,10 @@ func getWallTexture(id : int) -> LevelTexture:
 		14: return TextureID.BOOKSHELF
 		16: return TextureID.PARQUET
 		_:  return TextureID.WColor
+
+const translucentIDs = [TextureID.BARS, TextureID.GLASS]
+func getWallMaterial(tex : int) -> ShaderMaterial:
+	if translucentIDs.has(tex):
+		return aTextureTranslucent_mat
+	else: 
+		return aTexture_mat

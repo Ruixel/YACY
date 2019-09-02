@@ -1,0 +1,61 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Entities/Editor/PropertyEditor/WallShapeProperty.gd" type="Script" id=1]
+[ext_resource path="res://res/txrs/gui/fullwall.png" type="Texture" id=2]
+[ext_resource path="res://res/txrs/gui/halfwall.png" type="Texture" id=3]
+[ext_resource path="res://res/txrs/gui/halfwall_top.png" type="Texture" id=4]
+[ext_resource path="res://res/txrs/gui/qcirclewall.png" type="Texture" id=5]
+[ext_resource path="res://res/txrs/gui/archwall.png" type="Texture" id=6]
+
+[node name="WallShapeProperty" type="HBoxContainer"]
+margin_top = 26.0
+margin_right = 224.0
+margin_bottom = 56.0
+custom_constants/separation = 0
+alignment = 1
+script = ExtResource( 1 )
+
+[node name="FullWall" type="Button" parent="."]
+margin_left = 7.0
+margin_right = 49.0
+margin_bottom = 36.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource( 2 )
+
+[node name="HalfWallBottom" type="Button" parent="."]
+margin_left = 49.0
+margin_right = 91.0
+margin_bottom = 36.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource( 3 )
+
+[node name="HalfWallTop" type="Button" parent="."]
+margin_left = 91.0
+margin_right = 133.0
+margin_bottom = 36.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource( 4 )
+
+[node name="QuarterCircleWall" type="Button" parent="."]
+margin_left = 133.0
+margin_right = 175.0
+margin_bottom = 36.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource( 5 )
+
+[node name="ArcWall" type="Button" parent="."]
+margin_left = 175.0
+margin_right = 217.0
+margin_bottom = 36.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+icon = ExtResource( 6 )
+[connection signal="pressed" from="FullWall" to="." method="_on_FullWall_pressed"]
+[connection signal="pressed" from="HalfWallBottom" to="." method="_on_HalfWallBottom_pressed"]
+[connection signal="pressed" from="HalfWallTop" to="." method="_on_HalfWallTop_pressed"]
+[connection signal="pressed" from="QuarterCircleWall" to="." method="_on_QuarterCircleWall_pressed"]
+[connection signal="pressed" from="ArcWall" to="." method="_on_ArcWall_pressed"]
