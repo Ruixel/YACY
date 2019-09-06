@@ -81,14 +81,14 @@ func set_property_dict(dict : Dictionary):
 
 # Single face
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
-static func _createWallQuadMesh(start : Vector2, end : Vector2, 
-	surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, tex : int, colour : Color) -> void:
+static func _createWallQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
+	tex : int, colour : Color) -> void:
 	
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[0] - wall_vertices[1]).normalized()
 	
 	# Texture constants
-	var wall_length = sqrt(pow(end.y - start.y, 2) + pow(end.x - start.x, 2))
+	var wall_length = sqrt(pow(wall_vertices[2].z - wall_vertices[0].z, 2) + pow(wall_vertices[2].x - wall_vertices[0].x, 2))
 	# Godot does not allow for custom vertex attributes, use the alpha in Color() for storing texture index
 	var texture_float = (tex+1.0)/256
 	var texture_scale = WorldTextures.textures[tex].texScale
@@ -123,14 +123,14 @@ static func _createWallQuadMesh(start : Vector2, end : Vector2,
 		surface_tool.add_index(sIndex + idx)
 
 const tri_indices = [0, 1, 2] # Magic array 
-static func _createWallTriMesh(start : Vector2, end : Vector2, 
-	surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, tex : int, colour : Color, uv_invert : bool = false) -> void:
+static func _createWallTriMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
+	tex : int, colour : Color, uv_invert : bool = false) -> void:
 
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (wall_vertices[2] - wall_vertices[0]).cross(wall_vertices[1] - wall_vertices[0]).normalized()
 	
 	# Texture constants
-	var wall_length = sqrt(pow(end.y - start.y, 2) + pow(end.x - start.x, 2))
+	var wall_length = sqrt(pow(wall_vertices[2].z - wall_vertices[0].z, 2) + pow(wall_vertices[2].x - wall_vertices[0].x, 2))
 	# Godot does not allow for custom vertex attributes, use the alpha in Color() for storing texture index
 	var texture_float = (tex+1.0)/256
 	var texture_scale = WorldTextures.textures[tex].texScale
@@ -172,8 +172,8 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var minHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT
-	var maxHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT
+	var minHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT
+	var maxHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT
 	
 	# Set colour to white if not using the colour wall
 	var meshColor = colour
@@ -182,30 +182,55 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 	
 	# Calculate wall vertices
 	var wall_vertices = []
-	wall_vertices.insert(0, Vector3(start.x, minHeight, start.y))
-	wall_vertices.insert(1, Vector3(start.x, maxHeight, start.y))
-	wall_vertices.insert(2, Vector3(end.x, maxHeight, end.y))
-	wall_vertices.insert(3, Vector3(end.x, minHeight, end.y))
+	wall_vertices.insert(0, Vector3(start.x, maxHeight, start.y))
+	wall_vertices.insert(1, Vector3(start.x, minHeight, start.y))
+	wall_vertices.insert(2, Vector3(end.x, minHeight, end.y))
+	wall_vertices.insert(3, Vector3(end.x, maxHeight, end.y))
 	
 	if wallShape == WorldConstants.WallShape.FULLWALL:
-		_createWallQuadMesh(start, end, surface_tool, wall_vertices, 0, tex, meshColor)
+		_createWallQuadMesh(surface_tool, wall_vertices, 0, tex, meshColor)
 		
 		# Rearrange vertices for the backwall
 		var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
-		_createWallQuadMesh(start, end, surface_tool, bVertices, 4, tex, meshColor)
+		_createWallQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
 		
 	elif wallShape == WorldConstants.WallShape.HALFWALLBOTTOM:
-		_createWallTriMesh(start, end, surface_tool, wall_vertices, 0, tex, meshColor, false)
+		_createWallTriMesh(surface_tool, wall_vertices, 0, tex, meshColor, false)
 		
 		var bVertices = [wall_vertices[1], wall_vertices[0], wall_vertices[2]]
-		_createWallTriMesh(start, end, surface_tool, bVertices, 3, tex, meshColor, true)
+		_createWallTriMesh(surface_tool, bVertices, 3, tex, meshColor, true)
 	
 	elif wallShape == WorldConstants.WallShape.HALFWALLTOP:
 		var fVertices = [wall_vertices[0], wall_vertices[1], wall_vertices[3]]
-		_createWallTriMesh(start, end, surface_tool, fVertices, 0, tex, meshColor, false)
+		_createWallTriMesh(surface_tool, fVertices, 0, tex, meshColor, false)
 		
 		var bVertices = [wall_vertices[1], wall_vertices[0], wall_vertices[3]]
-		_createWallTriMesh(start, end, surface_tool, bVertices, 3, tex, meshColor, true)
+		_createWallTriMesh(surface_tool, bVertices, 3, tex, meshColor, true)
+	
+	elif wallShape == WorldConstants.WallShape.QCIRCLEWALL:
+		var steps = 5
+		var idx = 0
+		
+		var dir = (end - start) / steps
+		var h_delta = (maxHeight - minHeight) / steps
+		var curHeight = minHeight
+		for i in range(0,steps):
+			end = start + dir 
+			var w_vertices = []
+			w_vertices.insert(0, Vector3(start.x, curHeight, start.y))
+			w_vertices.insert(1, Vector3(start.x, minHeight, start.y))
+			w_vertices.insert(2, Vector3(end.x, minHeight, end.y))
+			w_vertices.insert(3, Vector3(end.x, curHeight + h_delta, end.y))
+			
+			_createWallQuadMesh(surface_tool, w_vertices, idx, tex, meshColor)
+		
+			# Rearrange vertices for the backwall
+			var bVertices = [w_vertices[3], w_vertices[2], w_vertices[1], w_vertices[0]]
+			_createWallQuadMesh(surface_tool, bVertices, idx+4, tex, meshColor)
+			
+			idx = idx + 8
+			curHeight = curHeight + h_delta
+			start = end
 	
 	surface_tool.set_material(WorldTextures.getWallMaterial(tex))
 	return surface_tool.commit()
@@ -220,8 +245,8 @@ func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_hei
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var minHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT + outlineWidth
-	var maxHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT - outlineWidth
+	var minHeight = (level - 1 + min_height) * WorldConstants.LEVEL_HEIGHT - outlineWidth
+	var maxHeight = (level - 1 + max_height) * WorldConstants.LEVEL_HEIGHT + outlineWidth
 	
 	# Get Vector 
 	var wall_vec = (end - start).normalized()
@@ -231,22 +256,22 @@ func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_hei
 	var normal_vec = Vector3(wall_vec.x, 0, wall_vec.y).cross(Vector3(0, 1, 0))
 	
 	var wall_vertices = []
-	wall_vertices.insert(0, Vector3(start.x, minHeight, start.y))
-	wall_vertices.insert(1, Vector3(start.x, maxHeight, start.y))
-	wall_vertices.insert(2, Vector3(end.x, maxHeight, end.y))
-	wall_vertices.insert(3, Vector3(end.x, minHeight, end.y))
+	wall_vertices.insert(0, Vector3(start.x, maxHeight, start.y))
+	wall_vertices.insert(1, Vector3(start.x, minHeight, start.y))
+	wall_vertices.insert(2, Vector3(end.x, minHeight, end.y))
+	wall_vertices.insert(3, Vector3(end.x, maxHeight, end.y))
 	
 	var new_vertices = []
 	for vertex in wall_vertices:
 		new_vertices.append(vertex - normal_vec * 0.02)
 	
-	_createWallQuadMesh(start, end, surface_tool, new_vertices, 0, 1, Color(1,1,1))
+	_createWallQuadMesh(surface_tool, new_vertices, 0, 1, Color(1,1,1))
 	
 	var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
 	var new_bVertices = []
 	for vertex in bVertices:
 		new_bVertices.append(vertex + normal_vec * 0.02)
-	_createWallQuadMesh(start, end, surface_tool, new_bVertices, 4, 1, Color(1,1,1))
+	_createWallQuadMesh(surface_tool, new_bVertices, 4, 1, Color(1,1,1))
 	
 	surface_tool.set_material(WorldTextures.selection_mat)
 	return surface_tool.commit()
