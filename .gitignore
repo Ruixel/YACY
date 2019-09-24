@@ -1,9 +1,21 @@
 
 # Godot-specific ignores
 bin/*
-.import/
+.import/*
 export.cfg
 export_presets.cfg
+godot-cpp/*
+godot-cpp
+api.json
 
 # Mono-specific ignores
 .mono/
+
+# C++ Projects
+obj/*
+.kdev/*
+*.kdev
+*.kdev4
+*.cbp
+*.layout
+*.dblite
