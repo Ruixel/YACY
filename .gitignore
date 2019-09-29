@@ -19,3 +19,5 @@ obj/*
 *.cbp
 *.layout
 *.dblite
+*.os
+core
