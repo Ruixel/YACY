@@ -102,6 +102,11 @@ editor_delete={
  ]
 }
 
+[network]
+
+limits/debugger_stdout/max_messages_per_frame=25
+limits/debugger_stdout/max_errors_per_frame=50
+
 [rendering]
 
 quality/shadows/filter_mode=2

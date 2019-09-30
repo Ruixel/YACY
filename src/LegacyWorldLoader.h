@@ -6,6 +6,7 @@
 #include <Node.hpp>
 #include <Spatial.hpp>
 #include <HTTPClient.hpp>
+#include "Legacy/LegacyLevel.h"
 
 namespace godot {
 
