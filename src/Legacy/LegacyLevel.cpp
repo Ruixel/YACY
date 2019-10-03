@@ -44,19 +44,24 @@ void LegacyLevel::parseLevelCode(godot::String levelCode) {
                     depth++; strPtr++;
                     
                     // Extract each object in the list 
+                    bool isInTextProperty = false;
                     while (depth > listDepth && strPtr != levelCodeSize - 2) {
                         wchar_t c = levelCode[strPtr];
                         
                         // TODO: Problem arises if a string value has brackets, causing the depth to be incorrect
                         switch (c) {
                             case '[': 
+                                if (isInTextProperty) break;
                                 depth++; 
+                                
                                 // If new object, set point to the start of it
                                 if (depth == objectDepth+1)
                                     objStartPtr = strPtr; 
                             break;
                             case ']': 
+                                if (isInTextProperty) break;
                                 depth--; 
+                                
                                 if (depth == objectDepth) {
                                     int objStrLength = strPtr - objStartPtr + 1;
                                     godot::String obj = levelCode.substr(objStartPtr, objStrLength);
@@ -67,6 +72,8 @@ void LegacyLevel::parseLevelCode(godot::String levelCode) {
                                 }
                                 
                                 break;
+                            case '"':
+                                isInTextProperty = !isInTextProperty;
                         }
                         strPtr++;
                     }

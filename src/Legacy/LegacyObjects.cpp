@@ -7,11 +7,15 @@ namespace Legacy {
         // First, remove any excess characters (such as [ and ])
         godot::String cleanObjectStr = godot::String();
         int maxLength = objectStr.length() - 1;
+        bool isInTextProperty = false;
         for (int c = 0; c < maxLength; c++) {
             wchar_t letter = objectStr[c];
-            if (letter != '[' and letter != ']') {
+            if ((letter != '[' and letter != ']') or isInTextProperty) {
                 cleanObjectStr += godot::String(letter);
             }
+            
+            if (letter == '"') 
+                isInTextProperty = !isInTextProperty;
         }
         
         // Afterwards, extract each property (incl. color and text types)
@@ -42,14 +46,18 @@ namespace Legacy {
                 
                 objectProperties.append(prop);
                 cIdx = endIdx;
+                
+            // Check if text property
+            } else if (c == '"') {
+                int endIdx = cleanObjectStr.find("\"", cIdx + 1);
+                prop = cleanObjectStr.substr(cIdx, endIdx - cIdx + 1);
+                
+                objectProperties.append(prop);
+                cIdx = endIdx;
             }
             
             cIdx++;
         }
-        
-        // Split an object's properties into a new PoolStringArray
-        //godot::Godot::print(newObjectString);
-        //objectProperties = newObjectString.split(", ");
         
         int maxIndex = objectProperties.size();
         for (int i = 0; i < maxIndex; i++) 
