@@ -2,6 +2,7 @@
 #include <Godot.hpp>
 
 // Parses Adobe Shockwave Lingo's file structure for CY levels
+// This works by iterating through each #object, and 
 void LegacyLevel::parseLevelCode(godot::String levelCode) {
     int strPtr = 0; // String index
     int depth = 0;  // Depth inside brackets
@@ -42,6 +43,7 @@ void LegacyLevel::parseLevelCode(godot::String levelCode) {
                     
                     depth++; strPtr++;
                     
+                    // Extract each object in the list 
                     while (depth > listDepth && strPtr != levelCodeSize - 2) {
                         wchar_t c = levelCode[strPtr];
                         
@@ -68,6 +70,8 @@ void LegacyLevel::parseLevelCode(godot::String levelCode) {
                         }
                         strPtr++;
                     }
+                    
+                    Legacy::generateObjectList("cringe", objStrings);
                         
                 } else {
                     // It's a variant

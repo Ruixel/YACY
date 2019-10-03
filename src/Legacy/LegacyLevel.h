@@ -5,6 +5,8 @@
 #include <GodotGlobal.hpp>
 #include <PoolArrays.hpp>
 
+#include "LegacyObjects.h"
+
 class LegacyLevel {
     struct Header {
         godot::String title;
