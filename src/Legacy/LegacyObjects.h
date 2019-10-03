@@ -5,7 +5,7 @@
 #include <PoolArrays.hpp>
 
 namespace Legacy {
-    godot::PoolStringArray extractObjectProperties(godot::String object);
+    godot::PoolStringArray extractObjectProperties(godot::String objectStr);
     void generateObjectList(godot::String objectName, godot::PoolStringArray objectArray);
     
     class GenericObject {

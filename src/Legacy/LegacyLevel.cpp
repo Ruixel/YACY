@@ -60,7 +60,7 @@ void LegacyLevel::parseLevelCode(godot::String levelCode) {
                                 if (depth == objectDepth) {
                                     int objStrLength = strPtr - objStartPtr + 1;
                                     godot::String obj = levelCode.substr(objStartPtr, objStrLength);
-                                    godot::Godot::print("Extracted object: " + obj);
+                                    //godot::Godot::print("Extracted object: " + obj);
                                     objStrings.append(obj);
                                     
                                     objects++;
