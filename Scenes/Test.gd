@@ -1,8 +1,9 @@
 extends Node
 
 func _ready():
-	print("ok", ("Cat".find("ew",  1)))
+	print("GDNS Test")
+	#get_parent().get_parent().get_node("WorldInterface").create_wall(Vector2(-30,-30), Vector2(100,100), 1)
 
 func _on_Button_pressed():
-	#get_parent().loadLevelFromLocalhost(163163)
-	get_parent().loadLevelFromFilesystem("user://save_game.dat")
+	get_parent().loadLevelFromLocalhost(253)
+	#get_parent().loadLevelFromFilesystem("user://save_game.dat")

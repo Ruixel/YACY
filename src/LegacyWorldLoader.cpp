@@ -39,7 +39,7 @@ void LegacyWorldLoader::loadLevelFromFilesystem ( godot::String fileName )
     }
     gameFile->open(fileName, File::ModeFlags::READ);
     LegacyLevel cyLevel;
-    cyLevel.parseLevelCode(gameFile->get_as_text());
+    cyLevel.parseLevelCode(gameFile->get_as_text(), worldAPI);
     gameFile->close();
 }
 
@@ -109,5 +109,5 @@ void godot::LegacyWorldLoader::loadLevelFromLocalhost(int gameNumber)
     String data = String((char *)(rawResponse.read().ptr()));
     
     LegacyLevel cyLevel;
-    cyLevel.parseLevelCode(data);
+    cyLevel.parseLevelCode(data, worldAPI);
 }

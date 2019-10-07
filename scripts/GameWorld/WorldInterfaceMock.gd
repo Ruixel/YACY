@@ -72,6 +72,17 @@ func deselect():
 	
 	selection = null
 
+func create_wall(disp : Vector2, start : Vector2, tex : int, level: int):
+	start = start / 5.0
+	disp = disp / 5.0
+	var new_wall = Wall.new(self, start, level)
+	var end : Vector2 = start + disp
+	new_wall.end = end
+	new_wall.texture = WorldTextures.getWallTexture(tex)
+	objects.append(new_wall)
+	
+	new_wall._genMesh()
+
 func select_update_mesh():
 	if selection.selection_mesh != null:
 		selection.selection_mesh.queue_free()

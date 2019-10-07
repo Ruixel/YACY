@@ -26,7 +26,7 @@ namespace Legacy {
             wchar_t c = cleanObjectStr[cIdx];
             
             // Check if it's a numerical value
-            if (iswdigit(c)) {
+            if (iswdigit(c) or c == '-') {
                 int endIdx = cleanObjectStr.find(", ", cIdx);
                 if (endIdx != -1) {
                     prop = cleanObjectStr.substr(cIdx, endIdx - cIdx);
@@ -59,15 +59,11 @@ namespace Legacy {
             cIdx++;
         }
         
-        int maxIndex = objectProperties.size();
-        for (int i = 0; i < maxIndex; i++) 
-            godot::Godot::print("Extracted property '" + godot::String::num(i) + "' with value: " + objectProperties[i]);
-            
         return objectProperties;
     }
 
     
-    void generateObjectList(godot::String objectName, godot::PoolStringArray objectArray)
+    void generateObjectList(godot::Spatial* worldAPI, godot::String objectName, godot::PoolStringArray objectArray)
     {
         godot::Godot::print("Obj size: " + godot::String::num(objectArray.size()));
         if (objectArray.size() == 0)
@@ -75,6 +71,31 @@ namespace Legacy {
         
         const godot::String obj = objectArray[0];
         godot::PoolStringArray objectProperties = extractObjectProperties(obj);
+        
+        if (objectName == "walls") wall_createObject(worldAPI, objectArray, objectProperties.size());
+        
+    }
+    
+    inline godot::Vector2 extractVec2(godot::String x, godot::String y)
+    {
+        return godot::Vector2(x.to_float(), y.to_float());
+    }
+    
+    inline int extractInt(godot::String integer)
+    {
+        return integer.to_int();
+    }
+
+    void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
+    {
+        godot::Godot::print("Hello world#$@!");
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[7]));
+            else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[6]));
+        }
     }
 
 }

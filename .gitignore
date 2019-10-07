@@ -16,6 +16,7 @@ obj/*
 .kdev/*
 *.kdev
 *.kdev4
+*.kate-swp
 *.cbp
 *.layout
 *.dblite

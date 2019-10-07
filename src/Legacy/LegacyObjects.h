@@ -3,23 +3,18 @@
 
 #include <Spatial.hpp>
 #include <PoolArrays.hpp>
+#include <Vector2.hpp>
+#include <Color.hpp>
 
 namespace Legacy {
     godot::PoolStringArray extractObjectProperties(godot::String objectStr);
-    void generateObjectList(godot::String objectName, godot::PoolStringArray objectArray);
+    void generateObjectList(godot::Spatial* worldAPI, godot::String objectName, godot::PoolStringArray objectArray);
     
-    class GenericObject {
-    public:
-        void parseObjectArray(godot::PoolStringArray objectArray);
-            
-        virtual void createObject(godot::PoolStringArray propertyArray) = 0;
-        virtual void addToScene(godot::Spatial* worldAPI) = 0;
-    };
+    inline godot::Vector2 extractVec2(godot::String x, godot::String y);
+    inline int extractInt(godot::String integer);
+    godot::Color extractColour(godot::String colour);
     
-    class Wall : public GenericObject {
-        virtual void createObject(godot::PoolStringArray propertyArray);
-        virtual void addToScene(godot::Spatial* worldAPI);
-    };
+    void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
