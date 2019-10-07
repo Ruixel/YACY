@@ -86,26 +86,63 @@ namespace Legacy {
     {
         return integer.to_int();
     }
+    
+    // The CY save file will either use a user-defined colour or a texture
+    godot::Variant extractTexColour(godot::String str)
+    {
+        // Check whether it's a texture (int) or a colour property (Color)
+        if (str.is_valid_integer()) {
+            return godot::Variant(str.to_int());
+        } else {
+            // Extract the Colour Property
+            int valueEnd;
+            int pointer = 7;
+            
+            auto getComponent = [&](float& cVal)
+            {
+                valueEnd = str.find(",", pointer);
+                if (valueEnd != -1)
+                    cVal = str.substr(pointer, valueEnd - pointer).to_float() / 255.f;
+                else 
+                    cVal = str.substr(pointer, str.length() - pointer).to_float() / 255.f;
+                pointer = valueEnd + 2;
+            };
 
+            godot::Color colour;
+            getComponent(colour.r);
+            getComponent(colour.g);
+            getComponent(colour.b);
+            return godot::Variant(colour);
+        }
+    }
+
+
+    // Wall
+    // [displacement_x, displacement_y, start_x, start_y, front_material, back_material, height, level] 
     void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
     {
         int objects = objectArray.size();
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
-            if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[7]));
-            else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[6]));
+            //                                                      // Displacement              // Start Position            // Front Material         // Height           // Level
+            if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[4]), extractInt(obj[6]), extractInt(obj[7]));
+            else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[4]), 1,                  extractInt(obj[6]));
         }
     }
     
+    // Platform
+    // [position_x, position_y, size, material, height, level]
     void plat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
     {
         int objects = objectArray.size();
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
-            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]), extractInt(obj[5]));
-            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5, extractInt(obj[3]));
+            //                                                      // Position                  // Size             // Material               // Height           // Level
+            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), extractInt(obj[5]));
+            else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  extractInt(obj[4]));
+            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  extractInt(obj[3]));
         }
     }
 

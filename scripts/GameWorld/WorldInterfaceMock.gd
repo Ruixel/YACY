@@ -72,22 +72,34 @@ func deselect():
 	
 	selection = null
 
-func create_wall(disp : Vector2, start : Vector2, tex : int, level: int):
+func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level: int):
 	start = start / 5.0
 	disp = disp / 5.0
-	var new_wall = Wall.new(self, start, level)
 	var end : Vector2 = start + disp
+	
+	var new_wall = Wall.new(self, start, level)
 	new_wall.end = end
-	new_wall.texture = WorldTextures.getWallTexture(tex)
+	if typeof(texColour) == TYPE_INT:
+		new_wall.texture = WorldTextures.getWallTexture(texColour)
+	else:
+		new_wall.texture = WorldTextures.TextureID.COLOR
+		new_wall.colour = texColour
+	new_wall.change_height_value(height)
 	objects.append(new_wall)
 	
 	new_wall._genMesh()
 	
-func create_plat(pos : Vector2, size : int, tex : int, level: int):
+func create_plat(pos : Vector2, size : int, texColour, height : int, level: int):
 	pos = pos / 5.0
+	
 	var new_plat = Plat.new(self, pos, level)
 	new_plat.size = size
-	new_plat.texture = WorldTextures.getPlatTexture(tex)
+	if typeof(texColour) == TYPE_INT:
+		new_plat.texture = WorldTextures.getPlatTexture(texColour)
+	else:
+		new_plat.texture = WorldTextures.TextureID.COLOR
+		new_plat.colour = texColour
+	new_plat.change_height_value(height)
 	objects.append(new_plat)
 	
 	new_plat._genMesh()

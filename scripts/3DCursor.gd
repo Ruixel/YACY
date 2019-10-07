@@ -28,7 +28,7 @@ var mouse_place_released     := false
 var grid_plane   := Plane(Vector3(0,-1,0), 0.0)
 var grid_pos     = Vector2i.new()
 var grid_spacing : int = 1
-var grid_num     : int = 20
+var grid_num     : int = 80
 var grid_height  : int = 0
 
 # Wall creation info

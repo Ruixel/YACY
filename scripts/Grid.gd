@@ -3,7 +3,7 @@ extends MeshInstance
 onready var EditorGUI = get_node("../GUI")
 
 func _ready():
-	mesh = generate_grid_mesh(20, 20, 1, 1, 0).commit()
+	mesh = generate_grid_mesh(80, 80, 1, 1, 0).commit()
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 
 func on_level_change(level):
