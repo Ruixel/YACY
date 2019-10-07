@@ -88,6 +88,23 @@ func getWallTexture(id : int) -> LevelTexture:
 		16: return TextureID.PARQUET
 		_:  return TextureID.WColor
 
+func getPlatTexture(id : int) -> LevelTexture:
+	match id:
+		1:  return TextureID.GRASS
+		2:  return TextureID.STUCCO
+		3:  return TextureID.BRICK
+		4:  return TextureID.STONE
+		5:  return TextureID.WOOD
+		6:  return TextureID.HAPPY
+		7:  return TextureID.EGYPT
+		8:  return TextureID.GLASS
+		9:  return TextureID.BARK
+		10: return TextureID.SCIFI
+		11: return TextureID.TILES
+		13: return TextureID.ROCK
+		145: return TextureID.PARQUET
+		_:  return TextureID.WColor
+
 const translucentIDs = [TextureID.BARS, TextureID.GLASS]
 func getWallMaterial(tex : int) -> ShaderMaterial:
 	if translucentIDs.has(tex):

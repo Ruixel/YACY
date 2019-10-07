@@ -82,6 +82,15 @@ func create_wall(disp : Vector2, start : Vector2, tex : int, level: int):
 	objects.append(new_wall)
 	
 	new_wall._genMesh()
+	
+func create_plat(pos : Vector2, size : int, tex : int, level: int):
+	pos = pos / 5.0
+	var new_plat = Plat.new(self, pos, level)
+	new_plat.size = size
+	new_plat.texture = WorldTextures.getPlatTexture(tex)
+	objects.append(new_plat)
+	
+	new_plat._genMesh()
 
 func select_update_mesh():
 	if selection.selection_mesh != null:

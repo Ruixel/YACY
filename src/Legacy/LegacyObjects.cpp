@@ -73,6 +73,7 @@ namespace Legacy {
         godot::PoolStringArray objectProperties = extractObjectProperties(obj);
         
         if (objectName == "walls") wall_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Plat") plat_createObject(worldAPI, objectArray, objectProperties.size());
         
     }
     
@@ -88,13 +89,23 @@ namespace Legacy {
 
     void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
     {
-        godot::Godot::print("Hello world#$@!");
         int objects = objectArray.size();
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
             if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[7]));
             else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractInt(obj[4]), extractInt(obj[6]));
+        }
+    }
+    
+    void plat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]), extractInt(obj[5]));
+            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5, extractInt(obj[3]));
         }
     }
 

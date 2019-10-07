@@ -15,6 +15,7 @@ namespace Legacy {
     godot::Color extractColour(godot::String colour);
     
     void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void plat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
