@@ -88,7 +88,38 @@ func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level
 	objects.append(new_wall)
 	
 	new_wall._genMesh()
+
+func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, level: int):
+	pos = pos / 5.0
 	
+	var new_triwall = Wall.new(self, pos, level)
+	var disp
+	match (direction):
+		1: disp = Vector2(0, 4)
+		2: disp = Vector2(0, -4)
+		3: disp = Vector2(4, 0)
+		4: disp = Vector2(-4, 0)
+		5: disp = Vector2(3, -3)
+		6: disp = Vector2(3, 3)
+		7: disp = Vector2(-3, 3)
+		8: disp = Vector2(-3, -3)
+	if is_bottom == 1:
+		new_triwall.wallShape = WorldConstants.WallShape.HALFWALLBOTTOM
+		new_triwall.end = pos + disp
+	else:
+		new_triwall.wallShape = WorldConstants.WallShape.HALFWALLTOP
+		new_triwall.end = pos
+		new_triwall.start = pos + disp
+
+	if typeof(texColour) == TYPE_INT:
+		new_triwall.texture = WorldTextures.getWallTexture(texColour)
+	else:
+		new_triwall.texture = WorldTextures.TextureID.COLOR
+		new_triwall.colour = texColour
+	objects.append(new_triwall)
+	
+	new_triwall._genMesh()
+
 func create_plat(pos : Vector2, size : int, texColour, height : int, level: int):
 	pos = pos / 5.0
 	

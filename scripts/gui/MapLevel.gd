@@ -1,7 +1,7 @@
 extends Panel
 
 var level = 1
-var level_max = 5
+var level_max = 20
 
 signal s_changeLevel
 
