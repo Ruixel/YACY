@@ -20,3 +20,8 @@ func _on_Select_pressed():
 	$ToolSelected.set_text("Selecting...")
 	emit_signal("s_changeTool", WorldConstants.Tools.NOTHING)
 	emit_signal("s_changeMode", WorldConstants.Mode.SELECT)
+
+func _on_Pillar_pressed():
+	$ToolSelected.set_text("Selected: Pillar")
+	emit_signal("s_changeTool", WorldConstants.Tools.PILLAR)
+	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)

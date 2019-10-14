@@ -1,13 +1,13 @@
 tool
 extends Node
 
-const TEXTURE_SIZE = 0.5
-const LEVEL_HEIGHT = 2
+const LEVEL_HEIGHT = 2.6
+const TEXTURE_SIZE = 1.0 / LEVEL_HEIGHT
 const LEVEL_SIZE   = Vector2(1, 1)
 
 # Tool names
 enum Tools {
-	NOTHING, WALL, PLATFORM, SPAWN
+	NOTHING, WALL, PLATFORM, PILLAR, SPAWN
 }
 
 enum Mode {
@@ -18,6 +18,7 @@ const ToolToString = {
 	Tools.NOTHING: "Nothing",
 	Tools.WALL: "Wall",
 	Tools.PLATFORM: "Platform",
+	Tools.PILLAR: "Pillar",
 	Tools.SPAWN: "Spawn Location"
 }
 

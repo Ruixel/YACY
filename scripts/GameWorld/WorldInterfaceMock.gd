@@ -5,6 +5,7 @@ onready var Cursor = get_node("../3DCursor")
 
 const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
+const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 
 var selection # Selected object (To be modified)
 
@@ -30,7 +31,8 @@ var default_objs : Dictionary
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
-	WorldConstants.Tools.PLATFORM: Plat
+	WorldConstants.Tools.PLATFORM: Plat,
+	WorldConstants.Tools.PILLAR: Pillar
 }
 
 # Object functions
@@ -173,11 +175,15 @@ func get_prototype(type) -> Array:
 		WorldConstants.Tools.PLATFORM:
 			prototype.mesh = default_objs[WorldConstants.Tools.PLATFORM].genPrototypeMesh(level)
 			prototype_size = Vector2(2, 2)
+		WorldConstants.Tools.PILLAR:
+			prototype.mesh = default_objs[WorldConstants.Tools.PILLAR].genPrototypeMesh(level)
+			prototype_size = Vector2(2, 2)
 			
 		# If it doesn't match anything then free and return nothing
 		_:
 			prototype.queue_free()
 			prototype = null
+			
 	
 	return [prototype, prototype_size]
 
@@ -221,14 +227,14 @@ func update_property_gui(obj):
 func property_end_vector(endVec : Vector2):
 	if selection != null and selection.has_method("change_end_pos"):
 		selection.change_end_pos(endVec)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 
 func property_height_value(key : int):
 	if selection != null and selection.has_method("change_height_value"):
 		selection.change_height_value(key)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 	else:
 		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
 			default_objs[mode].change_height_value(key)
@@ -237,8 +243,8 @@ func property_height_value(key : int):
 func property_texture(index : int):
 	if selection != null and selection.has_method("change_texture"):
 		selection.change_texture(index)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 	else:
 		if mode != WorldConstants.Tools.NOTHING:
 			default_objs[mode].change_texture(index)
@@ -248,8 +254,8 @@ func property_texture(index : int):
 func property_wallShape(shape : int):
 	if selection != null and selection.has_method("change_wallShape"):
 		selection.change_wallShape(shape)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 	else:
 		if mode != WorldConstants.Tools.NOTHING:
 			default_objs[mode].change_wallShape(shape)
@@ -259,8 +265,8 @@ func property_wallShape(shape : int):
 func property_size(size : int):
 	if selection != null and selection.has_method("change_size"):
 		selection.change_size(size)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 	else:
 		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("change_size"):
 			default_objs[mode].change_size(size)
@@ -270,8 +276,8 @@ func property_size(size : int):
 func property_colour(colour : Color):
 	if selection != null and selection.has_method("change_colour"):
 		selection.change_colour(colour)
-		select_update_mesh()
 		selection._genMesh()
+		select_update_mesh()
 	else:
 		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
 			default_objs[mode].change_colour(colour)

@@ -14,6 +14,7 @@ enum CursorType {
 
 var cMode = WorldConstants.Mode.CREATE
 var cType = CursorType.WALL
+var objType = WorldConstants.Tools.WALL
 
 # Input
 # For detecting mouse movement
@@ -116,7 +117,7 @@ func _wall_create_process():
 
 func _plat_create_process():
 	if prototype == null:
-		var prototype_info = WorldAPI.get_prototype(WorldConstants.Tools.PLATFORM)
+		var prototype_info = WorldAPI.get_prototype(objType)
 		prototype          = prototype_info[0]
 		prototype_size     = Vector2i.new(prototype_info[1])
 		self.visible = false
@@ -183,7 +184,10 @@ func on_tool_change(type) -> void:
 			self.visible = true
 		WorldConstants.Tools.PLATFORM:
 			cType = CursorType.PLATFORM
+		WorldConstants.Tools.PILLAR:
+			cType = CursorType.PLATFORM
 	
+	objType = type
 	mouse_place_just_pressed = false
 	mouse_place_pressed = false
 
