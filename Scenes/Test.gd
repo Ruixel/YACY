@@ -5,5 +5,5 @@ func _ready():
 	#get_parent().get_parent().get_node("WorldInterface").create_wall(Vector2(-30,-30), Vector2(100,100), 1)
 
 func _on_Button_pressed():
-	get_parent().loadLevelFromLocalhost(144353)
+	get_parent().loadLevelFromLocalhost(86776)
 	#get_parent().loadLevelFromFilesystem("user://save_game.dat")

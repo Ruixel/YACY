@@ -25,6 +25,7 @@ namespace Legacy {
     void wall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void triwall_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void plat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void pillar_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED

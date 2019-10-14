@@ -137,6 +137,22 @@ func create_plat(pos : Vector2, size : int, texColour, height : int, level: int)
 	
 	new_plat._genMesh()
 
+func create_pillar(pos : Vector2, isDiagonal : int, size : int, texColour, height : int, level: int):
+	pos = pos / 5.0
+	
+	var new_pillar = Pillar.new(self, pos, level)
+	new_pillar.size = size
+	if typeof(texColour) == TYPE_INT:
+		new_pillar.texture = WorldTextures.getWallTexture(texColour)
+	else:
+		new_pillar.texture = WorldTextures.TextureID.COLOR
+		new_pillar.colour = texColour
+	new_pillar.change_height_value(height)
+	new_pillar.diagonal = bool(isDiagonal - 1)
+	objects.append(new_pillar)
+	
+	new_pillar._genMesh()
+
 func select_update_mesh():
 	if selection.selection_mesh != null:
 		selection.selection_mesh.queue_free()
