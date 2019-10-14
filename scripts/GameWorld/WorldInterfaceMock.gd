@@ -199,6 +199,7 @@ func _ready():
 	PropertyGUI.connect("s_changeColour", self, "property_colour")
 	PropertyGUI.connect("s_changeSize", self, "property_size")
 	PropertyGUI.connect("s_changeWallShape", self, "property_wallShape")
+	PropertyGUI.connect("s_changeDiagonal", self, "property_diagonal")
 	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
@@ -281,4 +282,14 @@ func property_colour(colour : Color):
 	else:
 		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
 			default_objs[mode].change_colour(colour)
+			emit_signal("update_prototype")
+
+func property_diagonal(isSet : bool):
+	if selection != null and selection.has_method("change_diagonal"):
+		selection.change_diagonal(isSet)
+		selection._genMesh()
+		select_update_mesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
+			default_objs[mode].change_diagonal(isSet)
 			emit_signal("update_prototype")

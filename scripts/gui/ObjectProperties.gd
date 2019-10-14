@@ -6,6 +6,7 @@ signal s_changeTexture
 signal s_changeColour
 signal s_changeSize
 signal s_changeWallShape
+signal s_changeDiagonal
 
 signal s_deleteObject
 signal s_setDefault
@@ -15,6 +16,7 @@ const ColourPropertyEntity = preload("res://Entities/Editor/PropertyEditor/Colou
 const NumericalPropertyEntity = preload("res://Entities/Editor/PropertyEditor/NumericalProperty.tscn")
 const TexturePropertyEntity = preload("res://Entities/Editor/PropertyEditor/TextureProperty.tscn")
 const WallShapePropertyEntity = preload("res://Entities/Editor/PropertyEditor/WallShapeProperty.tscn")
+const BooleanPropertyEntity = preload("res://Entities/Editor/PropertyEditor/BooleanProperty.tscn")
 
 var properties : Dictionary
 var toolSelected = WorldConstants.Tools.NOTHING
@@ -23,12 +25,14 @@ const BasicProperty = {
 	"ColourProperty": {"obj": ColourPropertyEntity, "use_label": false, "select_func": "set_colour"},
 	"NumericalProperty": {"obj": NumericalPropertyEntity, "use_label": false, "select_func": "set_number"},
 	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "select_func": "select_texture"},
-	"WallShapeProperty": {"obj": WallShapePropertyEntity, "use_label": false, "select_func": "set_wallShape"}
+	"WallShapeProperty": {"obj": WallShapePropertyEntity, "use_label": false, "select_func": "set_wallShape"},
+	"BooleanProperty": {"obj": BooleanPropertyEntity, "use_label": false, "select_func": "set_bool"}
 }
 
 const Property = {
 	"Size": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":4},
 	"PillarSize": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":5},
+	"Diagonal": {"type": BasicProperty.BooleanProperty, "init_func": "setup_boolProperty"},
 	"Texture": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
 	"Colour": {"type": BasicProperty.ColourProperty, "init_func": "setup_colourProperty"},
 	"WallShape": {"type": BasicProperty.WallShapeProperty, "init_func": "setup_wallShapeProperty"},
@@ -38,7 +42,7 @@ const ObjectProperties = {
 	WorldConstants.Tools.NOTHING: [],
 	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
 	WorldConstants.Tools.PLATFORM: ["Size", "Colour", "Texture"],
-	WorldConstants.Tools.PILLAR: ["PillarSize", "Colour", "Texture"]
+	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"]
 }
 
 # Connect to tool change signal
@@ -126,6 +130,10 @@ func setup_colourProperty(propScene, propInfo : Dictionary, propName : String):
 func setup_wallShapeProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.connect("s_changeWallShape", self, "on_select_wallShape")
 
+func setup_boolProperty(propScene, propInfo : Dictionary, propName : String):
+	propScene.get_node("Label").set_text(propName)
+	propScene.get_node("CheckBox").connect("toggled", self, "on_select_bool")
+
 func on_change_size(size):
 	emit_signal("s_changeSize", size)
 
@@ -138,6 +146,10 @@ func on_select_wallShape(wallShape):
 func on_select_colour(colour):
 	emit_signal("s_changeColour", colour)
 	emit_signal("s_changeTexture", WorldTextures.TextureID.COLOR) # Set the texture to colour
+
+# To do: generalize this
+func on_select_bool(value):
+	emit_signal("s_changeDiagonal", value)
 
 func set_properties(propList : Dictionary, nTool):
 	var propArray = ObjectProperties.get(nTool)
