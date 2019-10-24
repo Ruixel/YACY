@@ -1,4 +1,4 @@
-extends Node
+extends Spatial
 const toolType = WorldConstants.Tools.PILLAR
 
 var pos : Vector2
@@ -36,6 +36,9 @@ func _init(parent, position : Vector2, lvl : int):
 
 func get_type():
 	return "pillar"
+
+func get_level():
+	return level
 
 func change_height_value(h : int):
 	max_height = max_height_list[h - 1] / 4.0

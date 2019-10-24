@@ -159,15 +159,15 @@ namespace Legacy {
             worldAPI->call("create_triwall", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), extractInt(obj[5]));
         }
     }
-    //(float x, float y, int angled, float size, int level, int z_idx, const std::string& texture, std::vector<polygon>* polys)
-    
+    // Pillars
+    // [position_x, position_y, isDiagonal, material, size, height, level]
     void pillar_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize)
     {
         int objects = objectArray.size();
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
-            //                                                        // Position                  // isNotDiagonal    // Size             // Material               // Height           // Level
+            //                                                        // Position                  // isDiagonal       // Size             // Material               // Height           // Level
             if      (objectSize == 7) worldAPI->call("create_pillar", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[4]), extractTexColour(obj[3]), extractInt(obj[5]), extractInt(obj[6]));
             else if (objectSize == 4) worldAPI->call("create_pillar", extractVec2(obj[0], obj[1]), 1,                  1,                  extractTexColour(obj[2]), 1,                  extractInt(obj[3]));
         }

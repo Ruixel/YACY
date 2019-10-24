@@ -1,4 +1,4 @@
-extends Node
+extends Spatial
 const toolType = WorldConstants.Tools.PLATFORM
 
 var pos : Vector2
@@ -31,6 +31,9 @@ func _init(parent, position : Vector2, lvl : int):
 	collision_mesh.add_child(collision_shape)
 	
 	parent.add_child(self)
+
+func get_level():
+	return level
 
 func change_height_value(h : int):
 	if h <= 4:

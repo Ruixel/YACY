@@ -24,10 +24,12 @@ signal update_prototype
 
 # Vars
 var mode = WorldConstants.Tools.WALL
-var level : int = 1
 var objects : Array = []
-
 var default_objs : Dictionary
+
+var level : int = 1
+var levelMeshes : Array 
+var showUpperLevels : bool = true
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
@@ -38,7 +40,7 @@ const toolToObjectDict = {
 # Object functions
 func obj_create(pos : Vector2):
 	var objectType = toolToObjectDict.get(mode)
-	var new_obj = objectType.new(self, pos, level)
+	var new_obj = objectType.new(levelMeshes[level], pos, level)
 	objects.append(new_obj)
 	
 	# Select
@@ -79,7 +81,7 @@ func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level
 	disp = disp / 5.0
 	var end : Vector2 = start + disp
 	
-	var new_wall = Wall.new(self, start, level)
+	var new_wall = Wall.new(levelMeshes[level], start, level)
 	new_wall.end = end
 	if typeof(texColour) == TYPE_INT:
 		new_wall.texture = WorldTextures.getWallTexture(texColour)
@@ -94,7 +96,7 @@ func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level
 func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, level: int):
 	pos = pos / 5.0
 	
-	var new_triwall = Wall.new(self, pos, level)
+	var new_triwall = Wall.new(levelMeshes[level], pos, level)
 	var disp
 	match (direction):
 		1: disp = Vector2(0, 4)
@@ -125,7 +127,7 @@ func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, 
 func create_plat(pos : Vector2, size : int, texColour, height : int, level: int):
 	pos = pos / 5.0
 	
-	var new_plat = Plat.new(self, pos, level)
+	var new_plat = Plat.new(levelMeshes[level], pos, level)
 	new_plat.size = size
 	if typeof(texColour) == TYPE_INT:
 		new_plat.texture = WorldTextures.getPlatTexture(texColour)
@@ -140,7 +142,7 @@ func create_plat(pos : Vector2, size : int, texColour, height : int, level: int)
 func create_pillar(pos : Vector2, isDiagonal : int, size : int, texColour, height : int, level: int):
 	pos = pos / 5.0
 	
-	var new_pillar = Pillar.new(self, pos, level)
+	var new_pillar = Pillar.new(levelMeshes[level], pos, level)
 	new_pillar.size = size
 	if typeof(texColour) == TYPE_INT:
 		new_pillar.texture = WorldTextures.getWallTexture(texColour)
@@ -208,6 +210,7 @@ func _ready():
 	# Connect GUI signals
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
+	EditorGUI.get_node("Misc").connect("s_toggleUpperFloors", self, "on_toggle_upper_levels")
 	
 	# Connect property change signals
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
@@ -219,6 +222,14 @@ func _ready():
 	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
+	
+	# Initialise level meshes
+	for lvl in range(0, 20):
+		var n = Spatial.new()
+		n.set_name("Level" + str(lvl))
+		
+		add_child(n)
+		levelMeshes.append(n)
 	
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
@@ -236,6 +247,28 @@ func on_tool_change(type) -> void:
 
 func on_level_change(new_level):
 	level = new_level
+	if not showUpperLevels:
+		hide_upper_levels(new_level)
+
+func on_toggle_upper_levels(toggle : bool):
+	showUpperLevels = toggle
+	if showUpperLevels:
+		for lvl in levelMeshes:
+			lvl.set_translation(Vector3(0,0,0))
+	else:
+		hide_upper_levels(level)
+
+func hide_upper_levels(currentLevel):
+	# Hide objects by displacing them, this means that they wont affect the raycast selection
+	for lvl in range(0,20):
+		if lvl <= currentLevel:
+			levelMeshes[lvl].set_translation(Vector3(0,0,0))
+		else:
+			levelMeshes[lvl].set_translation(Vector3(5000000,5000000,5000000))
+	
+	if selection != null and selection.has_method("get_level"):
+		if selection.get_level() > currentLevel:
+			deselect()
 
 func update_property_gui(obj):
 	if obj != null and obj.has_method("get_property_dict"):

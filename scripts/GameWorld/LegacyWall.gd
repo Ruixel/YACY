@@ -1,4 +1,4 @@
-extends Node
+extends Spatial
 const toolType = WorldConstants.Tools.WALL
 
 var start : Vector2
@@ -36,6 +36,9 @@ func _init(parent, position : Vector2, lvl : int):
 
 func get_type():
 	return "wall"
+
+func get_level():
+	return level
 
 func change_end_pos(pos : Vector2):
 	end = pos

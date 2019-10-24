@@ -30,7 +30,7 @@ var grid_plane   := Plane(Vector3(0,-1,0), 0.0)
 var grid_pos     = Vector2i.new()
 var grid_spacing : int = 1
 var grid_num     : int = 80
-var grid_height  : int = 0
+var grid_height  : float = 0
 
 # Wall creation info
 var placement_start = Vector2i.new()
