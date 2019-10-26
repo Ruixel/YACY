@@ -113,7 +113,7 @@ text = "Show Upper Levels"
 margin_left = 722.0
 margin_top = 40.0
 margin_right = 965.0
-margin_bottom = 400.0
+margin_bottom = 510.0
 [connection signal="pressed" from="ObjectList/Wall" to="ObjectList" method="_on_Wall_pressed"]
 [connection signal="pressed" from="ObjectList/Platform" to="ObjectList" method="_on_Platform_pressed"]
 [connection signal="pressed" from="ObjectList/Pillar" to="ObjectList" method="_on_Pillar_pressed"]

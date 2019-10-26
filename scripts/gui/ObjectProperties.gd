@@ -6,6 +6,7 @@ signal s_changeTexture
 signal s_changeColour
 signal s_changeSize
 signal s_changeWallShape
+signal s_changePlatShape
 signal s_changeDiagonal
 
 signal s_deleteObject
@@ -16,6 +17,7 @@ const ColourPropertyEntity = preload("res://Entities/Editor/PropertyEditor/Colou
 const NumericalPropertyEntity = preload("res://Entities/Editor/PropertyEditor/NumericalProperty.tscn")
 const TexturePropertyEntity = preload("res://Entities/Editor/PropertyEditor/TextureProperty.tscn")
 const WallShapePropertyEntity = preload("res://Entities/Editor/PropertyEditor/WallShapeProperty.tscn")
+const PlatShapePropertyEntity = preload("res://Entities/Editor/PropertyEditor/PlatShapeProperty.tscn")
 const BooleanPropertyEntity = preload("res://Entities/Editor/PropertyEditor/BooleanProperty.tscn")
 
 var properties : Dictionary
@@ -26,6 +28,7 @@ const BasicProperty = {
 	"NumericalProperty": {"obj": NumericalPropertyEntity, "use_label": false, "select_func": "set_number"},
 	"TextureProperty": {"obj": TexturePropertyEntity, "use_label": true, "select_func": "select_texture"},
 	"WallShapeProperty": {"obj": WallShapePropertyEntity, "use_label": false, "select_func": "set_wallShape"},
+	"PlatShapeProperty": {"obj": PlatShapePropertyEntity, "use_label": false, "select_func": "set_platShape"},
 	"BooleanProperty": {"obj": BooleanPropertyEntity, "use_label": false, "select_func": "set_bool"}
 }
 
@@ -36,12 +39,13 @@ const Property = {
 	"Texture": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
 	"Colour": {"type": BasicProperty.ColourProperty, "init_func": "setup_colourProperty"},
 	"WallShape": {"type": BasicProperty.WallShapeProperty, "init_func": "setup_wallShapeProperty"},
+	"PlatShape": {"type": BasicProperty.PlatShapeProperty, "init_func": "setup_platShapeProperty"},
 }
 
 const ObjectProperties = { 
 	WorldConstants.Tools.NOTHING: [],
 	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
-	WorldConstants.Tools.PLATFORM: ["Size", "Colour", "Texture"],
+	WorldConstants.Tools.PLATFORM: ["PlatShape", "Size", "Colour", "Texture"],
 	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"]
 }
 
@@ -130,6 +134,9 @@ func setup_colourProperty(propScene, propInfo : Dictionary, propName : String):
 func setup_wallShapeProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.connect("s_changeWallShape", self, "on_select_wallShape")
 
+func setup_platShapeProperty(propScene, propInfo : Dictionary, propName : String):
+	propScene.connect("s_changePlatShape", self, "on_select_platShape")
+
 func setup_boolProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("Label").set_text(propName)
 	propScene.get_node("CheckBox").connect("toggled", self, "on_select_bool")
@@ -142,6 +149,9 @@ func on_select_texture(texIndex):
 
 func on_select_wallShape(wallShape):
 	emit_signal("s_changeWallShape", wallShape)
+
+func on_select_platShape(platShape):
+	emit_signal("s_changePlatShape", platShape)
 
 func on_select_colour(colour):
 	emit_signal("s_changeColour", colour)

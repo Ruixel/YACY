@@ -219,12 +219,13 @@ func _ready():
 	PropertyGUI.connect("s_changeSize", self, "property_size")
 	PropertyGUI.connect("s_changeWallShape", self, "property_wallShape")
 	PropertyGUI.connect("s_changeDiagonal", self, "property_diagonal")
+	PropertyGUI.connect("s_changePlatShape", self, "property_platShape")
 	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
 	
 	# Initialise level meshes
-	for lvl in range(0, 20):
+	for lvl in range(0, 21):
 		var n = Spatial.new()
 		n.set_name("Level" + str(lvl))
 		
@@ -260,7 +261,7 @@ func on_toggle_upper_levels(toggle : bool):
 
 func hide_upper_levels(currentLevel):
 	# Hide objects by displacing them, this means that they wont affect the raycast selection
-	for lvl in range(0,20):
+	for lvl in range(0,21):
 		if lvl <= currentLevel:
 			levelMeshes[lvl].set_translation(Vector3(0,0,0))
 		else:
@@ -309,6 +310,17 @@ func property_wallShape(shape : int):
 	else:
 		if mode != WorldConstants.Tools.NOTHING:
 			default_objs[mode].change_wallShape(shape)
+			if default_objs[mode].has_method("genPrototypeMesh"):
+				emit_signal("update_prototype")
+
+func property_platShape(shape : int):
+	if selection != null and selection.has_method("change_platShape"):
+		selection.change_platShape(shape)
+		selection._genMesh()
+		select_update_mesh()
+	else:
+		if mode != WorldConstants.Tools.NOTHING:
+			default_objs[mode].change_platShape(shape)
 			if default_objs[mode].has_method("genPrototypeMesh"):
 				emit_signal("update_prototype")
 

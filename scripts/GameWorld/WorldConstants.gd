@@ -25,3 +25,7 @@ const ToolToString = {
 enum WallShape {
 	FULLWALL, HALFWALLBOTTOM, HALFWALLTOP, QCIRCLEWALL, ARCHWALL
 }
+
+enum PlatShape {
+	QUAD, DIAMOND, TRI_BR, TRI_TR, TRI_TL, TRI_BL
+}

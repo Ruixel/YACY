@@ -11,11 +11,11 @@
 [ext_resource path="res://scripts/GameWorld/LegacyWorldLoader.gdns" type="Script" id=9]
 [ext_resource path="res://Scenes/Test.gd" type="Script" id=10]
 
-[sub_resource type="ProceduralSky" id=9]
+[sub_resource type="ProceduralSky" id=1]
 
 [sub_resource type="Environment" id=2]
 background_mode = 2
-background_sky = SubResource( 9 )
+background_sky = SubResource( 1 )
 background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
 ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
 tonemap_mode = 1

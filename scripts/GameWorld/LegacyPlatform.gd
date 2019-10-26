@@ -13,6 +13,8 @@ const size_list = [2, 4, 8, 16]
 var height_offset : float = 0.0
 const h_offset_list = [0, 1, 2, 3]
 
+var platShape = WorldConstants.PlatShape.QUAD
+
 var mesh : MeshInstance
 var selection_mesh : MeshInstance
 var collision_mesh : StaticBody
@@ -48,12 +50,15 @@ func change_colour(newColour : Color):
 func change_size(newSize : int):
 	size = newSize
 
+func change_platShape(newShape):
+	platShape = newShape 
+
 func _genMesh():
-	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, size, false)
+	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, size, platShape, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
-	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, size, true)
+	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, size, platShape, true)
 
 func selectObj():
 	selection_mesh = MeshInstance.new()
@@ -65,6 +70,7 @@ func get_property_dict() -> Dictionary:
 	dict["Colour"] = colour
 	dict["Height"] = height_offset
 	dict["Size"] = size
+	dict["PlatShape"] = platShape
 	
 	return dict
 
@@ -73,7 +79,7 @@ func set_property_dict(dict : Dictionary):
 	colour = dict["Colour"]
 	height_offset = dict["Height"]
 	size = dict["Size"]
-	print(dict["Texture"])
+	platShape = dict["PlatShape"]
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
@@ -114,8 +120,41 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
+const tri_indices = [0, 1, 2] # Magic array 
+static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array, sIndex: int, 
+	tex : int, colour : Color) -> void:
+	
+	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
+	var normal = (tri_vertices[2] - tri_vertices[0]).cross(tri_vertices[1] - tri_vertices[0]).normalized()
+	
+	var texture_float = (tex+1.0)/256
+	var texture_scale = WorldTextures.textures[tex].texScale
+	
+	# Add Vertices
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
+	surface_tool.add_uv(Vector2(tri_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	                            tri_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+	surface_tool.add_normal(normal)
+	surface_tool.add_vertex(tri_vertices[0])
+	
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
+	surface_tool.add_uv(Vector2(tri_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	                            tri_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+	surface_tool.add_normal(normal)
+	surface_tool.add_vertex(tri_vertices[1])
+
+	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
+	surface_tool.add_uv(Vector2(tri_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
+	                            tri_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+	surface_tool.add_normal(normal)
+	surface_tool.add_vertex(tri_vertices[2])
+	
+	# Quad Indices
+	for idx in tri_indices:
+		surface_tool.add_index(sIndex + idx)
+
 static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, colour : Color,
-	size : int, is_prototype : bool) -> Mesh:
+	size : int, pShape, is_prototype : bool) -> Mesh:
 		
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -133,15 +172,36 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	
 	# Calculate wall vertices
 	var plat_vertices = []
-	plat_vertices.insert(0, Vector3(start.x, height, start.y))
-	plat_vertices.insert(1, Vector3(end.x,   height, start.y))
-	plat_vertices.insert(2, Vector3(end.x,   height, end.y))
-	plat_vertices.insert(3, Vector3(start.x, height, end.y))
-	_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex, meshColor)
+	if pShape != WorldConstants.PlatShape.DIAMOND:
+		plat_vertices.insert(0, Vector3(start.x, height, start.y))
+		plat_vertices.insert(1, Vector3(end.x,   height, start.y))
+		plat_vertices.insert(2, Vector3(end.x,   height, end.y))
+		plat_vertices.insert(3, Vector3(start.x, height, end.y))
+	else:
+		plat_vertices.insert(0, Vector3(pos.x, height, start.y))
+		plat_vertices.insert(1, Vector3(end.x,   height, pos.y))
+		plat_vertices.insert(2, Vector3(pos.x,   height, end.y))
+		plat_vertices.insert(3, Vector3(start.x, height, pos.y))
 	
-	# Rearrange vertices for the backwall
-	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
-	_createPlatQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
+	if pShape == WorldConstants.PlatShape.QUAD or pShape == WorldConstants.PlatShape.DIAMOND:
+		_createPlatQuadMesh(surface_tool, plat_vertices, 0, tex, meshColor)
+		
+		# Rearrange vertices for the backwall
+		var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
+		_createPlatQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
+		
+	elif pShape == WorldConstants.PlatShape.TRI_BR:
+		_createPlatTriMesh(surface_tool, [plat_vertices[2], plat_vertices[3], plat_vertices[0]], 0, tex, meshColor)
+		_createPlatTriMesh(surface_tool, [plat_vertices[0], plat_vertices[3], plat_vertices[2]], 3, tex, meshColor)
+	elif pShape == WorldConstants.PlatShape.TRI_TR:
+		_createPlatTriMesh(surface_tool, [plat_vertices[1], plat_vertices[2], plat_vertices[3]], 0, tex, meshColor)
+		_createPlatTriMesh(surface_tool, [plat_vertices[1], plat_vertices[2], plat_vertices[3]], 3, tex, meshColor)
+	elif pShape == WorldConstants.PlatShape.TRI_TL:
+		_createPlatTriMesh(surface_tool, [plat_vertices[0], plat_vertices[1], plat_vertices[2]], 0, tex, meshColor)
+		_createPlatTriMesh(surface_tool, [plat_vertices[2], plat_vertices[1], plat_vertices[0]], 3, tex, meshColor)
+	elif pShape == WorldConstants.PlatShape.TRI_BL:
+		_createPlatTriMesh(surface_tool, [plat_vertices[3], plat_vertices[0], plat_vertices[1]], 0, tex, meshColor)
+		_createPlatTriMesh(surface_tool, [plat_vertices[1], plat_vertices[0], plat_vertices[3]], 3, tex, meshColor)
 	
 	if is_prototype:
 		surface_tool.set_material(WorldTextures.aTexturePrototype_mat)
