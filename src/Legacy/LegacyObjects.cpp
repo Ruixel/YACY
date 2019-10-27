@@ -74,6 +74,8 @@ namespace Legacy {
         
         if (objectName == "walls") wall_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Plat") plat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "TriPlat") triplat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "DiaPlat") diaplat_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "TriWall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
     }
@@ -140,10 +142,40 @@ namespace Legacy {
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
-            //                                                      // Position                  // Size             // Material               // Height           // Level
-            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), extractInt(obj[5]));
-            else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  extractInt(obj[4]));
-            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  extractInt(obj[3]));
+            //                                                      // Position                  // Size             // Material               // Height           // Shape  // Level
+            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), 0,        extractInt(obj[5]));
+            else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  0,        extractInt(obj[4]));
+            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  0,        extractInt(obj[3]));
+        }
+    }
+    
+    // Diamond Platform
+    // [position_x, position_y, size, material, height, level]
+    void diaplat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Size             // Material               // Height           // Shape  // Level
+            if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), 1,        extractInt(obj[5]));
+            else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  1,        extractInt(obj[4]));
+            else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  1,        extractInt(obj[3]));
+        }
+    }
+    
+    // Triangular Platform
+    // [position_x, position_y, size, material, height, direction, level]
+    void triplat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Size             // Material               // Height           // Shape                // Level
+            if      (objectSize == 7) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[5]), 1 + extractInt(obj[4]), extractInt(obj[6]));
+            else if (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  1 + extractInt(obj[4]), extractInt(obj[5]));
+            else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  1 + extractInt(obj[3]), extractInt(obj[4]));
         }
     }
 

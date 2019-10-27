@@ -27,5 +27,5 @@ enum WallShape {
 }
 
 enum PlatShape {
-	QUAD, DIAMOND, TRI_BR, TRI_TR, TRI_TL, TRI_BL
+	QUAD, DIAMOND, TRI_TR, TRI_BL, TRI_TL, TRI_BR
 }

@@ -124,11 +124,12 @@ func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, 
 	
 	new_triwall._genMesh()
 
-func create_plat(pos : Vector2, size : int, texColour, height : int, level: int):
+func create_plat(pos : Vector2, size : int, texColour, height : int, shape, level: int):
 	pos = pos / 5.0
 	
 	var new_plat = Plat.new(levelMeshes[level], pos, level)
 	new_plat.size = size
+	new_plat.platShape = shape
 	if typeof(texColour) == TYPE_INT:
 		new_plat.texture = WorldTextures.getPlatTexture(texColour)
 	else:
