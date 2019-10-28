@@ -158,6 +158,31 @@ func create_pillar(pos : Vector2, isDiagonal : int, size : int, texColour, heigh
 	
 	new_pillar._genMesh()
 
+func create_ramp(end : Vector2, direction : int, texColour, level: int):
+	end = end / 5.0
+	var start
+	match direction:
+		1: start = end + Vector2(0,  4)
+		2: start = end + Vector2(0, -4)
+		3: start = end + Vector2(4,  0)
+		4: start = end + Vector2(-4, 0)
+		5: start = end + Vector2(3,  3)
+		6: start = end + Vector2(3, -3)
+		7: start = end + Vector2(-3,-3)
+		8: start = end + Vector2(-3, 3)
+		_: return
+	
+	var new_ramp = Ramp.new(levelMeshes[level], start, level)
+	new_ramp.end = end
+	if typeof(texColour) == TYPE_INT:
+		new_ramp.texture = WorldTextures.getPlatTexture(texColour)
+	else:
+		new_ramp.texture = WorldTextures.TextureID.COLOR
+		new_ramp.colour = texColour
+		
+	objects.append(new_ramp)
+	new_ramp._genMesh()
+
 func select_update_mesh():
 	if selection.selection_mesh != null:
 		selection.selection_mesh.queue_free()

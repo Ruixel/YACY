@@ -78,6 +78,7 @@ namespace Legacy {
         else if (objectName == "DiaPlat") diaplat_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "TriWall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -205,5 +206,18 @@ namespace Legacy {
         }
     }
 
+    // Ramp
+    // [position_x, position_y, direction, material, level]
+    void ramp_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Direction        // Material               // Level
+            if      (objectSize == 5) worldAPI->call("create_ramp", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]));    
+            else if (objectSize == 4) worldAPI->call("create_ramp", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        extractInt(obj[3])); 
+        }
+    }
 
 }

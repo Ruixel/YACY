@@ -28,6 +28,7 @@ namespace Legacy {
     void diaplat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void triplat_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void pillar_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void ramp_createObject(godot::Spatial* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
