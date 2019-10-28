@@ -6,6 +6,7 @@ onready var Cursor = get_node("../3DCursor")
 const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
+const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
 
 var selection # Selected object (To be modified)
 
@@ -34,7 +35,8 @@ var showUpperLevels : bool = true
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
 	WorldConstants.Tools.PLATFORM: Plat,
-	WorldConstants.Tools.PILLAR: Pillar
+	WorldConstants.Tools.PILLAR: Pillar,
+	WorldConstants.Tools.RAMP: Ramp
 }
 
 # Object functions

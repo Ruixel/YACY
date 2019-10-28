@@ -25,3 +25,8 @@ func _on_Pillar_pressed():
 	$ToolSelected.set_text("Selected: Pillar")
 	emit_signal("s_changeTool", WorldConstants.Tools.PILLAR)
 	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)
+
+func _on_Ramp_pressed():
+	$ToolSelected.set_text("Selected: Ramp")
+	emit_signal("s_changeTool", WorldConstants.Tools.RAMP)
+	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)

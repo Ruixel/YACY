@@ -15,7 +15,7 @@ margin_bottom = 40.0
 [node name="ObjectList" type="Panel" parent="."]
 margin_left = 20.0
 margin_top = 20.0
-margin_right = 345.0
+margin_right = 425.0
 margin_bottom = 60.0
 script = ExtResource( 1 )
 
@@ -39,6 +39,13 @@ margin_top = 5.0
 margin_right = 320.0
 margin_bottom = 35.0
 text = "Pillar"
+
+[node name="Ramp" type="Button" parent="ObjectList"]
+margin_left = 325.0
+margin_top = 5.0
+margin_right = 400.0
+margin_bottom = 35.0
+text = "Ramp"
 
 [node name="Select" type="Button" parent="ObjectList"]
 margin_left = 5.0
@@ -117,6 +124,7 @@ margin_bottom = 510.0
 [connection signal="pressed" from="ObjectList/Wall" to="ObjectList" method="_on_Wall_pressed"]
 [connection signal="pressed" from="ObjectList/Platform" to="ObjectList" method="_on_Platform_pressed"]
 [connection signal="pressed" from="ObjectList/Pillar" to="ObjectList" method="_on_Pillar_pressed"]
+[connection signal="pressed" from="ObjectList/Ramp" to="ObjectList" method="_on_Ramp_pressed"]
 [connection signal="pressed" from="ObjectList/Select" to="ObjectList" method="_on_Select_pressed"]
 [connection signal="pressed" from="MapLevel/Up" to="MapLevel" method="_on_Up_pressed"]
 [connection signal="pressed" from="MapLevel/Down" to="MapLevel" method="_on_Down_pressed"]

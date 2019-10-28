@@ -186,6 +186,9 @@ func on_tool_change(type) -> void:
 			cType = CursorType.PLATFORM
 		WorldConstants.Tools.PILLAR:
 			cType = CursorType.PLATFORM
+		WorldConstants.Tools.RAMP:
+			cType = CursorType.WALL
+			self.visible = true
 	
 	objType = type
 	mouse_place_just_pressed = false

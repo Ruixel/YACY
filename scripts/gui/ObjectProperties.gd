@@ -46,7 +46,8 @@ const ObjectProperties = {
 	WorldConstants.Tools.NOTHING: [],
 	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
 	WorldConstants.Tools.PLATFORM: ["PlatShape", "Size", "Colour", "Texture"],
-	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"]
+	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"],
+	WorldConstants.Tools.RAMP: ["Colour", "Texture"]
 }
 
 # Connect to tool change signal
