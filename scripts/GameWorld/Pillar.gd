@@ -91,8 +91,8 @@ func buildMesh(pLevel : int, is_prototype : bool) -> Mesh:
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var minHeight = (pLevel - 1 + max_height) * WorldConstants.LEVEL_HEIGHT - 0.005
-	var maxHeight = (pLevel - 1 + min_height) * WorldConstants.LEVEL_HEIGHT + 0.005
+	var minHeight = (pLevel - 1 + max_height) * WorldConstants.LEVEL_HEIGHT - 0.0005
+	var maxHeight = (pLevel - 1 + min_height) * WorldConstants.LEVEL_HEIGHT + 0.0005
 	
 	var quad_vertices = []
 	var thickness  = size_offset[size-1] / 5.0

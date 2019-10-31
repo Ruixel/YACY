@@ -105,10 +105,10 @@ func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, 
 		2: disp = Vector2(0, -4)
 		3: disp = Vector2(4, 0)
 		4: disp = Vector2(-4, 0)
-		5: disp = Vector2(3, -3)
-		6: disp = Vector2(3, 3)
-		7: disp = Vector2(-3, 3)
-		8: disp = Vector2(-3, -3)
+		5: disp = Vector2(3, 3)
+		6: disp = Vector2(3, -3)
+		7: disp = Vector2(-3, -3)
+		8: disp = Vector2(-3, 3)
 	if is_bottom == 1:
 		new_triwall.wallShape = WorldConstants.WallShape.HALFWALLBOTTOM
 		new_triwall.end = pos + disp
