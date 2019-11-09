@@ -3,7 +3,7 @@ onready var EditorGUI = get_node("../GUI")
 onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
 onready var Cursor = get_node("../3DCursor")
 
-const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
+const Wall = preload("res://scripts/GameWorld/Wall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
