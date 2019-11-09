@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="ProceduralSky" id=1]
+
+[sub_resource type="Environment" id=2]
+background_mode = 2
+background_sky = SubResource( 1 )
+background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
+ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
+tonemap_mode = 1
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 0.8
+ssao_intensity = 2.0
+ssao_radius2 = 1.6
+ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+ssao_blur = 2
+dof_blur_far_distance = 0.58
+dof_blur_far_transition = 14.25
+dof_blur_near_distance = 3.64
+glow_enabled = true
+glow_levels/4 = true
+glow_levels/5 = false
+glow_intensity = 0.39
+glow_strength = 0.83
+glow_hdr_threshold = 0.7
+glow_bicubic_upscale = true
+
+[node name="Environment" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource( 2 )
+
+[node name="DirectionalLight" type="DirectionalLight" parent="."]
+transform = Transform( -0.554536, 0.271822, 0.786513, 0.15502, -0.894859, 0.418564, 0.817594, 0.354034, 0.454093, 0, 3.77881, 0 )
+light_color = Color( 0.886275, 0.890196, 0.827451, 1 )
+light_energy = 2.0
+shadow_enabled = true
+shadow_color = Color( 0.027451, 0.0352941, 0.239216, 1 )
+shadow_bias = -0.05
+directional_shadow_normal_bias = 0.6
