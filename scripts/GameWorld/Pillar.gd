@@ -137,7 +137,7 @@ func buildMesh(pLevel : int, is_prototype : bool) -> Mesh:
 	if is_prototype:
 		surface_tool.set_material(WorldTextures.aTexturePrototype_mat)
 	else: 
-		surface_tool.set_material(WorldTextures.aTexture_mat)
+		surface_tool.set_material(WorldTextures.getWallMaterial(texture))
 	return surface_tool.commit()
 
 var quad_indices = [0, 1, 2, 0, 2, 3] # Magic array 

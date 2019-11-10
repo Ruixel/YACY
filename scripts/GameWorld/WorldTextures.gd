@@ -102,7 +102,7 @@ func getPlatTexture(id : int) -> LevelTexture:
 		10: return TextureID.SCIFI
 		11: return TextureID.TILES
 		13: return TextureID.ROCK
-		145: return TextureID.PARQUET
+		15: return TextureID.PARQUET
 		_:  return TextureID.COLOR
 
 const translucentIDs = [TextureID.BARS, TextureID.GLASS]

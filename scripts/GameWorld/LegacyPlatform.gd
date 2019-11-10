@@ -204,7 +204,7 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	if is_prototype:
 		surface_tool.set_material(WorldTextures.aTexturePrototype_mat)
 	else: 
-		surface_tool.set_material(WorldTextures.aTexture_mat)
+		surface_tool.set_material(WorldTextures.getWallMaterial(tex))
 	
 	return surface_tool.commit()
 
