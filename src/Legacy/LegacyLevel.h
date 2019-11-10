@@ -4,7 +4,7 @@
 #include <Godot.hpp>
 #include <GodotGlobal.hpp>
 #include <PoolArrays.hpp>
-#include <Spatial.hpp>
+#include <Node.hpp>
 
 #include "LegacyObjects.h"
 
@@ -19,7 +19,7 @@ private:
     Header levelHeader;
     
 public:
-    void parseLevelCode(godot::String levelCode, godot::Spatial* worldAPI);
+    void parseLevelCode(godot::String levelCode, godot::Node* worldAPI);
     
 };
 

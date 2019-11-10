@@ -11,7 +11,7 @@ void LegacyWorldLoader::_register_methods()
     register_method("loadLevelFromLocalhost", &LegacyWorldLoader::loadLevelFromLocalhost);
     register_method("_ready", &LegacyWorldLoader::_ready);
 
-    //register_property<GDTest, String>("data", &GDTest::_data, String("Hello world"));
+    register_property<LegacyWorldLoader, NodePath>("Loader", &LegacyWorldLoader::loaderNode, NodePath());
     //register_property<GDTest, String>("data", &GDTest::set_data, &GDTest::get_data, String("Hello world"));
 }
 
@@ -20,13 +20,14 @@ void LegacyWorldLoader::_init()
 
 void LegacyWorldLoader::_ready()
 {
-    worldAPI = static_cast<Spatial*>(get_parent()->get_node("WorldInterface"));
     client.instance();
 }
 
 
 void LegacyWorldLoader::loadLevelFromFilesystem ( godot::String fileName )
 {
+    Node* worldAPI = get_node(loaderNode);
+    
     Ref<File> gameFile;
     gameFile.instance();
     
@@ -109,5 +110,6 @@ void godot::LegacyWorldLoader::loadLevelFromLocalhost(int gameNumber)
     String data = String((char *)(rawResponse.read().ptr()));
     
     LegacyLevel cyLevel;
+    Node* worldAPI = get_node(loaderNode);
     cyLevel.parseLevelCode(data, worldAPI);
 }

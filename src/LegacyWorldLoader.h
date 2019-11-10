@@ -7,6 +7,7 @@
 #include <Spatial.hpp>
 #include <HTTPClient.hpp>
 #include "Legacy/LegacyLevel.h"
+#include <NodePath.hpp>
 
 namespace godot {
 
@@ -14,7 +15,7 @@ class LegacyWorldLoader : public Node {
     GODOT_CLASS(LegacyWorldLoader, Node)
     
 private:
-    Spatial* worldAPI;
+    NodePath loaderNode;
     Ref<HTTPClient> client;
     
 public:
@@ -25,6 +26,7 @@ public:
     
     void loadLevelFromFilesystem(String fileName);
     void loadLevelFromLocalhost(int gameNumber);
+    
     
 };
 

@@ -20,7 +20,7 @@ var selection_mesh : MeshInstance
 var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
-func _init(parent, position : Vector2, lvl : int):
+func _init(position : Vector2, lvl : int):
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
@@ -31,8 +31,6 @@ func _init(parent, position : Vector2, lvl : int):
 	add_child(mesh)
 	add_child(collision_mesh)
 	collision_mesh.add_child(collision_shape)
-	
-	parent.add_child(self)
 
 func get_type():
 	return "wall"

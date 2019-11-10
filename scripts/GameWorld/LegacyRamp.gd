@@ -18,7 +18,7 @@ var selection_mesh : MeshInstance
 var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
-func _init(parent, position : Vector2, lvl : int):
+func _init(position : Vector2, lvl : int):
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
@@ -29,8 +29,6 @@ func _init(parent, position : Vector2, lvl : int):
 	add_child(mesh)
 	add_child(collision_mesh)
 	collision_mesh.add_child(collision_shape)
-	
-	parent.add_child(self)
 
 func get_level():
 	return level
@@ -124,7 +122,7 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, quad_vertices : Arra
 	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
 	var normal = (quad_vertices[2] - quad_vertices[1]).cross(quad_vertices[3] - quad_vertices[1]).normalized()
 	var ramp_length = quad_vertices[0].distance_to(quad_vertices[1])
-	print(ramp_length)
+	#print(ramp_length)
 	
 	var texture_float = (tex+1.0)/256
 	var texture_scale = WorldTextures.textures[tex].texScale

@@ -3,7 +3,7 @@
 
 // Parses Adobe Shockwave Lingo's file structure for CY levels
 // This works by iterating through each #object, and 
-void LegacyLevel::parseLevelCode(godot::String levelCode, godot::Spatial* worldApi) {
+void LegacyLevel::parseLevelCode(godot::String levelCode, godot::Node* worldApi) {
     int strPtr = 0; // String index
     int depth = 0;  // Depth inside brackets
     int objects = 0; // Keeps track of the number of objects in a level

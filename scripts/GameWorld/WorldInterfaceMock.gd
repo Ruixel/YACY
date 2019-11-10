@@ -3,7 +3,7 @@ onready var EditorGUI = get_node("../GUI")
 onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
 onready var Cursor = get_node("../3DCursor")
 
-const Wall = preload("res://scripts/GameWorld/Wall.gd")
+const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
@@ -42,7 +42,8 @@ const toolToObjectDict = {
 # Object functions
 func obj_create(pos : Vector2):
 	var objectType = toolToObjectDict.get(mode)
-	var new_obj = objectType.new(levelMeshes[level], pos, level)
+	var new_obj = objectType.new(pos, level)
+	levelMeshes[level].add_child(new_obj)
 	objects.append(new_obj)
 	
 	# Select
@@ -78,111 +79,6 @@ func deselect():
 	
 	selection = null
 
-func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level: int):
-	start = start / 5.0
-	disp = disp / 5.0
-	var end : Vector2 = start + disp
-	
-	var new_wall = Wall.new(levelMeshes[level], start, level)
-	new_wall.end = end
-	if typeof(texColour) == TYPE_INT:
-		new_wall.texture = WorldTextures.getWallTexture(texColour)
-	else:
-		new_wall.texture = WorldTextures.TextureID.COLOR
-		new_wall.colour = texColour
-	new_wall.change_height_value(height)
-	objects.append(new_wall)
-	
-	new_wall._genMesh()
-
-func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, level: int):
-	pos = pos / 5.0
-	
-	var new_triwall = Wall.new(levelMeshes[level], pos, level)
-	var disp
-	match (direction):
-		1: disp = Vector2(0, 4)
-		2: disp = Vector2(0, -4)
-		3: disp = Vector2(4, 0)
-		4: disp = Vector2(-4, 0)
-		5: disp = Vector2(3, 3)
-		6: disp = Vector2(3, -3)
-		7: disp = Vector2(-3, -3)
-		8: disp = Vector2(-3, 3)
-	if is_bottom == 1:
-		new_triwall.wallShape = WorldConstants.WallShape.HALFWALLBOTTOM
-		new_triwall.end = pos + disp
-	else:
-		new_triwall.wallShape = WorldConstants.WallShape.HALFWALLTOP
-		new_triwall.end = pos
-		new_triwall.start = pos + disp
-
-	if typeof(texColour) == TYPE_INT:
-		new_triwall.texture = WorldTextures.getWallTexture(texColour)
-	else:
-		new_triwall.texture = WorldTextures.TextureID.COLOR
-		new_triwall.colour = texColour
-	objects.append(new_triwall)
-	
-	new_triwall._genMesh()
-
-func create_plat(pos : Vector2, size : int, texColour, height : int, shape, level: int):
-	pos = pos / 5.0
-	
-	var new_plat = Plat.new(levelMeshes[level], pos, level)
-	new_plat.size = size
-	new_plat.platShape = shape
-	if typeof(texColour) == TYPE_INT:
-		new_plat.texture = WorldTextures.getPlatTexture(texColour)
-	else:
-		new_plat.texture = WorldTextures.TextureID.COLOR
-		new_plat.colour = texColour
-	new_plat.change_height_value(height)
-	objects.append(new_plat)
-	
-	new_plat._genMesh()
-
-func create_pillar(pos : Vector2, isDiagonal : int, size : int, texColour, height : int, level: int):
-	pos = pos / 5.0
-	
-	var new_pillar = Pillar.new(levelMeshes[level], pos, level)
-	new_pillar.size = size
-	if typeof(texColour) == TYPE_INT:
-		new_pillar.texture = WorldTextures.getWallTexture(texColour)
-	else:
-		new_pillar.texture = WorldTextures.TextureID.COLOR
-		new_pillar.colour = texColour
-	new_pillar.change_height_value(height)
-	new_pillar.diagonal = bool(isDiagonal - 1)
-	objects.append(new_pillar)
-	
-	new_pillar._genMesh()
-
-func create_ramp(end : Vector2, direction : int, texColour, level: int):
-	end = end / 5.0
-	var start
-	match direction:
-		1: start = end + Vector2(0,  4)
-		2: start = end + Vector2(0, -4)
-		3: start = end + Vector2(4,  0)
-		4: start = end + Vector2(-4, 0)
-		5: start = end + Vector2(3,  3)
-		6: start = end + Vector2(3, -3)
-		7: start = end + Vector2(-3,-3)
-		8: start = end + Vector2(-3, 3)
-		_: return
-	
-	var new_ramp = Ramp.new(levelMeshes[level], start, level)
-	new_ramp.end = end
-	if typeof(texColour) == TYPE_INT:
-		new_ramp.texture = WorldTextures.getPlatTexture(texColour)
-	else:
-		new_ramp.texture = WorldTextures.TextureID.COLOR
-		new_ramp.colour = texColour
-		
-	objects.append(new_ramp)
-	new_ramp._genMesh()
-
 func select_update_mesh():
 	if selection.selection_mesh != null:
 		selection.selection_mesh.queue_free()
@@ -206,6 +102,11 @@ func selection_set_default():
 	if default_objs[mode].has_method("genPrototypeMesh"):
 		emit_signal("update_prototype")
 
+# Level Loader
+func add_geometric_object(new_obj):
+	levelMeshes[level].add_child(new_obj)
+	new_obj._genMesh()
+	objects.append(new_obj)
 
 # Prototype functions
 func get_prototype(type) -> Array:
@@ -263,7 +164,7 @@ func _ready():
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
 		var objectType = toolToObjectDict.get(obj)
-		default_objs[obj] = objectType.new(self, Vector2(0,0), 0)
+		default_objs[obj] = objectType.new(Vector2(0,0), 0)
 
 func on_tool_change(type) -> void:
 	mode = type
