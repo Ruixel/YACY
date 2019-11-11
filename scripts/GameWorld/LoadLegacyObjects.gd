@@ -110,6 +110,39 @@ func create_spawn(pos : Vector2, direction : int, level : int):
 	var new_spawn = preload("res://Entities/Legacy/Spawn/Spawn.tscn").instance()
 	
 	pos = pos / 5.0
-	new_spawn.set_translation(Vector3(pos.x, level * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_spawn.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.001, pos.y))
+	
+	match (direction):
+		1: new_spawn.set_rotation_degrees(Vector3(0, 0, 0))
+		2: new_spawn.set_rotation_degrees(Vector3(0, 180, 0))
+		3: new_spawn.set_rotation_degrees(Vector3(0, 90, 0))
+		4: new_spawn.set_rotation_degrees(Vector3(0, 270, 0))
 	
 	get_parent().call("add_entity", new_spawn)
+
+func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, level : int):
+	var new_board = preload("res://Entities/Legacy/MessageBoard/MsgBoard.tscn").instance()
+	new_board.get_node("Viewport/Text").set_text(msg)
+	
+	var t = new_board.get_node("Viewport").get_texture()
+	new_board.get_node("Front").mesh.surface_get_material(0).albedo_texture = t
+	
+	pos = pos / 5.0
+	new_board.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	
+	match (direction):
+		1: new_board.set_rotation_degrees(Vector3(0, 0, 0))
+		2: new_board.set_rotation_degrees(Vector3(0, 180, 0))
+		3: new_board.set_rotation_degrees(Vector3(0, 90, 0))
+		4: new_board.set_rotation_degrees(Vector3(0, 270, 0))
+		5: new_board.set_rotation_degrees(Vector3(0, 45, 0))
+		6: new_board.set_rotation_degrees(Vector3(0, 135, 0))
+		7: new_board.set_rotation_degrees(Vector3(0, 225, 0))
+		8: new_board.set_rotation_degrees(Vector3(0, 315, 0))
+	
+	match (height):
+		2: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/4.0, 0))
+		3: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/2.0, 0))
+		4: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 3/4.0, 0))
+	
+	get_parent().call("add_entity", new_board)

@@ -81,6 +81,7 @@ namespace Legacy {
         else if (objectName == "Ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
         
         else if (objectName == "Begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Board") message_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -91,6 +92,11 @@ namespace Legacy {
     inline int extractInt(godot::String integer)
     {
         return integer.to_int();
+    }
+    
+    inline godot::String extractStr(godot::String str)
+    {
+        return str;
     }
     
     // The CY save file will either use a user-defined colour or a texture
@@ -229,8 +235,22 @@ namespace Legacy {
         int objects = objectArray.size();
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
-            
+            //                             // Position                  // Direction        // Level
             worldAPI->call("create_spawn", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+    
+    // Message board
+    // [position_x, position_y, message, direction, height, level]
+    void message_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                          // Position                  // Message          // Direction     // Height               // Level
+            if      (objectSize == 6) worldAPI->call("create_msgBoard", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), extractInt(obj[4]), extractInt(obj[5]));    
+            else if (objectSize == 5) worldAPI->call("create_msgBoard", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), 1,                  extractInt(obj[4])); 
         }
     }
 

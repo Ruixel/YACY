@@ -152,11 +152,11 @@ nodes/strafe/node = SubResource( 16 )
 nodes/strafe/position = Vector2( -340, 120 )
 nodes/walk/node = SubResource( 21 )
 nodes/walk/position = Vector2( -340, 220 )
-node_connections = [ "output", 0, "eye_blend", "state", 0, "strafe", "state", 1, "walk", "state", 2, "jumpup", "state", 3, "jumpdown", "aim", 0, "aimdown", "aim", 1, "land", "aim", 2, "aimup", "land", 0, "state", "land", 1, "hardland", "eye_blend", 0, "aim", "eye_blend", 1, "eyes" ]
+node_connections = [ "output", 0, "eye_blend", "state", 0, "strafe", "state", 1, "walk", "state", 2, "jumpup", "state", 3, "jumpdown", "land", 0, "state", "land", 1, "hardland", "aim", 0, "aimdown", "aim", 1, "land", "aim", 2, "aimup", "eye_blend", 0, "aim", "eye_blend", 1, "eyes" ]
 
 [sub_resource type="CapsuleShape" id=23]
-radius = 0.490082
-height = 0.560254
+radius = 0.320497
+height = 0.422358
 
 [sub_resource type="RayShape" id=24]
 
@@ -220,9 +220,10 @@ collision_layer = 3
 script = ExtResource( 1 )
 
 [node name="Scene Root" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0 )
 
 [node name="gun_bone" type="BoneAttachment" parent="Scene Root/Robot_Skeleton/Skeleton" index="5"]
-transform = Transform( 0.915293, -0.234046, 0.328111, -0.231911, -0.971656, -0.0464875, 0.329726, -0.0335173, -0.943495, -0.207124, 1.38983, 0.483075 )
+transform = Transform( 0.89993, -0.248056, 0.358857, -0.26105, -0.965273, -0.0128922, 0.349628, -0.0820448, -0.933303, -0.207124, 1.36346, 0.545066 )
 bone_name = "hand.R"
 
 [node name="shoot_from" type="Position3D" parent="Scene Root/Robot_Skeleton/Skeleton/gun_bone"]
@@ -245,7 +246,7 @@ parameters/strafe/blend_position = Vector2( 0, 0 )
 parameters/walk/blend_position = Vector2( 0, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.03615, 0 )
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0.727553, 0 )
 shape = SubResource( 23 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="."]
@@ -253,7 +254,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.00
 shape = SubResource( 24 )
 
 [node name="camera_base" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.85456, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30393, 0 )
 
 [node name="camera_rot" type="Spatial" parent="camera_base"]
 

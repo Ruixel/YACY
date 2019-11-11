@@ -26,7 +26,7 @@ func spawnPlayer():
 	
 	add_child(player)
 	#player.set_translation(Vector3(50, 50, 50))
-	player.set_translation(spawnLocation.get_node("Pos").get_global_transform().origin)
+	player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
 
 	player.get_node("camera_base/camera_rot/Camera").make_current()
 

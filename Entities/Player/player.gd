@@ -175,6 +175,7 @@ func _physics_process(delta):
 	orientation = orientation.orthonormalized() # orthonormalize orientation
 	
 	$"Scene Root".global_transform.basis = orientation.basis
+	$"Scene Root".set_scale(Vector3(0.85,0.85,0.85))
 	
 	
 		
