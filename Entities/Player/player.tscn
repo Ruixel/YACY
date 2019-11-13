@@ -166,12 +166,12 @@ tracks/0/path = NodePath("camera_rot/Camera:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
-"times": PoolRealArray( 0, 1 ),
-"transitions": PoolRealArray( 0.287175, 1 ),
+"times": PoolRealArray( 0, 2.79397e-07, 1 ),
+"transitions": PoolRealArray( 0.287175, 0.287175, 1 ),
 "update": 3,
-"values": [ Vector3( 0, 0.592719, -2.15676 ), Vector3( 0, 0.592719, -2.15676 ) ]
+"values": [ Vector3( 0, 0.592719, -2.15676 ), Vector3( 0, 0.592719, -2.15676 ), Vector3( 0, 0.592719, -2.15676 ) ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("../crosshair:self_modulate")
@@ -185,6 +185,30 @@ tracks/1/keys = {
 "update": 3,
 "values": [ Color( 1, 1, 1, 0 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("camera_rot/c_origin:translation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.287174, 1 ),
+"update": 3,
+"values": [ Vector3( 0, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("camera_rot/c_end:translation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.287175, 1 ),
+"update": 3,
+"values": [ Vector3( 0, 0.593, -2.157 ), Vector3( 0, 0.593, -2.157 ) ]
+}
 
 [sub_resource type="Animation" id=26]
 tracks/0/type = "value"
@@ -192,7 +216,7 @@ tracks/0/path = NodePath("camera_rot/Camera:translation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/imported = false
-tracks/0/enabled = true
+tracks/0/enabled = false
 tracks/0/keys = {
 "times": PoolRealArray( 0, 1 ),
 "transitions": PoolRealArray( 0.233259, 1 ),
@@ -211,6 +235,30 @@ tracks/1/keys = {
 "update": 3,
 "values": [ Color( 1, 1, 1, 1 ) ]
 }
+tracks/2/type = "value"
+tracks/2/path = NodePath("camera_rot/c_origin:translation")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.225313, 1 ),
+"update": 3,
+"values": [ Vector3( -0.684, 0, 0 ), Vector3( -0.684, 0, 0 ) ]
+}
+tracks/3/type = "value"
+tracks/3/path = NodePath("camera_rot/c_end:translation")
+tracks/3/interp = 2
+tracks/3/loop_wrap = true
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.225313, 1 ),
+"update": 3,
+"values": [ Vector3( -0.684, 0.266, -1.041 ), Vector3( -0.684, 0.266, -1.041 ) ]
+}
 
 [sub_resource type="AudioStreamRandomPitch" id=27]
 audio_stream = ExtResource( 7 )
@@ -223,7 +271,7 @@ script = ExtResource( 1 )
 transform = Transform( 0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0 )
 
 [node name="gun_bone" type="BoneAttachment" parent="Scene Root/Robot_Skeleton/Skeleton" index="5"]
-transform = Transform( 0.89993, -0.248056, 0.358857, -0.26105, -0.965273, -0.0128922, 0.349628, -0.0820448, -0.933303, -0.207124, 1.36346, 0.545066 )
+transform = Transform( 0.900487, -0.251727, 0.354881, -0.261032, -0.965101, -0.0225342, 0.348204, -0.0723123, -0.934639, -0.207117, 1.3654, 0.540608 )
 bone_name = "hand.R"
 
 [node name="shoot_from" type="Position3D" parent="Scene Root/Robot_Skeleton/Skeleton/gun_bone"]
@@ -254,7 +302,7 @@ transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.00
 shape = SubResource( 24 )
 
 [node name="camera_base" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30393, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.44319, 0 )
 
 [node name="camera_rot" type="Spatial" parent="camera_base"]
 
@@ -262,6 +310,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.30393, 0 )
 transform = Transform( -1, 0, -8.74228e-08, -3.17959e-08, 0.931515, 0.363703, 8.14356e-08, 0.363703, -0.931515, 0, 0.592719, -2.15676 )
 current = true
 far = 300.0
+
+[node name="c_origin" type="Spatial" parent="camera_base/camera_rot"]
+
+[node name="c_end" type="Spatial" parent="camera_base/camera_rot"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.593, -2.157 )
 
 [node name="animation" type="AnimationPlayer" parent="camera_base"]
 anims/far = SubResource( 25 )

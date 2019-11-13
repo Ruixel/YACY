@@ -22,6 +22,9 @@ var orientation = Transform()
 var airborne_time = 100
 const MIN_AIRBORNE_TIME = 0.1
 
+onready var cam_origin = $"camera_base/camera_rot/c_origin"
+onready var cam_end = $"camera_base/camera_rot/c_end"
+
 const JUMP_SPEED = 5
 
 var root_motion = Transform()
@@ -57,6 +60,11 @@ func _physics_process(delta):
 	cam_x.y=0
 	cam_x = cam_x.normalized()
 	
+	var cam = $camera_base/camera_rot/Camera
+	var ch_pos = $crosshair.rect_position + $crosshair.rect_size * 0.5
+	var ray_from = cam.project_ray_origin(ch_pos)
+	var ray_dir = cam.project_ray_normal(ch_pos)
+	
 	var current_aim = Input.is_action_pressed("aim")
 	
 	if (aiming != current_aim):
@@ -81,14 +89,12 @@ func _physics_process(delta):
 		$animation_tree["parameters/state/current"]=2
 		$sfx/jump.play()							
 
-
 	if (on_air):
 		
 		if (velocity.y > 0):
 			$animation_tree["parameters/state/current"]=2
 		else:
 			$animation_tree["parameters/state/current"]=3
-	
 	elif (aiming):
 		
 		# change state to strafe
@@ -116,11 +122,7 @@ func _physics_process(delta):
 
 		if (Input.is_action_just_pressed("shoot")):
 			var shoot_from = $"Scene Root/Robot_Skeleton/Skeleton/gun_bone/shoot_from".global_transform.origin
-			var cam = $camera_base/camera_rot/Camera
 			
-			var ch_pos = $crosshair.rect_position + $crosshair.rect_size * 0.5
-			var ray_from = cam.project_ray_origin(ch_pos)
-			var ray_dir = cam.project_ray_normal(ch_pos)
 			var shoot_target
 			
 			var col = get_world().direct_space_state.intersect_ray( ray_from, ray_from + ray_dir * 1000, [self] )
@@ -139,8 +141,7 @@ func _physics_process(delta):
 			bullet.add_collision_exception_with(self)
 			$sfx/shoot.play()							
 			
-	else: 		
-		# convert orientation to quaternions for interpolating rotation
+	else: 
 		
 		var target = - cam_x * motion.x -  cam_z * motion.y
 		if (target.length() > 0.001):
@@ -160,7 +161,7 @@ func _physics_process(delta):
 		
 		# get root motion transform
 		root_motion = $animation_tree.get_root_motion_transform()		
-
+		
 	
 	# apply root motion to orientation
 	orientation *= root_motion
@@ -177,10 +178,94 @@ func _physics_process(delta):
 	$"Scene Root".global_transform.basis = orientation.basis
 	$"Scene Root".set_scale(Vector3(0.85,0.85,0.85))
 	
-	
-		
-		
-	
+	tps_camera_collision_response(cam, ray_dir)
 	
 func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+
+# TPS camera, this avoids going through walls when rotating the camera
+# Works normally, however when aiming the camera may glitch out and/or go through the wall
+# TODO: needs fixing
+func tps_camera_collision_response(cam, ray_dir):
+	var from = cam_origin.get_translation()
+	var end = cam_end.get_translation()
+	var dist = from.distance_to(end)
+	
+	var global_from = cam_origin.get_global_transform().origin
+	var global_origin = $"camera_base".get_global_transform().origin
+	var test_dir = global_from - global_origin
+	var offset_col = get_world().direct_space_state.intersect_ray( global_origin, global_origin + test_dir, [self] )
+	if offset_col.empty():
+		var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * -dist), [self] )
+		if col.empty():
+			var dest = end
+			cam.set_translation(cam.get_translation().linear_interpolate(end, 0.5))
+			#cam.set_translation($camera_base.get_global_transform().origin - (ray_from + ray_dir * -3))
+		else:
+			var dist_to_origin = clamp(col.position.distance_to(global_from) - 0.2, 0, dist)
+			
+			var line = (end - from).normalized()
+			var dest = from + (line * dist_to_origin) #+ (col.normal * 0.5) #Vector3(0, (move_back / -camera_distance) * camera_height, move_back)
+			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+			#cam.set_translation($camera_base.get_global_transform().origin - (col.position))
+	else:
+		var offset = cam_origin.get_translation().x
+		var dist_to_offset = -offset - global_origin.distance_to(offset_col.position)
+		var line = (global_from - global_origin).normalized()
+		#from = from - (line * dist_to_origin) 
+		#global_from = global_origin
+		print("bruh", dist_to_offset)
+		
+		dist = from.distance_to(end)
+		var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * -(dist + 0.2)), [self] )
+		if col.empty():
+			var dest = end + (Vector3(1,0,0) * (dist_to_offset+0.2)) #+ Vector3(0.7,0,0)
+			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+			#cam.set_translation($camera_base.get_global_transform().origin - (ray_from + ray_dir * -3))
+		else:
+			var dist_to_origin = clamp(col.position.distance_to(global_from) - 0.2, 0, dist)
+
+			line = (end - from).normalized()
+			var dest = from + (line * dist_to_origin) + Vector3(0.7,0,0)
+			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+			#cam.set_translation($camera_base.get_global_transform().origin - (col.position))
+		#cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+#
+
+
+
+
+#		global_from = from + global_origin
+#		var plane = Plane(offset_col.normal, from.length())
+#		var col = plane.intersects_ray(-from, end - from)
+#		print("bruh", dist_to_origin)
+#		if col != null:
+#			print("yea")
+#			var dest = col
+#			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+#		else: 
+#			col = plane.intersects_ray(from, end - from)
+#			if col != null:
+#				print("yea")
+#				var dest = col
+#				cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+		
+		
+		
+		
+		
+		#dist = from.distance_to(end)
+		#var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * -dist), [self] )
+		#if col.empty():
+#			var dest = end
+#			cam.set_translation(cam.get_translation().linear_interpolate(end, 0.5))
+#			#cam.set_translation($camera_base.get_global_transform().origin - (ray_from + ray_dir * -3))
+#		else:
+#			print("bruh")
+#			dist_to_origin = clamp(col.position.distance_to(global_from) - 0.2, 0, dist)
+#
+#			line = (end - from).normalized()
+#			var dest = from + (line * dist_to_origin) #+ (col.normal * 0.5) #Vector3(0, (move_back / -camera_distance) * camera_height, move_back)
+#			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
+			#cam.set_translation($camera_base.get_global_transform().origin - (col.position))
+		#cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
