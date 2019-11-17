@@ -10,8 +10,8 @@ const MOTION_INTERPOLATE_SPEED = 10
 const ROTATION_INTERPOLATE_SPEED = 10
 var motion = Vector2()
 
-const CAMERA_X_ROT_MIN = -40
-const CAMERA_X_ROT_MAX = 30
+const CAMERA_X_ROT_MIN = -70
+const CAMERA_X_ROT_MAX = 80
 
 var camera_x_rot = 0.0
 
@@ -24,6 +24,9 @@ const MIN_AIRBORNE_TIME = 0.1
 
 onready var cam_origin = $"camera_base/camera_rot/c_origin"
 onready var cam_end = $"camera_base/camera_rot/c_end"
+
+enum CAMERA_MODE { FIRST_PERSON, THIRD_PERSON }
+var cam_mode = CAMERA_MODE.THIRD_PERSON
 
 const JUMP_SPEED = 5
 
@@ -38,6 +41,17 @@ func _input(event):
 
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
+	elif event.is_action_pressed("change_camera_mode"):
+		if cam_mode == CAMERA_MODE.FIRST_PERSON:
+			cam_mode = CAMERA_MODE.THIRD_PERSON
+			$camera_base/camera_rot/Camera.make_current()
+			$"Scene Root".set_visible(true)
+			
+		else:
+			cam_mode = CAMERA_MODE.FIRST_PERSON
+			$camera_base/camera_rot/FPSCamera.make_current()
+			$"Scene Root".set_visible(false)
+	
 
 func _ready():
 	#pre initialize orientation transform	
@@ -51,19 +65,6 @@ func _physics_process(delta):
 									Input.get_action_strength("move_forward") - Input.get_action_strength("move_back") )
 			
 	motion = motion.linear_interpolate(motion_target, MOTION_INTERPOLATE_SPEED * delta)
-	
-	var cam_z = - $camera_base/camera_rot/Camera.global_transform.basis.z			
-	var cam_x = $camera_base/camera_rot/Camera.global_transform.basis.x
-	
-	cam_z.y=0
-	cam_z = cam_z.normalized()
-	cam_x.y=0
-	cam_x = cam_x.normalized()
-	
-	var cam = $camera_base/camera_rot/Camera
-	var ch_pos = $crosshair.rect_position + $crosshair.rect_size * 0.5
-	var ray_from = cam.project_ray_origin(ch_pos)
-	var ray_dir = cam.project_ray_normal(ch_pos)
 	
 	var current_aim = Input.is_action_pressed("aim")
 	
@@ -87,7 +88,20 @@ func _physics_process(delta):
 		velocity.y = JUMP_SPEED
 		on_air = true
 		$animation_tree["parameters/state/current"]=2
-		$sfx/jump.play()							
+		$sfx/jump.play()
+
+	var cam_z = - $camera_base/camera_rot/Camera.global_transform.basis.z			
+	var cam_x = $camera_base/camera_rot/Camera.global_transform.basis.x
+	
+	cam_z.y=0
+	cam_z = cam_z.normalized()
+	cam_x.y=0
+	cam_x = cam_x.normalized()
+	
+	var cam = $camera_base/camera_rot/Camera
+	var ch_pos = $crosshair.rect_position + $crosshair.rect_size * 0.5
+	var ray_from = cam.project_ray_origin(ch_pos)
+	var ray_dir = cam.project_ray_normal(ch_pos)								
 
 	if (on_air):
 		
@@ -161,8 +175,31 @@ func _physics_process(delta):
 		
 		# get root motion transform
 		root_motion = $animation_tree.get_root_motion_transform()		
-		
 	
+	if cam_mode == CAMERA_MODE.THIRD_PERSON:
+		tps_process(delta, cam, root_motion, ray_dir)
+	else:
+		fps_process(delta, root_motion, motion)
+
+func fps_process(delta, root_motion, motion):
+	#print(root_motion)
+	#var h_velocity = Vector3()
+	#velocity = root_motion.origin / delta
+	#velocity += root_motion.origin.z * $camera_base/camera_rot/FPSCamera.get_global_transform().basis.x.normalized() * 5
+	#velocity.y = GRAVITY.y * delta
+	
+	var h_velocity = root_motion.origin / delta
+	print(h_velocity)
+	var move_vec = motion.y * -$camera_base/camera_rot/FPSCamera.get_global_transform().basis.z.normalized() * h_velocity.z
+	move_vec += motion.x * $camera_base/camera_rot/FPSCamera.get_global_transform().basis.x.normalized() * h_velocity.z
+	
+	velocity.x = move_vec.x
+	velocity.z = move_vec.z
+	velocity.y += GRAVITY.y * delta
+	
+	velocity = move_and_slide(velocity,Vector3(0,1,0))
+
+func tps_process(delta, cam, root_motion, ray_dir):	
 	# apply root motion to orientation
 	orientation *= root_motion
 	
@@ -212,60 +249,22 @@ func tps_camera_collision_response(cam, ray_dir):
 		var offset = cam_origin.get_translation().x
 		var dist_to_offset = -offset - global_origin.distance_to(offset_col.position)
 		var line = (global_from - global_origin).normalized()
-		#from = from - (line * dist_to_origin) 
-		#global_from = global_origin
+		from = from + (Vector3(1,0,0) * (dist_to_offset+0.2)) 
+		global_from = global_origin + from
 		print("bruh", dist_to_offset)
 		
+		end = end + (Vector3(1,0,0) * (dist_to_offset+0.2))
+		ray_dir = (end - from).normalized()
 		dist = from.distance_to(end)
-		var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * -(dist + 0.2)), [self] )
+		var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * (dist)), [self] )
 		if col.empty():
 			var dest = end + (Vector3(1,0,0) * (dist_to_offset+0.2)) #+ Vector3(0.7,0,0)
 			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
 			#cam.set_translation($camera_base.get_global_transform().origin - (ray_from + ray_dir * -3))
 		else:
 			var dist_to_origin = clamp(col.position.distance_to(global_from) - 0.2, 0, dist)
+			print("yo", dist_to_origin)
 
 			line = (end - from).normalized()
-			var dest = from + (line * dist_to_origin) + Vector3(0.7,0,0)
+			var dest = from + (line * dist_to_origin) #+ (Vector3(1,0,0) * (dist_to_offset+0.2))
 			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
-			#cam.set_translation($camera_base.get_global_transform().origin - (col.position))
-		#cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
-#
-
-
-
-
-#		global_from = from + global_origin
-#		var plane = Plane(offset_col.normal, from.length())
-#		var col = plane.intersects_ray(-from, end - from)
-#		print("bruh", dist_to_origin)
-#		if col != null:
-#			print("yea")
-#			var dest = col
-#			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
-#		else: 
-#			col = plane.intersects_ray(from, end - from)
-#			if col != null:
-#				print("yea")
-#				var dest = col
-#				cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
-		
-		
-		
-		
-		
-		#dist = from.distance_to(end)
-		#var col = get_world().direct_space_state.intersect_ray( global_from, global_from + (ray_dir * -dist), [self] )
-		#if col.empty():
-#			var dest = end
-#			cam.set_translation(cam.get_translation().linear_interpolate(end, 0.5))
-#			#cam.set_translation($camera_base.get_global_transform().origin - (ray_from + ray_dir * -3))
-#		else:
-#			print("bruh")
-#			dist_to_origin = clamp(col.position.distance_to(global_from) - 0.2, 0, dist)
-#
-#			line = (end - from).normalized()
-#			var dest = from + (line * dist_to_origin) #+ (col.normal * 0.5) #Vector3(0, (move_back / -camera_distance) * camera_height, move_back)
-#			cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))
-			#cam.set_translation($camera_base.get_global_transform().origin - (col.position))
-		#cam.set_translation(cam.get_translation().linear_interpolate(dest, 0.5))

@@ -103,10 +103,13 @@ func selection_set_default():
 		emit_signal("update_prototype")
 
 # Level Loader
-func add_geometric_object(new_obj):
+func add_geometric_object(new_obj, level):
 	levelMeshes[level].add_child(new_obj)
 	new_obj._genMesh()
 	objects.append(new_obj)
+
+func add_entity(new_entity):
+	pass
 
 # Prototype functions
 func get_prototype(type) -> Array:
