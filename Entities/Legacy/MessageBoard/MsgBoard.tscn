@@ -4,22 +4,22 @@
 [ext_resource path="res://Entities/Legacy/MessageBoard/msg_front.jpg" type="Texture" id=2]
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=3]
 
-[sub_resource type="ViewportTexture" id=7]
+[sub_resource type="ViewportTexture" id=1]
 viewport_path = NodePath("Viewport")
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=2]
 resource_local_to_scene = true
-albedo_texture = SubResource( 7 )
+albedo_texture = SubResource( 1 )
 
-[sub_resource type="PlaneMesh" id=9]
+[sub_resource type="PlaneMesh" id=3]
 resource_local_to_scene = true
-material = SubResource( 8 )
+material = SubResource( 2 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_texture = ExtResource( 1 )
 
-[sub_resource type="PlaneMesh" id=11]
-material = SubResource( 10 )
+[sub_resource type="PlaneMesh" id=5]
+material = SubResource( 4 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 48
@@ -28,20 +28,19 @@ outline_color = Color( 0, 0, 0, 0.356863 )
 font_data = ExtResource( 3 )
 
 [node name="Spatial" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Front" type="MeshInstance" parent="."]
-transform = Transform( 0.8, 0, -2.18557e-08, -3.49691e-08, 1.91069e-15, -0.5, 0, 1, 9.55343e-16, 0, 1, 0.051 )
-mesh = SubResource( 9 )
+transform = Transform( 0.5, 8.35189e-23, -1.36902e-30, 0, -4.37114e-08, -0.375, -4.17594e-23, 1, -1.63918e-08, 0, 1, 0.051 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="Back" type="MeshInstance" parent="."]
-transform = Transform( -0.8, 8.74228e-08, 0, 3.0571e-15, 4.37114e-08, -0.5, -6.99382e-08, -1, -2.18557e-08, 5.67679e-09, 1, 0.051 )
-mesh = SubResource( 11 )
+transform = Transform( -0.5, 1.50996e-07, -2.47509e-15, 0, -4.37114e-08, -0.375, -7.54979e-08, -1, 1.63918e-08, 5.67679e-09, 1, 0.051 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Viewport" type="Viewport" parent="."]
-size = Vector2( 512, 256 )
+size = Vector2( 512, 384 )
 hdr = false
 disable_3d = true
 usage = 0
@@ -50,7 +49,7 @@ gui_disable_input = true
 
 [node name="FrontTexture" type="TextureRect" parent="Viewport"]
 margin_right = 512.0
-margin_bottom = 256.0
+margin_bottom = 384.0
 texture = ExtResource( 2 )
 expand = true
 

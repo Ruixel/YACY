@@ -159,6 +159,7 @@ radius = 0.320497
 height = 0.422358
 
 [sub_resource type="RayShape" id=24]
+slips_on_slope = true
 
 [sub_resource type="Animation" id=25]
 tracks/0/type = "value"
@@ -271,7 +272,7 @@ script = ExtResource( 1 )
 transform = Transform( 0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0 )
 
 [node name="gun_bone" type="BoneAttachment" parent="Scene Root/Robot_Skeleton/Skeleton" index="5"]
-transform = Transform( 0.916527, -0.235811, 0.323365, -0.230249, -0.971537, -0.056213, 0.327452, -0.02291, -0.944602, -0.207099, 1.39539, 0.470171 )
+transform = Transform( 0.926338, -0.258129, 0.274705, -0.227707, -0.963893, -0.138264, 0.300515, 0.0655383, -0.951535, -0.207126, 1.39613, 0.439877 )
 bone_name = "hand.R"
 
 [node name="shoot_from" type="Position3D" parent="Scene Root/Robot_Skeleton/Skeleton/gun_bone"]
