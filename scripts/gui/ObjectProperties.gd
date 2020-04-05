@@ -7,7 +7,7 @@ signal s_changeColour
 signal s_changeSize
 signal s_changeWallShape
 signal s_changePlatShape
-signal s_changeDiagonal
+signal s_changeBoolean
 
 signal s_deleteObject
 signal s_setDefault
@@ -142,7 +142,7 @@ func setup_platShapeProperty(propScene, propInfo : Dictionary, propName : String
 
 func setup_boolProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("Label").set_text(propName)
-	propScene.get_node("CheckBox").connect("toggled", self, "on_select_bool")
+	propScene.get_node("CheckBox").connect("toggled", self, "on_select_" + propName.to_lower())
 
 func on_change_size(size):
 	emit_signal("s_changeSize", size)
@@ -161,8 +161,11 @@ func on_select_colour(colour):
 	emit_signal("s_changeTexture", WorldTextures.TextureID.COLOR) # Set the texture to colour
 
 # To do: generalize this
-func on_select_bool(value):
-	emit_signal("s_changeDiagonal", value)
+func on_select_diagonal(value):
+	emit_signal("s_changeBoolean", "diagonal", value)
+
+func on_select_visible(value):
+	emit_signal("s_changeBoolean", "visible", value)
 
 func set_properties(propList : Dictionary, nTool):
 	var propArray = ObjectProperties.get(nTool)

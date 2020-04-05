@@ -7,6 +7,7 @@ const hasDefaultObject = false
 
 var vertices : Array
 var level : int
+var isVisible : bool
 
 var floor_texture : int = 1
 var floor_colour := Color(1, 1, 1)
@@ -28,6 +29,10 @@ func _init(lvl : int):
 	vertices.insert(2, Vector2(80, 0))
 	vertices.insert(3, Vector2(0, 0))
 	level = lvl 
+	if lvl == 1:
+		isVisible = true
+	else:
+		isVisible = false
 	
 	add_child(mesh)
 	add_child(collision_mesh)
@@ -39,12 +44,19 @@ func get_level():
 func change_texture(index: int):
 	floor_texture = index
 
+func change_visible(vis: bool):
+	isVisible = vis
+
 func change_colour(newColour : Color):
 	floor_colour = newColour
 
 func _genMesh():
-	mesh.mesh = buildFloor()
-	collision_shape.shape = mesh.mesh.create_convex_shape()
+	if isVisible:
+		mesh.mesh = buildFloor()
+		collision_shape.shape = mesh.mesh.create_convex_shape()
+	else:
+		mesh.mesh = null
+		collision_shape.shape = null
 
 func selectObj():
 	pass
@@ -53,12 +65,14 @@ func selectObj():
 
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
+	dict["Visible"] = isVisible
 	dict["Texture"] = floor_texture 
 	dict["Colour"] = floor_colour
 	
 	return dict
 
 func set_property_dict(dict : Dictionary):
+	isVisible = dict["Visible"]
 	floor_texture = dict["Texture"]
 	floor_colour = dict["Colour"]
 
@@ -156,7 +170,6 @@ func buildFloor() -> Mesh:
 	plat_vertices.insert(2, Vector3(vertices[2].x, height, vertices[2].y))
 	plat_vertices.insert(3, Vector3(vertices[3].x, height, vertices[3].y))
 	
-	print("eqw:" + str(vertices[1].x))
 	_createPlatQuadMesh(surface_tool, plat_vertices, 0, floor_texture, floor_meshColor)
 	
 	# Rearrange vertices for the backwall

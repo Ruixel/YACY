@@ -72,10 +72,11 @@ func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	var result = space_state.intersect_ray(ray_origin, (ray_direction*50) + ray_origin)
 	
 	if result.empty() == false:
-		selection = objects[objects.find(result.collider.get_parent())]
-		mode = selection.toolType
-		select_update_mesh()
-		update_property_gui(selection)
+		if objects.find(result.collider.get_parent()) != -1:
+			selection = objects[objects.find(result.collider.get_parent())]
+			mode = selection.toolType
+			select_update_mesh()
+			update_property_gui(selection)
 	else:
 		mode = WorldConstants.Tools.NOTHING
 		PropertyGUI.update_properties({}, mode)
@@ -158,7 +159,7 @@ func _ready():
 	PropertyGUI.connect("s_changeColour", self, "property_colour")
 	PropertyGUI.connect("s_changeSize", self, "property_size")
 	PropertyGUI.connect("s_changeWallShape", self, "property_wallShape")
-	PropertyGUI.connect("s_changeDiagonal", self, "property_diagonal")
+	PropertyGUI.connect("s_changeBoolean", self, "property_boolean")
 	PropertyGUI.connect("s_changePlatShape", self, "property_platShape")
 	
 	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
@@ -201,6 +202,10 @@ func on_tool_change(type) -> void:
 
 func on_level_change(new_level):
 	level = new_level
+	if mode != WorldConstants.Tools.NOTHING and toolToObjectDict.get(mode).onePerLevel == true:
+		selection = fixed_objects[mode][level]
+		update_property_gui(selection)
+	
 	if not showUpperLevels:
 		hide_upper_levels(new_level)
 
@@ -263,6 +268,6 @@ func property_size(size : int):
 func property_colour(colour : Color):
 	set_property("change_colour", colour)
 
-func property_diagonal(isSet : bool):
-	set_property("change_diagonal", isSet)
+func property_boolean(propertyName : String, isSet : bool):
+	set_property("change_" + propertyName.to_lower(), isSet)
 
