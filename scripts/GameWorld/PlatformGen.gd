@@ -17,22 +17,22 @@ func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sInd
 	
 	# Add Vertices
 	surface_tool.add_uv(Vector2(wall_vertices[0].x * 1 * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[0].z * 1 * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[0].z * 1 * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
 	surface_tool.add_uv(Vector2(wall_vertices[3].x * 1 * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[3].z * 1 * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[3].z * 1 * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 	
 	surface_tool.add_uv(Vector2(wall_vertices[2].x * 1 * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[2].z * 1 * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[2].z * 1 * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
 	surface_tool.add_uv(Vector2(wall_vertices[1].x * 1 * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[1].z * 1 * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[1].z * 1 * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	

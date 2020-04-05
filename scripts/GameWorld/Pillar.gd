@@ -1,6 +1,10 @@
 extends Spatial
 const toolType = WorldConstants.Tools.PILLAR
 
+const canPlace = true
+const onePerLevel = false
+const hasDefaultObject = true
+
 var pos : Vector2
 var level : int
 
@@ -156,25 +160,25 @@ func _createWallQuadMesh(v1 : Vector3, v2 : Vector3, v3 : Vector3, v4 : Vector3,
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            v3.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								v3.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(v1)
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            v3.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								v3.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(v4)
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            v1.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								v1.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(v3)
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            v1.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								v1.y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(v2)
 	
@@ -194,25 +198,25 @@ func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sInd
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[3].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	

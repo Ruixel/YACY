@@ -1,6 +1,10 @@
 extends Spatial
 const toolType = WorldConstants.Tools.PLATFORM
 
+const canPlace = true
+const onePerLevel = false
+const hasDefaultObject = true
+
 var pos : Vector2
 var level : int
 
@@ -92,25 +96,25 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[3].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	
@@ -131,19 +135,19 @@ static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array,
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(tri_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            tri_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								tri_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(tri_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(tri_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            tri_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								tri_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(tri_vertices[1])
 
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(tri_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            tri_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								tri_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(tri_vertices[2])
 	

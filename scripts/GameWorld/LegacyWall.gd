@@ -1,6 +1,10 @@
 extends Spatial
 const toolType = WorldConstants.Tools.WALL
 
+const canPlace = true
+const onePerLevel = false
+const hasDefaultObject = true
+
 var start : Vector2
 var end : Vector2 = Vector2(-1, -1) # Invalid vector
 var level : int
@@ -97,25 +101,25 @@ static func _createWallQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[3])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	
@@ -142,19 +146,19 @@ static func _createWallTriMesh(surface_tool : SurfaceTool, wall_vertices : Array
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            -wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								-wall_vertices[0].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(wall_length * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            -wall_vertices[1].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								-wall_vertices[1].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[1])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            -wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								-wall_vertices[2].y * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(wall_vertices[2])
 	

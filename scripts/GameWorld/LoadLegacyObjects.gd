@@ -108,6 +108,7 @@ func create_ramp(end : Vector2, direction : int, texColour, level: int):
 
 func create_spawn(pos : Vector2, direction : int, level : int):
 	var new_spawn = preload("res://Entities/Legacy/Spawn/Spawn.tscn").instance()
+	new_spawn.set_name("SpawnLocation")
 	
 	pos = pos / 5.0
 	new_spawn.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.001, pos.y))

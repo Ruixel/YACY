@@ -7,6 +7,7 @@ const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
+const Floor = preload("res://scripts/GameWorld/LegacyFloor.gd")
 
 var selection # Selected object (To be modified)
 
@@ -25,7 +26,13 @@ signal update_prototype
 
 # Vars
 var mode = WorldConstants.Tools.WALL
+
+# All Objects
 var objects : Array = []
+# For objects that have the one per level constraint
+var fixed_objects: Dictionary
+
+# Reference to what the "Set to Default" properties were
 var default_objs : Dictionary
 
 var level : int = 1
@@ -36,7 +43,8 @@ const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
 	WorldConstants.Tools.PLATFORM: Plat,
 	WorldConstants.Tools.PILLAR: Pillar,
-	WorldConstants.Tools.RAMP: Ramp
+	WorldConstants.Tools.RAMP: Ramp,
+	WorldConstants.Tools.GROUND: Floor
 }
 
 # Object functions
@@ -167,7 +175,17 @@ func _ready():
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
 		var objectType = toolToObjectDict.get(obj)
-		default_objs[obj] = objectType.new(Vector2(0,0), 0)
+		if objectType.canPlace == true:
+			default_objs[obj] = objectType.new(Vector2(0,0), 0)
+		
+		# Initialise objects that only have 1 per level
+		if objectType.onePerLevel == true:
+			fixed_objects[obj] = [];
+			for lvl in range(0, 21):
+				fixed_objects[obj].append(objectType.new(lvl))
+				levelMeshes[level].add_child(fixed_objects[obj][lvl])
+				fixed_objects[obj][lvl]._genMesh()
+	
 
 func on_tool_change(type) -> void:
 	mode = type
@@ -175,7 +193,10 @@ func on_tool_change(type) -> void:
 	
 	if mode == WorldConstants.Tools.NOTHING:
 		PropertyGUI.update_properties({}, mode)
-	else:
+	elif toolToObjectDict.get(mode).onePerLevel == true:
+		selection = fixed_objects[mode][level]
+		update_property_gui(selection)
+	elif toolToObjectDict.get(mode).canPlace == true:
 		update_property_gui(default_objs[mode])
 
 func on_level_change(new_level):
@@ -213,76 +234,35 @@ func property_end_vector(endVec : Vector2):
 		selection._genMesh()
 		select_update_mesh()
 
-func property_height_value(key : int):
-	if selection != null and selection.has_method("change_height_value"):
-		selection.change_height_value(key)
+func set_property(method_name : String, value):
+	if selection != null and selection.has_method(method_name):
+		selection.call(method_name, value)
 		selection._genMesh()
 		select_update_mesh()
 	else:
-		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
-			default_objs[mode].change_height_value(key)
-			emit_signal("update_prototype")
+		if mode != WorldConstants.Tools.NOTHING and toolToObjectDict[mode].hasDefaultObject == true:
+			if default_objs[mode].has_method("genPrototypeMesh"):
+				default_objs[mode].call(method_name, value)
+				emit_signal("update_prototype")
+
+func property_height_value(key : int):
+	set_property("change_height_value", key)
 
 func property_texture(index : int):
-	if selection != null and selection.has_method("change_texture"):
-		selection.change_texture(index)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING:
-			default_objs[mode].change_texture(index)
-			if default_objs[mode].has_method("genPrototypeMesh"):
-				emit_signal("update_prototype")
+	set_property("change_texture", index)
 
 func property_wallShape(shape : int):
-	if selection != null and selection.has_method("change_wallShape"):
-		selection.change_wallShape(shape)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING:
-			default_objs[mode].change_wallShape(shape)
-			if default_objs[mode].has_method("genPrototypeMesh"):
-				emit_signal("update_prototype")
+	set_property("change_wallShape", shape)
 
 func property_platShape(shape : int):
-	if selection != null and selection.has_method("change_platShape"):
-		selection.change_platShape(shape)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING:
-			default_objs[mode].change_platShape(shape)
-			if default_objs[mode].has_method("genPrototypeMesh"):
-				emit_signal("update_prototype")
+	set_property("change_platShape", shape)
 
 func property_size(size : int):
-	if selection != null and selection.has_method("change_size"):
-		selection.change_size(size)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("change_size"):
-			default_objs[mode].change_size(size)
-			if default_objs[mode].has_method("genPrototypeMesh"):
-				emit_signal("update_prototype")
+	set_property("change_size", size)
 
 func property_colour(colour : Color):
-	if selection != null and selection.has_method("change_colour"):
-		selection.change_colour(colour)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
-			default_objs[mode].change_colour(colour)
-			emit_signal("update_prototype")
+	set_property("change_colour", colour)
 
 func property_diagonal(isSet : bool):
-	if selection != null and selection.has_method("change_diagonal"):
-		selection.change_diagonal(isSet)
-		selection._genMesh()
-		select_update_mesh()
-	else:
-		if mode != WorldConstants.Tools.NOTHING and default_objs[mode].has_method("genPrototypeMesh"):
-			default_objs[mode].change_diagonal(isSet)
-			emit_signal("update_prototype")
+	set_property("change_diagonal", isSet)
+

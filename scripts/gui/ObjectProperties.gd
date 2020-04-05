@@ -36,6 +36,7 @@ const Property = {
 	"Size": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":4},
 	"PillarSize": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":5},
 	"Diagonal": {"type": BasicProperty.BooleanProperty, "init_func": "setup_boolProperty"},
+	"Visible": {"type": BasicProperty.BooleanProperty, "init_func": "setup_boolProperty"},
 	"Texture": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
 	"Colour": {"type": BasicProperty.ColourProperty, "init_func": "setup_colourProperty"},
 	"WallShape": {"type": BasicProperty.WallShapeProperty, "init_func": "setup_wallShapeProperty"},
@@ -47,7 +48,8 @@ const ObjectProperties = {
 	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
 	WorldConstants.Tools.PLATFORM: ["PlatShape", "Size", "Colour", "Texture"],
 	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"],
-	WorldConstants.Tools.RAMP: ["Colour", "Texture"]
+	WorldConstants.Tools.RAMP: ["Colour", "Texture"],
+	WorldConstants.Tools.GROUND: ["Visible", "Colour", "Texture"]
 }
 
 # Connect to tool change signal

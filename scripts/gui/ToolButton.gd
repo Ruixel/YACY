@@ -30,3 +30,13 @@ func _on_Ramp_pressed():
 	$ToolSelected.set_text("Selected: Ramp")
 	emit_signal("s_changeTool", WorldConstants.Tools.RAMP)
 	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)
+
+func _on_Ground_pressed():
+	$ToolSelected.set_text("Selected: Level Ground")
+	emit_signal("s_changeTool", WorldConstants.Tools.GROUND)
+	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)
+
+func _on_Hole_pressed():
+	$ToolSelected.set_text("Selected: Hole")
+	emit_signal("s_changeTool", WorldConstants.Tools.HOLE)
+	emit_signal("s_changeMode", WorldConstants.Mode.CREATE)

@@ -25,9 +25,11 @@ func spawnPlayer():
 	var player = preload("res://Entities/Player/player.tscn").instance()
 	
 	add_child(player)
-	#player.set_translation(Vector3(50, 50, 50))
-	player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
-
+	if (spawnLocation != null):
+		player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
+	else:
+		player.set_translation(Vector3(50, 50, 50))
+		
 	player.get_node("camera_base/camera_rot/Camera").make_current()
 
 # Level Loader
@@ -41,4 +43,5 @@ func add_entity(new_ent):
 	add_child(new_ent)
 	
 	if new_ent.get_name() == "SpawnLocation":
+		print("hey guys")
 		spawnLocation = new_ent

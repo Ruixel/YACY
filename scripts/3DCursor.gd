@@ -140,7 +140,7 @@ func _plat_create_process():
 		# Show prototype 
 		grid_pos.x = clamp(grid_pos.x, floor(prototype_size.x / 2), grid_num - floor(prototype_size.x / 2)) as int 
 		grid_pos.y = clamp(grid_pos.y, floor(prototype_size.y / 2), grid_num - floor(prototype_size.y / 2)) as int
-		prototype.transform.origin = Vector3(grid_pos.x, 0, grid_pos.y)
+		#prototype.transform.origin = Vector3(grid_pos.x, 0, grid_pos.y)
 	
 	if mouse_place_released:
 		pass

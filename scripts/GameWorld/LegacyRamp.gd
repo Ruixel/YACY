@@ -1,6 +1,10 @@
 extends Spatial
 const toolType = WorldConstants.Tools.RAMP
 
+const canPlace = true
+const onePerLevel = false
+const hasDefaultObject = true
+
 var start : Vector2
 var end : Vector2 = Vector2(-1, -1) # Invalid vector
 var level : int
@@ -130,25 +134,25 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, quad_vertices : Arra
 	# Add Vertices
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            0 * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								0 * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(quad_vertices[0])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(width * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            0 * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								0 * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(quad_vertices[3])
 
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(width * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            ramp_length * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								ramp_length * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(quad_vertices[2])
 	
 	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
 	surface_tool.add_uv(Vector2(0 * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-	                            ramp_length * texture_scale.y * WorldConstants.TEXTURE_SIZE))
+								ramp_length * texture_scale.y * WorldConstants.TEXTURE_SIZE))
 	surface_tool.add_normal(normal)
 	surface_tool.add_vertex(quad_vertices[1])
 	
