@@ -28,11 +28,9 @@ func _init(lvl : int):
 	vertices.insert(1, Vector2(80, 80))
 	vertices.insert(2, Vector2(80, 0))
 	vertices.insert(3, Vector2(0, 0))
+	
 	level = lvl 
-	if lvl == 1:
-		isVisible = true
-	else:
-		isVisible = false
+	isVisible = false
 	
 	add_child(mesh)
 	add_child(collision_mesh)

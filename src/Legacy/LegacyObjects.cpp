@@ -10,7 +10,7 @@ namespace Legacy {
         bool isInTextProperty = false;
         for (int c = 0; c < maxLength; c++) {
             wchar_t letter = objectStr[c];
-            if ((letter != '[' and letter != ']') or isInTextProperty) {
+            if ((letter != '[' && letter != ']') || isInTextProperty) {
                 cleanObjectStr += godot::String(letter);
             }
             
@@ -26,7 +26,7 @@ namespace Legacy {
             wchar_t c = cleanObjectStr[cIdx];
             
             // Check if it's a numerical value
-            if (iswdigit(c) or c == '-') {
+            if (iswdigit(c) || c == '-') {
                 int endIdx = cleanObjectStr.find(", ", cIdx);
                 if (endIdx != -1) {
                     prop = cleanObjectStr.substr(cIdx, endIdx - cIdx);
@@ -76,6 +76,7 @@ namespace Legacy {
         else if (objectName == "Plat") plat_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "TriPlat") triplat_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "DiaPlat") diaplat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Floor") ground_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "TriWall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
@@ -155,6 +156,19 @@ namespace Legacy {
             if      (objectSize == 6) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]), 0,        extractInt(obj[5]));
             else if (objectSize == 5) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), 1,                  0,        extractInt(obj[4]));
             else if (objectSize == 4) worldAPI->call("create_plat", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        1,                  0,        extractInt(obj[3]));
+        }
+    }
+
+    // Ground
+    // [x1, y1, x2, y2, x3, y3, x4, y4, floor_material, isVisible, ceil_material]
+    void ground_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize) 
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                       // Position 1                 // Position 2                // Position 3                // Position 4                // Floor Material         // Is Visible       // Ceiling Material        // Level
+            if      (objectSize == 11) worldAPI->call("create_floor", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractVec2(obj[4], obj[5]), extractVec2(obj[6], obj[7]), extractTexColour(obj[8]), extractInt(obj[9]), extractTexColour(obj[10]), i + 1);
         }
     }
     

@@ -4,13 +4,13 @@ onready var EditorGUI = get_node("../GUI")
 onready var trans_grid_mat = load("res://res/materials/grid_transparent.tres")
 
 func _ready():
-	mesh = generate_grid_mesh(80, 80, 1, 1, 0).commit()
+	mesh = generate_grid_mesh(80, 80, 1, 1, 0 + (0.012 * WorldConstants.LEVEL_HEIGHT)).commit()
 	$TransparentGround.mesh = generate_trans_ground(80, 80, 1, 1, 0).commit()
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	EditorGUI.get_node("Misc").connect("s_toggleGrid", self, "on_toggle_grid")
 
 func on_level_change(level):
-	var height = WorldConstants.LEVEL_HEIGHT * (level - 1)
+	var height = WorldConstants.LEVEL_HEIGHT * (level - 1 + 0.012) 
 	mesh = generate_grid_mesh(80, 80, 1, 1, height).commit()
 	$TransparentGround.mesh = generate_trans_ground(80, 80, 1, 1, height).commit()
 

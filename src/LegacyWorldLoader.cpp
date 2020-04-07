@@ -57,7 +57,7 @@ void godot::LegacyWorldLoader::loadLevelFromLocalhost(int gameNumber)
     }
     
     // TODO: Make this async
-    while (client->get_status() == HTTPClient::Status::STATUS_CONNECTING or 
+    while (client->get_status() == HTTPClient::Status::STATUS_CONNECTING || 
         client->get_status() == HTTPClient::Status::STATUS_RESOLVING) {
         client->poll();
         os->delay_msec(500);

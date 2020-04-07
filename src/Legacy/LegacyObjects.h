@@ -28,6 +28,7 @@ namespace Legacy {
     void plat_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void diaplat_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void triplat_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void ground_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void pillar_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void ramp_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     

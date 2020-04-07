@@ -117,6 +117,13 @@ func add_geometric_object(new_obj, level):
 	new_obj._genMesh()
 	objects.append(new_obj)
 
+func modify_fixed_object(mode, level, new_obj):
+	fixed_objects[mode][level].queue_free()
+	
+	levelMeshes[level].add_child(new_obj)
+	fixed_objects[mode][level] = new_obj
+	fixed_objects[mode][level]._genMesh()
+
 func add_entity(new_entity):
 	pass
 
@@ -186,6 +193,9 @@ func _ready():
 				fixed_objects[obj].append(objectType.new(lvl))
 				levelMeshes[level].add_child(fixed_objects[obj][lvl])
 				fixed_objects[obj][lvl]._genMesh()
+			
+			fixed_objects[obj][1].isVisible = true
+			fixed_objects[obj][1]._genMesh()
 	
 
 func on_tool_change(type) -> void:

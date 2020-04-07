@@ -5,6 +5,7 @@ const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
+const Floor = preload("res://scripts/GameWorld/LegacyFloor.gd")
 
 func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level: int):
 	start = start / 5.0
@@ -51,6 +52,32 @@ func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, 
 		new_triwall.colour = texColour
 	
 	get_parent().call("add_geometric_object", new_triwall, level)
+
+func create_floor(pos1 : Vector2, pos2 : Vector2, pos3 : Vector2, pos4 : Vector2, 
+				  floor_texColour, isVisible, ceil_texColour, level):
+	var new_floor = Floor.new(level)
+	new_floor.vertices[0] = pos1 / 5.0
+	new_floor.vertices[1] = pos2 / 5.0
+	new_floor.vertices[2] = pos3 / 5.0
+	new_floor.vertices[3] = pos4 / 5.0
+	
+	print("Loaded floor: " + str(level))
+	
+	new_floor.isVisible = !bool(isVisible - 1)
+	
+	if typeof(floor_texColour) == TYPE_INT:
+		new_floor.floor_texture = WorldTextures.getPlatTexture(floor_texColour)
+	else:
+		new_floor.floor_texture = WorldTextures.TextureID.COLOR
+		new_floor.floor_colour = floor_texColour
+		
+	if typeof(ceil_texColour) == TYPE_INT:
+		new_floor.ceil_texture = WorldTextures.getPlatTexture(ceil_texColour)
+	else:
+		new_floor.ceil_texture = WorldTextures.TextureID.COLOR
+		new_floor.ceil_colour = ceil_texColour
+	
+	get_parent().call("modify_fixed_object", WorldConstants.Tools.GROUND, level, new_floor)
 
 func create_plat(pos : Vector2, size : int, texColour, height : int, shape, level: int):
 	pos = pos / 5.0

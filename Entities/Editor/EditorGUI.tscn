@@ -9,8 +9,13 @@
 
 [node name="GUI" type="Control"]
 anchor_right = 1.0
+anchor_bottom = 1.0
 margin_right = -984.0
-margin_bottom = 40.0
+margin_bottom = -560.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ObjectList" type="Panel" parent="."]
 margin_left = 20.0
@@ -63,6 +68,9 @@ margin_top = 5.0
 margin_right = 560.0
 margin_bottom = 35.0
 text = "Hole"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Select" type="Button" parent="ObjectList"]
 margin_left = 5.0
@@ -134,10 +142,13 @@ margin_bottom = 35.0
 text = "Show Upper Levels"
 
 [node name="ObjProperties" parent="." instance=ExtResource( 4 )]
+anchor_top = 0.0
+anchor_bottom = 0.0
 margin_left = 722.0
-margin_top = 40.0
+margin_top = 80.0
 margin_right = 965.0
-margin_bottom = 510.0
+margin_bottom = 550.0
+grow_horizontal = 1
 [connection signal="pressed" from="ObjectList/Wall" to="ObjectList" method="_on_Wall_pressed"]
 [connection signal="pressed" from="ObjectList/Platform" to="ObjectList" method="_on_Platform_pressed"]
 [connection signal="pressed" from="ObjectList/Pillar" to="ObjectList" method="_on_Pillar_pressed"]

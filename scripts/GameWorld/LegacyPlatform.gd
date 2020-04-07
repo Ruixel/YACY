@@ -161,7 +161,7 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
+	var height = (level - 1 + height_offset + 0.003) * WorldConstants.LEVEL_HEIGHT
 	
 	var halfSize = size_list[size-1] / 2
 	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
@@ -216,7 +216,7 @@ static func buildPlatSelectionMesh(pos : Vector2, level : int, size : int, heigh
 	var surface_tool = SurfaceTool.new()
 	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
 	
-	var height = (level - 1 + height_offset) * WorldConstants.LEVEL_HEIGHT
+	var height = (level - 1 + height_offset + 0.003) * WorldConstants.LEVEL_HEIGHT
 	
 	var halfSize = size_list[size-1] / 2
 	var start = Vector2(pos.x - halfSize - outlineWidth, pos.y - halfSize - outlineWidth)

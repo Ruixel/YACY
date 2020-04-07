@@ -132,12 +132,19 @@ script = ExtResource( 11 )
 Loader = NodePath("../WorldInterface/ObjectLoader")
 
 [node name="Button" type="Button" parent="LegacyWorldLoader"]
-margin_left = 9.9651
-margin_top = 517.0
-margin_right = 147.965
-margin_bottom = 553.0
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -83.0
+margin_right = 148.0
+margin_bottom = -47.0
+grow_horizontal = 0
+grow_vertical = 0
 text = "Run GDNative"
 script = ExtResource( 12 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
 
 [editable path="Scene Root"]
