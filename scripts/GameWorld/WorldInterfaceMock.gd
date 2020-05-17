@@ -66,6 +66,7 @@ func obj_create(pos : Vector2):
 	select_update_mesh()
 	
 	update_property_gui(new_obj)
+	emit_signal("change_selection", selection)
 
 func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	var space_state = get_world().direct_space_state
@@ -77,6 +78,7 @@ func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 			mode = selection.toolType
 			select_update_mesh()
 			update_property_gui(selection)
+			emit_signal("change_selection", selection)
 	else:
 		mode = WorldConstants.Tools.NOTHING
 		PropertyGUI.update_properties({}, mode)
@@ -87,6 +89,7 @@ func deselect():
 		selection.selection_mesh = null
 	
 	selection = null
+	emit_signal("change_selection", selection)
 
 func select_update_mesh():
 	if selection.selection_mesh != null:
@@ -110,6 +113,9 @@ func selection_set_default():
 	# If it uses a prototype then update it
 	if default_objs[mode].has_method("genPrototypeMesh"):
 		emit_signal("update_prototype")
+
+func get_selection():
+	return selection
 
 # Level Loader
 func add_geometric_object(new_obj, level):
@@ -207,6 +213,7 @@ func on_tool_change(type) -> void:
 	elif toolToObjectDict.get(mode).onePerLevel == true:
 		selection = fixed_objects[mode][level]
 		update_property_gui(selection)
+		emit_signal("change_selection", selection)
 	elif toolToObjectDict.get(mode).canPlace == true:
 		update_property_gui(default_objs[mode])
 
@@ -215,6 +222,7 @@ func on_level_change(new_level):
 	if mode != WorldConstants.Tools.NOTHING and toolToObjectDict.get(mode).onePerLevel == true:
 		selection = fixed_objects[mode][level]
 		update_property_gui(selection)
+		emit_signal("change_selection", selection)
 	
 	if not showUpperLevels:
 		hide_upper_levels(new_level)

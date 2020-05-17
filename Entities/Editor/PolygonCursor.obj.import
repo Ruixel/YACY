@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/PolygonCursor.obj-f764b91b8c5f117c54da5d15f22b2893.mesh"
+
+[deps]
+
+files=[ "res://.import/PolygonCursor.obj-f764b91b8c5f117c54da5d15f22b2893.mesh" ]
+
+source_file="res://Entities/Editor/PolygonCursor.obj"
+dest_files=[ "res://.import/PolygonCursor.obj-f764b91b8c5f117c54da5d15f22b2893.mesh", "res://.import/PolygonCursor.obj-f764b91b8c5f117c54da5d15f22b2893.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

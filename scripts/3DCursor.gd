@@ -9,7 +9,7 @@ const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # How the object interacts in the editor
 enum CursorType { 
-	PENCIL, PLACEMENT, SELECT, NOTHING
+	PENCIL, PLACEMENT, SELECT, POLYGON, NOTHING
 }
 
 var cMode = WorldConstants.Mode.CREATE  # Cursor Mode
@@ -89,6 +89,9 @@ func on_tool_change(type) -> void:
 		WorldConstants.Tools.RAMP:
 			cType = CursorType.PENCIL
 			childCursor = get_node("Pencil")
+		WorldConstants.Tools.GROUND:
+			cType = CursorType.POLYGON
+			childCursor = get_node("Polygon")
 	
 	objType = type
 	mouse_place_just_pressed = false
