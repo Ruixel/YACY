@@ -6,7 +6,7 @@ func _ready():
 
 func _on_Button_pressed():
 	#get_parent().loadLevelFromLocalhost(161782)
-	get_parent().loadLevelFromFilesystem("user://157834.Xtream Camping.Cool_Games.cy")
+	get_parent().loadLevelFromFilesystem("user://140527.Desert Warfare.Cool_Games.cy")
 	#get_parent().get_parent().get_node("LegacyLevel").call("spawnPlayer")
 	set_disabled(true)
 	

@@ -8,7 +8,7 @@ const hasDefaultObject = true
 var pos : Vector2
 var level : int
 
-var texture : int = 1
+var texture : int = 5
 var colour := Color(1, 1, 1)
 
 var size : int = 1
@@ -229,7 +229,7 @@ static func buildPlatSelectionMesh(pos : Vector2, level : int, size : int, heigh
 	plat_vertices.insert(2, Vector3(end.x,   height, end.y))
 	plat_vertices.insert(3, Vector3(start.x, height, end.y))
 	for i in range(0, 4):
-		plat_vertices[i].y = plat_vertices[i].y + 0.02
+		plat_vertices[i].y = plat_vertices[i].y + 0.035
 	_createPlatQuadMesh(surface_tool, plat_vertices, 0, 0, Color(1,1,1))
 	
 	# Rearrange vertices for the backwall

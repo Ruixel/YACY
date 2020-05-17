@@ -9,7 +9,7 @@ var start : Vector2
 var end : Vector2 = Vector2(-1, -1) # Invalid vector
 var level : int
 
-var texture : int = 4
+var texture : int = 5
 var colour := Color(1, 1, 1)
 
 var max_height : float = 1.0

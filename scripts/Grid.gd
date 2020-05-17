@@ -12,7 +12,7 @@ func _ready():
 func on_level_change(level):
 	var height = WorldConstants.LEVEL_HEIGHT * (level - 1 + 0.012) 
 	mesh = generate_grid_mesh(80, 80, 1, 1, height).commit()
-	$TransparentGround.mesh = generate_trans_ground(80, 80, 1, 1, height).commit()
+	$TransparentGround.mesh = generate_trans_ground(80, 80, 1, 1, height - (0.012 * WorldConstants.LEVEL_HEIGHT)).commit()
 
 func generate_grid_mesh(num_x: int, num_y: int, space_x: float, space_y: float, height: float) -> SurfaceTool:
 	var surface_tool = SurfaceTool.new()
