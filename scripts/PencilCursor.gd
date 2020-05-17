@@ -12,9 +12,8 @@ var placement_end = Vector2i.new()
 
 var grid_pos = Vector2i.new()
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
+func cursor_ready(): 
+	get_node("WallCursor").set_visible(true)
 
 func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	if mouse_motion != Vector2():
@@ -50,3 +49,6 @@ func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	
 	if Input.is_action_just_pressed("editor_delete"):
 		WorldAPI.selection_delete()
+
+func cursor_on_tool_change(newTool):
+	get_node("WallCursor").set_visible(false)

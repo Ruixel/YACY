@@ -9,7 +9,7 @@ const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # How the object interacts in the editor
 enum CursorType { 
-	PENCIL, PLACEMENT, SELECT
+	PENCIL, PLACEMENT, SELECT, NOTHING
 }
 
 var cMode = WorldConstants.Mode.CREATE  # Cursor Mode
@@ -37,6 +37,8 @@ func _ready():
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeMode", self, "on_mode_change")
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+	
+	childCursor.cursor_ready()
 
 # Process every game frame
 func _process(delta: float) -> void:
@@ -78,7 +80,6 @@ func on_tool_change(type) -> void:
 		WorldConstants.Tools.WALL:
 			cType = CursorType.PENCIL
 			childCursor = get_node("Pencil")
-			self.visible = true
 		WorldConstants.Tools.PLATFORM:
 			cType = CursorType.PLACEMENT
 			childCursor = get_node("Placement")
@@ -88,11 +89,13 @@ func on_tool_change(type) -> void:
 		WorldConstants.Tools.RAMP:
 			cType = CursorType.PENCIL
 			childCursor = get_node("Pencil")
-			self.visible = true
 	
 	objType = type
 	mouse_place_just_pressed = false
 	mouse_place_pressed = false
+	
+	if type != WorldConstants.Tools.NOTHING:
+		childCursor.cursor_ready()
 
 func on_mode_change(mode) -> void:
 	childCursor.cursor_on_mode_change(mode)
@@ -102,7 +105,6 @@ func on_mode_change(mode) -> void:
 		WorldConstants.Mode.SELECT:
 			cType = CursorType.SELECT
 			childCursor = get_node("Select")
-			self.set_visible(false)
 
 func on_level_change(level) -> void:
 	childCursor.cursor_on_level_change(level)

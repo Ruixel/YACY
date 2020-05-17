@@ -78,6 +78,9 @@ margin_top = 5.0
 margin_right = 80.0
 margin_bottom = 35.0
 text = "Select"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ToolSelected" type="Label" parent="ObjectList"]
 margin_top = 50.0
