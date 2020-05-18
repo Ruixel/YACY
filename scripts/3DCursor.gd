@@ -93,6 +93,9 @@ func on_tool_change(type) -> void:
 		WorldConstants.Tools.GROUND:
 			cType = CursorType.POLYGON
 			childCursor = get_node("Polygon")
+		WorldConstants.Tools.HOLE:
+			cType = CursorType.PLACEMENT
+			childCursor = get_node("Placement")
 	
 	objType = type
 	mouse_place_just_pressed = false

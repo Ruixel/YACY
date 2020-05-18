@@ -21,7 +21,8 @@ const ToolToString = {
 	Tools.PILLAR: "Pillar",
 	Tools.RAMP: "Ramp",
 	Tools.SPAWN: "Spawn Location",
-	Tools.GROUND: "Level Ground"
+	Tools.GROUND: "Level Ground",
+	Tools.HOLE: "Ground Hole"
 }
 
 enum WallShape {

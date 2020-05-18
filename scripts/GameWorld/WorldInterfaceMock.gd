@@ -8,6 +8,7 @@ const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
 const Floor = preload("res://scripts/GameWorld/LegacyFloor.gd")
+const Hole = preload("res://scripts/GameWorld/LegacyHole.gd")
 
 var selection # Selected object (To be modified)
 
@@ -44,7 +45,8 @@ const toolToObjectDict = {
 	WorldConstants.Tools.PLATFORM: Plat,
 	WorldConstants.Tools.PILLAR: Pillar,
 	WorldConstants.Tools.RAMP: Ramp,
-	WorldConstants.Tools.GROUND: Floor
+	WorldConstants.Tools.GROUND: Floor,
+	WorldConstants.Tools.HOLE: Hole
 }
 
 # Object functions
@@ -150,7 +152,10 @@ func get_prototype(type) -> Array:
 		WorldConstants.Tools.PILLAR:
 			prototype.mesh = default_objs[WorldConstants.Tools.PILLAR].genPrototypeMesh(level)
 			prototype_size = Vector2(2, 2)
-			
+		WorldConstants.Tools.HOLE:
+			prototype.mesh = default_objs[WorldConstants.Tools.HOLE].genPrototypeMesh(level)
+			prototype_size = Vector2(2, 2)
+		
 		# If it doesn't match anything then free and return nothing
 		_:
 			prototype.queue_free()
