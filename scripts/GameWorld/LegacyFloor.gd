@@ -24,9 +24,14 @@ func _init(lvl : int):
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
 	
-	vertices.insert(0, Vector2(0, 80))
-	vertices.insert(1, Vector2(80, 80))
-	vertices.insert(2, Vector2(80, 0))
+	#vertices.insert(0, Vector2(0, 80))
+	#vertices.insert(1, Vector2(80, 80))
+	#vertices.insert(2, Vector2(80, 0))
+	#vertices.insert(3, Vector2(0, 0))
+	
+	vertices.insert(0, Vector2(0, 10))
+	vertices.insert(1, Vector2(10, 10))
+	vertices.insert(2, Vector2(10, 0))
 	vertices.insert(3, Vector2(0, 0))
 	
 	level = lvl 

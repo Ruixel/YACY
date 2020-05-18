@@ -56,12 +56,15 @@ func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	if parent.mouse_place_pressed and dragging and mouse_motion and vertexChosen != null:
 		var new_pos = Vector2(grid_pos.x, grid_pos.y)
 		if vertexChosen[0].x != new_pos.x or vertexChosen[0].y != new_pos.y:
-			vertexChosen[0] = Vector2(grid_pos.x, grid_pos.y)
 			vertices[vertexChosen[1]] = Vector2(grid_pos.x, grid_pos.y)
-			
-			var height = (WorldAPI.level - 1) * WorldConstants.LEVEL_HEIGHT
-			node_vertices[vertexChosen[1]].transform.origin = Vector3(grid_pos.x, height, grid_pos.y)
-			emit_signal("change_vertex", vertexChosen)
+			if is_convex():
+				vertexChosen[0] = Vector2(grid_pos.x, grid_pos.y)
+				
+				var height = (WorldAPI.level - 1) * WorldConstants.LEVEL_HEIGHT
+				node_vertices[vertexChosen[1]].transform.origin = Vector3(grid_pos.x, height, grid_pos.y)
+				emit_signal("change_vertex", vertexChosen)
+			else:
+				vertices[vertexChosen[1]] = vertexChosen[0]
 	
 	if Input.is_action_just_released("editor_place") and dragging:
 		
@@ -100,3 +103,44 @@ func cursor_on_tool_change(newTool):
 	cleanup()
 	WorldAPI.disconnect("change_selection", self, "on_selection_change")
 	WorldAPI.disconnect("change_vertex", WorldAPI, "property_vertex")
+
+# Dodgy check for making sure a polygon is convex
+# Useful to avoid weird shapes 
+# Won't detect if a polygon has a self-intersecting loop 
+func is_convex():
+	var z_prods = []
+	
+	for i in range(0, vertices.size()):
+		# Get the next 2 indices
+		var i2 = i + 1
+		var i3 = i + 2
+		
+		# Wrap around the array 
+		if i2 >= vertices.size():
+			i2 = i2 - vertices.size()
+		if i3 >= vertices.size():
+			i3 = i3 - vertices.size()
+		
+		var v1 = vertices[i]
+		var v2 = vertices[i2]
+		var v3 = vertices[i3]
+		
+		var dx1 = v2.x - v1.x
+		var dy1 = v2.y - v1.y
+		var dx2 = v3.x - v2.x
+		var dy2 = v3.y - v2.y
+		
+		var z_crossProduct = dx1*dy2 - dy1*dx2
+		z_prods.append(z_crossProduct)
+	
+	var wantPositive = true
+	if z_prods[0] < 0:
+		wantPositive = false
+	
+	for z in z_prods:
+		if wantPositive and z < 0:
+			return false
+		if not wantPositive and z > 0:
+			return false
+	
+	return true
