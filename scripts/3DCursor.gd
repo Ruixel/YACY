@@ -63,7 +63,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				mouse_place_pressed = true
 			else:
 				if mouse_place_released == false and mouse_place_pressed == true:
-					mouse_place_released = false
+					#mouse_place_released = false
+					pass
 				mouse_place_pressed = false
 				
 	elif event is InputEventKey:
@@ -96,6 +97,7 @@ func on_tool_change(type) -> void:
 	objType = type
 	mouse_place_just_pressed = false
 	mouse_place_pressed = false
+	mouse_place_released = false 
 	
 	if type != WorldConstants.Tools.NOTHING:
 		childCursor.cursor_ready()

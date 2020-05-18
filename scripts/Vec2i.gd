@@ -6,8 +6,8 @@ var y : int
 
 func _init(var1 = 0, var2 = 0):
 	if var1 is Vector2:
-		self.x = var1.x as int
-		self.y = var1.y as int
+		self.x = round(var1.x) as int
+		self.y = round(var1.y) as int
 	else:
 		self.x = var1
 		self.y = var2

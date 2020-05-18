@@ -289,3 +289,5 @@ func property_colour(colour : Color):
 func property_boolean(propertyName : String, isSet : bool):
 	set_property("change_" + propertyName.to_lower(), isSet)
 
+func property_vertex(vertexInfo : Array):
+	set_property("change_vertex", vertexInfo)

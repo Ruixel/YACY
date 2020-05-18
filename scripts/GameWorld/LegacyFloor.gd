@@ -48,6 +48,9 @@ func change_visible(vis: bool):
 func change_colour(newColour : Color):
 	floor_colour = newColour
 
+func change_vertex(newVertexInfo : Array):
+	vertices[newVertexInfo[1]] = newVertexInfo[0]
+
 func _genMesh():
 	if isVisible:
 		mesh.mesh = buildFloor()
