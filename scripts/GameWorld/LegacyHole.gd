@@ -56,6 +56,37 @@ func get_property_dict() -> Dictionary:
 func set_property_dict(dict : Dictionary):
 	size = dict["Size"]
 
+func is_valid(ground):
+	# Get vertices of the holes
+	var halfSize = size_list[size-1] / 2
+	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
+	var end   = Vector2(pos.x + halfSize, pos.y + halfSize)
+	
+	# Put vertices into array
+	var vertices = []
+	vertices.insert(0, Vector2(start.x, start.y))
+	vertices.insert(1, Vector2(end.x,   start.y))
+	vertices.insert(2, Vector2(end.x,   end.y))
+	vertices.insert(3, Vector2(start.x, end.y))
+	
+	# Iterate through each point 
+	var verts = ground.vertices
+	for p in vertices:
+		var i = 0
+		var j = 3
+		var c = false
+		for i in range(0, 4):
+			if (((verts[i].y >= p.y) != (verts[j].y >= p.y)) && 
+				(p.x <= (verts[j].x - verts[i].x) * (p.y - verts[i].y) / (verts[j].y - verts[i].y) + verts[i].x)):
+				c = not c
+			
+			j = i
+		
+		if c == false:
+			return false
+	
+	return true
+
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
 	tex : int, colour : Color) -> void:
@@ -95,38 +126,6 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-const tri_indices = [0, 1, 2] # Magic array 
-static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array, sIndex: int, 
-	tex : int, colour : Color) -> void:
-	
-	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
-	var normal = (tri_vertices[2] - tri_vertices[0]).cross(tri_vertices[1] - tri_vertices[0]).normalized()
-	
-	var texture_float = (tex+1.0)/256
-	var texture_scale = WorldTextures.textures[tex].texScale
-	
-	# Add Vertices
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[0])
-	
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[1])
-
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[2])
-	
-	# Quad Indices
-	for idx in tri_indices:
-		surface_tool.add_index(sIndex + idx)
 
 static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, colour : Color,
 	size : int, pShape, is_prototype : bool) -> Mesh:

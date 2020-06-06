@@ -29,7 +29,9 @@ signal update_prototype
 var mode = WorldConstants.Tools.WALL
 
 # All Objects
+# Each object is stored in its own array as well as "All"
 var objects : Array = []
+
 # For objects that have the one per level constraint
 var fixed_objects: Dictionary
 
@@ -54,7 +56,8 @@ func obj_create(pos : Vector2):
 	var objectType = toolToObjectDict.get(mode)
 	var new_obj = objectType.new(pos, level)
 	levelMeshes[level].add_child(new_obj)
-	objects.append(new_obj)
+	objects[mode].append(new_obj)
+	objects[WorldConstants.Tools.ALL].append(new_obj)
 	
 	# Select
 	deselect()
@@ -73,10 +76,11 @@ func obj_create(pos : Vector2):
 func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	var space_state = get_world().direct_space_state
 	var result = space_state.intersect_ray(ray_origin, (ray_direction*50) + ray_origin)
+	var allObjects = objects[WorldConstants.Tools.ALL]
 	
 	if result.empty() == false:
-		if objects.find(result.collider.get_parent()) != -1:
-			selection = objects[objects.find(result.collider.get_parent())]
+		if allObjects.find(result.collider.get_parent()) != -1:
+			selection = allObjects[allObjects.find(result.collider.get_parent())]
 			mode = selection.toolType
 			select_update_mesh()
 			update_property_gui(selection)
@@ -105,7 +109,14 @@ func selection_delete():
 		var objRef = selection
 		deselect()
 		
-		objects.erase(objRef)
+		objects[objRef.toolType].erase(objRef)
+		objects[WorldConstants.Tools.ALL].erase(objRef)
+		objRef.queue_free()
+
+func object_delete(objRef):
+	if objRef != null:
+		objects[objRef.toolType].erase(objRef)
+		objects[WorldConstants.Tools.ALL].erase(objRef)
 		objRef.queue_free()
 
 func selection_set_default():
@@ -123,7 +134,8 @@ func get_selection():
 func add_geometric_object(new_obj, level):
 	levelMeshes[level].add_child(new_obj)
 	new_obj._genMesh()
-	objects.append(new_obj)
+	objects[new_obj.toolType].append(new_obj)
+	objects[WorldConstants.Tools.ALL].append(new_obj)
 
 func modify_fixed_object(mode, level, new_obj):
 	fixed_objects[mode][level].queue_free()
@@ -208,6 +220,9 @@ func _ready():
 			fixed_objects[obj][1].isVisible = true
 			fixed_objects[obj][1]._genMesh()
 	
+	for objType in WorldConstants.Tools:
+		objects.insert(objType, [])
+	
 
 func on_tool_change(type) -> void:
 	mode = type
@@ -270,8 +285,9 @@ func set_property(method_name : String, value):
 	else:
 		if mode != WorldConstants.Tools.NOTHING and toolToObjectDict[mode].hasDefaultObject == true:
 			if default_objs[mode].has_method("genPrototypeMesh"):
-				default_objs[mode].call(method_name, value)
-				emit_signal("update_prototype")
+				if default_objs[mode].has_method(method_name):
+					default_objs[mode].call(method_name, value)
+					emit_signal("update_prototype")
 
 func property_height_value(key : int):
 	set_property("change_height_value", key)
@@ -296,3 +312,12 @@ func property_boolean(propertyName : String, isSet : bool):
 
 func property_vertex(vertexInfo : Array):
 	set_property("change_vertex", vertexInfo)
+	
+	# Update holes
+	# TODO: Is there a more generic/optimised way to do this?
+	for hole in objects[WorldConstants.Tools.HOLE]:
+		if hole.level == level:
+			if not hole.is_valid(fixed_objects[WorldConstants.Tools.GROUND][level]):
+				print("Remove hole")
+			else:
+				print("Keep hole")

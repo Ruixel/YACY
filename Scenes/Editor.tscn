@@ -24,7 +24,7 @@ top_radius = 0.3
 bottom_radius = 0.3
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=2]
 albedo_color = Color( 0.627451, 0.152941, 0.152941, 1 )
 emission_enabled = true
 emission = Color( 1, 0, 0, 1 )
@@ -32,7 +32,7 @@ emission_energy = 1.4
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="SpatialMaterial" id=8]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_color = Color( 0.180392, 0.627451, 0.152941, 1 )
 emission_enabled = true
 emission = Color( 0, 1, 0.0392157, 1 )
@@ -40,13 +40,13 @@ emission_energy = 1.4
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_texture = ExtResource( 8 )
 
-[sub_resource type="PlaneMesh" id=4]
-material = SubResource( 3 )
+[sub_resource type="PlaneMesh" id=5]
+material = SubResource( 4 )
 
-[sub_resource type="ArrayMesh" id=5]
+[sub_resource type="ArrayMesh" id=6]
 surfaces/0 = {
 "aabb": AABB( -1, 0.02, -1, 2.00001, 1.00005e-05, 2.00001 ),
 "array_data": PoolByteArray( 0, 0, 128, 63, 10, 215, 163, 60, 0, 0, 128, 63, 0, 127, 0, 0, 127, 0, 0, 127, 0, 60, 0, 60, 0, 0, 128, 191, 10, 215, 163, 60, 0, 0, 128, 63, 0, 127, 0, 0, 127, 0, 0, 127, 0, 0, 0, 60, 0, 0, 128, 63, 10, 215, 163, 60, 0, 0, 128, 191, 0, 127, 0, 0, 127, 0, 0, 127, 0, 60, 0, 0, 0, 0, 128, 191, 10, 215, 163, 60, 0, 0, 128, 191, 0, 127, 0, 0, 127, 0, 0, 127, 0, 0, 0, 0 ),
@@ -59,7 +59,7 @@ surfaces/0 = {
 "vertex_count": 4
 }
 
-[sub_resource type="ArrayMesh" id=6]
+[sub_resource type="ArrayMesh" id=7]
 surfaces/0 = {
 "aabb": AABB( -1, 0.02, -1, 2.00001, 1.00005e-05, 2.00001 ),
 "array_data": PoolByteArray( 0, 0, 128, 63, 10, 215, 163, 60, 0, 0, 128, 63, 0, 127, 0, 0, 127, 0, 0, 127, 0, 60, 0, 60, 0, 0, 128, 191, 10, 215, 163, 60, 0, 0, 128, 63, 0, 127, 0, 0, 127, 0, 0, 127, 0, 0, 0, 60, 0, 0, 128, 63, 10, 215, 163, 60, 0, 0, 128, 191, 0, 127, 0, 0, 127, 0, 0, 127, 0, 60, 0, 0, 0, 0, 128, 191, 10, 215, 163, 60, 0, 0, 128, 191, 0, 127, 0, 0, 127, 0, 0, 127, 0, 0, 0, 0 ),
@@ -101,7 +101,7 @@ script = ExtResource( 13 )
 [node name="WallCursor" type="MeshInstance" parent="3DCursor/Pencil"]
 visible = false
 mesh = SubResource( 1 )
-material/0 = SubResource( 7 )
+material/0 = SubResource( 2 )
 
 [node name="Placement" type="Spatial" parent="3DCursor"]
 script = ExtResource( 14 )
@@ -119,9 +119,9 @@ script = ExtResource( 17 )
 transform = Transform( 0.3, 0, 0, 0, 0.17, 0, 0, 0, 0.3, 0, 0, 0 )
 visible = false
 mesh = ExtResource( 18 )
-material/0 = SubResource( 8 )
-material/1 = SubResource( 8 )
-material/2 = SubResource( 8 )
+material/0 = SubResource( 3 )
+material/1 = SubResource( 3 )
+material/2 = SubResource( 3 )
 
 [node name="Grid" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0 )
@@ -137,29 +137,29 @@ visible = false
 
 [node name="MeshInstance3" type="MeshInstance" parent="Spatial2"]
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial2/MeshInstance3"]
 transform = Transform( 1.1, 0, 0, 0, 1, 0, 0, 0, 1.1, 0, 0, 0 )
 cast_shadow = 0
-mesh = SubResource( 5 )
+mesh = SubResource( 6 )
 material/0 = ExtResource( 9 )
 
 [node name="MeshInstance4" type="MeshInstance" parent="Spatial2"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577 )
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="MeshInstance" type="MeshInstance" parent="Spatial2/MeshInstance4"]
 transform = Transform( 1.1, 0, 0, 0, 1, 0, 0, 0, 1.1, 0, 0, 0 )
 cast_shadow = 0
-mesh = SubResource( 6 )
+mesh = SubResource( 7 )
 material/0 = null
 
 [node name="MeshInstance5" type="MeshInstance" parent="Spatial2"]
 transform = Transform( 1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -2.6904, 2.68266, 2.34577 )
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="Scene Root" parent="." instance=ExtResource( 10 )]
