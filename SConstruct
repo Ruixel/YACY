@@ -85,6 +85,8 @@ env.Append(LIBS=[cpp_library])
 env.Append(CPPPATH=['src/'])
 sources = Glob('src/*.cpp')
 sources = sources + Glob('src/Legacy/*.cpp')
+sources = sources + Glob('src/Legacy/poly2tri/common/*.cc')
+sources = sources + Glob('src/Legacy/poly2tri/sweep/*.cc')
 
 library = env.SharedLibrary(target=env['target_path'] + env['target_name'] , source=sources)
 

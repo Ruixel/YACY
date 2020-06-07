@@ -24,3 +24,4 @@ obj/*
 *.dblite
 *.os
 core
+.vscode/*

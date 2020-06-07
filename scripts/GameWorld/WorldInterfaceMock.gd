@@ -318,6 +318,5 @@ func property_vertex(vertexInfo : Array):
 	for hole in objects[WorldConstants.Tools.HOLE]:
 		if hole.level == level:
 			if not hole.is_valid(fixed_objects[WorldConstants.Tools.GROUND][level]):
-				print("Remove hole")
-			else:
-				print("Keep hole")
+				print("invalid")
+				call_deferred("object_delete", hole)

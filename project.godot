@@ -23,7 +23,6 @@ config/icon="res://icon.png"
 
 WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
 WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
-Logger="*res://scripts/Logger.gd"
 
 [input]
 
