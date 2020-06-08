@@ -176,6 +176,9 @@ func get_prototype(type) -> Array:
 	
 	return [prototype, prototype_size]
 
+func get_holes():
+	return objects[WorldConstants.Tools.HOLE]
+
 # Signals
 func _ready(): 
 	# Connect GUI signals
@@ -203,6 +206,9 @@ func _ready():
 		add_child(n)
 		levelMeshes.append(n)
 	
+	for objType in WorldConstants.Tools:
+		objects.insert(objType, [])
+	
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
 		var objectType = toolToObjectDict.get(obj)
@@ -219,10 +225,6 @@ func _ready():
 			
 			fixed_objects[obj][1].isVisible = true
 			fixed_objects[obj][1]._genMesh()
-	
-	for objType in WorldConstants.Tools:
-		objects.insert(objType, [])
-	
 
 func on_tool_change(type) -> void:
 	mode = type

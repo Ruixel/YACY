@@ -17,6 +17,8 @@ class GenerateFloor : public Node {
     GODOT_CLASS(GenerateFloor, Node)
 
 private:
+    NodePath worldAPINodePath;
+    
     std::vector<p2t::Triangle*> getTris(PoolVector2Array vertices, Array holes);
     void createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array tri_vertices, 
         int sIndex, int tex, Color colour);

@@ -126,6 +126,19 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
+func get_vertices() -> PoolVector2Array:
+	var halfSize = size_list[size-1] / 2
+	
+	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
+	var end   = Vector2(pos.x + halfSize, pos.y + halfSize)
+	
+	var hole_vertices : PoolVector2Array
+	hole_vertices.insert(0, Vector2(start.x, start.y))
+	hole_vertices.insert(1, Vector2(end.x,   start.y))
+	hole_vertices.insert(2, Vector2(end.x,   end.y))
+	hole_vertices.insert(3, Vector2(start.x, end.y))
+	
+	return hole_vertices
 
 static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex : int, colour : Color,
 	size : int, pShape, is_prototype : bool) -> Mesh:

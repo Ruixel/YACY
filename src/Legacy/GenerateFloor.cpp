@@ -7,8 +7,9 @@ using namespace godot;
 void GenerateFloor::_register_methods() 
 {
     register_method("generateFloorMesh", &GenerateFloor::generateFloorMesh);
-
     register_method("_ready", &GenerateFloor::_ready);
+    
+    register_property<GenerateFloor, NodePath>("WorldAPI", &GenerateFloor::worldAPINodePath, NodePath());
 }
 
 void GenerateFloor::_init()
@@ -33,21 +34,21 @@ std::vector<p2t::Triangle*> GenerateFloor::getTris(PoolVector2Array vertices, Ar
     // Add holes
     for (int i = 0; i < holes.size(); i++)
     {
-        //if (holes[i].get_level)
-        /*PoolVector2Array hole_vertices = holes[i].call("get_vertices");
+        PoolVector2Array hole_vertices = holes[i].call("get_vertices",nullptr,0);
+        Godot::print("WHAT " + String::num(vertices[1].x));
         std::vector<p2t::Point*> hole_polygon;
         for (int p = 0; p < hole_vertices.size(); p++) 
-            polygon.push_back(new p2t::Point(hole_vertices[p].x, hole_vertices[p].y));
+            hole_polygon.push_back(new p2t::Point(hole_vertices[p].x, hole_vertices[p].y));
         
-        cdt->AddHole(hole_polygon);*/
+        Godot::print("hole poly " + String::num(hole_polygon.size()));
+        cdt->AddHole(hole_polygon);
     }
 
     cdt->Triangulate();
     return cdt->GetTriangles();
 }
 
-void GenerateFloor::createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array tri_vertices, 
-    int sIndex, int tex, Color colour)
+void GenerateFloor::createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array tri_vertices, int sIndex, int tex, Color colour)
 {
     Node* worldConstants = get_node("/root/WorldConstants");
     Node* worldTextures = get_node("/root/WorldTextures");
@@ -58,7 +59,6 @@ void GenerateFloor::createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array t
     float texture_float = (tex+1.0)/256.f;
 
 	Vector2 texture_scale = worldTextures->call("get_textureScale", tex);
-    Godot::print("tex scale" + String::num(texture_scale.x));
     float texture_size = worldConstants->get("TEXTURE_SIZE");
 
     for (int i = 0; i < 3; i++) 
@@ -103,8 +103,10 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     v.insert(3, Vector2(vertices[3].x, vertices[3].y));
     
     // Get GetTriangles
-    std::vector<p2t::Triangle*> tris = getTris(v, Array());
+    Node* worldAPI = get_node(worldAPINodePath);
+    std::vector<p2t::Triangle*> tris = getTris(v, worldAPI->call("get_holes"));
     Godot::print("Triangles: " + String::num(tris.size()));
+    
     int idx = 0;
     for (int t = 0; t < tris.size(); t++) 
     {
