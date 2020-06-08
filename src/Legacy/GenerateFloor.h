@@ -17,18 +17,16 @@ class GenerateFloor : public Node {
     GODOT_CLASS(GenerateFloor, Node)
 
 private:
-    Node* worldConstants;
-    Node* worldTextures;
-
     std::vector<p2t::Triangle*> getTris(PoolVector2Array vertices, Array holes);
     void createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array tri_vertices, 
         int sIndex, int tex, Color colour);
 
 public:
     static void _register_methods();
+    void _init();
     void _ready();
 
-    Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int level, 
+    Ref<ArrayMesh> generateFloorMesh(PoolVector2Array vertices, int level, 
         int floor_texture, Color floor_colour, int ceil_texture, Color ceil_colour, 
         Array holes);
 };

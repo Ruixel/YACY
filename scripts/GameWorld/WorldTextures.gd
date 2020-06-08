@@ -35,6 +35,9 @@ class LevelTexture:
 		img.generate_mipmaps()
 		tArray.set_layer_data(img, layer)
 
+func get_textureScale(texId):
+	return textures[texId].texScale
+
 # Load textures in order the enumenation of TextureID
 func loadTexturesToArray():
 	textures.append(LevelTexture.new("Color", "res://res/txrs/color256.jpg", Vector2(2, 2), tArray, 0))

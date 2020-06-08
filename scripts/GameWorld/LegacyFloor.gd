@@ -155,36 +155,39 @@ static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array,
 		surface_tool.add_index(sIndex + idx)
 
 func buildFloor() -> Mesh:
-	#var gen = get_node("/root/Spatial/FloorGenerator")
-	#return gen.generateFloorMesh(vertices, level, floor_texture, floor_colour, ceil_texture, ceil_colour, [])
-	#print(get_node("/root/WorldConstants").LEVEL_HEIGHT)
-	
-	var surface_tool = SurfaceTool.new()
-	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+	var gen = get_node("/root/Spatial/FloorGenerator")
+	return gen.generateFloorMesh(vertices, level, floor_texture, floor_colour, ceil_texture, ceil_colour, [])
 
-	var height = (level - 1) * WorldConstants.LEVEL_HEIGHT
-
-	# Set colour to white if not using the colour wall
-	var floor_meshColor = floor_colour
-	if floor_texture != WorldTextures.TextureID.COLOR:
-		floor_meshColor = Color(1,1,1)
-
-	var ceil_meshColor = ceil_colour
-	if ceil_texture != WorldTextures.TextureID.COLOR:
-		ceil_meshColor = Color(1,1,1)
-
-	# Calculate wall vertices
-	var plat_vertices = []
-	plat_vertices.insert(0, Vector3(vertices[0].x, height, vertices[0].y))
-	plat_vertices.insert(1, Vector3(vertices[1].x, height, vertices[1].y))
-	plat_vertices.insert(2, Vector3(vertices[2].x, height, vertices[2].y))
-	plat_vertices.insert(3, Vector3(vertices[3].x, height, vertices[3].y))
-
-	_createPlatQuadMesh(surface_tool, plat_vertices, 0, floor_texture, floor_meshColor)
-
-	# Rearrange vertices for the backwall
-	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
-	_createPlatQuadMesh(surface_tool, bVertices, 4, ceil_texture, ceil_meshColor)
-
-	surface_tool.set_material(WorldTextures.getWallMaterial(floor_texture))
-	return surface_tool.commit()
+#	var wc = get_node("/root/WorldConstants")
+#	print(wc.get_path())
+#	print(wc.get("WORLD_HEIGHT"))
+#
+#	var surface_tool = SurfaceTool.new()
+#	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
+#
+#	var height = (level - 1) * WorldConstants.LEVEL_HEIGHT
+#
+#	# Set colour to white if not using the colour wall
+#	var floor_meshColor = floor_colour
+#	if floor_texture != WorldTextures.TextureID.COLOR:
+#		floor_meshColor = Color(1,1,1)
+#
+#	var ceil_meshColor = ceil_colour
+#	if ceil_texture != WorldTextures.TextureID.COLOR:
+#		ceil_meshColor = Color(1,1,1)
+#
+#	# Calculate wall vertices
+#	var plat_vertices = []
+#	plat_vertices.insert(0, Vector3(vertices[0].x, height, vertices[0].y))
+#	plat_vertices.insert(1, Vector3(vertices[1].x, height, vertices[1].y))
+#	plat_vertices.insert(2, Vector3(vertices[2].x, height, vertices[2].y))
+#	plat_vertices.insert(3, Vector3(vertices[3].x, height, vertices[3].y))
+#
+#	_createPlatQuadMesh(surface_tool, plat_vertices, 0, floor_texture, floor_meshColor)
+#
+#	# Rearrange vertices for the backwall
+#	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
+#	_createPlatQuadMesh(surface_tool, bVertices, 4, ceil_texture, ceil_meshColor)
+#
+#	surface_tool.set_material(WorldTextures.getWallMaterial(floor_texture))
+#	return surface_tool.commit()

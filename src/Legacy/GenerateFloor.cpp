@@ -11,10 +11,13 @@ void GenerateFloor::_register_methods()
     register_method("_ready", &GenerateFloor::_ready);
 }
 
+void GenerateFloor::_init()
+{
+}
+
 void GenerateFloor::_ready()
 {
-    worldConstants = get_node("/root/WorldConstants");
-    worldTextures = get_node("/root/WorldTextures");
+    
 }
 
 std::vector<p2t::Triangle*> GenerateFloor::getTris(PoolVector2Array vertices, Array holes)
@@ -46,12 +49,16 @@ std::vector<p2t::Triangle*> GenerateFloor::getTris(PoolVector2Array vertices, Ar
 void GenerateFloor::createPlatTriMesh(Ref<SurfaceTool> sTool, PoolVector3Array tri_vertices, 
     int sIndex, int tex, Color colour)
 {
+    Node* worldConstants = get_node("/root/WorldConstants");
+    Node* worldTextures = get_node("/root/WorldTextures");
+    
     Vector3 normal = Vector3(tri_vertices[2] - tri_vertices[0]).cross(tri_vertices[1] - tri_vertices[0]);
     normal.normalize();
 
     float texture_float = (tex+1.0)/256.f;
 
-	Vector2 texture_scale = worldTextures->get("textures[" + String::num(tex) + "].texScale");
+	Vector2 texture_scale = worldTextures->call("get_textureScale", tex);
+    Godot::print("tex scale" + String::num(texture_scale.x));
     float texture_size = worldConstants->get("TEXTURE_SIZE");
 
     for (int i = 0; i < 3; i++) 
@@ -71,21 +78,17 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     int floor_texture, Color floor_colour, int ceil_texture, Color ceil_colour, 
     Array holes) 
 {
-    //Ref<Mesh> newMesh = Mesh::_new();
-    //std::vector<p2t::Triangle*> tris = getTris(vertices, holes);
-
-    //for (int tri = 0; tri < tris.size(); tri++) 
-    //{
-
-    //}
-
     Ref<SurfaceTool> sTool = SurfaceTool::_new();
 	sTool->begin(Mesh::PRIMITIVE_TRIANGLES);
+    
+    Node* worldConstants = get_node("/root/WorldConstants");
+    Node* worldTextures = get_node("/root/WorldTextures");
 	
+    Godot::print(worldConstants->get_path());
 	float height = (level - 1.f) * (float)(worldConstants->get("LEVEL_HEIGHT"));
 	
 	// Set colour to white if not using the colour wall
-	/*Color floor_meshColor = floor_colour;
+	Color floor_meshColor = floor_colour;
 	if (floor_texture != (int)(worldTextures->get("TextureID.COLOR")))
 		floor_meshColor = Color(1,1,1);
 	
@@ -93,13 +96,30 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
 	if (ceil_texture != (int)(worldTextures->get("TextureID.COLOR")))
 		ceil_meshColor = Color(1,1,1);
 
-    PoolVector3Array v;
-    v.insert(0, Vector3(vertices[0].x, height, vertices[0].y));
-	v.insert(1, Vector3(vertices[1].x, height, vertices[1].y));
-	v.insert(2, Vector3(vertices[2].x, height, vertices[2].y));
-    createPlatTriMesh(sTool, v, 0, floor_texture, floor_meshColor);
+    PoolVector2Array v;
+    v.insert(0, Vector2(vertices[0].x, vertices[0].y));
+	v.insert(1, Vector2(vertices[1].x, vertices[1].y));
+	v.insert(2, Vector2(vertices[2].x, vertices[2].y));
+    v.insert(3, Vector2(vertices[3].x, vertices[3].y));
+    
+    // Get GetTriangles
+    std::vector<p2t::Triangle*> tris = getTris(v, Array());
+    Godot::print("Triangles: " + String::num(tris.size()));
+    for (int t = 0; t < tris.size(); t++) 
+    {
+        p2t::Triangle& tri = *tris[t];
+        
+        PoolVector3Array triangleVector;
+        triangleVector.insert(0, Vector3(tri.GetPoint(0)->x, height, tri.GetPoint(0)->y));
+        triangleVector.insert(1, Vector3(tri.GetPoint(1)->x, height, tri.GetPoint(1)->y));
+        triangleVector.insert(2, Vector3(tri.GetPoint(2)->x, height, tri.GetPoint(2)->y));
+        
+        createPlatTriMesh(sTool, triangleVector, t*3, floor_texture, floor_meshColor);
+    }
+
+    
+    //createPlatTriMesh(sTool, v, 0, floor_texture, floor_meshColor);
 
     sTool->set_material(worldTextures->call("getWallMaterial", floor_texture));
-    return sTool->commit();*/
     return sTool->commit();
 }
