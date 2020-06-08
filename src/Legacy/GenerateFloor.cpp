@@ -105,6 +105,7 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     // Get GetTriangles
     std::vector<p2t::Triangle*> tris = getTris(v, Array());
     Godot::print("Triangles: " + String::num(tris.size()));
+    int idx = 0;
     for (int t = 0; t < tris.size(); t++) 
     {
         p2t::Triangle& tri = *tris[t];
@@ -114,7 +115,15 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
         triangleVector.insert(1, Vector3(tri.GetPoint(1)->x, height, tri.GetPoint(1)->y));
         triangleVector.insert(2, Vector3(tri.GetPoint(2)->x, height, tri.GetPoint(2)->y));
         
-        createPlatTriMesh(sTool, triangleVector, t*3, floor_texture, floor_meshColor);
+        createPlatTriMesh(sTool, triangleVector, idx, floor_texture, floor_meshColor);
+        
+        PoolVector3Array backwardsVector;
+        for (int i = 2; i >= 0; i--)
+            backwardsVector.push_back(triangleVector[i]);
+        
+        createPlatTriMesh(sTool, backwardsVector, idx + 3, ceil_texture, ceil_meshColor);
+        
+        idx += 6;
     }
 
     
