@@ -34,8 +34,10 @@ std::vector<p2t::Triangle*> GenerateFloor::getTris(PoolVector2Array vertices, Ar
     // Add holes
     for (int i = 0; i < holes.size(); i++)
     {
+        //if ((bool)holes[i].call("get_validity", nullptr, 0) == false)
+        //    continue;
+            
         PoolVector2Array hole_vertices = holes[i].call("get_vertices",nullptr,0);
-        Godot::print("WHAT " + String::num(vertices[1].x));
         std::vector<p2t::Point*> hole_polygon;
         for (int p = 0; p < hole_vertices.size(); p++) 
             hole_polygon.push_back(new p2t::Point(hole_vertices[p].x, hole_vertices[p].y));

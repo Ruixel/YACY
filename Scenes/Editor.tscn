@@ -168,7 +168,6 @@ transform = Transform( 25, 0, 0, 0, 25, 0, 0, 0, 25, 2.48929, -0.00473465, 3.469
 
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 11 )
-Loader = NodePath("../WorldInterface/ObjectLoader")
 
 [node name="Button" type="Button" parent="LegacyWorldLoader"]
 anchor_top = 1.0
@@ -187,7 +186,6 @@ __meta__ = {
 
 [node name="FloorGenerator" type="Node" parent="."]
 script = ExtResource( 19 )
-WorldAPI = NodePath("../WorldInterface")
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
 
 [editable path="Scene Root"]

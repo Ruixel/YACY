@@ -10,6 +10,7 @@ var level : int
 
 var size : int = 1
 const size_list = [2, 4, 8, 16]
+const size_offset = 0.05
 
 var platShape = WorldConstants.PlatShape.QUAD
 
@@ -19,6 +20,8 @@ var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
 func _init(position : Vector2, lvl : int):
+	var worldAPI = get_node("/root/Spatial/WorldInterface")
+	
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
@@ -30,6 +33,7 @@ func _init(position : Vector2, lvl : int):
 	add_child(mesh)
 	add_child(collision_mesh)
 	collision_mesh.add_child(collision_shape)
+	
 
 # Destructor
 func _notification(what):
@@ -43,8 +47,9 @@ func change_size(newSize : int):
 	size = newSize
 
 func _genMesh():
-	mesh.mesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
-	collision_shape.shape = mesh.mesh.create_convex_shape()
+	pass
+#	mesh.mesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
+#	collision_shape.shape = mesh.mesh.create_convex_shape()
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
 	return buildPlatform(Vector2(0,0), pLevel, 0, 0, Color(0,0,0), size, platShape, true)
@@ -91,6 +96,18 @@ func is_valid(ground):
 		if c == false:
 			return false
 	
+	# Now check that there are no other colliding holes
+	for hole in HoleManager.get_holes(level):
+		if hole == self: 
+			continue
+			
+		var halfSize2 = size_list[hole.size-1] / 2
+		var start2 = Vector2(hole.pos.x - halfSize2, hole.pos.y - halfSize2)
+		var end2   = Vector2(hole.pos.x + halfSize2, hole.pos.y + halfSize2)
+		print(str(start.x) + " .. " + str(start2.x))
+		if (start.x < end2.x && end.x > start2.x && start.y < end2.y && end.y > start2.y):
+			return false
+	 
 	return true
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
@@ -133,7 +150,7 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 		surface_tool.add_index(sIndex + idx)
 
 func get_vertices() -> PoolVector2Array:
-	var halfSize = size_list[size-1] / 2
+	var halfSize = (size_list[size-1] / 2) - size_offset
 	
 	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
 	var end   = Vector2(pos.x + halfSize, pos.y + halfSize)

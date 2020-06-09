@@ -59,6 +59,16 @@ func obj_create(pos : Vector2):
 	objects[mode].append(new_obj)
 	objects[WorldConstants.Tools.ALL].append(new_obj)
 	
+	# Check for validity
+	# yikes, only for holes
+	if new_obj.has_method("is_valid"):
+		var valid = new_obj.call("is_valid", fixed_objects[WorldConstants.Tools.GROUND][level])
+		if valid == false:
+			object_delete(new_obj)
+			return
+		else:
+			fixed_objects[WorldConstants.Tools.GROUND][level]._genMesh()
+	
 	# Select
 	deselect()
 	selection = new_obj
@@ -317,5 +327,5 @@ func property_vertex(vertexInfo : Array):
 	for hole in objects[WorldConstants.Tools.HOLE]:
 		if hole.level == level:
 			if not hole.is_valid(fixed_objects[WorldConstants.Tools.GROUND][level]):
-				print("invalid")
+				HoleManager.remove_hole(hole, level)
 				call_deferred("object_delete", hole)
