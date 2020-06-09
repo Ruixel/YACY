@@ -26,9 +26,15 @@ func _init(position : Vector2, lvl : int):
 	pos = position
 	level = lvl 
 	
+	HoleManager.add_hole(self, lvl)
 	add_child(mesh)
 	add_child(collision_mesh)
 	collision_mesh.add_child(collision_shape)
+
+# Destructor
+func _notification(what):
+	if what == NOTIFICATION_PREDELETE:
+		HoleManager.remove_hole(self, level)
 
 func get_level():
 	return level

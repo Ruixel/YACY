@@ -4,6 +4,7 @@ extends Node
 const LEVEL_HEIGHT = 2.6
 const TEXTURE_SIZE = 1.0 / LEVEL_HEIGHT
 const LEVEL_SIZE   = Vector2(1, 1)
+const MAX_LEVELS   = 20
 
 # Tool names
 enum Tools {

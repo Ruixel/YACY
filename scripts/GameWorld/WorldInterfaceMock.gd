@@ -176,9 +176,6 @@ func get_prototype(type) -> Array:
 	
 	return [prototype, prototype_size]
 
-func get_holes():
-	return objects[WorldConstants.Tools.HOLE]
-
 # Signals
 func _ready(): 
 	# Connect GUI signals
@@ -199,7 +196,7 @@ func _ready():
 	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
 	
 	# Initialise level meshes
-	for lvl in range(0, 21):
+	for lvl in range(0, WorldConstants.MAX_LEVELS+1):
 		var n = Spatial.new()
 		n.set_name("Level" + str(lvl))
 		
@@ -218,7 +215,7 @@ func _ready():
 		# Initialise objects that only have 1 per level
 		if objectType.onePerLevel == true:
 			fixed_objects[obj] = [];
-			for lvl in range(0, 21):
+			for lvl in range(0, WorldConstants.MAX_LEVELS+1):
 				fixed_objects[obj].append(objectType.new(lvl))
 				levelMeshes[level].add_child(fixed_objects[obj][lvl])
 				fixed_objects[obj][lvl]._genMesh()
@@ -259,7 +256,7 @@ func on_toggle_upper_levels(toggle : bool):
 
 func hide_upper_levels(currentLevel):
 	# Hide objects by displacing them, this means that they wont affect the raycast selection
-	for lvl in range(0,21):
+	for lvl in range(0,WorldConstants.MAX_LEVELS+1):
 		if lvl <= currentLevel:
 			levelMeshes[lvl].set_translation(Vector3(0,0,0))
 		else:

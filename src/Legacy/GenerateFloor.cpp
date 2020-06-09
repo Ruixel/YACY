@@ -104,7 +104,7 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     
     // Get GetTriangles
     Node* worldAPI = get_node(worldAPINodePath);
-    std::vector<p2t::Triangle*> tris = getTris(v, worldAPI->call("get_holes"));
+    std::vector<p2t::Triangle*> tris = getTris(v, holes);
     Godot::print("Triangles: " + String::num(tris.size()));
     
     int idx = 0;

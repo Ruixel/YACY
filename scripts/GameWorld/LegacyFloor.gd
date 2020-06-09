@@ -156,7 +156,8 @@ static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array,
 
 func buildFloor() -> Mesh:
 	var gen = get_node("/root/Spatial/FloorGenerator")
-	return gen.generateFloorMesh(vertices, level, floor_texture, floor_colour, ceil_texture, ceil_colour, [])
+	return gen.generateFloorMesh(vertices, level, floor_texture, 
+		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
 
 #	var wc = get_node("/root/WorldConstants")
 #	print(wc.get_path())
