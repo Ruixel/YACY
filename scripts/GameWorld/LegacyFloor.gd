@@ -59,7 +59,7 @@ func change_vertex(newVertexInfo : Array):
 func _genMesh():
 	if isVisible:
 		mesh.mesh = buildFloor()
-		collision_shape.shape = mesh.mesh.create_convex_shape()
+		collision_shape.shape = mesh.mesh.create_trimesh_shape()
 	else:
 		mesh.mesh = null
 		collision_shape.shape = null
