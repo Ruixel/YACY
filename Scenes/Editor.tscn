@@ -187,7 +187,6 @@ __meta__ = {
 
 [node name="FloorGenerator" type="Node" parent="."]
 script = ExtResource( 19 )
-WorldAPI = null
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
 
 [editable path="Scene Root"]
