@@ -20,8 +20,6 @@ var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
 func _init(position : Vector2, lvl : int):
-	var worldAPI = get_node("/root/Spatial/WorldInterface")
-	
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
@@ -104,7 +102,7 @@ func is_valid(ground):
 		var halfSize2 = size_list[hole.size-1] / 2
 		var start2 = Vector2(hole.pos.x - halfSize2, hole.pos.y - halfSize2)
 		var end2   = Vector2(hole.pos.x + halfSize2, hole.pos.y + halfSize2)
-		print(str(start.x) + " .. " + str(start2.x))
+		#print(str(start.x) + " .. " + str(start2.x))
 		if (start.x < end2.x && end.x > start2.x && start.y < end2.y && end.y > start2.y):
 			return false
 	 

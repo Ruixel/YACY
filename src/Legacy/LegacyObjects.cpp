@@ -80,6 +80,7 @@ namespace Legacy {
         else if (objectName == "TriWall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Hole") hole_createObject(worldAPI, objectArray, objectProperties.size());
         
         else if (objectName == "Begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Board") message_createEntity(worldAPI, objectArray, objectProperties.size());
@@ -239,6 +240,19 @@ namespace Legacy {
             //                                                      // Position                  // Direction        // Material               // Level
             if      (objectSize == 5) worldAPI->call("create_ramp", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractTexColour(obj[3]), extractInt(obj[4]));    
             else if (objectSize == 4) worldAPI->call("create_ramp", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 5,                        extractInt(obj[3])); 
+        }
+    }
+    
+    // Hole
+    // [position_x, position_y, size, level]
+    void hole_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Size             // Level
+            if      (objectSize == 4) worldAPI->call("create_hole", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3])); 
         }
     }
     

@@ -66,8 +66,6 @@ func _genMesh():
 
 func selectObj():
 	pass
-	#selection_mesh = MeshInstance.new()
-	#selection_mesh.mesh = buildPlatSelectionMesh(pos, level, size, height_offset, 0.05)
 
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
@@ -82,113 +80,7 @@ func set_property_dict(dict : Dictionary):
 	floor_texture = dict["Texture"]
 	floor_colour = dict["Colour"]
 
-const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
-static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
-	tex : int, colour : Color) -> void:
-	
-	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
-	var normal = (wall_vertices[2] - wall_vertices[1]).cross(wall_vertices[3] - wall_vertices[1]).normalized()
-	
-	var texture_float = (tex+1.0)/256
-	var texture_scale = WorldTextures.textures[tex].texScale
-	
-	# Add Vertices
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(wall_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								wall_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(wall_vertices[0])
-	
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(wall_vertices[3].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								wall_vertices[3].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(wall_vertices[3])
-
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(wall_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								wall_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(wall_vertices[2])
-	
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(wall_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								wall_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(wall_vertices[1])
-	
-	# Quad Indices
-	for idx in quad_indices:
-		surface_tool.add_index(sIndex + idx)
-
-const tri_indices = [0, 1, 2] # Magic array 
-static func _createPlatTriMesh(surface_tool : SurfaceTool, tri_vertices : Array, sIndex: int, 
-	tex : int, colour : Color) -> void:
-	
-	# Normal needs to be added before the vertex for some reason (TODO: Clean up)
-	var normal = (tri_vertices[2] - tri_vertices[0]).cross(tri_vertices[1] - tri_vertices[0]).normalized()
-	
-	var texture_float = (tex+1.0)/256
-	var texture_scale = WorldTextures.textures[tex].texScale
-	
-	# Add Vertices
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[0].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[0].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[0])
-	
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[1].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[1].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[1])
-
-	surface_tool.add_color(Color(colour.r, colour.g, colour.b, texture_float))
-	surface_tool.add_uv(Vector2(tri_vertices[2].x * texture_scale.x * WorldConstants.TEXTURE_SIZE,  
-								tri_vertices[2].z * texture_scale.y * WorldConstants.TEXTURE_SIZE))
-	surface_tool.add_normal(normal)
-	surface_tool.add_vertex(tri_vertices[2])
-	
-	# Quad Indices
-	for idx in tri_indices:
-		surface_tool.add_index(sIndex + idx)
-
 func buildFloor() -> Mesh:
 	var gen = get_node("/root/Spatial/FloorGenerator")
 	return gen.generateFloorMesh(vertices, level, floor_texture, 
 		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
-
-#	var wc = get_node("/root/WorldConstants")
-#	print(wc.get_path())
-#	print(wc.get("WORLD_HEIGHT"))
-#
-#	var surface_tool = SurfaceTool.new()
-#	surface_tool.begin(Mesh.PRIMITIVE_TRIANGLES)
-#
-#	var height = (level - 1) * WorldConstants.LEVEL_HEIGHT
-#
-#	# Set colour to white if not using the colour wall
-#	var floor_meshColor = floor_colour
-#	if floor_texture != WorldTextures.TextureID.COLOR:
-#		floor_meshColor = Color(1,1,1)
-#
-#	var ceil_meshColor = ceil_colour
-#	if ceil_texture != WorldTextures.TextureID.COLOR:
-#		ceil_meshColor = Color(1,1,1)
-#
-#	# Calculate wall vertices
-#	var plat_vertices = []
-#	plat_vertices.insert(0, Vector3(vertices[0].x, height, vertices[0].y))
-#	plat_vertices.insert(1, Vector3(vertices[1].x, height, vertices[1].y))
-#	plat_vertices.insert(2, Vector3(vertices[2].x, height, vertices[2].y))
-#	plat_vertices.insert(3, Vector3(vertices[3].x, height, vertices[3].y))
-#
-#	_createPlatQuadMesh(surface_tool, plat_vertices, 0, floor_texture, floor_meshColor)
-#
-#	# Rearrange vertices for the backwall
-#	var bVertices = [plat_vertices[3], plat_vertices[2], plat_vertices[1], plat_vertices[0]]
-#	_createPlatQuadMesh(surface_tool, bVertices, 4, ceil_texture, ceil_meshColor)
-#
-#	surface_tool.set_material(WorldTextures.getWallMaterial(floor_texture))
-#	return surface_tool.commit()

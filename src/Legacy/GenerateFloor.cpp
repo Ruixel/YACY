@@ -8,8 +8,6 @@ void GenerateFloor::_register_methods()
 {
     register_method("generateFloorMesh", &GenerateFloor::generateFloorMesh);
     register_method("_ready", &GenerateFloor::_ready);
-    
-    register_property<GenerateFloor, NodePath>("WorldAPI", &GenerateFloor::worldAPINodePath, NodePath());
 }
 
 void GenerateFloor::_init()
@@ -105,7 +103,6 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     v.insert(3, Vector2(vertices[3].x, vertices[3].y));
     
     // Get GetTriangles
-    Node* worldAPI = get_node(worldAPINodePath);
     std::vector<p2t::Triangle*> tris = getTris(v, holes);
     Godot::print("Triangles: " + String::num(tris.size()));
     

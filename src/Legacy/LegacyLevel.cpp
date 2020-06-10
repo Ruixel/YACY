@@ -98,4 +98,5 @@ void LegacyLevel::parseLevelCode(godot::String levelCode, godot::Node* worldApi)
     }
     
     godot::Godot::print("Found " + godot::String::num(objects) + " objects");
+    worldApi->call_deferred("finalise");
 }

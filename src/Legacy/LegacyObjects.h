@@ -31,6 +31,7 @@ namespace Legacy {
     void ground_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void pillar_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void ramp_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void hole_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     
     // Entitiy creation functions
     void start_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);

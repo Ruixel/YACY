@@ -6,6 +6,7 @@ const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
 const Pillar = preload("res://scripts/GameWorld/Pillar.gd")
 const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
 const Floor = preload("res://scripts/GameWorld/LegacyFloor.gd")
+const Hole = preload("res://scripts/GameWorld/LegacyHole.gd")
 
 func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level: int):
 	start = start / 5.0
@@ -133,6 +134,19 @@ func create_ramp(end : Vector2, direction : int, texColour, level: int):
 		
 	get_parent().call("add_geometric_object", new_ramp, level)
 
+func create_hole(pos : Vector2, size : int, level : int):
+	pos = pos / 5.0
+	
+	var new_hole = Hole.new(pos, level)
+	new_hole.size = size
+
+	get_parent().call("add_geometric_object", new_hole, level)
+	
+#	if (new_hole.is_valid(get_parent().fixed_objects[WorldConstants.Tools.GROUND][level])):
+#		print("successfully added hole")
+#	else:
+#		print("hole issues")
+
 func create_spawn(pos : Vector2, direction : int, level : int):
 	var new_spawn = preload("res://Entities/Legacy/Spawn/Spawn.tscn").instance()
 	new_spawn.set_name("SpawnLocation")
@@ -174,3 +188,7 @@ func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, 
 		4: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 3/4.0, 0))
 	
 	get_parent().call("add_entity", new_board)
+
+func finalise():
+	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
+		get_parent().fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()
