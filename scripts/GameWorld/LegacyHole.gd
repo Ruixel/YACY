@@ -42,12 +42,20 @@ func get_level():
 	return level
 
 func change_size(newSize : int):
+	var oldSize = size
 	size = newSize
+	
+	# Check new size is valid
+	var ground = HoleManager.get_ground(level)
+	if ground != null:
+		if not is_valid(ground):
+			size = oldSize
+	
+	HoleManager.update_ground_mesh(level)
 
 func _genMesh():
-	pass
-#	mesh.mesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
-#	collision_shape.shape = mesh.mesh.create_convex_shape()
+	var holeMesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
+	collision_shape.shape = holeMesh.create_convex_shape()
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
 	return buildPlatform(Vector2(0,0), pLevel, 0, 0, Color(0,0,0), size, platShape, true)
@@ -102,7 +110,7 @@ func is_valid(ground):
 		var halfSize2 = size_list[hole.size-1] / 2
 		var start2 = Vector2(hole.pos.x - halfSize2, hole.pos.y - halfSize2)
 		var end2   = Vector2(hole.pos.x + halfSize2, hole.pos.y + halfSize2)
-		#print(str(start.x) + " .. " + str(start2.x))
+
 		if (start.x < end2.x && end.x > start2.x && start.y < end2.y && end.y > start2.y):
 			return false
 	 

@@ -32,15 +32,11 @@ std::vector<p2t::Triangle*> GenerateFloor::getTris(PoolVector2Array vertices, Ar
     // Add holes
     for (int i = 0; i < holes.size(); i++)
     {
-        //if ((bool)holes[i].call("get_validity", nullptr, 0) == false)
-        //    continue;
-            
         PoolVector2Array hole_vertices = holes[i].call("get_vertices",nullptr,0);
         std::vector<p2t::Point*> hole_polygon;
         for (int p = 0; p < hole_vertices.size(); p++) 
             hole_polygon.push_back(new p2t::Point(hole_vertices[p].x, hole_vertices[p].y));
         
-        Godot::print("hole poly " + String::num(hole_polygon.size()));
         cdt->AddHole(hole_polygon);
     }
 
@@ -84,7 +80,6 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     Node* worldConstants = get_node("/root/WorldConstants");
     Node* worldTextures = get_node("/root/WorldTextures");
 	
-    Godot::print(worldConstants->get_path());
 	float height = (level - 1.f) * (float)(worldConstants->get("LEVEL_HEIGHT"));
 	
 	// Set colour to white if not using the colour wall
@@ -104,7 +99,6 @@ Ref<ArrayMesh> GenerateFloor::generateFloorMesh(PoolVector2Array vertices, int l
     
     // Get GetTriangles
     std::vector<p2t::Triangle*> tris = getTris(v, holes);
-    Godot::print("Triangles: " + String::num(tris.size()));
     
     int idx = 0;
     for (int t = 0; t < tris.size(); t++) 
