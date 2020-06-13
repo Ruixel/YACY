@@ -5,6 +5,10 @@ const rotationSpeed = 2.0 / 1000
 # Player Controller Children
 onready var camera = $FPSCamera
 
+# GUI
+onready var gui = $PlayerGUI
+onready var gui_mouseLock = $PlayerGUI/MouseLockWarning
+
 # Camera Variables
 var lock_mouse = true
 var yaw_delta = 0
@@ -25,7 +29,17 @@ func _physics_process(delta):
 	pass
 
 func _unhandled_input(event):
-	if event is InputEventMouseMotion:
+	if event is InputEventMouseMotion and lock_mouse:
 		pitch_delta -= event.relative.y
 		yaw_delta -= event.relative.x
-		
+	
+	if event is InputEventKey and event.pressed:
+		if event.is_action("toggle_mouse_lock"):
+			lock_mouse = not lock_mouse
+			match lock_mouse:
+				true: 
+					Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+					gui_mouseLock.visible = false
+				false: 
+					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+					gui_mouseLock.visible = true

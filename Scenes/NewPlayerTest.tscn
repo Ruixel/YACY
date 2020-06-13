@@ -50,7 +50,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 1.02153, 7 )
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, -0.112699, 0 )
 
 [node name="FPSCamera" parent="KinematicBody" index="1"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.398867, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.318321, 0 )
 far = 500.0
+
+[node name="MouseLockWarning" parent="KinematicBody/PlayerGUI" index="0"]
+visible = false
 
 [editable path="KinematicBody"]

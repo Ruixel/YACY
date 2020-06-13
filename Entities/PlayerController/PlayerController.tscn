@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
+[ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.25
 height = 0.6
+
+[sub_resource type="DynamicFont" id=2]
+size = 18
+use_filter = true
+font_data = ExtResource( 2 )
 
 [node name="KinematicBody" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.612947, 0 )
@@ -16,3 +22,23 @@ shape = SubResource( 1 )
 
 [node name="FPSCamera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.398866, 0 )
+
+[node name="PlayerGUI" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MouseLockWarning" type="Label" parent="PlayerGUI"]
+margin_left = 5.0
+margin_top = 5.0
+margin_right = 349.0
+margin_bottom = 56.0
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+text = "MOUSE CONTROL OFF - PRESS 'T'"
+__meta__ = {
+"_edit_use_anchors_": false
+}

@@ -272,7 +272,7 @@ script = ExtResource( 1 )
 transform = Transform( 0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0 )
 
 [node name="gun_bone" type="BoneAttachment" parent="Scene Root/Robot_Skeleton/Skeleton" index="5"]
-transform = Transform( 0.91775, -0.232515, 0.322282, -0.226944, -0.972349, -0.0555875, 0.326331, -0.0221007, -0.945009, -0.207101, 1.39746, 0.465314 )
+transform = Transform( 0.904932, -0.252887, 0.342538, -0.256969, -0.965836, -0.0345082, 0.339598, -0.0567651, -0.938868, -0.207108, 1.3693, 0.531377 )
 bone_name = "hand.R"
 
 [node name="shoot_from" type="Position3D" parent="Scene Root/Robot_Skeleton/Skeleton/gun_bone"]
@@ -336,6 +336,9 @@ margin_top = -23.8394
 margin_right = 14.6654
 margin_bottom = 8.16064
 texture = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="sfx" type="Node" parent="."]
 
