@@ -20,12 +20,18 @@ material = SubResource( 3 )
 [sub_resource type="MeshLibrary" id=5]
 item/0/name = "Hey"
 item/0/mesh = SubResource( 2 )
+item/0/mesh_transform = null
 item/0/shapes = [  ]
+item/0/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 item/1/name = "Brick"
 item/1/mesh = SubResource( 4 )
+item/1/mesh_transform = null
 item/1/shapes = [  ]
+item/1/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 item/2/name = "none\\"
+item/2/mesh_transform = null
 item/2/shapes = [  ]
+item/2/navmesh_transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [sub_resource type="CubeMesh" id=6]
 
@@ -49,7 +55,7 @@ transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.0
 [node name="GridMap" type="GridMap" parent="."]
 mesh_library = SubResource( 5 )
 data = {
-"cells": PoolIntArray( 0, 0, 1610612736, 65532, 0, 2, 65533, 0, 2, 65534, 0, 0, 65535, 0, 1610612736, 0, 1, 0, 65532, 1, 2, 65533, 1, 2, 65534, 1, 0, 65535, 1, 0, 0, 2, 536870912, 65532, 2, 2, 65533, 2, 2, 65534, 2, 536870912, 65535, 2, 536870912, 0, 3, 536870912, 65533, 3, 2, 65534, 3, 0, 65535, 3, 0, 65533, 4, 2, 65533, 5, 2, 65533, 6, 536870914, 65533, 7, 2, 65532, 8, 2, 0, 65535, 0, 65532, 65535, 2, 65535, 65535, 0 )
+"cells": PoolIntArray( 0, 0, 0, 65532, 0, 2, 65533, 0, 2, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65532, 1, 2, 65533, 1, 2, 65534, 1, 0, 65535, 1, 0, 0, 2, 0, 65532, 2, 2, 65533, 2, 2, 65534, 2, 0, 65535, 2, 0, 0, 3, 0, 65533, 3, 2, 65534, 3, 0, 65535, 3, 0, 65533, 4, 2, 65533, 5, 2, 65533, 6, 2, 65533, 7, 2, 65532, 8, 2, 0, 65535, 0, 65532, 65535, 2, 65535, 65535, 0 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -93,7 +99,6 @@ mesh = SubResource( 9 )
 material/0 = null
 
 [node name="Spatial2" type="Spatial" parent="."]
-editor/display_folded = true
 transform = Transform( -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0751307, 6.25, 0.598679 )
 
 [node name="MeshInstance3" type="MeshInstance" parent="Spatial2"]
