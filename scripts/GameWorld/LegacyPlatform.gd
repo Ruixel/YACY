@@ -76,12 +76,16 @@ func get_property_dict() -> Dictionary:
 	
 	return dict
 
+const dictToObj = {
+	"Texture":"texture", 
+	"Colour":"colour",
+	"Height":"height_offset",
+	"Size":"size",
+	"PlatShape":"platShape"
+}
 func set_property_dict(dict : Dictionary):
-	texture = dict["Texture"]
-	colour = dict["Colour"]
-	height_offset = dict["Height"]
-	size = dict["Size"]
-	platShape = dict["PlatShape"]
+	for prop in dictToObj:
+		set(dictToObj[prop], dict[prop])
 
 const quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sIndex: int, 
@@ -258,3 +262,9 @@ func JSON_serialise(default_dict) -> Dictionary:
 		dict["Colour"] = dict["Colour"].to_html()
 	
 	return dict
+
+func JSON_deserialise(dict):
+	for k in dict.keys():
+		if dictToObj.has(k) :
+			var property = self.get(dictToObj.get(k)) 
+			self.set(dictToObj.get(k), Utils.json2obj(dict[k], property))

@@ -15,7 +15,7 @@ const default_dict = {
 	"C_Colour": Color(1, 1, 1)
 }
 
-var vertices : Array
+var vertices : PoolVector2Array
 var level : int
 var isVisible : bool
 
@@ -85,10 +85,15 @@ func get_property_dict() -> Dictionary:
 	
 	return dict
 
+const dictToObj = {
+	"Texture":"floor_texture", 
+	"Colour":"floor_colour",
+	"Visible":"isVisible",
+}
+
 func set_property_dict(dict : Dictionary):
-	isVisible = dict["Visible"]
-	floor_texture = dict["Texture"]
-	floor_colour = dict["Colour"]
+	for prop in dictToObj:
+		set(dictToObj[prop], dict[prop])
 
 func buildFloor() -> Mesh:
 	var gen = get_node("/root/Spatial/FloorGenerator")
@@ -118,3 +123,12 @@ func JSON_serialise() -> Dictionary:
 		dict["C_Colour"] = dict["C_Colour"].to_html()
 	
 	return dict
+
+func JSON_deserialise(dict):
+	for k in dict.keys():
+		if dictToObj.has(k):
+			var property = self.get(dictToObj.get(k)) 
+			self.set(dictToObj.get(k), Utils.json2obj(dict[k], property))
+	
+	if dict.has("Points"):
+		vertices = Utils.json2obj(dict["Points"], vertices)

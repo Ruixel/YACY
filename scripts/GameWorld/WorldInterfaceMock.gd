@@ -52,22 +52,25 @@ const toolToObjectDict = {
 }
 
 # Object functions
-func obj_create(pos : Vector2):
+func obj_create(pos : Vector2, lvl : int = -1):
+	if lvl == -1:
+		lvl = level
+	
 	var objectType = toolToObjectDict.get(mode)
-	var new_obj = objectType.new(pos, level)
-	levelMeshes[level].add_child(new_obj)
+	var new_obj = objectType.new(pos, lvl)
+	levelMeshes[lvl].add_child(new_obj)
 	objects[mode].append(new_obj)
 	objects[WorldConstants.Tools.ALL].append(new_obj)
 	
 	# Check for validity
 	# yikes, only for holes
 	if new_obj.has_method("is_valid"):
-		var valid = new_obj.call("is_valid", fixed_objects[WorldConstants.Tools.GROUND][level])
+		var valid = new_obj.call("is_valid", fixed_objects[WorldConstants.Tools.GROUND][lvl])
 		if valid == false:
 			object_delete(new_obj)
 			return
 		else:
-			fixed_objects[WorldConstants.Tools.GROUND][level]._genMesh()
+			fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()
 	
 	# Select
 	deselect()
@@ -82,6 +85,8 @@ func obj_create(pos : Vector2):
 	
 	update_property_gui(new_obj)
 	emit_signal("change_selection", selection)
+	
+	return new_obj
 
 func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
 	var space_state = get_world().direct_space_state
@@ -186,6 +191,15 @@ func get_prototype(type) -> Array:
 	
 	return [prototype, prototype_size]
 
+func remesh_world():
+	for objType in toolToObjectDict.keys():
+		if toolToObjectDict.get(objType).onePerLevel == true:
+			for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
+				fixed_objects[objType][lvl]._genMesh()
+		else:
+			for obj in objects[objType]:
+				obj._genMesh()
+
 # Signals
 func _ready(): 
 	# Connect GUI signals
@@ -193,6 +207,7 @@ func _ready():
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	EditorGUI.get_node("Misc").connect("s_toggleUpperFloors", self, "on_toggle_upper_levels")
 	EditorGUI.get_node("Misc").connect("s_saveFile", self, "on_save_file_json")
+	EditorGUI.get_node("Misc").connect("s_loadFile", self, "on_load_file_json")
 	
 	# Connect property change signals
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
@@ -334,4 +349,7 @@ func property_vertex(vertexInfo : Array):
 				call_deferred("object_delete", hole)
 
 func on_save_file_json():
-	$JSONSerialiser.save_file(objects, fixed_objects, toolToObjectDict)
+	$JSONSerialiser.save_file("testfile.cy", objects, fixed_objects, toolToObjectDict)
+
+func on_load_file_json():
+	$JSONSerialiser.load_file("testfile.cy", objects, fixed_objects, toolToObjectDict)

@@ -53,6 +53,7 @@ func change_size(newSize : int):
 	
 	HoleManager.update_ground_mesh(level)
 
+# No actual visible mesh, but still needs one for selecting
 func _genMesh():
 	var holeMesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
 	collision_shape.shape = holeMesh.create_convex_shape()
@@ -70,8 +71,13 @@ func get_property_dict() -> Dictionary:
 
 	return dict
 
+const dictToObj = {
+	"Size":"size"
+}
+
 func set_property_dict(dict : Dictionary):
-	size = dict["Size"]
+	for prop in dictToObj:
+		set(dictToObj[prop], dict[prop])
 
 func is_valid(ground):
 	# Get vertices of the holes
@@ -249,3 +255,9 @@ func JSON_serialise(default_dict) -> Dictionary:
 	dict["Pos"] = pos
 	
 	return dict
+
+func JSON_deserialise(dict):
+	for k in dict.keys():
+		if dictToObj.has(k):
+			var property = self.get(dictToObj.get(k)) 
+			self.set(dictToObj.get(k), Utils.json2obj(dict[k], property))

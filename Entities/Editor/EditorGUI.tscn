@@ -185,4 +185,5 @@ grow_horizontal = 1
 [connection signal="pressed" from="MapLevel/Down" to="MapLevel" method="_on_Down_pressed"]
 [connection signal="pressed" from="Misc/ToggleGrid" to="Misc" method="_on_ToggleGrid_pressed"]
 [connection signal="pressed" from="Misc/Save" to="Misc" method="_on_Save_pressed"]
+[connection signal="pressed" from="Misc/Load" to="Misc" method="_on_Load_pressed"]
 [connection signal="pressed" from="Misc/ToggleUpperLevels" to="Misc" method="_on_ToggleUpperLevels_pressed"]

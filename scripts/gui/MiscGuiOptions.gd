@@ -3,6 +3,7 @@ extends Panel
 signal s_toggleGrid
 signal s_toggleUpperFloors
 signal s_saveFile
+signal s_loadFile
 
 var gridOn = true
 func _on_ToggleGrid_pressed():
@@ -26,3 +27,6 @@ func _on_ToggleUpperLevels_pressed():
 
 func _on_Save_pressed():
 	emit_signal("s_saveFile")
+
+func _on_Load_pressed():
+	emit_signal("s_loadFile")

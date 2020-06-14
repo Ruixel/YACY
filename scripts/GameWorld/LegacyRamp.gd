@@ -63,15 +63,23 @@ func get_property_dict() -> Dictionary:
 	var dict : Dictionary= {}
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
-	dict["MinMaxHeight"] = Vector2(min_height, max_height)
+	dict["Height"] = Vector2(min_height, max_height)
 	
 	return dict
 
+const dictToObj = {
+	"Texture":"texture", 
+	"Colour":"colour",
+	"Height":"minmaxVector2"
+}
+
+var minmaxVector2 : Vector2 = Vector2(1, 0) # DONT WRITE TO THIS
 func set_property_dict(dict : Dictionary):
-	texture = dict["Texture"]
-	colour = dict["Colour"]
-	min_height = dict["MinMaxHeight"].x
-	max_height = dict["MinMaxHeight"].y
+	for prop in dictToObj:
+		set(dictToObj[prop], dict[prop])
+	
+	min_height = minmaxVector2.x
+	max_height = minmaxVector2.y
 
 # Build Mesh
 static func buildRamp(start : Vector2, end : Vector2, level : int, min_height : float, 
@@ -212,7 +220,7 @@ func JSON_serialise(default_dict) -> Dictionary:
 	
 	# Add unique variables
 	dict["Lvl"] = level
-	dict["Start"] = start
+	dict["Pos"] = start
 	dict["End"] = end
 	
 	# Colours should be serialised into a smaller format
@@ -220,3 +228,14 @@ func JSON_serialise(default_dict) -> Dictionary:
 		dict["Colour"] = dict["Colour"].to_html()
 	
 	return dict
+
+func JSON_deserialise(dict):
+	for k in dict.keys():
+		if dictToObj.has(k) :
+			var property = self.get(dictToObj.get(k)) 
+			self.set(dictToObj.get(k), Utils.json2obj(dict[k], property))
+	
+	min_height = minmaxVector2.x
+	max_height = minmaxVector2.y
+	
+	end = Utils.json2obj(dict["End"], end)

@@ -11,7 +11,7 @@ var level : int
 var texture : int = 4
 var colour := Color(1, 1, 1)
 
-var size : int = 0
+var size : int = 1
 var diagonal : bool = false
 
 var max_height : float = 1.0
@@ -62,19 +62,27 @@ func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
-	dict["MinMaxHeight"] = Vector2(min_height, max_height)
+	dict["Height"] = Vector2(min_height, max_height)
 	dict["PillarSize"] = size
 	dict["Diagonal"] = diagonal
 	
 	return dict
 
+const dictToObj = {
+	"Texture":"texture", 
+	"Colour":"colour",
+	"PillarSize":"size",
+	"Diagonal":"diagonal",
+	"Height":"minmaxVector2"
+}
+
+var minmaxVector2 : Vector2 = Vector2(1, 0) # DONT WRITE TO THIS
 func set_property_dict(dict : Dictionary):
-	texture = dict["Texture"]
-	colour = dict["Colour"]
-	min_height = dict["MinMaxHeight"].x
-	max_height = dict["MinMaxHeight"].y
-	size = dict["PillarSize"]
-	diagonal = dict["Diagonal"]
+	for prop in dictToObj:
+		set(dictToObj[prop], dict[prop])
+	
+	min_height = minmaxVector2.x
+	max_height = minmaxVector2.y
 
 func _genMesh():
 	mesh.mesh = buildMesh(level, false)
@@ -240,3 +248,12 @@ func JSON_serialise(default_dict) -> Dictionary:
 		dict["Colour"] = dict["Colour"].to_html()
 	
 	return dict
+
+func JSON_deserialise(dict):
+	for k in dict.keys():
+		if dictToObj.has(k) :
+			var property = self.get(dictToObj.get(k)) 
+			self.set(dictToObj.get(k), Utils.json2obj(dict[k], property))
+	
+	min_height = minmaxVector2.x
+	max_height = minmaxVector2.y

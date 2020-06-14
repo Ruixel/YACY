@@ -24,6 +24,7 @@ config/icon="res://icon.png"
 WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
 WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 HoleManager="*res://scripts/GameWorld/HoleManager.gd"
+Utils="*res://scripts/Utils.gd"
 
 [input]
 
