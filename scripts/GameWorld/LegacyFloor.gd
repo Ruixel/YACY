@@ -111,4 +111,10 @@ func JSON_serialise() -> Dictionary:
 	if not no_change_in_vertices:
 		dict["Points"] = vertices
 	
+	# Colours should be serialised into a smaller format
+	if dict.has("Colour"):
+		dict["Colour"] = dict["Colour"].to_html()
+	if dict.has("C_Colour"):
+		dict["C_Colour"] = dict["C_Colour"].to_html()
+	
 	return dict

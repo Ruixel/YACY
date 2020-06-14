@@ -235,4 +235,8 @@ func JSON_serialise(default_dict) -> Dictionary:
 	dict["Lvl"] = level
 	dict["Pos"] = pos
 	
+	# Colours should be serialised into a smaller format
+	if dict.has("Colour"):
+		dict["Colour"] = dict["Colour"].to_html()
+	
 	return dict
