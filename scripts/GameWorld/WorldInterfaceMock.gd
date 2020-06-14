@@ -192,6 +192,7 @@ func _ready():
 	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
 	EditorGUI.get_node("Misc").connect("s_toggleUpperFloors", self, "on_toggle_upper_levels")
+	EditorGUI.get_node("Misc").connect("s_saveFile", self, "on_save_file_json")
 	
 	# Connect property change signals
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
@@ -232,6 +233,8 @@ func _ready():
 			
 			fixed_objects[obj][1].isVisible = true
 			fixed_objects[obj][1]._genMesh()
+	
+	$JSONSerialiser.load_default_objects(default_objs)
 
 func on_tool_change(type) -> void:
 	mode = type
@@ -329,3 +332,6 @@ func property_vertex(vertexInfo : Array):
 			if not hole.is_valid(fixed_objects[WorldConstants.Tools.GROUND][level]):
 				HoleManager.remove_hole(hole, level)
 				call_deferred("object_delete", hole)
+
+func on_save_file_json():
+	$JSONSerialiser.save_file(objects, fixed_objects, toolToObjectDict)

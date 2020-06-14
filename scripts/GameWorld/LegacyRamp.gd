@@ -202,3 +202,17 @@ static func buildRampSelectionMesh(start : Vector2, end : Vector2, level : int, 
 	
 	surface_tool.set_material(WorldTextures.selection_mat)
 	return surface_tool.commit()
+
+func JSON_serialise(default_dict) -> Dictionary:
+	# Only add values that differ from the default
+	var dict = get_property_dict()
+	for k in dict.keys():
+		if dict[k] == default_dict[k]:
+			dict.erase(k)
+	
+	# Add unique variables
+	dict["Lvl"] = level
+	dict["Start"] = start
+	dict["End"] = end
+	
+	return dict

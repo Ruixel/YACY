@@ -23,7 +23,7 @@ const ToolToString = {
 	Tools.RAMP: "Ramp",
 	Tools.SPAWN: "Spawn Location",
 	Tools.GROUND: "Level Ground",
-	Tools.HOLE: "Ground Hole"
+	Tools.HOLE: "Hole"
 }
 
 enum WallShape {

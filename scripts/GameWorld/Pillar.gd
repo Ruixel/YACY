@@ -223,3 +223,16 @@ func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Array, sInd
 	# Quad Indices
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
+
+func JSON_serialise(default_dict) -> Dictionary:
+	# Only add values that differ from the default
+	var dict = get_property_dict()
+	for k in dict.keys():
+		if dict[k] == default_dict[k]:
+			dict.erase(k)
+	
+	# Add unique variables
+	dict["Lvl"] = level
+	dict["Pos"] = pos
+	
+	return dict

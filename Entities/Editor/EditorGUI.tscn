@@ -136,6 +136,28 @@ margin_top = 5.0
 margin_right = 110.0
 margin_bottom = 35.0
 text = "Hide Grid"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Save" type="Button" parent="Misc"]
+margin_left = 10.0
+margin_top = -30.0
+margin_right = 95.0
+text = "Save Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Load" type="Button" parent="Misc"]
+margin_left = 100.0
+margin_top = -30.0
+margin_right = 185.0
+margin_bottom = -1.90735e-06
+text = "Load Level"
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="ToggleUpperLevels" type="Button" parent="Misc"]
 margin_left = 116.0
@@ -162,4 +184,5 @@ grow_horizontal = 1
 [connection signal="pressed" from="MapLevel/Up" to="MapLevel" method="_on_Up_pressed"]
 [connection signal="pressed" from="MapLevel/Down" to="MapLevel" method="_on_Down_pressed"]
 [connection signal="pressed" from="Misc/ToggleGrid" to="Misc" method="_on_ToggleGrid_pressed"]
+[connection signal="pressed" from="Misc/Save" to="Misc" method="_on_Save_pressed"]
 [connection signal="pressed" from="Misc/ToggleUpperLevels" to="Misc" method="_on_ToggleUpperLevels_pressed"]

@@ -25,10 +25,6 @@ WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
 WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 HoleManager="*res://scripts/GameWorld/HoleManager.gd"
 
-[display]
-
-window/vsync/use_vsync=false
-
 [input]
 
 editor_camera_pan={
