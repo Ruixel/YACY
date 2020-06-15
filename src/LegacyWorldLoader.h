@@ -26,6 +26,7 @@ public:
     
     void loadLevelFromFilesystem(String fileName);
     void loadLevelFromLocalhost(int gameNumber);
+    void loadLevelFromString(String levelContents);
     
     
 };

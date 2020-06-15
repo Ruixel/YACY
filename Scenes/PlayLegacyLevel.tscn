@@ -31,4 +31,9 @@ margin_right = 148.0
 margin_bottom = 46.0
 text = "Run GDNative"
 script = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HTTPRequest" type="HTTPRequest" parent="LegacyWorldLoader/Button"]
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]

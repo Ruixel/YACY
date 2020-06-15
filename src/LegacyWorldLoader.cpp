@@ -9,6 +9,7 @@ void LegacyWorldLoader::_register_methods()
 {
     register_method("loadLevelFromFilesystem", &LegacyWorldLoader::loadLevelFromFilesystem);
     register_method("loadLevelFromLocalhost", &LegacyWorldLoader::loadLevelFromLocalhost);
+    register_method("loadLevelFromString", &LegacyWorldLoader::loadLevelFromString);
     register_method("_ready", &LegacyWorldLoader::_ready);
 
     register_property<LegacyWorldLoader, NodePath>("Loader", &LegacyWorldLoader::loaderNode, NodePath());
@@ -42,6 +43,14 @@ void LegacyWorldLoader::loadLevelFromFilesystem ( godot::String fileName )
     LegacyLevel cyLevel;
     cyLevel.parseLevelCode(gameFile->get_as_text(), worldAPI);
     gameFile->close();
+}
+
+void godot::LegacyWorldLoader::loadLevelFromString(String levelContents)
+{
+    Node* worldAPI = get_node(loaderNode);
+    
+    LegacyLevel cyLevel;
+    cyLevel.parseLevelCode(levelContents, worldAPI);
 }
 
 void godot::LegacyWorldLoader::loadLevelFromLocalhost(int gameNumber) 

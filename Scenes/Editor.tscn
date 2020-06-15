@@ -189,6 +189,8 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="HTTPRequest" type="HTTPRequest" parent="LegacyWorldLoader/Button"]
+
 [node name="FloorGenerator" type="Node" parent="."]
 script = ExtResource( 19 )
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
