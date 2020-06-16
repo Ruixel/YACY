@@ -189,6 +189,19 @@ func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, 
 	
 	get_parent().call("add_entity", new_board)
 
+func create_portal(pos : Vector2, title : String, condition : int, gameNumber: String, level : int):
+	var new_portal = preload("res://Entities/Legacy/Portal/Portal.tscn").instance()
+	new_portal.get_node("Viewport/Text").set_text(title)
+	print(title)
+	
+	var t = new_portal.get_node("Viewport").get_texture()
+	new_portal.get_node("TextArea").mesh.surface_get_material(0).albedo_texture = t
+	
+	pos = pos / 5.0
+	new_portal.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	
+	get_parent().call("add_entity", new_portal)
+
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
 		get_parent().fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()

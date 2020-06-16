@@ -84,6 +84,7 @@ namespace Legacy {
         
         else if (objectName == "Begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "Board") message_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "Portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -279,6 +280,19 @@ namespace Legacy {
             //                                                          // Position                  // Message          // Direction     // Height               // Level
             if      (objectSize == 6) worldAPI->call("create_msgBoard", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), extractInt(obj[4]), extractInt(obj[5]));    
             else if (objectSize == 5) worldAPI->call("create_msgBoard", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), 1,                  extractInt(obj[4])); 
+        }
+    }
+    
+    // Portal
+    // [position_x, position_y, title, condition, gameNumber, level]
+    void portal_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                          // Position                  // Title           // Condition         // GameNumber       // Level
+            if      (objectSize == 6) worldAPI->call("create_portal", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), extractStr(obj[4]), extractInt(obj[5]));    
         }
     }
 
