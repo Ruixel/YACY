@@ -17,6 +17,8 @@ script = ExtResource( 2 )
 [node name="ObjectLoader" type="Node" parent="LegacyLevel"]
 script = ExtResource( 3 )
 
+[node name="HTTPRequest" type="HTTPRequest" parent="LegacyLevel"]
+
 [node name="FloorGenerator" type="Node" parent="."]
 script = ExtResource( 4 )
 

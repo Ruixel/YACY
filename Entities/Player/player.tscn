@@ -152,7 +152,7 @@ nodes/strafe/node = SubResource( 16 )
 nodes/strafe/position = Vector2( -340, 120 )
 nodes/walk/node = SubResource( 21 )
 nodes/walk/position = Vector2( -340, 220 )
-node_connections = [ "output", 0, "eye_blend", "state", 0, "strafe", "state", 1, "walk", "state", 2, "jumpup", "state", 3, "jumpdown", "land", 0, "state", "land", 1, "hardland", "aim", 0, "aimdown", "aim", 1, "land", "aim", 2, "aimup", "eye_blend", 0, "aim", "eye_blend", 1, "eyes" ]
+node_connections = [ "output", 0, "eye_blend", "state", 0, "strafe", "state", 1, "walk", "state", 2, "jumpup", "state", 3, "jumpdown", "aim", 0, "aimdown", "aim", 1, "land", "aim", 2, "aimup", "land", 0, "state", "land", 1, "hardland", "eye_blend", 0, "aim", "eye_blend", 1, "eyes" ]
 
 [sub_resource type="CapsuleShape" id=23]
 radius = 0.320497
@@ -272,7 +272,7 @@ script = ExtResource( 1 )
 transform = Transform( 0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0 )
 
 [node name="gun_bone" type="BoneAttachment" parent="Scene Root/Robot_Skeleton/Skeleton" index="5"]
-transform = Transform( 0.904932, -0.252887, 0.342538, -0.256969, -0.965836, -0.0345082, 0.339598, -0.0567651, -0.938868, -0.207108, 1.3693, 0.531377 )
+transform = Transform( 0.924968, -0.256892, 0.280422, -0.229467, -0.964962, -0.127479, 0.303383, 0.0535799, -0.951373, -0.207112, 1.39211, 0.452571 )
 bone_name = "hand.R"
 
 [node name="shoot_from" type="Position3D" parent="Scene Root/Robot_Skeleton/Skeleton/gun_bone"]

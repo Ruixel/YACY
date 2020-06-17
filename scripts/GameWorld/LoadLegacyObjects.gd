@@ -192,7 +192,9 @@ func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, 
 func create_portal(pos : Vector2, title : String, condition : int, gameNumber: String, level : int):
 	var new_portal = preload("res://Entities/Legacy/Portal/Portal.tscn").instance()
 	new_portal.get_node("Viewport/Text").set_text(title)
-	print(title)
+	gameNumber = gameNumber.substr(1, gameNumber.length() - 2)
+	if gameNumber.is_valid_integer():
+		new_portal.set_gameNumber(int(gameNumber))
 	
 	var t = new_portal.get_node("Viewport").get_texture()
 	new_portal.get_node("TextArea").get_surface_material(0).albedo_texture = t
