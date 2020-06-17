@@ -7,7 +7,7 @@ func _on_Button_pressed():
 	#get_parent().loadLevelFromLocalhost(2071)
 	#get_parent().loadLevelFromFilesystem("user://lol.cy")
 	#get_parent().get_parent().get_node("LegacyLevel").call("spawnPlayer")
-	$HTTPRequest.request("http://localhost/getMaze.php?maze=9123")
+	$HTTPRequest.request("http://localhost/getMaze.php?maze=120642")
 	set_disabled(true)
 	
 
