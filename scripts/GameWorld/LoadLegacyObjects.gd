@@ -152,7 +152,7 @@ func create_spawn(pos : Vector2, direction : int, level : int):
 	new_spawn.set_name("SpawnLocation")
 	
 	pos = pos / 5.0
-	new_spawn.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.001, pos.y))
+	new_spawn.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
 	match (direction):
 		1: new_spawn.set_rotation_degrees(Vector3(0, 0, 0))

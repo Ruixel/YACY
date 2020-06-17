@@ -4,10 +4,7 @@ func _ready():
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 
 func _on_Button_pressed():
-	#get_parent().loadLevelFromLocalhost(2071)
-	#get_parent().loadLevelFromFilesystem("user://lol.cy")
-	#get_parent().get_parent().get_node("LegacyLevel").call("spawnPlayer")
-	$HTTPRequest.request("http://localhost/getMaze.php?maze=161606")
+	$HTTPRequest.request("http://localhost/getMaze.php?maze=162608")
 	set_disabled(true)
 	
 

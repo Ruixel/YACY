@@ -72,19 +72,21 @@ namespace Legacy {
         const godot::String obj = objectArray[0];
         godot::PoolStringArray objectProperties = extractObjectProperties(obj);
         
-        if (objectName == "walls") wall_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Plat") plat_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "TriPlat") triplat_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "DiaPlat") diaplat_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Floor") ground_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "TriWall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Hole") hole_createObject(worldAPI, objectArray, objectProperties.size());
+        objectName = objectName.to_lower();
         
-        else if (objectName == "Begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Board") message_createEntity(worldAPI, objectArray, objectProperties.size());
-        else if (objectName == "Portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
+        if (objectName == "walls") wall_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "plat") plat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "triplat") triplat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "diaplat") diaplat_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "floor") ground_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "triwall") triwall_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "pillar") pillar_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "ramp") ramp_createObject(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "hole") hole_createObject(worldAPI, objectArray, objectProperties.size());
+        
+        else if (objectName == "begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "board") message_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)

@@ -83,7 +83,8 @@ func spawnPlayer():
 	if (spawnLocation != null):
 		player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
 	else:
-		player.set_translation(Vector3(50, 50, 50))
+		# Player spawns at [200, 390] in the original CY by default  
+		player.set_translation(Vector3(40, 5, 78))
 		
 
 # Level Loader

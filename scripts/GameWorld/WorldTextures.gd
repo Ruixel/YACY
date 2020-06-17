@@ -40,7 +40,7 @@ func get_textureScale(texId):
 
 # Load textures in order the enumenation of TextureID
 func loadTexturesToArray():
-	textures.append(LevelTexture.new("Color", "res://res/txrs/color256.jpg", Vector2(2, 2), tArray, 0))
+	textures.append(LevelTexture.new("Color", "res://res/txrs/color256.jpg", Vector2(5, 5), tArray, 0))
 	textures.append(LevelTexture.new("Grass", "res://res/txrs/grass256.jpg", Vector2(1, 1), tArray, 1))
 	textures.append(LevelTexture.new("Stucco", "res://res/txrs/stucco256.jpg", Vector2(1, 1), tArray, 2))
 	textures.append(LevelTexture.new("Brick", "res://res/txrs/brick256.jpg", Vector2(2.5, 2.667), tArray, 3))

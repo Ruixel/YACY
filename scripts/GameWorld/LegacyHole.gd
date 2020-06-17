@@ -56,7 +56,7 @@ func change_size(newSize : int):
 # No actual visible mesh, but still needs one for selecting
 func _genMesh():
 	var holeMesh = buildPlatform(pos, level, 0, 0, Color(0,0,0), size, platShape, false)
-	collision_shape.shape = holeMesh.create_convex_shape()
+	#collision_shape.shape = holeMesh.create_convex_shape()
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
 	return buildPlatform(Vector2(0,0), pLevel, 0, 0, Color(0,0,0), size, platShape, true)
