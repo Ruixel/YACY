@@ -1,14 +1,20 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://Scenes/LegacyEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=3]
 [ext_resource path="res://Entities/Legacy/Spawn/Spawn.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Entities/Legacy/MessageBoard/MsgBoard.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Entities/Legacy/Portal/Portal.tscn" type="PackedScene" id=6]
+[ext_resource path="res://res/shaders/testt.tscn" type="PackedScene" id=7]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )
 uv1_scale = Vector3( 5, 5, 1 )
+
+[sub_resource type="World" id=3]
+
+[sub_resource type="CylinderMesh" id=2]
 
 [node name="Spatial" type="Spatial"]
 
@@ -30,5 +36,37 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.0320787, -3 )
 
 [node name="Spatial" parent="." instance=ExtResource( 5 )]
 transform = Transform( -0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, -0.965926, -3.03407, 1, -7.25882 )
+
+[node name="Portal" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -1 )
+
+[node name="ColorRect" parent="." instance=ExtResource( 7 )]
+
+[node name="ViewportContainer" type="ViewportContainer" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 483.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ViewportContainer"]
+size = Vector2( 500, 500 )
+own_world = true
+world = SubResource( 3 )
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 0
+
+[node name="MeshInstance" type="MeshInstance" parent="ViewportContainer/Viewport"]
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5 )
+
+[node name="OmniLight" type="OmniLight" parent="ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 2 )
 
 [editable path="Environment"]
