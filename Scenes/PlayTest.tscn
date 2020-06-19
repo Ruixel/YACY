@@ -12,9 +12,9 @@
 albedo_texture = ExtResource( 3 )
 uv1_scale = Vector3( 5, 5, 1 )
 
-[sub_resource type="World" id=3]
+[sub_resource type="World" id=2]
 
-[sub_resource type="CylinderMesh" id=2]
+[sub_resource type="CylinderMesh" id=3]
 
 [node name="Spatial" type="Spatial"]
 
@@ -54,13 +54,13 @@ __meta__ = {
 [node name="Viewport" type="Viewport" parent="ViewportContainer"]
 size = Vector2( 500, 500 )
 own_world = true
-world = SubResource( 3 )
+world = SubResource( 2 )
 transparent_bg = true
 handle_input_locally = false
 render_target_update_mode = 0
 
 [node name="MeshInstance" type="MeshInstance" parent="ViewportContainer/Viewport"]
-mesh = SubResource( 2 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]

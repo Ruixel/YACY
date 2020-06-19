@@ -18,27 +18,36 @@ void fragment()
 	float dist = length(uv);
 	float angle = atan(uv.x, uv.y);
 	
+	// Ripples
 	dist += 0.1;
 	dist += 0.3*pow(dist, 2.5) * sin(angle*15.0);
 	dist = pow(dist, 0.005);
 	dist *= 6000.0;
 	
 	float r = 0.4 + 0.5*sin(dist - 10.0 * TIME);
-	//r *= sin(dist*PI - TIME*10.0); 
 	
-	COLOR = vec4(0, 0, r, 1.0);
+	vec4 ripples = vec4(0,0,r*0.25,1);
 	
-	// Circle mask
-//	float rad = sin(1.0 * (TIME - 3.0)) * iResolution.x;
-//	vec2 toMiddle = iResolution.xy * 0.5 - FRAGCOORD.xy;
-//	float lengthToMiddle = toMiddle.x * toMiddle.x + toMiddle.y * toMiddle.y;
-//	if ((lengthToMiddle > rad * rad) || (TIME < 3.0)) {
-//		COLOR = vec4(0,0,0,0);
-//	} else {
-//		COLOR = vec4(0, 0, r, 1.0);
-//	}
+	// Rays
+	float c = uv.x;
+	if (uv.y < 0.0) {
+		uv.y *= -1.0;
+		c *= -1.0;
+	}
+	
+	c -= sin(uv.y * 15.0) / 50.;
+	c /= pow(uv.y + 1.0, 7.0);
+	c += 0.03 * sin(pow(abs(uv.y),2) ) ;
+	c += 0.08*sin(pow(abs(uv.y)+0.3, 0.2)*25.0 - TIME);
+	c = sin(c*35.) ;
+	
+	c = pow(abs(c), 25.0);
+	c *= pow(uv.y, 0.8)*2.0;
    
+	vec4 rays = vec4(c*(sin(TIME)/2.0+0.5),c*(sin(TIME+PI)/2.0), c, 1);
 	
+	// Combine
+	COLOR = ripples+rays;
 }"
 
 [sub_resource type="ShaderMaterial" id=2]
