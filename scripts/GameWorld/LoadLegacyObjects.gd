@@ -204,6 +204,16 @@ func create_portal(pos : Vector2, title : String, condition : int, gameNumber: S
 	
 	get_parent().call("add_entity", new_portal)
 
+func create_teleport(pos : Vector2, number : int, level : int):
+	var new_tp = preload("res://Entities/Legacy/Teleport/Teleport.tscn").instance()
+	
+	new_tp.set_number(number)
+	
+	pos = pos / 5.0
+	new_tp.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+	
+	get_parent().call("add_entity", new_tp)
+
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
 		get_parent().fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()

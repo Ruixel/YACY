@@ -87,6 +87,7 @@ namespace Legacy {
         else if (objectName == "begin") start_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "board") message_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "teleport") teleport_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -295,6 +296,19 @@ namespace Legacy {
             
             //                                                          // Position                  // Title           // Condition         // GameNumber       // Level
             if      (objectSize == 6) worldAPI->call("create_portal", extractVec2(obj[0], obj[1]), extractStr(obj[2]), extractInt(obj[3]), extractStr(obj[4]), extractInt(obj[5]));    
+        }
+    }
+    
+    // Teleport
+    // [position_x, position_y, unused, number, level]
+    void teleport_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                        // Position                  // Number          // Level   
+            if      (objectSize == 5) worldAPI->call("create_teleport", extractVec2(obj[0], obj[1]), extractInt(obj[3]), extractInt(obj[4]));    
         }
     }
 

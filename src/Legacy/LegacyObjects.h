@@ -37,6 +37,7 @@ namespace Legacy {
     void start_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void message_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void portal_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void teleport_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
