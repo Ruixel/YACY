@@ -20,3 +20,19 @@ func set_number(num : int):
 	var t = $Viewport.get_texture()
 	$Number.mesh.surface_get_material(0).albedo_texture = t
 	self.mesh.surface_get_material(0).emission = Color(TeleportColours[number-1])
+	
+	EntityManager.add_teleport(number, self)
+
+
+func _on_Area_body_entered(body):
+	if body.get_name() == "Player":
+		if body.busy == false:
+			body.busy = true
+			
+			# Get correspoding teleport
+			var tp = EntityManager.get_teleport(number, self)
+			if tp != null:
+				body.set_transform(tp.get_node("Pos").get_global_transform())
+			
+			yield(get_tree().create_timer(1.0), "timeout")
+			body.busy = false

@@ -30,6 +30,8 @@ var cam_mode = CAMERA_MODE.THIRD_PERSON
 
 const JUMP_SPEED = 5
 
+var busy : bool = false;
+
 var root_motion = Transform()
 
 func _input(event):
