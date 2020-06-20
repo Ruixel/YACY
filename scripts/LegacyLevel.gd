@@ -121,6 +121,7 @@ func clear_level():
 	entityLocation.queue_free()
 	
 	setupLevel()
+	EntityManager._reset()
 
 func load_level(gameNumber):
 	$HTTPRequest.request("http://localhost/getMaze.php?maze=" + str(gameNumber))
