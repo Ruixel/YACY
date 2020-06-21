@@ -15,4 +15,4 @@ mesh = SubResource( 2 )
 material/0 = null
 
 [node name="Pos" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2964, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )

@@ -47,7 +47,7 @@ material/0 = null
 script = ExtResource( 3 )
 
 [node name="Pos" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05438, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="Number" type="MeshInstance" parent="."]
 transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0.01, 0 )
