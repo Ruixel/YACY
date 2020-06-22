@@ -25,6 +25,7 @@ WorldConstants="*res://scripts/GameWorld/WorldConstants.gd"
 WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 HoleManager="*res://scripts/GameWorld/HoleManager.gd"
 Utils="*res://scripts/Utils.gd"
+EntityManager="*res://scripts/GameWorld/EntityManager.gd"
 
 [input]
 
@@ -123,4 +124,4 @@ limits/debugger_stdout/max_errors_per_frame=50
 quality/shadows/filter_mode=2
 environment/default_clear_color=Color( 0.2, 0.2, 0.219608, 1 )
 quality/filters/msaa=1
-environment/default_environment="res://Scenes/GlobalEnv.tres"
+environment/default_environment="res://Scenes/Env/GlobalEnv.tres"

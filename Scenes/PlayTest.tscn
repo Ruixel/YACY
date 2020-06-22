@@ -1,12 +1,13 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Scenes/LegacyEnv.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Env/LegacyEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Entities/Player/player.tscn" type="PackedScene" id=2]
 [ext_resource path="res://res/txrs/grass256.jpg" type="Texture" id=3]
 [ext_resource path="res://Entities/Legacy/Spawn/Spawn.tscn" type="PackedScene" id=4]
 [ext_resource path="res://Entities/Legacy/MessageBoard/MsgBoard.tscn" type="PackedScene" id=5]
 [ext_resource path="res://Entities/Legacy/Portal/Portal.tscn" type="PackedScene" id=6]
 [ext_resource path="res://res/shaders/testt.tscn" type="PackedScene" id=7]
+
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )

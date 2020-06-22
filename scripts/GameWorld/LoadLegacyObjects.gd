@@ -214,6 +214,20 @@ func create_teleport(pos : Vector2, number : int, level : int):
 	
 	get_parent().call("add_entity", new_tp)
 
+# Theme IDs: 1 = ???, 2 = Night, 3 = Scary
+const Themes = {
+	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check
+	2: "res://Scenes/Env/NightEnv.tscn",
+	3: "res://Scenes/Env/SpookyEnv.tscn"
+}
+func set_theme(pos : Vector2, themeID : int, level : int):
+	var current_env = get_node_or_null("/root/Spatial/Environment")
+	if current_env != null:
+		current_env.queue_free()
+	
+	var new_env = load(Themes[themeID]).instance()
+	get_node("/root/Spatial").add_child(new_env)
+
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
 		get_parent().fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()

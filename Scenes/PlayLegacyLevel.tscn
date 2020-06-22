@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://Scenes/LegacyEnv.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Env/DefaultEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=2]
 [ext_resource path="res://scripts/GameWorld/LoadLegacyObjects.gd" type="Script" id=3]
 [ext_resource path="res://scripts/GameWorld/GenerateFloor.gdns" type="Script" id=4]
