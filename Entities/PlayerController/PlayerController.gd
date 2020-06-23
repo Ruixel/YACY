@@ -32,18 +32,38 @@ func _process(delta):
 
 func _physics_process(delta):
 	targetVelocity = getMoveDirection() * maxSpeedOnGround
+	targetVelocity += Vector3(0, -2, 0)
 	charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
 	
 	checkIfGrounded()
 	
-	move_and_slide(charVelocity, Vector3(0, 1, 0))
+	move_and_slide(charVelocity, Vector3(0, 1, 0), true)
 
 func checkIfGrounded():
-	if (test_move(transform, Vector3(0, -0.2, 0))):
-		print("on the ground")
-	else:
-		print("off")
-		charVelocity = charVelocity + Vector3(0, -9, 0)
+	var space = get_world().direct_space_state as PhysicsDirectSpaceState
+	var params = PhysicsShapeQueryParameters.new()
+	params.exclude = [self]
+	params.set_shape($CollisionShape.shape)
+	params.set_transform($CollisionShape.global_transform)
+
+	var motionTest = space.cast_motion(params, Vector3(0, -1, 0))
+	print (motionTest)
+	
+	# Get collision info
+	params.transform.origin += Vector3(0, -1, 0) * motionTest[1]
+	var restInfo = space.get_rest_info(params)
+	if (not restInfo.empty()):
+		var angle = Vector3(0, 1, 0).dot(restInfo["normal"])
+		print("Normal: " + str(angle))
+	
+	if (motionTest[0] < 0.1):
+		self.transform.origin += Vector3(0, -1, 0) * motionTest[0]
+	
+#	if (test_move(transform, Vector3(0, -0.2, 0))):
+#		print("on the ground")
+#	else:
+#		print("off")
+#		charVelocity = charVelocity + Vector3(0, -1, 0)
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and lock_mouse:

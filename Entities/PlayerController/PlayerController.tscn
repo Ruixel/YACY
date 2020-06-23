@@ -4,6 +4,7 @@
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=2]
 
 [sub_resource type="CapsuleShape" id=1]
+resource_local_to_scene = true
 radius = 0.25
 height = 0.55
 
