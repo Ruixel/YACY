@@ -1,17 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=2]
 
-[sub_resource type="CapsuleShape" id=1]
-resource_local_to_scene = true
-radius = 0.25
-height = 0.55
+[sub_resource type="RayShape" id=1]
+length = 0.638182
 
 [sub_resource type="DynamicFont" id=2]
 size = 18
 use_filter = true
 font_data = ExtResource( 2 )
+
+[sub_resource type="CapsuleShape" id=3]
+radius = 0.242122
+height = 0.453942
 
 [node name="KinematicBody" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.612947, 0 )
@@ -22,7 +24,7 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.02
 shape = SubResource( 1 )
 
 [node name="FPSCamera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.398866, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.383865, 0 )
 
 [node name="PlayerGUI" type="Control" parent="."]
 margin_right = 40.0
@@ -32,6 +34,7 @@ __meta__ = {
 }
 
 [node name="MouseLockWarning" type="Label" parent="PlayerGUI"]
+visible = false
 margin_left = 5.0
 margin_top = 5.0
 margin_right = 349.0
@@ -47,4 +50,6 @@ __meta__ = {
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.607552, 0 )
 
-[node name="RayCast" type="RayCast" parent="."]
+[node name="CollisionShape2" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.0644981, 0 )
+shape = SubResource( 3 )

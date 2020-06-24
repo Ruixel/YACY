@@ -2,6 +2,7 @@ extends KinematicBody
 
 const rotationSpeed = 2.0 / 1000
 const maxSpeedOnGround = 3
+const maxSpeedinAir = 2
 const movementSharpnessGround = 10
 
 # Player Controller Children
@@ -19,6 +20,7 @@ var pitch_delta = 0
 # Movement Variables
 var targetVelocity : Vector3 = Vector3()
 var charVelocity : Vector3 = Vector3()
+var onFloorLastFrame : bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -31,13 +33,38 @@ func _process(delta):
 	pitch_delta = 0
 
 func _physics_process(delta):
-	targetVelocity = getMoveDirection() * maxSpeedOnGround
-	targetVelocity += Vector3(0, -2, 0)
-	charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
+	#checkIfGrounded()
 	
-	checkIfGrounded()
+	if (is_on_floor()):
+		onFloorLastFrame = true
+		targetVelocity = getMoveDirection() * maxSpeedOnGround
+		targetVelocity += Vector3(0, -5, 0)
+		charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
+		
+		if (Input.is_action_pressed("jump")):
+			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
+			charVelocity += Vector3.UP * 5
+			onFloorLastFrame = false
+		
+		
+	else:
+		# Cancel out high gravity used to snap player to ground
+		if onFloorLastFrame == true:
+			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
+		onFloorLastFrame = false
+		
+		# Air Strafing
+		charVelocity += getMoveDirection() * 15 * delta
+		
+		var horizontalVelocity = Plane(Vector3.UP, 0).project(charVelocity)
+		horizontalVelocity *= 0.95
+		if (horizontalVelocity.length() > maxSpeedinAir):
+			horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
+			
+		charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
+		charVelocity += Vector3.DOWN * 12 * delta
 	
-	move_and_slide(charVelocity, Vector3(0, 1, 0), true)
+	move_and_slide(charVelocity, Vector3(0, 1, 0))
 
 func checkIfGrounded():
 	var space = get_world().direct_space_state as PhysicsDirectSpaceState
