@@ -13,7 +13,7 @@ font_data = ExtResource( 2 )
 
 [sub_resource type="CapsuleShape" id=3]
 radius = 0.242122
-height = 0.453942
+height = 0.578151
 
 [node name="KinematicBody" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.612947, 0 )
@@ -24,7 +24,7 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.02
 shape = SubResource( 1 )
 
 [node name="FPSCamera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.383865, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47439, 0 )
 
 [node name="PlayerGUI" type="Control" parent="."]
 margin_right = 40.0
@@ -51,5 +51,5 @@ __meta__ = {
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.607552, 0 )
 
 [node name="CollisionShape2" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.0644981, 0 )
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.107788, 0 )
 shape = SubResource( 3 )

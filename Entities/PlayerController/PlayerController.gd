@@ -1,9 +1,11 @@
 extends KinematicBody
 
 const rotationSpeed = 2.0 / 1000
-const maxSpeedOnGround = 3
-const maxSpeedinAir = 2
+const maxSpeedOnGround = 3.5
+const maxSpeedinAir = 4
 const movementSharpnessGround = 10
+const jumpForce = 6.5
+const gravity = 18
 
 # Player Controller Children
 onready var camera = $FPSCamera
@@ -22,6 +24,8 @@ var targetVelocity : Vector3 = Vector3()
 var charVelocity : Vector3 = Vector3()
 var onFloorLastFrame : bool = false
 
+var busy : bool = false
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -31,6 +35,7 @@ func _process(delta):
 	camera.rotate_x(pitch_delta * rotationSpeed)
 	yaw_delta = 0
 	pitch_delta = 0
+	print(camera.transform.basis.get_euler().x)
 
 func _physics_process(delta):
 	#checkIfGrounded()
@@ -43,13 +48,11 @@ func _physics_process(delta):
 		
 		if (Input.is_action_pressed("jump")):
 			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
-			charVelocity += Vector3.UP * 5
+			charVelocity += Vector3.UP * jumpForce
 			onFloorLastFrame = false
-		
-		
 	else:
 		# Cancel out high gravity used to snap player to ground
-		if onFloorLastFrame == true:
+		if onFloorLastFrame == true or is_on_ceiling():
 			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
 		onFloorLastFrame = false
 		
@@ -62,7 +65,7 @@ func _physics_process(delta):
 			horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
 			
 		charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
-		charVelocity += Vector3.DOWN * 12 * delta
+		charVelocity += Vector3.DOWN * gravity * delta
 	
 	move_and_slide(charVelocity, Vector3(0, 1, 0))
 

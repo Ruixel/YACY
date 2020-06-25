@@ -75,10 +75,12 @@ func level_finished_loading():
 
 func spawnPlayer():
 	if player == null:
-		player = preload("res://Entities/Player/player.tscn").instance()
+#		player = preload("res://Entities/Player/player.tscn").instance()
+		player = preload("res://Entities/PlayerController/PlayerController.tscn").instance()
 		player.set_name("Player")
 		add_child(player)
-		player.get_node("camera_base/camera_rot/Camera").make_current()
+#		player.get_node("camera_base/camera_rot/Camera").make_current()
+		player.get_node("FPSCamera").make_current()
 	
 	if (spawnLocation != null):
 		player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
