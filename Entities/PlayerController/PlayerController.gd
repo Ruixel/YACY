@@ -18,6 +18,7 @@ onready var gui_mouseLock = $PlayerGUI/MouseLockWarning
 var lock_mouse = true
 var yaw_delta = 0
 var pitch_delta = 0
+var pitch = 0
 
 # Movement Variables
 var targetVelocity : Vector3 = Vector3()
@@ -35,7 +36,8 @@ func _process(delta):
 	camera.rotate_x(pitch_delta * rotationSpeed)
 	yaw_delta = 0
 	pitch_delta = 0
-	print(camera.transform.basis.get_euler().x)
+	var pitch = camera.transform.basis.get_euler().x
+	print(camera.transform.basis.y)
 
 func _physics_process(delta):
 	#checkIfGrounded()
@@ -97,7 +99,10 @@ func checkIfGrounded():
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion and lock_mouse:
-		pitch_delta -= event.relative.y
+		var new_pitch = pitch + (-event.relative.y * rotationSpeed)
+		if (new_pitch < (PI/2 - 0.1)) and (new_pitch > (-PI/2 + 0.1)):
+			pitch_delta -= event.relative.y
+			pitch = new_pitch
 		yaw_delta -= event.relative.x
 	
 	if event is InputEventKey and event.pressed:
