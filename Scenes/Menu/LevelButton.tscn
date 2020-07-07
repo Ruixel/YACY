@@ -19,6 +19,7 @@ margin_left = -512.0
 margin_top = -300.0
 margin_right = -327.0
 margin_bottom = -176.0
+rect_min_size = Vector2( 185, 124 )
 texture_normal = ExtResource( 1 )
 expand = true
 stretch_mode = 6
@@ -84,6 +85,7 @@ __meta__ = {
 }
 
 [node name="Archived" type="Label" parent="."]
+visible = false
 anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -72.6028
@@ -104,3 +106,4 @@ __meta__ = {
 [connection signal="button_up" from="." to="." method="_on_Level_button_up"]
 [connection signal="mouse_entered" from="." to="." method="_on_Level_mouse_entered"]
 [connection signal="mouse_exited" from="." to="." method="_on_Level_mouse_exited"]
+[connection signal="resized" from="." to="." method="_on_Level_resized"]

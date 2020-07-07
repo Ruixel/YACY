@@ -27,6 +27,11 @@ HoleManager="*res://scripts/GameWorld/HoleManager.gd"
 Utils="*res://scripts/Utils.gd"
 EntityManager="*res://scripts/GameWorld/EntityManager.gd"
 
+[display]
+
+window/size/width=1366
+window/size/height=768
+
 [input]
 
 editor_camera_pan={

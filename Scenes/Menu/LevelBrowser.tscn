@@ -1,16 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://res/ui_theme.tres" type="Theme" id=1]
-[ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=2]
-[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=3]
-[ext_resource path="res://res/txrs/gui/sample_screenshots/Maze253SS.jpg" type="Texture" id=4]
-[ext_resource path="res://Scenes/Menu/LevelButton.tscn" type="PackedScene" id=5]
-[ext_resource path="res://res/txrs/gui/sample_screenshots/Maze250SS.jpg" type="Texture" id=6]
-[ext_resource path="res://res/txrs/gui/sample_screenshots/Maze255SS.jpg" type="Texture" id=7]
+[ext_resource path="res://scripts/gui/LevelList.gd" type="Script" id=1]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0, 0, 0, 1 )
-corner_radius_bottom_left = 7
+[sub_resource type="Theme" id=1]
+GridContainer/constants/hseparation = 15
+GridContainer/constants/vseparation = 15
 
 [node name="Control" type="Control"]
 anchor_right = 1.0
@@ -20,6 +14,13 @@ margin_right = 4.92346
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_bottom = 1.0
+margin_left = 60.0
+margin_right = 685.0
+margin_bottom = 6.10352e-05
+color = Color( 0, 0, 0, 0.462745 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 margin_left = 119.0
@@ -35,229 +36,16 @@ margin_right = 85.0
 margin_bottom = 45.0
 text = "New Levels"
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-anchor_left = 0.5
-anchor_right = 0.5
+[node name="GridContainer" type="GridContainer" parent="."]
 anchor_bottom = 1.0
-margin_left = -393.0
-margin_right = 393.0
-grow_horizontal = 2
+margin_left = 80.0
+margin_top = 70.0
+margin_right = 665.0
+margin_bottom = 6.10352e-05
+rect_min_size = Vector2( 585, 0 )
+theme = SubResource( 1 )
+columns = 3
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
-
-[node name="PanelContainer" type="PanelContainer" parent="."]
-visible = false
-anchor_left = 0.114258
-anchor_right = 0.885742
-anchor_bottom = 1.0
-grow_horizontal = 2
-__meta__ = {
-"_edit_use_anchors_": true
-}
-
-[node name="Button" type="Button" parent="."]
-margin_left = 504.0
-margin_top = 415.0
-margin_right = 684.0
-margin_bottom = 535.0
-theme = ExtResource( 1 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TextureRect" type="TextureRect" parent="Button"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-theme = ExtResource( 1 )
-texture = ExtResource( 4 )
-expand = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Title" type="Label" parent="Button"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -40.0
-margin_right = 74.0
-margin_bottom = -16.0
-theme = ExtResource( 1 )
-text = "The Castle"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Author" type="Label" parent="Button"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -24.0
-margin_right = 74.0
-theme = ExtResource( 1 )
-text = "By ChallengeYou"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Archived" type="Label" parent="Button"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -73.0
-margin_bottom = 24.0
-theme = ExtResource( 1 )
-custom_styles/normal = SubResource( 1 )
-text = "Archived"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Level" parent="." instance=ExtResource( 5 )]
-margin_left = 14.6995
-margin_top = -140.394
-margin_right = 199.699
-margin_bottom = -16.3941
-
-[node name="Level4" parent="." instance=ExtResource( 5 )]
-margin_left = 210.755
-margin_top = -141.228
-margin_right = 395.755
-margin_bottom = -17.2278
-texture_normal = ExtResource( 6 )
-
-[node name="Title" parent="Level4" index="2"]
-text = "FreeFall"
-
-[node name="Level5" parent="." instance=ExtResource( 5 )]
-margin_left = -178.745
-margin_top = -143.128
-margin_right = 6.25491
-margin_bottom = -19.1278
-texture_normal = ExtResource( 7 )
-
-[node name="Title" parent="Level5" index="2"]
-text = "Pacmania"
-
-[node name="Level2" type="TextureButton" parent="."]
-margin_left = 77.3463
-margin_top = 159.532
-margin_right = 294.346
-margin_bottom = 306.532
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Title" type="Label" parent="Level2"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -44.0
-margin_right = 97.0
-margin_bottom = -13.0
-theme = ExtResource( 1 )
-custom_fonts/font = ExtResource( 2 )
-custom_constants/shadow_offset_x = 2
-custom_constants/shadow_offset_y = 3
-text = "The Castle"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Author" type="Label" parent="Level2"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -27.0
-margin_right = 130.0
-margin_bottom = 1.0
-theme = ExtResource( 1 )
-custom_fonts/font = ExtResource( 3 )
-text = "By ChallengeYou"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Archived" type="Label" parent="Level2"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -72.6028
-margin_right = 0.397217
-margin_bottom = 24.0
-theme = ExtResource( 1 )
-custom_styles/normal = SubResource( 1 )
-custom_fonts/font = ExtResource( 3 )
-text = "Archived"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Level3" type="TextureButton" parent="."]
-margin_left = 59.523
-margin_top = 364.034
-margin_right = 276.523
-margin_bottom = 511.034
-texture_normal = ExtResource( 4 )
-expand = true
-stretch_mode = 6
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Title" type="Label" parent="Level3"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -44.0
-margin_right = 97.0
-margin_bottom = -13.0
-theme = ExtResource( 1 )
-custom_fonts/font = ExtResource( 2 )
-custom_constants/shadow_offset_x = 2
-custom_constants/shadow_offset_y = 3
-text = "Twenty Character Limit"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Author" type="Label" parent="Level3"]
-anchor_top = 1.0
-anchor_bottom = 1.0
-margin_top = -27.0
-margin_right = 130.0
-margin_bottom = 1.0
-theme = ExtResource( 1 )
-custom_fonts/font = ExtResource( 3 )
-text = "By ChallengeYou"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="Archived" type="Label" parent="Level3"]
-anchor_left = 1.0
-anchor_right = 1.0
-margin_left = -72.6028
-margin_right = 0.397217
-margin_bottom = 24.0
-theme = ExtResource( 1 )
-custom_styles/normal = SubResource( 1 )
-custom_fonts/font = ExtResource( 3 )
-text = "Archived"
-align = 1
-valign = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="ItemList" type="ItemList" parent="."]
-visible = false
-margin_right = 512.0
-margin_bottom = 501.0
-max_columns = 3
-fixed_column_width = 300
-
-[editable path="Level4"]
-
-[editable path="Level5"]
