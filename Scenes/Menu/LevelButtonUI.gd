@@ -1,0 +1,33 @@
+extends TextureButton
+
+onready var tween = $Tween
+onready var ctween = $Shine/Tween
+var normal_pos
+var got_normal_pos = false
+
+func _on_Level_mouse_entered():
+	if not got_normal_pos:
+		normal_pos = self.rect_position
+	
+	# Shift button up
+	var shifted_pos = normal_pos + Vector2(0, -5)
+	tween.interpolate_property(self, "rect_position", normal_pos, shifted_pos, 
+	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+	tween.start()
+	
+	# Highlight button
+	ctween.interpolate_property($Shine, "color", Color(1,1,1,0), Color(1,1,1,0.1),
+	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+	ctween.start()
+
+
+func _on_Level_mouse_exited():
+	# Shift back 
+	tween.interpolate_property(self, "rect_position", self.rect_position, normal_pos, 
+	  0.2, Tween.TRANS_QUAD, Tween.EASE_IN)
+	tween.start()
+	
+	# Remove highlight
+	ctween.interpolate_property($Shine, "color", $Shine.color, Color(1,1,1,0),
+	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
+	ctween.start()
