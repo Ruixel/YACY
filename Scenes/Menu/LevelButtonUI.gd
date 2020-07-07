@@ -8,6 +8,7 @@ var got_normal_pos = false
 func _on_Level_mouse_entered():
 	if not got_normal_pos:
 		normal_pos = self.rect_position
+		got_normal_pos = true
 	
 	# Shift button up
 	var shifted_pos = normal_pos + Vector2(0, -5)
@@ -16,7 +17,7 @@ func _on_Level_mouse_entered():
 	tween.start()
 	
 	# Highlight button
-	ctween.interpolate_property($Shine, "color", Color(1,1,1,0), Color(1,1,1,0.1),
+	ctween.interpolate_property($Shine, "color", $Shine.color, Color(1,1,1,0.1),
 	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	ctween.start()
 
@@ -31,3 +32,12 @@ func _on_Level_mouse_exited():
 	ctween.interpolate_property($Shine, "color", $Shine.color, Color(1,1,1,0),
 	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	ctween.start()
+
+# Show user object has been clicked
+func _on_Level_button_down():
+	ctween.stop_all()
+	$Shine.color = Color(0, 0, 0, 0.2)
+
+func _on_Level_button_up():
+	ctween.stop_all()
+	$Shine.color = Color(1, 1, 1, 0.1)

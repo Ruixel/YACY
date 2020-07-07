@@ -126,7 +126,7 @@ margin_right = 395.755
 margin_bottom = -17.2278
 texture_normal = ExtResource( 6 )
 
-[node name="Title" parent="Level4" index="1"]
+[node name="Title" parent="Level4" index="2"]
 text = "FreeFall"
 
 [node name="Level5" parent="." instance=ExtResource( 5 )]
@@ -136,7 +136,7 @@ margin_right = 6.25491
 margin_bottom = -19.1278
 texture_normal = ExtResource( 7 )
 
-[node name="Title" parent="Level5" index="1"]
+[node name="Title" parent="Level5" index="2"]
 text = "Pacmania"
 
 [node name="Level2" type="TextureButton" parent="."]
