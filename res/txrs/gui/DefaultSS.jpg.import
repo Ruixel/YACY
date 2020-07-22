@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/DefaultSS.jpg-7322a404d6890cfc204d089c55777288.stex"
+path="res://.import/DefaultSS.jpg-2c031339be281657d9f646f0c0d4a7b9.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://res/txrs/gui/sample_screenshots/DefaultSS.jpg"
-dest_files=[ "res://.import/DefaultSS.jpg-7322a404d6890cfc204d089c55777288.stex" ]
+source_file="res://res/txrs/gui/DefaultSS.jpg"
+dest_files=[ "res://.import/DefaultSS.jpg-2c031339be281657d9f646f0c0d4a7b9.stex" ]
 
 [params]
 
