@@ -1,6 +1,5 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://scripts/GameWorld/GenerateFloor.gdns" type="Script" id=1]
 [ext_resource path="res://scripts/gui/Menu/LoadMenuBackground.gd" type="Script" id=2]
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=3]
 [ext_resource path="res://scripts/GameWorld/LoadLegacyObjects.gd" type="Script" id=4]
@@ -55,9 +54,6 @@ light_indirect_energy = 3.69
 omni_range = 12.2223
 
 [node name="Control" parent="." instance=ExtResource( 6 )]
-
-[node name="FloorGenerator" type="Node" parent="."]
-script = ExtResource( 1 )
 
 [node name="Fade" type="ColorRect" parent="."]
 visible = false

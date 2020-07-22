@@ -2,7 +2,6 @@
 
 [ext_resource path="res://Scenes/Env/GlobalEnv.tres" type="Environment" id=1]
 
-
 [node name="Environment" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )
 

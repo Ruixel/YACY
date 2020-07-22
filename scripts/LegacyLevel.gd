@@ -19,6 +19,8 @@ var entityLocation
 var player = null
 var spawnLocation = null
 
+signal s_levelLoaded
+
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
 	WorldConstants.Tools.PLATFORM: Plat,
@@ -72,7 +74,8 @@ func setupLevel():
 				fixed_objects[obj][lvl]._genMesh()
 
 func level_finished_loading():
-	get_parent().get_node("Player")
+	emit_signal("s_levelLoaded")
+	spawnPlayer()
 
 func spawnPlayer():
 	if player == null:

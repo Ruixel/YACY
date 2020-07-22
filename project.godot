@@ -26,6 +26,7 @@ WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 HoleManager="*res://scripts/GameWorld/HoleManager.gd"
 Utils="*res://scripts/Utils.gd"
 EntityManager="*res://scripts/GameWorld/EntityManager.gd"
+FloorGenerator="*res://scripts/GameWorld/GenerateFloor.gdns"
 
 [display]
 

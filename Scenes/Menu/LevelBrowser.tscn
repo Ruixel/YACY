@@ -1,6 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://scripts/gui/LevelList.gd" type="Script" id=1]
+
+[sub_resource type="StyleBoxEmpty" id=2]
 
 [sub_resource type="Theme" id=1]
 GridContainer/constants/hseparation = 15
@@ -23,18 +25,54 @@ margin_bottom = 6.10352e-05
 color = Color( 0, 0, 0, 0.462745 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
-margin_left = 119.0
+margin_left = 75.0
 margin_top = 15.0
-margin_right = 905.0
-margin_bottom = 60.0
+margin_right = 685.0
+margin_bottom = 50.0
+alignment = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Button" type="Button" parent="HBoxContainer"]
-margin_right = 85.0
-margin_bottom = 45.0
-text = "New Levels"
+[node name="SearchType" type="OptionButton" parent="HBoxContainer"]
+margin_left = 3.0
+margin_right = 119.0
+margin_bottom = 35.0
+text = "Search Levels"
+
+[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+margin_left = 123.0
+margin_right = 343.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 220, 0 )
+clear_button_enabled = true
+placeholder_text = "Type here..."
+
+[node name="Search" type="Button" parent="HBoxContainer"]
+margin_left = 347.0
+margin_right = 401.0
+margin_bottom = 35.0
+text = "Search"
+
+[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+margin_left = 405.0
+margin_right = 435.0
+margin_bottom = 35.0
+rect_min_size = Vector2( 30, 0 )
+custom_styles/separator = SubResource( 2 )
+
+[node name="Label" type="Label" parent="HBoxContainer"]
+margin_left = 439.0
+margin_top = 10.0
+margin_right = 499.0
+margin_bottom = 24.0
+text = "Order by:"
+
+[node name="SearchType2" type="OptionButton" parent="HBoxContainer"]
+margin_left = 503.0
+margin_right = 607.0
+margin_bottom = 35.0
+text = "Date Added"
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_bottom = 1.0

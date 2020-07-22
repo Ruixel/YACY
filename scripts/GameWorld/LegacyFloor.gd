@@ -96,7 +96,7 @@ func set_property_dict(dict : Dictionary):
 		set(dictToObj[prop], dict[prop])
 
 func buildFloor() -> Mesh:
-	var gen = get_node("/root/Main/FloorGenerator")
+	var gen = get_node("/root/FloorGenerator")
 	return gen.generateFloorMesh(vertices, level, floor_texture, 
 		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
 

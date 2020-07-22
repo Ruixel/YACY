@@ -1,16 +1,17 @@
 [gd_scene load_steps=3 format=2]
 
-[sub_resource type="ProceduralSky" id=3]
-sky_top_color = Color( 0.0941176, 0.0941176, 0.0941176, 1 )
-sky_horizon_color = Color( 0.278431, 0.278431, 0.278431, 1 )
+[sub_resource type="ProceduralSky" id=1]
+sky_top_color = Color( 0.0627451, 0.0627451, 0.0627451, 1 )
+sky_horizon_color = Color( 0.207843, 0.207843, 0.207843, 1 )
 ground_horizon_color = Color( 0.235294, 0.235294, 0.235294, 1 )
-sun_angle_min = 0.0
-sun_angle_max = 0.0
-sun_energy = 0.0
+sun_longitude = -25.0
+sun_angle_min = 0.6
+sun_angle_max = 8.0
+sun_energy = 0.2
 
 [sub_resource type="Environment" id=2]
 background_mode = 2
-background_sky = SubResource( 3 )
+background_sky = SubResource( 1 )
 background_color = Color( 0.0901961, 0.0901961, 0.0901961, 1 )
 ambient_light_color = Color( 1, 0.996078, 1, 1 )
 ambient_light_energy = 0.07
@@ -19,6 +20,7 @@ tonemap_mode = 1
 tonemap_exposure = 0.8
 tonemap_white = 1.2
 ssao_enabled = true
+ssao_bias = 0.04
 
 [node name="Environment" type="Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )

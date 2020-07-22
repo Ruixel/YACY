@@ -25,6 +25,7 @@ shape = SubResource( 1 )
 
 [node name="FPSCamera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47439, 0 )
+far = 2000.0
 
 [node name="PlayerGUI" type="Control" parent="."]
 margin_right = 40.0

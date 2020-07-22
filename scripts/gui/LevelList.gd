@@ -124,6 +124,7 @@ func _level_selected(btn):
 	level.get_node("LegacyWorldLoader/Button").loadLevel(mazeFile)
 	
 	levelBrowserGui.set_visible(false)
+	yield(level.get_node("LegacyLevel"), "s_levelLoaded")
 	
 	fade_tween = fade.get_node("Tween")
 	fade_tween.interpolate_property(fade, "modulate", Color(0, 0, 0, 1), Color(0, 0, 0, 0), 
