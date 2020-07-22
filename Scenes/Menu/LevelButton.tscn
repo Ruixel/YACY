@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://res/txrs/gui/sample_screenshots/Maze253SS.jpg" type="Texture" id=1]
+[ext_resource path="res://res/txrs/gui/LoadingSS.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/Menu/LevelButtonUI.gd" type="Script" id=2]
 [ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=3]
 [ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=4]

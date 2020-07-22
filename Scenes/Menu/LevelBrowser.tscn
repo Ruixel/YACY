@@ -18,7 +18,7 @@ __meta__ = {
 [node name="ColorRect" type="ColorRect" parent="."]
 anchor_bottom = 1.0
 margin_left = 60.0
-margin_right = 685.0
+margin_right = 695.0
 margin_bottom = 6.10352e-05
 color = Color( 0, 0, 0, 0.462745 )
 
@@ -36,12 +36,20 @@ margin_right = 85.0
 margin_bottom = 45.0
 text = "New Levels"
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_bottom = 1.0
 margin_left = 80.0
 margin_top = 70.0
-margin_right = 665.0
-margin_bottom = 6.10352e-05
+margin_right = 680.0
+margin_bottom = -56.0
+rect_min_size = Vector2( 600, 0 )
+scroll_horizontal_enabled = false
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
+margin_right = 585.0
 rect_min_size = Vector2( 585, 0 )
 theme = SubResource( 1 )
 columns = 3
@@ -50,4 +58,37 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HTTPRequest" type="HTTPRequest" parent="GridContainer"]
+[node name="HTTPRequest" type="HTTPRequest" parent="ScrollContainer/GridContainer"]
+
+[node name="Pagination" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 80.0
+margin_top = -43.9999
+margin_right = 665.0
+margin_bottom = -8.99994
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Button" parent="Pagination"]
+margin_left = 223.0
+margin_right = 265.0
+margin_bottom = 35.0
+text = "Back"
+
+[node name="Page" type="Label" parent="Pagination"]
+margin_left = 269.0
+margin_top = 10.0
+margin_right = 315.0
+margin_bottom = 24.0
+text = "Page: 1"
+
+[node name="Next" type="Button" parent="Pagination"]
+margin_left = 319.0
+margin_right = 361.0
+margin_bottom = 35.0
+text = "Next"
+[connection signal="pressed" from="Pagination/Back" to="ScrollContainer/GridContainer" method="_on_Back_pressed"]
+[connection signal="pressed" from="Pagination/Next" to="ScrollContainer/GridContainer" method="_on_Next_pressed"]
