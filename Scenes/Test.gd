@@ -3,8 +3,10 @@ extends Button
 func _ready():
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 
-func _on_Button_pressed():
-	$HTTPRequest.request("http://localhost/getMaze.php?maze=162608")
+func loadLevel(mazeFile):
+	var mazeFileEsc = mazeFile.substr(5).http_escape()
+	print(mazeFileEsc)
+	$HTTPRequest.request("http://localhost:4000/levels/" + mazeFileEsc)
 	set_disabled(true)
 	
 

@@ -4,6 +4,8 @@ onready var tween = $Tween
 onready var ctween = $Shine/Tween
 var normal_pos
 var got_normal_pos = false
+var gameNumber
+var mazeFile
 
 func _on_Level_mouse_entered():
 	if not got_normal_pos:
@@ -41,3 +43,11 @@ func _on_Level_button_down():
 func _on_Level_button_up():
 	ctween.stop_all()
 	$Shine.color = Color(1, 1, 1, 0.1)
+
+func setGameNumber(num):
+	gameNumber = num
+
+func setMazeFile(filePath):
+	mazeFile = filePath
+
+

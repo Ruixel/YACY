@@ -8,40 +8,37 @@
 [ext_resource path="res://Scenes/Menu/LevelBrowser.tscn" type="PackedScene" id=6]
 [ext_resource path="res://Scenes/Env/DefaultEnv.tscn" type="PackedScene" id=7]
 
-[node name="Spatial" type="Spatial"]
+[node name="Main" type="Spatial"]
 script = ExtResource( 2 )
 
-[node name="Environment" parent="." instance=ExtResource( 7 )]
+[node name="Background" type="Node" parent="."]
 
-[node name="LegacyLevel" type="Spatial" parent="."]
+[node name="Environment" parent="Background" instance=ExtResource( 7 )]
+
+[node name="LegacyLevel" type="Spatial" parent="Background"]
 script = ExtResource( 3 )
 
-[node name="ObjectLoader" type="Node" parent="LegacyLevel"]
+[node name="ObjectLoader" type="Node" parent="Background/LegacyLevel"]
 script = ExtResource( 4 )
 
-[node name="HTTPRequest" type="HTTPRequest" parent="LegacyLevel"]
+[node name="HTTPRequest" type="HTTPRequest" parent="Background/LegacyLevel"]
 
-[node name="FloorGenerator" type="Node" parent="."]
-script = ExtResource( 1 )
-
-[node name="LegacyWorldLoader" type="Node" parent="."]
+[node name="LegacyWorldLoader" type="Node" parent="Background"]
 script = ExtResource( 5 )
-Loader = NodePath("../../Spatial/LegacyLevel/ObjectLoader")
+Loader = NodePath("../../../Main/Background/LegacyLevel/ObjectLoader")
 
-[node name="DayCamera" type="Camera" parent="."]
-transform = Transform( 0.82851, -0.0972385, 0.551467, 0, 0.984808, 0.173648, -0.559974, -0.143869, 0.815923, 54.2401, 39.5815, 50.2789 )
+[node name="DayCamera" type="Camera" parent="Background"]
+transform = Transform( 0.82851, -0.0972383, 0.551467, 0, 0.984808, 0.173648, -0.559974, -0.143869, 0.815923, 54.2401, 39.5815, 50.2789 )
 fov = 30.0
 far = 2000.0
 
-[node name="NightCamera" type="Camera" parent="."]
+[node name="NightCamera" type="Camera" parent="Background"]
 transform = Transform( 0.82535, 0.146135, 0.545382, 0, 0.965926, -0.258819, -0.564621, 0.213616, 0.797227, 53.237, 20.4208, 48.9841 )
 visible = false
 fov = 30.0
 far = 2000.0
 
-[node name="Control" parent="." instance=ExtResource( 6 )]
-
-[node name="OmniLight" type="OmniLight" parent="."]
+[node name="OmniLight" type="OmniLight" parent="Background"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9531, 23.9635, 18.464 )
 visible = false
 light_color = Color( 0.960784, 0.972549, 0.733333, 1 )
@@ -49,10 +46,27 @@ light_energy = 1.48
 light_indirect_energy = 3.69
 omni_range = 12.2223
 
-[node name="OmniLight2" type="OmniLight" parent="."]
+[node name="OmniLight2" type="OmniLight" parent="Background"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.56, 23.9635, 18.464 )
 visible = false
 light_color = Color( 0.960784, 0.972549, 0.733333, 1 )
 light_energy = 1.48
 light_indirect_energy = 3.69
 omni_range = 12.2223
+
+[node name="Control" parent="." instance=ExtResource( 6 )]
+
+[node name="FloorGenerator" type="Node" parent="."]
+script = ExtResource( 1 )
+
+[node name="Fade" type="ColorRect" parent="."]
+visible = false
+modulate = Color( 1, 1, 1, 0 )
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="Fade"]

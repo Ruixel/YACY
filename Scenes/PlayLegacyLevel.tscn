@@ -27,6 +27,7 @@ script = ExtResource( 5 )
 Loader = NodePath("../LegacyLevel/ObjectLoader")
 
 [node name="Button" type="Button" parent="LegacyWorldLoader"]
+visible = false
 margin_left = 10.0
 margin_top = 10.0
 margin_right = 148.0

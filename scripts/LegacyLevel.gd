@@ -29,6 +29,7 @@ const toolToObjectDict = {
 }
 
 func _ready():
+	EntityManager._reset()
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
 	
 	# Initialise default objects
