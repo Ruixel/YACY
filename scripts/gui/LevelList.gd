@@ -2,6 +2,7 @@ extends GridContainer
 
 var levels : Array
 var data : Array
+var imageRequests : Array
 const Level = preload("res://Scenes/Menu/LevelButton.tscn")
 var page = 1
 var searchQuery : String = ""
@@ -18,6 +19,7 @@ onready var searchTypeGui = get_node("../../SearchTerms/SearchType")
 onready var orderTypeGui = get_node("../../SearchTerms/OrderType")
 onready var searchGui = get_node("../../SearchTerms/Search")
 onready var fadeGui = get_node("/root/Main/Fade")
+onready var mainScene = get_node("/root/Main/")
 
 const searchTypeValues = ["level", "user"]
 const orderTypeValues = ["newest", "oldest", "plays"]
@@ -41,14 +43,17 @@ func loadPage(pageNumber : int):
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
-	$HTTPRequest.request("http://localhost:4000/graphql", headers, true, HTTPClient.METHOD_POST, query)
+	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
 
 func clear():
+	for imgReq in imageRequests:
+		imgReq.cancel_request()
+		imgReq.disconnect("request_completed", self, "_img_request_completed")
+		imgReq.queue_free()
+	imageRequests.clear()
+	
 	for level in levels:
 		level.queue_free()
-		var imgreq = level.get_node_or_null("ImgRequest")
-		if imgreq != null:
-			imgreq.disconnect("request_completed", self, "_img_request_completed")
 	levels.clear()
 
 func _on_request_completed(result, response_code, headers, body):
@@ -82,18 +87,19 @@ func loadLevels():
 			new_lvl.texture_normal = new_tex
 		else:
 			var img_request = HTTPRequest.new()
-			img_request.set_name("ImgRequest")
 			add_child(img_request)
+			img_request.set_name("ImgRequest")
 			img_request.connect("request_completed", self, "_img_request_completed", [new_lvl, item.screenshot])
-			img_request.request("http://localhost:4000" + item.screenshot)
+			img_request.request(WorldConstants.SERVER + item.screenshot)
+			imageRequests.append(img_request)
 		
 		new_lvl.connect("pressed", self, "_level_selected", [new_lvl])
 		add_child(new_lvl)
 
 func _img_request_completed(result, response_code, headers, body, new_lvl, screenshot):
-	if (!weakref(new_lvl).get_ref()):
+	if (!weakref(new_lvl).get_ref() or response_code != 200):
 		return
-		
+	
 	var img = Image.new()
 	var error = img.load_jpg_from_buffer(body)
 	if error != OK:
@@ -129,9 +135,7 @@ func _level_selected(btn):
 	yield(fadeGui, "s_fade_complete")
 	
 	var mazeFile = btn.mazeFile
-	var background = get_node_or_null("/root/Main/Background")
-	if background != null:
-		background.queue_free()
+	mainScene.unload_background()
 	
 	var level_scene = load("res://Scenes/PlayLegacyLevel.tscn")
 	var level = level_scene.instance()

@@ -50,4 +50,3 @@ func setGameNumber(num):
 func setMazeFile(filePath):
 	mazeFile = filePath
 
-

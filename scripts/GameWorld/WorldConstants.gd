@@ -6,6 +6,8 @@ const TEXTURE_SIZE = 1.0 / LEVEL_HEIGHT
 const LEVEL_SIZE   = Vector2(1, 1)
 const MAX_LEVELS   = 20
 
+const SERVER = "http://134.122.103.239" #"http://yacy.org"
+
 # Tool names
 enum Tools {
 	NOTHING, WALL, PLATFORM, PILLAR, RAMP, SPAWN, GROUND, HOLE, ALL

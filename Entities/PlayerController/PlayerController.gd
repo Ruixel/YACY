@@ -38,7 +38,6 @@ func _process(delta):
 	yaw_delta = 0
 	pitch_delta = 0
 	var pitch = camera.transform.basis.get_euler().x
-	print(camera.transform.basis.y)
 
 func _physics_process(delta):
 	if pause:

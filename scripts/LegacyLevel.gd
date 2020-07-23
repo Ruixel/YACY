@@ -138,7 +138,7 @@ func get_mazeFile(gameNumber):
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
-	$HTTPRequest.request("http://localhost:4000/graphql", headers, true, HTTPClient.METHOD_POST, query)
+	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
 	
 func load_level(gameNumber):
 	get_mazeFile(gameNumber)

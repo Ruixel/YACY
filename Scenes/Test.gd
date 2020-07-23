@@ -7,7 +7,7 @@ func _ready():
 func loadLevel(mazeFile):
 	var mazeFileEsc = mazeFile.substr(5).http_escape()
 	print(mazeFileEsc)
-	$HTTPRequest.request("http://localhost:4000/levels/" + mazeFileEsc)
+	$HTTPRequest.request(WorldConstants.SERVER + "/levels/" + mazeFileEsc)
 	set_disabled(true)
 	
 
