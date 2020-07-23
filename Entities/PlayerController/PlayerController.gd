@@ -26,6 +26,7 @@ var charVelocity : Vector3 = Vector3()
 var onFloorLastFrame : bool = false
 
 var busy : bool = false
+var pause : bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -40,6 +41,8 @@ func _process(delta):
 	print(camera.transform.basis.y)
 
 func _physics_process(delta):
+	if pause:
+		return
 	#checkIfGrounded()
 	
 	if (is_on_floor()):

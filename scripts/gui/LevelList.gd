@@ -4,21 +4,40 @@ var levels : Array
 var data : Array
 const Level = preload("res://Scenes/Menu/LevelButton.tscn")
 var page = 1
+var searchQuery : String = ""
+var orderType = "newest"
+var searchType = "level"
+
 var active = true
 
 onready var scrollGui = get_node("..")
 onready var paginationGui = get_node("../../Pagination")
 onready var levelBrowserGui = get_node("../..")
+onready var searchTermsGui = get_node("../../SearchTerms")
+onready var searchTypeGui = get_node("../../SearchTerms/SearchType")
+onready var orderTypeGui = get_node("../../SearchTerms/OrderType")
+onready var searchGui = get_node("../../SearchTerms/Search")
+onready var fadeGui = get_node("/root/Main/Fade")
+
+const searchTypeValues = ["level", "user"]
+const orderTypeValues = ["newest", "oldest", "plays"]
 
 func _ready():
+	searchTypeGui.add_item("Search Levels")
+	searchTypeGui.add_item("From User")
+	
+	orderTypeGui.add_item("Newest")
+	orderTypeGui.add_item("Oldest")
+	orderTypeGui.add_item("Popularity")
+	
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
-	loadPage(1)
+	loadPage(1)  
 
 func loadPage(pageNumber : int):
 	clear()
 	scrollGui.scroll_vertical = 0
 	
-	var query = '{"query": "{ latestLevels(page: ' + str(pageNumber) + ', pageSize: 24) { title, author, gameNumber, plays, screenshot, mazeFile}}"}'
+	var query = '{"query": "{ searchLevels(query: \\"' + str(searchQuery) + '\\", page: ' + str(pageNumber) + ', pageSize: 24, searchType: ' + searchType + ', orderBy: ' + orderType + ' ) { title, author, gameNumber, plays, screenshot, mazeFile}}"}'
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
@@ -37,7 +56,7 @@ func _on_request_completed(result, response_code, headers, body):
 	#print(response)
 	
 	var r = JSON.parse(response).result
-	data = r.data.latestLevels
+	data = r.data.searchLevels
 	loadLevels()
 
 func loadLevels():
@@ -47,6 +66,7 @@ func loadLevels():
 		new_lvl.setMazeFile(item.mazeFile)
 		new_lvl.get_node("Title").text = item.title
 		new_lvl.get_node("Author").text = item.author
+		new_lvl.get_node("Plays").text = "Plays: " + str(item.plays)
 #		if item.legacy:
 #			new_lvl.get_node("Archived").visible = true
 		
@@ -105,13 +125,8 @@ func _level_selected(btn):
 		return
 	active = false
 	
-	var fade = get_node("/root/Main/Fade")
-	fade.set_visible(true)
-	var fade_tween = fade.get_node("Tween")
-	fade_tween.interpolate_property(fade, "modulate", Color(0, 0, 0, 0), Color(0, 0, 0, 1), 
-	  0.6, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	fade_tween.start()
-	yield(fade_tween, "tween_all_completed")
+	fadeGui.fade(0.6)
+	yield(fadeGui, "s_fade_complete")
 	
 	var mazeFile = btn.mazeFile
 	var background = get_node_or_null("/root/Main/Background")
@@ -126,9 +141,30 @@ func _level_selected(btn):
 	levelBrowserGui.set_visible(false)
 	yield(level.get_node("LegacyLevel"), "s_levelLoaded")
 	
-	fade_tween = fade.get_node("Tween")
-	fade_tween.interpolate_property(fade, "modulate", Color(0, 0, 0, 1), Color(0, 0, 0, 0), 
-	  1, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	fade_tween.start()
-	yield(fade_tween, "tween_all_completed")
-	fade.set_visible(false)
+	#fadeGui.unfade(1)
+	#yield(fadeGui, "s_unfade_complete")
+
+func _on_Search_text_entered(new_text):
+	page = 1
+	searchQuery = new_text
+	loadPage(page)
+
+func _on_SearchType_item_selected(id):
+	# If selecting a user, add ChallengeYou if the search bar hasnt been used
+	if (searchGui.text == "" and id == 1):
+		searchGui.text = "ChallengeYou"
+		searchQuery = "ChallengeYou"
+	
+	if (id == 0):
+		searchGui.text = ""
+		searchQuery = ""
+	
+	page = 1
+	searchType = searchTypeValues[id]
+	loadPage(page)
+
+func _on_OrderType_item_selected(id):
+	page = 1
+	orderType = orderTypeValues[id]
+	loadPage(page)
+

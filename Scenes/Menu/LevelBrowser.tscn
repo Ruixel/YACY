@@ -24,7 +24,7 @@ margin_right = 695.0
 margin_bottom = 6.10352e-05
 color = Color( 0, 0, 0, 0.462745 )
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
+[node name="SearchTerms" type="HBoxContainer" parent="."]
 margin_left = 75.0
 margin_top = 15.0
 margin_right = 685.0
@@ -34,13 +34,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="SearchType" type="OptionButton" parent="HBoxContainer"]
+[node name="SearchType" type="OptionButton" parent="SearchTerms"]
 margin_left = 3.0
 margin_right = 119.0
 margin_bottom = 35.0
+rect_min_size = Vector2( 116, 0 )
 text = "Search Levels"
+align = 1
 
-[node name="LineEdit" type="LineEdit" parent="HBoxContainer"]
+[node name="Search" type="LineEdit" parent="SearchTerms"]
 margin_left = 123.0
 margin_right = 343.0
 margin_bottom = 35.0
@@ -48,31 +50,33 @@ rect_min_size = Vector2( 220, 0 )
 clear_button_enabled = true
 placeholder_text = "Type here..."
 
-[node name="Search" type="Button" parent="HBoxContainer"]
+[node name="SearchBtn" type="Button" parent="SearchTerms"]
 margin_left = 347.0
 margin_right = 401.0
 margin_bottom = 35.0
 text = "Search"
 
-[node name="VSeparator" type="VSeparator" parent="HBoxContainer"]
+[node name="VSeparator" type="VSeparator" parent="SearchTerms"]
 margin_left = 405.0
 margin_right = 435.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 30, 0 )
 custom_styles/separator = SubResource( 2 )
 
-[node name="Label" type="Label" parent="HBoxContainer"]
+[node name="Label" type="Label" parent="SearchTerms"]
 margin_left = 439.0
 margin_top = 10.0
 margin_right = 499.0
 margin_bottom = 24.0
 text = "Order by:"
 
-[node name="SearchType2" type="OptionButton" parent="HBoxContainer"]
+[node name="OrderType" type="OptionButton" parent="SearchTerms"]
 margin_left = 503.0
 margin_right = 607.0
 margin_bottom = 35.0
-text = "Date Added"
+rect_min_size = Vector2( 104, 0 )
+text = "Newest"
+align = 1
 
 [node name="ScrollContainer" type="ScrollContainer" parent="."]
 anchor_bottom = 1.0
@@ -128,5 +132,8 @@ margin_left = 319.0
 margin_right = 361.0
 margin_bottom = 35.0
 text = "Next"
+[connection signal="item_selected" from="SearchTerms/SearchType" to="ScrollContainer/GridContainer" method="_on_SearchType_item_selected"]
+[connection signal="text_entered" from="SearchTerms/Search" to="ScrollContainer/GridContainer" method="_on_Search_text_entered"]
+[connection signal="item_selected" from="SearchTerms/OrderType" to="ScrollContainer/GridContainer" method="_on_OrderType_item_selected"]
 [connection signal="pressed" from="Pagination/Back" to="ScrollContainer/GridContainer" method="_on_Back_pressed"]
 [connection signal="pressed" from="Pagination/Next" to="ScrollContainer/GridContainer" method="_on_Next_pressed"]

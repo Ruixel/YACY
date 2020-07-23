@@ -101,6 +101,24 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Plays" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 55.0839
+margin_top = -123.996
+margin_right = 185.084
+margin_bottom = -95.9956
+theme = ExtResource( 5 )
+custom_fonts/font = ExtResource( 4 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 0.721569 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 1
+text = "Plays: 0"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Tween" type="Tween" parent="."]
 [connection signal="button_down" from="." to="." method="_on_Level_button_down"]
 [connection signal="button_up" from="." to="." method="_on_Level_button_up"]
