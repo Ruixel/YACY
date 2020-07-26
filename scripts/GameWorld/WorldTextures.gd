@@ -24,11 +24,15 @@ class LevelTexture:
 		name = lname
 		texScale = lscale
 		
-		img = Image.new()
-		if (img.load(lres) != 0):
-			push_warning("Warning: Could not load " + lres)
-			return
+		var stream_texture = load(lres)
+		var img = stream_texture.get_data()
+		img.decompress()
 		
+#		img = Image.new()
+#		if (img.load(lres) != 0):
+#			push_warning("Warning: Could not load " + lres)
+#			return
+#
 		if (img.get_format() != imgFormat):
 			img.convert(imgFormat)
 		

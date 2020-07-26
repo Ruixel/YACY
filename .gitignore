@@ -12,8 +12,7 @@ api.json
 .mono/
 
 # C++ Projects
-src/*.obj
-src/Legacy/*.obj
+src/**/*.obj
 obj/*
 .kdev/*
 *.kdev

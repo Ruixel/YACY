@@ -97,6 +97,7 @@ func set_property_dict(dict : Dictionary):
 
 func buildFloor() -> Mesh:
 	var gen = get_node("/root/FloorGenerator")
+#	return Mesh.new()
 	return gen.generateFloorMesh(vertices, level, floor_texture, 
 		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
 

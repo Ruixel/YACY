@@ -1,18 +1,18 @@
-[entry]
-
-X11.64="res://bin/x11/libyacy.so"
-Windows.64="res://bin/win64/libyacy.dll"
-OSX.64="res://bin/osx/libyacy.dylib"
-
-[dependencies]
-
-X11.64=[  ]
-Windows.64=[  ]
-OSX.64=[  ]
-
 [general]
 
 singleton=false
 load_once=false
 symbol_prefix="godot_"
 reloadable=true
+
+[entry]
+
+OSX.64="bin/osx/libyacy.dylib"
+Windows.64="res://bin/win64/libyacy.dll"
+X11.64="bin/x11/libyacy.so"
+
+[dependencies]
+
+OSX.64=[  ]
+Windows.64=[  ]
+X11.64=[  ]

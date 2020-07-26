@@ -76,10 +76,13 @@ func loadLevels():
 #			new_lvl.get_node("Archived").visible = true
 		
 		if (item.screenshot == "/Screenshots/DefaultSS.jpg"):
-			var img = Image.new()
-			if (img.load("res://res/txrs/gui/DefaultSS.jpg") != 0):
-				push_warning("Warning: Could not load " + item.screenshot)
-				return
+#			if (img.load("res://res/txrs/gui/DefaultSS.jpg") != 0):
+#				push_warning("Warning: Could not load " + item.screenshot)
+#				return
+
+			var stream_texture = load("res://res/txrs/gui/DefaultSS.jpg")
+			var img = stream_texture.get_data()
+			img.decompress()
 
 			var new_tex = ImageTexture.new()
 			new_tex.create_from_image(img)
