@@ -21,7 +21,8 @@ const backgrounds = [
 	["res://res/levels/Castle.cy", "Transform( -0.866026, -0.321394, -0.383022, 0, 0.766044, -0.642788, 0.5, -0.55667, -0.663414, 41.4028, 1.54786, 49.7476 )"],
 	["res://res/levels/Rock Wall.cy", "Transform( 1, 0, 0, 0, 0.5, -0.866025, 0, 0.866025, 0.5, 40.507, 15, 72.527 )"],
 	["res://res/levels/Festive.cy", "Transform( 0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 15.9574, 11.7889, 69.7664 )"],
-	["res://res/levels/Seattle.cy", "Transform( 0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.62938, 26.6117, 90.6639 )"]
+	["res://res/levels/Seattle.cy", "Transform( 0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.62938, 26.6117, 90.6639 )"],
+	["res://res/levels/Glass Tower 2.cy", "Transform( -0.899474, 0.0758798, -0.430336, 0, 0.984808, 0.173648, 0.436974, 0.156192, -0.885809, 34.1838, 13.6522, 16.1528 )"]
 ]
 
 func _ready():
@@ -44,8 +45,9 @@ func load_background(bg_id = -1):
 	print(bg_id)
 	bg.get_node("LegacyWorldLoader").loadLevelFromFilesystem(backgrounds[bg_id][0])
 	bg.get_node("BGCamera").transform = str2var(backgrounds[bg_id][1])
-	#print("(" + var2str(bg.get_node("BGCamera").transform.basis) + "," + var2str(bg.get_node("NightCamera").transform.origin) + ")")
-	#print(var2str(bg.get_node("BGCamera").transform))
+	
+#	bg.get_node("LegacyWorldLoader").loadLevelFromFilesystem("res://res/levels/Glass Tower 2.cy")
+#	print(var2str(bg.get_node("BGCamera").transform))
 
 func unload_background():
 	if bg != null:

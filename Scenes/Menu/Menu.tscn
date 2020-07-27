@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scripts/gui/Menu/LoadMenuBackground.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/Menu/LevelBrowser.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scripts/gui/Fade.gd" type="Script" id=3]
+[ext_resource path="res://scripts/GameWorld/GenerateFloor.gdns" type="Script" id=4]
 
 [node name="Main" type="Spatial"]
 script = ExtResource( 1 )
@@ -22,3 +23,6 @@ __meta__ = {
 }
 
 [node name="Tween" type="Tween" parent="Fade"]
+
+[node name="FloorGenerator" type="Node" parent="."]
+script = ExtResource( 4 )

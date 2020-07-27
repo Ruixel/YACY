@@ -22,7 +22,7 @@ script = ExtResource( 3 )
 Loader = NodePath("../../../Main/Background/LegacyLevel/ObjectLoader")
 
 [node name="BGCamera" type="Camera" parent="."]
-transform = Transform( 0.939693, 0, -0.34202, 0, 1, 0, 0.34202, 0, 0.939693, 3.62938, 26.6117, 90.6639 )
+transform = Transform( -0.899474, 0.0758798, -0.430336, 0, 0.984808, 0.173648, 0.436974, 0.156192, -0.885809, 34.1838, 13.6522, 16.1528 )
 fov = 30.0
 far = 2000.0
 

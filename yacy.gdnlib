@@ -1,7 +1,7 @@
 [general]
 
 singleton=false
-load_once=false
+load_once=true
 symbol_prefix="godot_"
 reloadable=true
 
