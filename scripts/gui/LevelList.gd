@@ -19,6 +19,7 @@ onready var searchTypeGui = get_node("../../SearchTerms/SearchType")
 onready var orderTypeGui = get_node("../../SearchTerms/OrderType")
 onready var searchGui = get_node("../../SearchTerms/Search")
 onready var fadeGui = get_node("/root/Main/Fade")
+onready var errorLabelGui = get_node("../../ErrorLabel")
 onready var mainScene = get_node("/root/Main/")
 
 const searchTypeValues = ["level", "user"]
@@ -38,12 +39,13 @@ func _ready():
 func loadPage(pageNumber : int):
 	clear()
 	scrollGui.scroll_vertical = 0
+	errorLabelGui.set_text("Loading levels...")
 	
 	var query = '{"query": "{ searchLevels(query: \\"' + str(searchQuery) + '\\", page: ' + str(pageNumber) + ', pageSize: 24, searchType: ' + searchType + ', orderBy: ' + orderType + ' ) { title, author, gameNumber, plays, screenshot, mazeFile}}"}'
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
-	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
+	var error = $HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
 
 func clear():
 	for imgReq in imageRequests:
@@ -58,14 +60,41 @@ func clear():
 
 func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
-	#print(response)
+	print(response)
+	print(response_code)
+	data = []
 	
-	var r = JSON.parse(response).result
-	data = r.data.searchLevels
-	loadLevels()
+	if response_code == 200:
+		var jparse = JSON.parse(response)
+		if jparse.get_error() != OK:
+			errorLabelGui.set_text("Error: Could not parse HTTP Response")
+			return
+			
+		print("type: " + str(typeof(jparse.result)))
+		if typeof(jparse.result) != TYPE_DICTIONARY:
+			errorLabelGui.set_text("Error: Unexpected value when parsing HTTP Response")
+			return
+		
+		var r = jparse.result
+		if ("data" in r and "searchLevels" in r.data and r.data.searchLevels != null):
+			data = r.data.searchLevels
+			loadLevels()
+		else:
+			errorLabelGui.set_text("Error: Internet server error while retrieving level data")
+			
+	elif response_code == 0:
+		errorLabelGui.set_text("Error: Could not connect to server")
+	else:
+		errorLabelGui.set_text("Error: Could not load levels, error code: " + str(response_code))
 
 func loadLevels():
+	if data.size() == 0:
+		errorLabelGui.set_text("No levels found")
+		return
+
 	for item in data:
+		errorLabelGui.set_text("")
+		
 		var new_lvl = Level.instance()
 		levels.append(new_lvl)
 		new_lvl.setMazeFile(item.mazeFile)

@@ -3,9 +3,9 @@
 [ext_resource path="res://scripts/gui/LevelList.gd" type="Script" id=1]
 [ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=2]
 
-[sub_resource type="StyleBoxEmpty" id=2]
+[sub_resource type="StyleBoxEmpty" id=1]
 
-[sub_resource type="Theme" id=1]
+[sub_resource type="Theme" id=2]
 GridContainer/constants/hseparation = 15
 GridContainer/constants/vseparation = 15
 
@@ -62,7 +62,7 @@ margin_left = 405.0
 margin_right = 435.0
 margin_bottom = 35.0
 rect_min_size = Vector2( 30, 0 )
-custom_styles/separator = SubResource( 2 )
+custom_styles/separator = SubResource( 1 )
 
 [node name="Label" type="Label" parent="SearchTerms"]
 margin_left = 439.0
@@ -94,7 +94,7 @@ __meta__ = {
 [node name="GridContainer" type="GridContainer" parent="ScrollContainer"]
 margin_right = 585.0
 rect_min_size = Vector2( 585, 0 )
-theme = SubResource( 1 )
+theme = SubResource( 2 )
 columns = 3
 script = ExtResource( 1 )
 __meta__ = {
@@ -118,7 +118,7 @@ __meta__ = {
 [node name="Back" type="Button" parent="Pagination"]
 margin_left = 223.0
 margin_right = 265.0
-margin_bottom = 35.0
+margin_bottom = 34.0
 text = "Back"
 
 [node name="Page" type="Label" parent="Pagination"]
@@ -131,10 +131,10 @@ text = "Page: 1"
 [node name="Next" type="Button" parent="Pagination"]
 margin_left = 319.0
 margin_right = 361.0
-margin_bottom = 35.0
+margin_bottom = 34.0
 text = "Next"
 
-[node name="Label" type="Label" parent="."]
+[node name="VersionLabel" type="Label" parent="."]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -144,8 +144,17 @@ margin_top = -26.0
 margin_right = -12.0
 margin_bottom = -3.0
 custom_fonts/font = ExtResource( 2 )
-text = "Alpha 1.0"
+text = "Alpha 1.1"
 align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ErrorLabel" type="Label" parent="."]
+margin_left = 78.4875
+margin_top = 64.0
+margin_right = 250.488
+margin_bottom = 101.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
