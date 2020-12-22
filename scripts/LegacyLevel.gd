@@ -150,5 +150,5 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	var r = JSON.parse(response).result
 	var mazeFile = r.data.getLevel.mazeFile
-	var loader = get_node("/root/Spatial/LegacyWorldLoader/Button")
+	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
 	loader.loadLevel(mazeFile)

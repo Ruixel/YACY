@@ -13,5 +13,5 @@ func _on_Area_body_entered(body):
 		fade.fade(0.3)
 		yield(fade, "s_fade_complete")
 		
-		get_node("/root/Spatial/LegacyLevel").clear_level()
-		get_node("/root/Spatial/LegacyLevel").load_level(gameNumber)
+		get_node("/root/Gameplay/LegacyLevel").clear_level()
+		get_node("/root/Gameplay/LegacyLevel").load_level(gameNumber)

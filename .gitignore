@@ -13,6 +13,7 @@ api.json
 
 # C++ Projects
 src/**/*.obj
+src/Legacy/poly2tri/**/*.obj
 obj/*
 .kdev/*
 *.kdev
