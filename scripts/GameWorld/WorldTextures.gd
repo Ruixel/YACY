@@ -36,7 +36,7 @@ class LevelTexture:
 		if (img.get_format() != imgFormat):
 			img.convert(imgFormat)
 		
-		img.generate_mipmaps()
+		#img.generate_mipmaps()
 		tArray.set_layer_data(img, layer)
 
 func get_textureScale(texId):
@@ -66,7 +66,8 @@ func loadTexturesToArray():
 func _ready():
 	# Create an empty texture array and initialise it
 	tArray = TextureArray.new()
-	tArray.create(256, 256, numberOfTextures, imgFormat, 7)
+	tArray.create(256, 256, numberOfTextures, imgFormat, 3)
+	#tArray.create(256, 256, numberOfTextures, imgFormat, 7)
 	
 	# Load images
 	loadTexturesToArray()
