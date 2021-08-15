@@ -134,7 +134,7 @@ func clear_level():
 	EntityManager._reset()
 
 func get_mazeFile(gameNumber):
-	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { mazeFile }}"}'
+	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile }}"}'
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
@@ -146,9 +146,12 @@ func load_level(gameNumber):
 
 func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
-	#print(response)
 	
 	var r = JSON.parse(response).result
+	
 	var mazeFile = r.data.getLevel.mazeFile
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
 	loader.loadLevel(mazeFile)
+	
+	var entering_ui = get_node("../EnteringUI")
+	entering_ui.showLevel(r.data.getLevel.title, r.data.getLevel.author)

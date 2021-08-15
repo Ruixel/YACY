@@ -1,0 +1,60 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=1]
+[ext_resource path="res://res/fonts/aileron_big.tres" type="DynamicFont" id=2]
+[ext_resource path="res://scripts/gui/EnteringLevel.gd" type="Script" id=3]
+
+[node name="EnteringLevel" type="Control"]
+modulate = Color( 1, 1, 1, 0 )
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -768.0
+margin_right = 1366.0
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="NowEntering" type="Label" parent="."]
+visible = false
+margin_right = 178.0
+margin_bottom = 136.0
+rect_pivot_offset = Vector2( 71.0751, 15.0001 )
+custom_fonts/font = ExtResource( 1 )
+text = "NOW ENTERING
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Author" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 10.9025
+margin_top = -32.9951
+margin_right = 188.902
+margin_bottom = 103.005
+rect_pivot_offset = Vector2( 71.0751, 15.0001 )
+custom_fonts/font = ExtResource( 1 )
+text = "By ChallengeYou
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -87.0
+margin_right = 494.0
+margin_bottom = -28.0
+custom_fonts/font = ExtResource( 2 )
+text = "ChallengeYou Palace"
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
