@@ -24,6 +24,7 @@ var pitch = 0
 var targetVelocity : Vector3 = Vector3()
 var charVelocity : Vector3 = Vector3()
 var onFloorLastFrame : bool = false
+var flying : bool = false
 
 var busy : bool = false
 var pause : bool = false
@@ -44,7 +45,7 @@ func _physics_process(delta):
 		return
 	#checkIfGrounded()
 	
-	if (is_on_floor()):
+	if (not flying && is_on_floor()):
 		onFloorLastFrame = true
 		targetVelocity = getMoveDirection() * maxSpeedOnGround
 		targetVelocity += Vector3(0, -5, 0)
@@ -61,15 +62,19 @@ func _physics_process(delta):
 		onFloorLastFrame = false
 		
 		# Air Strafing
-		charVelocity += getMoveDirection() * 15 * delta
-		
-		var horizontalVelocity = Plane(Vector3.UP, 0).project(charVelocity)
-		horizontalVelocity *= 0.95
-		if (horizontalVelocity.length() > maxSpeedinAir):
-			horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
+		if (flying):
+			charVelocity += getFlyMoveDirection() * 20 * delta
+			charVelocity *= 0.92
+		else:
+			charVelocity += getMoveDirection() * 15 * delta
 			
-		charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
-		charVelocity += Vector3.DOWN * gravity * delta
+			var horizontalVelocity = Plane(Vector3.UP, 0).project(charVelocity)
+			horizontalVelocity *= 0.95
+			if (horizontalVelocity.length() > maxSpeedinAir):
+				horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
+			
+			charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
+			charVelocity += Vector3.DOWN * 18 * delta
 	
 	move_and_slide(charVelocity, Vector3(0, 1, 0))
 
@@ -117,6 +122,8 @@ func _unhandled_input(event):
 				false: 
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 					gui_mouseLock.visible = true
+		if event.is_action_pressed("toggle_flight"):
+			flying = not flying
 
 func getMoveDirection() -> Vector3:
 	var dirVector = Vector3()
@@ -128,5 +135,18 @@ func getMoveDirection() -> Vector3:
 		dirVector += (-camera.global_transform.basis.x * Vector3(1,0,1)).normalized()
 	if Input.is_action_pressed("move_right"):
 		dirVector += (camera.global_transform.basis.x * Vector3(1,0,1)).normalized()
+	
+	return dirVector
+
+func getFlyMoveDirection() -> Vector3:
+	var dirVector = Vector3()
+	if Input.is_action_pressed("move_forward"):
+		dirVector += (-camera.global_transform.basis.z * Vector3(1,1,1)).normalized()
+	if Input.is_action_pressed("move_back"):
+		dirVector += (camera.global_transform.basis.z * Vector3(1,1,1)).normalized()
+	if Input.is_action_pressed("move_left"):
+		dirVector += (-camera.global_transform.basis.x * Vector3(1,1,1)).normalized()
+	if Input.is_action_pressed("move_right"):
+		dirVector += (camera.global_transform.basis.x * Vector3(1,1,1)).normalized()
 	
 	return dirVector
