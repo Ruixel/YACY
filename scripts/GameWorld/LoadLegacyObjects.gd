@@ -223,10 +223,12 @@ const Themes = {
 func set_theme(pos : Vector2, themeID : int, level : int):
 	var current_env = get_node_or_null("/root/Gameplay/Environment")
 	if current_env != null:
+		get_node("/root/Gameplay").remove_child(current_env)
 		current_env.queue_free()
 	
 	var new_env = load(Themes[themeID]).instance()
-	get_node("/root/Gameplay").add_child(new_env)
+	get_node("/root/Gameplay").add_child(new_env, true)
+	#new_env.name = "Environment"
 
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
