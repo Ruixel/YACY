@@ -124,6 +124,11 @@ func _unhandled_input(event):
 					gui_mouseLock.visible = true
 		if event.is_action_pressed("toggle_flight"):
 			flying = not flying
+			$PlayerGUI.toggleJetpack(flying)
+			if flying:
+				$AudioNode/Jetpack.play()
+			else:
+				$AudioNode/Jetpack.stop()
 
 func getMoveDirection() -> Vector3:
 	var dirVector = Vector3()
@@ -148,5 +153,9 @@ func getFlyMoveDirection() -> Vector3:
 		dirVector += (-camera.global_transform.basis.x * Vector3(1,1,1)).normalized()
 	if Input.is_action_pressed("move_right"):
 		dirVector += (camera.global_transform.basis.x * Vector3(1,1,1)).normalized()
+	if Input.is_action_pressed("jump"):
+		dirVector += Vector3(0,1,0)
+	if Input.is_action_pressed("crouch"):
+		dirVector += Vector3(0,-1,0)
 	
 	return dirVector

@@ -1,15 +1,11 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
-[ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Scenes/UI/PlayerGUI.tscn" type="PackedScene" id=2]
+[ext_resource path="res://res/sfx/jet.ogg" type="AudioStream" id=3]
 
 [sub_resource type="RayShape" id=1]
 length = 0.638182
-
-[sub_resource type="DynamicFont" id=2]
-size = 18
-use_filter = true
-font_data = ExtResource( 2 )
 
 [sub_resource type="CapsuleShape" id=3]
 radius = 0.242122
@@ -27,26 +23,7 @@ shape = SubResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47439, 0 )
 far = 2000.0
 
-[node name="PlayerGUI" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="MouseLockWarning" type="Label" parent="PlayerGUI"]
-visible = false
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 349.0
-margin_bottom = 56.0
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
-custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
-text = "MOUSE CONTROL OFF - PRESS 'T'"
-__meta__ = {
-"_edit_use_anchors_": false
-}
+[node name="PlayerGUI" parent="." instance=ExtResource( 2 )]
 
 [node name="Spatial" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.607552, 0 )
@@ -54,3 +31,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.607552, 0 )
 [node name="CollisionShape2" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.107788, 0 )
 shape = SubResource( 3 )
+
+[node name="AudioNode" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.122485, 0 )
+
+[node name="Jetpack" type="AudioStreamPlayer3D" parent="AudioNode"]
+stream = ExtResource( 3 )
+unit_db = -20.0
