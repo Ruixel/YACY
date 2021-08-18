@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Asian.ogg-743b8bb4ec7c5a6e334cb2507f3fd82f.oggstr"
+
+[deps]
+
+source_file="res://res/music/Asian.ogg"
+dest_files=[ "res://.import/Asian.ogg-743b8bb4ec7c5a6e334cb2507f3fd82f.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

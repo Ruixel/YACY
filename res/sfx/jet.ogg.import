@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/jet.ogg-6a9ee52e568799c02069d57928afbec9.oggstr"
+
+[deps]
+
+source_file="res://res/sfx/jet.ogg"
+dest_files=[ "res://.import/jet.ogg-6a9ee52e568799c02069d57928afbec9.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

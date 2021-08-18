@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/sparkle.ogg-618c6ac2f70e8b445f6ece055f4f5d19.oggstr"
+
+[deps]
+
+source_file="res://res/sfx/sparkle.ogg"
+dest_files=[ "res://.import/sparkle.ogg-618c6ac2f70e8b445f6ece055f4f5d19.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

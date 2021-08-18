@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggstr"
+
+[deps]
+
+source_file="res://res/sfx/doorcreak.ogg"
+dest_files=[ "res://.import/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0
