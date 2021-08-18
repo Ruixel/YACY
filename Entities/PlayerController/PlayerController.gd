@@ -25,6 +25,7 @@ var targetVelocity : Vector3 = Vector3()
 var charVelocity : Vector3 = Vector3()
 var onFloorLastFrame : bool = false
 var flying : bool = false
+var canFly : bool = false
 
 var busy : bool = false
 var pause : bool = false
@@ -122,7 +123,7 @@ func _unhandled_input(event):
 				false: 
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 					gui_mouseLock.visible = true
-		if event.is_action_pressed("toggle_flight"):
+		if event.is_action_pressed("toggle_flight") and canFly:
 			flying = not flying
 			$PlayerGUI.toggleJetpack(flying)
 			if flying:
@@ -159,3 +160,7 @@ func getFlyMoveDirection() -> Vector3:
 		dirVector += Vector3(0,-1,0)
 	
 	return dirVector
+
+func pickupJetpack():
+	canFly = true
+	$PlayerGUI.pickupJetpack()
