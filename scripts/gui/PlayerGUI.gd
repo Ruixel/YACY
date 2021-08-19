@@ -1,5 +1,9 @@
 extends Control
 
+func reset():
+	$Jetpack.visible = false
+	updateJetpackFuel(0, 240)
+
 func pickupJetpack():
 	$Jetpack.visible = true
 

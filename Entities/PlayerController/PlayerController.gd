@@ -38,6 +38,15 @@ var pause : bool = false
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
+func reset():
+	flying = false
+	canFly = false
+	busy = false
+	pause = false
+	
+	$PlayerGUI.reset()
+	$AudioNode/Jetpack.stop()
+
 func _process(delta):
 	# Rotate camera horizontally and vertically
 	self.rotate_y(yaw_delta * rotationSpeed)

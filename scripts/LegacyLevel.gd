@@ -94,8 +94,9 @@ func spawnPlayer():
 		# Player spawns at [200, 390] in the original CY by default  
 		player.set_translation(Vector3(40, 5, 78))
 	
-	player.busy = false
-	player.pause = false
+	player.reset()
+	#player.busy = false
+	#player.pause = false
 
 # Level Loader
 func add_geometric_object(new_obj, lvl):
