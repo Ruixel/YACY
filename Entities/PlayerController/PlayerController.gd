@@ -24,8 +24,13 @@ var pitch = 0
 var targetVelocity : Vector3 = Vector3()
 var charVelocity : Vector3 = Vector3()
 var onFloorLastFrame : bool = false
-var flying : bool = false
-var canFly : bool = false
+
+# Flight variables
+var flying: bool = false
+var canFly: bool = false
+var unlimited_fuel: bool = true
+var fuel_amount: float = 0.0
+const max_fuel: float = 240.0
 
 var busy : bool = false
 var pause : bool = false
@@ -40,6 +45,17 @@ func _process(delta):
 	yaw_delta = 0
 	pitch_delta = 0
 	var pitch = camera.transform.basis.get_euler().x
+	
+	# Fuel stuff
+	if flying and not unlimited_fuel:
+		fuel_amount -= delta
+		$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+		
+		if fuel_amount < 0:
+			fuel_amount = 0.0
+			flying = false
+			$PlayerGUI.toggleJetpack(flying)
+			$AudioNode/Jetpack.stop()
 
 func _physics_process(delta):
 	if pause:
@@ -123,7 +139,7 @@ func _unhandled_input(event):
 				false: 
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 					gui_mouseLock.visible = true
-		if event.is_action_pressed("toggle_flight") and canFly and not busy:
+		if event.is_action_pressed("toggle_flight") and canFly and not busy and fuel_amount > 0:
 			flying = not flying
 			$PlayerGUI.toggleJetpack(flying)
 			if flying:
@@ -161,6 +177,17 @@ func getFlyMoveDirection() -> Vector3:
 	
 	return dirVector
 
-func pickupJetpack():
+func pickupJetpack(has_unlimited_fuel: bool):
 	canFly = true
+	unlimited_fuel = has_unlimited_fuel
+	
+	if has_unlimited_fuel:
+		fuel_amount = max_fuel
+	
 	$PlayerGUI.pickupJetpack()
+	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+
+func pickupFuel(amount: int):
+	fuel_amount = min(fuel_amount + amount, max_fuel)
+	
+	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)

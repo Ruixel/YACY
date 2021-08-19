@@ -217,6 +217,10 @@ func create_teleport(pos : Vector2, number : int, level : int):
 func create_jetpack(pos: Vector2, needs_fuel: int, level: int):
 	var new_jp = preload("res://Entities/Legacy/Jetpack/JetpackPickup.tscn").instance()
 	
+	match needs_fuel:
+		1: new_jp.set_unlimited_fuel(true)
+		2: new_jp.set_unlimited_fuel(false)
+	
 	pos = pos / 5.0
 	new_jp.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
 	
