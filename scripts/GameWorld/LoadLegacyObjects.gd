@@ -243,6 +243,20 @@ func create_fuel(pos: Vector2, fuel_amount: int, level: int):
 	
 	get_parent().call("add_entity", new_fuel)
 
+func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
+	var new_door = preload("res://Entities/Legacy/Door/Door.tscn").instance()
+	
+	pos = pos / 5.0
+	if dir == 1:
+		new_door.set_translation(Vector3(pos.x + 0.5, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+		new_door.set_scale(Vector3(0.5, WorldConstants.LEVEL_HEIGHT / 2.0, 0.5))
+	else:
+		new_door.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y - 0.5))
+		new_door.set_scale(Vector3(0.5, WorldConstants.LEVEL_HEIGHT / 2.0, 0.5))
+		new_door.set_rotation_degrees(Vector3(0,0,0))
+	
+	get_parent().call("add_entity", new_door)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check
