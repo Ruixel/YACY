@@ -222,6 +222,23 @@ func create_jetpack(pos: Vector2, needs_fuel: int, level: int):
 	
 	get_parent().call("add_entity", new_jp)
 
+func create_fuel(pos: Vector2, fuel_amount: int, level: int):
+	var new_fuel = preload("res://Entities/Legacy/Fuel/FuelPickup.tscn").instance()
+	
+	var fuel_sec = 0
+	match fuel_amount:
+		1: fuel_sec = 30
+		2: fuel_sec = 60
+		3: fuel_sec = 120
+		4: fuel_sec = 240
+	
+	new_fuel.set_fuel_amount(fuel_sec)
+	
+	pos = pos / 5.0
+	new_fuel.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
+	
+	get_parent().call("add_entity", new_fuel)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

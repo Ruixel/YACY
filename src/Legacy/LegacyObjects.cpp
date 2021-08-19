@@ -90,6 +90,7 @@ namespace Legacy {
         else if (objectName == "teleport") teleport_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "theme") theme_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "jetpack") jetpack_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "fuel") fuel_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -337,6 +338,20 @@ namespace Legacy {
             
             //                                                         // Position                  // Needs Fuel       // Level   
             if      (objectSize == 4) worldAPI->call("create_jetpack", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+
+    // Fuel (for Jetpack)
+    // [position_x, position_y, fuel_amount, level]
+    // Fuel amount goes: 30, 60, 120, 240
+    void fuel_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Fuel Amount      // Level   
+            if      (objectSize == 4) worldAPI->call("create_fuel", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
         }
     }
 
