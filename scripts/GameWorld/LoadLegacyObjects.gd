@@ -214,6 +214,14 @@ func create_teleport(pos : Vector2, number : int, level : int):
 	
 	get_parent().call("add_entity", new_tp)
 
+func create_jetpack(pos: Vector2, needs_fuel: int, level: int):
+	var new_jp = preload("res://Entities/Legacy/Jetpack/JetpackPickup.tscn").instance()
+	
+	pos = pos / 5.0
+	new_jp.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	
+	get_parent().call("add_entity", new_jp)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

@@ -123,7 +123,7 @@ func _unhandled_input(event):
 				false: 
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 					gui_mouseLock.visible = true
-		if event.is_action_pressed("toggle_flight") and canFly:
+		if event.is_action_pressed("toggle_flight") and canFly and not busy:
 			flying = not flying
 			$PlayerGUI.toggleJetpack(flying)
 			if flying:
