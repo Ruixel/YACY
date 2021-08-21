@@ -15,29 +15,40 @@ onready var aTexturePrototype_mat = load("res://res/materials/ArrayTexture_proto
 onready var selection_mat = load("res://res/materials/selection.tres")
 
 class LevelTexture:
-	var name : String
+	var name: String
 	
-	var img : Image
-	var texScale : Vector2
+	var img: Image
+	var texScale: Vector2
+	var transparent: bool
 	
-	func _init(lname : String, lres : String, lscale : Vector2, tArray : TextureArray, layer : int):
-		name = lname
-		texScale = lscale
+	var texture: ImageTexture
+	
+	func _init(lname: String, lres: String, lscale: Vector2, tArray: TextureArray, layer: int, transparent: bool = false):
+		self.name = lname
+		self.texScale = lscale
+		self.transparent = transparent
 		
 		var stream_texture = load(lres)
 		var img = stream_texture.get_data()
 		img.decompress()
 		
-#		img = Image.new()
-#		if (img.load(lres) != 0):
-#			push_warning("Warning: Could not load " + lres)
-#			return
-#
 		if (img.get_format() != imgFormat):
 			img.convert(imgFormat)
 		
 		img.generate_mipmaps()
 		tArray.set_layer_data(img, layer)
+		
+		self.texture = ImageTexture.new()
+		self.texture.create_from_image(img)
+	
+	func getImageTexture():
+		return self.texture
+	
+	func getTextureScale() -> Vector2:
+		return self.texScale
+	
+	func isTransparent() -> bool:
+		return self.transparent
 
 func get_textureScale(texId):
 	return textures[texId].texScale
@@ -60,8 +71,8 @@ func loadTexturesToArray():
 	textures.append(LevelTexture.new("Bookshelf", "res://res/txrs/bookshelf256.png", Vector2(1, 1.333), tArray, 13))
 	
 	# Transparent Textures
-	textures.append(LevelTexture.new("Bars", "res://res/txrs/bars256.png", Vector2(3.5, 1), tArray, 14))
-	textures.append(LevelTexture.new("Glass", "res://res/txrs/glass256.png", Vector2(1, 1), tArray, 15))
+	textures.append(LevelTexture.new("Bars", "res://res/txrs/bars256.png", Vector2(3.5, 1), tArray, 14, true))
+	textures.append(LevelTexture.new("Glass", "res://res/txrs/glass256.png", Vector2(1, 1), tArray, 15, true))
 
 func _ready():
 	# Create an empty texture array and initialise it
@@ -110,6 +121,26 @@ func getPlatTexture(id : int) -> LevelTexture:
 		11: return TextureID.TILES
 		13: return TextureID.ROCK
 		15: return TextureID.PARQUET
+		_:  return TextureID.COLOR
+
+func getDoorTexture(id: int) -> int:
+	match id:
+		# 1 & 2 for custom door textures 
+		3: return TextureID.BRICK
+		4: return TextureID.BARS
+		5: return TextureID.STONE
+		6: return TextureID.GRASS
+		7: return TextureID.WOOD
+		8: return TextureID.HAPPY
+		9: return TextureID.EGYPT
+		10: return TextureID.GLASS
+		11: return TextureID.STUCCO
+		12: return TextureID.BARK
+		13: return TextureID.TILES
+		# 14 for Coloured door
+		15: return TextureID.ROCK
+		16: return TextureID.BOOKSHELF
+		17: return TextureID.PARQUET
 		_:  return TextureID.COLOR
 
 const translucentIDs = [TextureID.BARS, TextureID.GLASS]

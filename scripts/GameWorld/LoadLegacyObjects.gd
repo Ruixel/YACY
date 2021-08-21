@@ -255,6 +255,11 @@ func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
 		new_door.set_scale(Vector3(0.5, WorldConstants.LEVEL_HEIGHT / 2.0, 0.5))
 		new_door.set_rotation_degrees(Vector3(0,0,0))
 	
+	if typeof(texColour) == TYPE_INT:
+		new_door.set_texture(texColour)
+	else:
+		new_door.set_colour(texColour)
+	
 	get_parent().call("add_entity", new_door)
 
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
