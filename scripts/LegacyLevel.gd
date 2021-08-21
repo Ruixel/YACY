@@ -86,7 +86,7 @@ func spawnPlayer():
 		player.set_name("Player")
 		add_child(player)
 #		player.get_node("camera_base/camera_rot/Camera").make_current()
-		player.get_node("FPSCamera").make_current()
+		player.get_node("EyePoint/FPSCamera").make_current()
 	
 	if (spawnLocation != null):
 		player.set_transform(spawnLocation.get_node("Pos").get_global_transform())

@@ -8,7 +8,11 @@ const jumpForce = 6.5
 const gravity = 18
 
 # Player Controller Children
-onready var camera = $FPSCamera
+onready var camera = $EyePoint
+enum CAMERA_TYPE { 
+	FPS, BEHIND 
+}
+var cType = CAMERA_TYPE.FPS
 
 # GUI
 onready var gui = $PlayerGUI
@@ -155,6 +159,15 @@ func _unhandled_input(event):
 				$AudioNode/Jetpack.play()
 			else:
 				$AudioNode/Jetpack.stop()
+		if event.is_action_pressed("change_view"):
+			if cType == CAMERA_TYPE.FPS:
+				cType = CAMERA_TYPE.BEHIND
+				#camera = $TPSCamera
+				$EyePoint/TPSCamera.make_current()
+			else:
+				cType = CAMERA_TYPE.FPS
+				#camera = $FPSCamera
+				$EyePoint/FPSCamera.make_current()
 
 func getMoveDirection() -> Vector3:
 	var dirVector = Vector3()

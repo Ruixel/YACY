@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/UI/PlayerGUI.tscn" type="PackedScene" id=2]
 [ext_resource path="res://res/sfx/jet.ogg" type="AudioStream" id=3]
+[ext_resource path="res://Entities/PlayerController/PlayerBody.glb" type="PackedScene" id=4]
 
 [sub_resource type="RayShape" id=1]
 length = 0.638182
@@ -15,12 +16,23 @@ height = 0.578151
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.612947, 0 )
 script = ExtResource( 1 )
 
+[node name="FPSCamera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47439, -0.0379261 )
+far = 2000.0
+
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.0295595, 0 )
 shape = SubResource( 1 )
 
-[node name="FPSCamera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.47439, 0 )
+[node name="EyePoint" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.474, -0.038 )
+
+[node name="TPSCamera" type="Camera" parent="EyePoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 1.5 )
+far = 2000.0
+
+[node name="FPSCamera" type="Camera" parent="EyePoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000390053, 7.39247e-05 )
 far = 2000.0
 
 [node name="PlayerGUI" parent="." instance=ExtResource( 2 )]
@@ -38,3 +50,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.122485, 0 )
 [node name="Jetpack" type="AudioStreamPlayer3D" parent="AudioNode"]
 stream = ExtResource( 3 )
 unit_db = -20.0
+
+[node name="PlayerBody" parent="." instance=ExtResource( 4 )]
+transform = Transform( 0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, -0.42, 0.0870854 )
