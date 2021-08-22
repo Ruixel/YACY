@@ -109,6 +109,7 @@ transform = Transform( 0.17, 0, 0, 0, 0.17, 0, 0, 0, 0.17, 0, -0.588197, 0.08708
 
 [node name="Back" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.055, 0.137808, 0.184 )
+visible = false
 
 [node name="Jetpack" type="Spatial" parent="Back"]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0.0595563, -0.0931615, 0.00169477 )

@@ -20,6 +20,7 @@ var yaw_delta = 0
 var pitch_delta = 0
 var pitch = 0
 onready var camera_angles = [$EyePoint/FPSCamera, $EyePoint/TPSCameraBehind, $EyePoint/TPSCameraFront ]
+var camera_show_body = [false, true, true]
 enum CAMERA_TYPE { FPS, BEHIND, FRONT }
 var cType = CAMERA_TYPE.FPS
 
@@ -40,12 +41,14 @@ var pause : bool = false
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	changeCameraAngle(CAMERA_TYPE.FPS)
 
 func reset():
 	flying = false
 	canFly = false
 	busy = false
 	pause = false
+	fuel_amount = 0.0
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -199,9 +202,15 @@ func getFlyMoveDirection() -> Vector3:
 func toggleCameraAngle():
 	var numCameraAngles = camera_angles.size()
 	var newCamAngleIndex = (cType + 1) % numCameraAngles
-	var camAngle = camera_angles[newCamAngleIndex]
+	changeCameraAngle(newCamAngleIndex)
+
+func changeCameraAngle(index):
+	cType = index
+	$PlayerBody.visible = camera_show_body[index]
+	$PlayerHead.visible = camera_show_body[index]
+	$Back.visible = camera_show_body[index]
 	
-	cType = newCamAngleIndex
+	var camAngle = camera_angles[index]
 	camAngle.make_current()
 
 func pickupJetpack(has_unlimited_fuel: bool):
