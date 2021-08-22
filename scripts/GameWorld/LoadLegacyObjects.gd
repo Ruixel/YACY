@@ -260,6 +260,8 @@ func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
 	else:
 		new_door.set_colour(texColour)
 	
+	new_door.set_keyRequired(key-1)
+	
 	get_parent().call("add_entity", new_door)
 
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary

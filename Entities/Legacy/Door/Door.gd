@@ -1,6 +1,8 @@
 extends Spatial
 
 onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres") 
+var open: bool = false
+var key_required: int = 0
 
 # TODO: Move to WorldTextures.gd & Preload once
 var scarydoor_image = "res://res/txrs/scary_door.jpg"
@@ -51,6 +53,23 @@ func set_colour(colour: Color):
 	mat.uv1_scale = Vector3(2/2, 1 , 1)
 	$Door.mesh.surface_set_material(0, mat)
 	$Top.mesh.surface_set_material(0, mat)
+
+func set_keyRequired(key: int):
+	if key < 1 or key > 10:
+		$KeyDisplay.visible = false
+		return
 	
-#func _ready():
-#	set_texture(2)
+	key_required = key
+	$KeyDisplay.visible = true
+	$KeyDisplay/KeyDisplay.mesh.get_material().uv1_offset = Vector3(0.083*(key-1), 0, 0)
+
+func _on_Area_body_entered(body):
+	if body.get_name() == "Player" and not open and body.busy == false:
+		# Player has key?
+		if key_required == 0:
+			$DoorSFX.play()
+			$Door.visible = false
+			$CollisionShape.translation = Vector3(0, 1.65, 0)
+			$CollisionShape.scale = Vector3(1, 0.35, 1)
+			
+			open = true
