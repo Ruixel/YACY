@@ -9,10 +9,6 @@ const gravity = 18
 
 # Player Controller Children
 onready var camera = $EyePoint
-enum CAMERA_TYPE { 
-	FPS, BEHIND 
-}
-var cType = CAMERA_TYPE.FPS
 
 # GUI
 onready var gui = $PlayerGUI
@@ -23,6 +19,9 @@ var lock_mouse = true
 var yaw_delta = 0
 var pitch_delta = 0
 var pitch = 0
+onready var camera_angles = [$EyePoint/FPSCamera, $EyePoint/TPSCameraBehind, $EyePoint/TPSCameraFront ]
+enum CAMERA_TYPE { FPS, BEHIND, FRONT }
+var cType = CAMERA_TYPE.FPS
 
 # Movement Variables
 var targetVelocity : Vector3 = Vector3()
@@ -50,11 +49,14 @@ func reset():
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
+	$Back/Jetpack.visible = false
+	$Back/Jetpack/Fire.visible = false
 
 func _process(delta):
 	# Rotate camera horizontally and vertically
 	self.rotate_y(yaw_delta * rotationSpeed)
 	camera.rotate_x(pitch_delta * rotationSpeed)
+	$PlayerHead.rotate_x(pitch_delta * rotationSpeed / 2.0)
 	yaw_delta = 0
 	pitch_delta = 0
 	var pitch = camera.transform.basis.get_euler().x
@@ -157,17 +159,12 @@ func _unhandled_input(event):
 			$PlayerGUI.toggleJetpack(flying)
 			if flying:
 				$AudioNode/Jetpack.play()
+				$Back/Jetpack/Fire.visible = true
 			else:
 				$AudioNode/Jetpack.stop()
+				$Back/Jetpack/Fire.visible = false
 		if event.is_action_pressed("change_view"):
-			if cType == CAMERA_TYPE.FPS:
-				cType = CAMERA_TYPE.BEHIND
-				#camera = $TPSCamera
-				$EyePoint/TPSCamera.make_current()
-			else:
-				cType = CAMERA_TYPE.FPS
-				#camera = $FPSCamera
-				$EyePoint/FPSCamera.make_current()
+			toggleCameraAngle()
 
 func getMoveDirection() -> Vector3:
 	var dirVector = Vector3()
@@ -199,6 +196,14 @@ func getFlyMoveDirection() -> Vector3:
 	
 	return dirVector
 
+func toggleCameraAngle():
+	var numCameraAngles = camera_angles.size()
+	var newCamAngleIndex = (cType + 1) % numCameraAngles
+	var camAngle = camera_angles[newCamAngleIndex]
+	
+	cType = newCamAngleIndex
+	camAngle.make_current()
+
 func pickupJetpack(has_unlimited_fuel: bool):
 	canFly = true
 	unlimited_fuel = has_unlimited_fuel
@@ -206,6 +211,7 @@ func pickupJetpack(has_unlimited_fuel: bool):
 	if has_unlimited_fuel:
 		fuel_amount = max_fuel
 	
+	$Back/Jetpack.visible = true
 	$PlayerGUI.pickupJetpack()
 	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
 
