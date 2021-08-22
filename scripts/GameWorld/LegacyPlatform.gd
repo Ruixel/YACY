@@ -201,7 +201,7 @@ static func buildPlatform(pos : Vector2, level : int, height_offset : float, tex
 		_createPlatTriMesh(surface_tool, [plat_vertices[0], plat_vertices[3], plat_vertices[2]], 3, tex, meshColor)
 	elif pShape == WorldConstants.PlatShape.TRI_TR:
 		_createPlatTriMesh(surface_tool, [plat_vertices[1], plat_vertices[2], plat_vertices[3]], 0, tex, meshColor)
-		_createPlatTriMesh(surface_tool, [plat_vertices[1], plat_vertices[2], plat_vertices[3]], 3, tex, meshColor)
+		_createPlatTriMesh(surface_tool, [plat_vertices[3], plat_vertices[2], plat_vertices[1]], 3, tex, meshColor)
 	elif pShape == WorldConstants.PlatShape.TRI_TL:
 		_createPlatTriMesh(surface_tool, [plat_vertices[0], plat_vertices[1], plat_vertices[2]], 0, tex, meshColor)
 		_createPlatTriMesh(surface_tool, [plat_vertices[2], plat_vertices[1], plat_vertices[0]], 3, tex, meshColor)
