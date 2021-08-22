@@ -109,7 +109,6 @@ func add_entity(new_ent):
 	entityLocation.add_child(new_ent)
 	
 	if new_ent.get_name() == "SpawnLocation":
-		print("hey guys")
 		spawnLocation = new_ent
 
 func modify_fixed_object(mode, level, new_obj):
@@ -149,6 +148,9 @@ func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
 	
 	var r = JSON.parse(response).result
+	
+	var obj_loader = get_node("ObjectLoader")
+	obj_loader.set_theme(Vector2(0,0), 1, 1)
 	
 	var mazeFile = r.data.getLevel.mazeFile
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
