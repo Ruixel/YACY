@@ -11,5 +11,5 @@ dest_files=[ "res://.import/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggst
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

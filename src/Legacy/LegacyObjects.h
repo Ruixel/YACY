@@ -42,6 +42,7 @@ namespace Legacy {
     void jetpack_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void fuel_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void door_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void key_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED

@@ -264,6 +264,15 @@ func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
 	
 	get_parent().call("add_entity", new_door)
 
+func create_key(pos: Vector2, key_number: int, level: int):
+	var new_key = preload("res://Entities/Legacy/Key/Key.tscn").instance()
+	
+	pos = pos / 5.0
+	new_key.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	new_key.set_keyNumber(key_number-1)
+	
+	get_parent().call("add_entity", new_key)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check
