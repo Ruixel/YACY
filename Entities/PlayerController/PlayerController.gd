@@ -36,6 +36,11 @@ var unlimited_fuel: bool = true
 var fuel_amount: float = 0.0
 const max_fuel: float = 240.0
 
+# Inventory
+# TODO: Move to separate file?
+var keys = []
+const master_key = WorldConstants.MASTER_KEY
+
 var busy : bool = false
 var pause : bool = false
 
@@ -49,6 +54,7 @@ func reset():
 	busy = false
 	pause = false
 	fuel_amount = 0.0
+	keys = []
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -228,3 +234,20 @@ func pickupFuel(amount: int):
 	fuel_amount = min(fuel_amount + amount, max_fuel)
 	
 	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+
+func pickupKey(key: int):
+	# If it's a master key, replace all keys with master
+	if master_key in self.keys:
+		return
+	if key == master_key:
+		self.keys = [master_key]
+		$PlayerGUI.updateKeys(self.keys)
+		return
+		
+	self.keys.append(key)
+	$PlayerGUI.updateKeys(self.keys)
+
+func hasKey(key: int) -> bool:
+	if key in self.keys or master_key in self.keys:
+		return true
+	return false

@@ -66,7 +66,7 @@ func set_keyRequired(key: int):
 func _on_Area_body_entered(body):
 	if body.get_name() == "Player" and not open and body.busy == false:
 		# Player has key?
-		if key_required == 0:
+		if key_required == 0 or body.hasKey(key_required):
 			$DoorSFX.play()
 			$Door.visible = false
 			$CollisionShape.translation = Vector3(0, 1.65, 0)

@@ -104,3 +104,35 @@ color = Color( 0.105882, 0.960784, 0.219608, 0.611765 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Items" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 1.50732
+margin_right = 1.50732
+mouse_filter = 2
+
+[node name="Keys" type="Control" parent="Items"]
+visible = false
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -40.0
+margin_bottom = 40.0
+mouse_filter = 2
+
+[node name="KeysCollected" type="Label" parent="Items/Keys"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -354.0
+margin_top = 5.0
+margin_right = -10.0001
+margin_bottom = 68.0
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+text = "Keys: None
+"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
