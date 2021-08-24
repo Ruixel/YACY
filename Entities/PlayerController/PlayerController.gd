@@ -237,7 +237,7 @@ func pickupFuel(amount: int):
 
 func pickupKey(key: int):
 	# If it's a master key, replace all keys with master
-	if master_key in self.keys:
+	if key in self.keys or master_key in self.keys:
 		return
 	if key == master_key:
 		self.keys = [master_key]
