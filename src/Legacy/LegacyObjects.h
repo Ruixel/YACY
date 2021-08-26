@@ -33,7 +33,7 @@ namespace Legacy {
     void ramp_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void hole_createObject(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     
-    // Entitiy creation functions
+    // Entity creation functions
     void start_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void message_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void portal_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
@@ -43,6 +43,7 @@ namespace Legacy {
     void fuel_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void door_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void key_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void ladder_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED

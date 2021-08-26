@@ -93,6 +93,7 @@ namespace Legacy {
         else if (objectName == "fuel") fuel_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "door") door_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "key2") key_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "ladder") ladder_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -381,6 +382,19 @@ namespace Legacy {
             
             //                                                     // Position                  // Key Number      // Level   
             if      (objectSize == 5) worldAPI->call("create_key", extractVec2(obj[0], obj[1]), extractInt(obj[3]), extractInt(obj[4]));    
+        }
+    }
+
+    // Ladder
+    // [position_x, position_y, direction, level]
+    void ladder_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                        // Position                  // Direction        // Level   
+            if      (objectSize == 4) worldAPI->call("create_ladder", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
         }
     }
 }

@@ -273,6 +273,25 @@ func create_key(pos: Vector2, key_number: int, level: int):
 	
 	get_parent().call("add_entity", new_key)
 
+func create_ladder(pos: Vector2, direction: int, level: int):
+	var new_ladder = preload("res://Entities/Legacy/Ladder/Ladder.tscn").instance()
+	
+	pos = pos / 5.0
+	new_ladder.set_translation(Vector3(pos.x, (level - 1 + 0.5) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_ladder.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
+	
+	match (direction):
+		1: new_ladder.set_rotation_degrees(Vector3(0, 0, 0))
+		2: new_ladder.set_rotation_degrees(Vector3(0, 180, 0))
+		3: new_ladder.set_rotation_degrees(Vector3(0, 90, 0))
+		4: new_ladder.set_rotation_degrees(Vector3(0, 270, 0))
+		5: new_ladder.set_rotation_degrees(Vector3(0, 45, 0))
+		6: new_ladder.set_rotation_degrees(Vector3(0, 135, 0))
+		7: new_ladder.set_rotation_degrees(Vector3(0, 225, 0))
+		8: new_ladder.set_rotation_degrees(Vector3(0, 315, 0))
+	
+	get_parent().call("add_entity", new_ladder)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

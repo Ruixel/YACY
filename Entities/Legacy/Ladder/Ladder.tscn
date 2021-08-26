@@ -23,10 +23,10 @@ extents = Vector3( 0.290246, 1, 0.0425356 )
 [node name="Ladder" type="StaticBody"]
 
 [node name="Cube" type="MeshInstance" parent="."]
-transform = Transform( 0.3, 0, 0, 0, 0.984808, 0.00694593, 0, -0.173648, 0.0393923, 0, 0, 0 )
+transform = Transform( 0.3, 0, 0, 0, 0.984808, 0.00694593, 0, -0.173648, 0.0393923, 0, 0, 0.22 )
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0 )
+transform = Transform( 1, 0, 0, 0, 0.984808, 0.173648, 0, -0.173648, 0.984808, 0, 0, 0.22 )
 shape = SubResource( 2 )
