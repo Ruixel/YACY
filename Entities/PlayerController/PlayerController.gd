@@ -5,7 +5,8 @@ const maxSpeedOnGround = 3.5
 const maxSpeedinAir = 4
 const movementSharpnessGround = 10
 const jumpForce = 6.5
-const gravity = 18
+var onLadder = false
+var gravity = 18
 
 # Player Controller Children
 onready var camera = $EyePoint
@@ -86,7 +87,29 @@ func _physics_process(delta):
 		return
 	#checkIfGrounded()
 	
-	if (not flying && is_on_floor()):
+	if onLadder:
+		var ladderNormal = Vector3(0, 1, 0)
+		var ladderUpVector = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-10))
+		ladderUpVector = ladderUpVector.rotated(Vector3(0, 1, 0), deg2rad(90))
+		ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-10 + 90))
+		ladderNormal = ladderNormal.rotated(Vector3(0, 1, 0), deg2rad(90))
+		#ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(90))
+		
+		var ladderCross = ladderUpVector.cross(ladderNormal)
+		
+		var direction = getMoveDirection()
+		direction = direction.slide(ladderNormal).normalized()
+		
+		var dot_product = direction.dot(ladderUpVector)
+		if abs(dot_product) > 0.7:
+			if dot_product > 0:
+				charVelocity = ladderUpVector * 3.5
+			if dot_product < 0:
+				charVelocity = ladderUpVector * -3.5
+		else:
+			var slide = direction.slide(ladderNormal).normalized() 
+			charVelocity = (slide.project(ladderUpVector) * 5.0) + (slide.project(ladderCross) * 1.0)
+	elif (not flying && is_on_floor()):
 		onFloorLastFrame = true
 		targetVelocity = getMoveDirection() * maxSpeedOnGround
 		targetVelocity += Vector3(0, -5, 0)
@@ -115,8 +138,9 @@ func _physics_process(delta):
 				horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
 			
 			charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
-			charVelocity += Vector3.DOWN * 18 * delta
+			charVelocity += Vector3.DOWN * gravity * delta
 	
+	#move_and_slide_with_snap(charVelocity, Vector3(0, -2, 0), Vector3(0, 1, 0))
 	move_and_slide(charVelocity, Vector3(0, 1, 0))
 
 func checkIfGrounded():
@@ -174,6 +198,12 @@ func _unhandled_input(event):
 				$Back/Jetpack/Fire.visible = false
 		if event.is_action_pressed("change_view"):
 			toggleCameraAngle()
+
+func getOnLadder():
+	onLadder = true
+
+func getOffLadder():
+	onLadder = false
 
 func getMoveDirection() -> Vector3:
 	var dirVector = Vector3()
