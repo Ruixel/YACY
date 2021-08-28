@@ -6,6 +6,9 @@ const maxSpeedinAir = 4
 const movementSharpnessGround = 10
 const jumpForce = 6.5
 var onLadder = false
+var ladderNormal := Vector3()
+var ladderUpVector := Vector3()
+var ladderCrossVector := Vector3()
 var gravity = 18
 
 # Player Controller Children
@@ -88,27 +91,23 @@ func _physics_process(delta):
 	#checkIfGrounded()
 	
 	if onLadder:
-		var ladderNormal = Vector3(0, 1, 0)
-		var ladderUpVector = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-10))
-		ladderUpVector = ladderUpVector.rotated(Vector3(0, 1, 0), deg2rad(90))
-		ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-10 + 90))
-		ladderNormal = ladderNormal.rotated(Vector3(0, 1, 0), deg2rad(90))
-		#ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(90))
-		
-		var ladderCross = ladderUpVector.cross(ladderNormal)
-		
 		var direction = getMoveDirection()
-		direction = direction.slide(ladderNormal).normalized()
+		direction = direction.slide(self.ladderNormal).normalized()
 		
-		var dot_product = direction.dot(ladderUpVector)
+		var dot_product = direction.dot(self.ladderUpVector)
 		if abs(dot_product) > 0.7:
 			if dot_product > 0:
 				charVelocity = ladderUpVector * 3.5
 			if dot_product < 0:
 				charVelocity = ladderUpVector * -3.5
 		else:
-			var slide = direction.slide(ladderNormal).normalized() 
-			charVelocity = (slide.project(ladderUpVector) * 5.0) + (slide.project(ladderCross) * 1.0)
+			var slide = direction.slide(self.ladderNormal).normalized() 
+			charVelocity = (slide.project(self.ladderUpVector) * 5.0) + (slide.project(self.ladderCrossVector) * 1.0)
+		
+		if (Input.is_action_pressed("jump")):
+			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
+			charVelocity += Vector3.UP * jumpForce
+			onFloorLastFrame = false
 	elif (not flying && is_on_floor()):
 		onFloorLastFrame = true
 		targetVelocity = getMoveDirection() * maxSpeedOnGround
@@ -199,7 +198,11 @@ func _unhandled_input(event):
 		if event.is_action_pressed("change_view"):
 			toggleCameraAngle()
 
-func getOnLadder():
+func getOnLadder(ladderNormal: Vector3, ladderUpVector: Vector3):
+	self.ladderNormal = ladderNormal
+	self.ladderUpVector = ladderUpVector
+	self.ladderCrossVector = ladderUpVector.cross(ladderNormal)
+	
 	onLadder = true
 
 func getOffLadder():
