@@ -19,16 +19,19 @@ void LegacyLevel::parseLevelCode(godot::String levelCode, godot::Node* worldApi)
             case ']': depth--; break;
             
             // This represents an object/list's name
+            case '"':
             case '#':
                 strPtr++;
                 
                 // Name is ended by a colon, use it to extract it as a string
-                int nameEndPos = levelCode.find(":", strPtr);
+                char strEndChar = cChar == '#' ? ':' : '"';
+                int nameEndPos = levelCode.find(strEndChar, strPtr+1);
                 int nameLength = nameEndPos - strPtr;
                 godot::String name = levelCode.substr(strPtr, nameLength);
                 
                 godot::Godot::print("Extracted " + name);
                 strPtr = nameEndPos + 2;
+                if (strEndChar == '"') strPtr++;
                 
                 // Figure out if the object is a variant or a list
                 if (levelCode[strPtr] == '[') {
@@ -82,7 +85,7 @@ void LegacyLevel::parseLevelCode(godot::String levelCode, godot::Node* worldApi)
                         
                 } else {
                     // It's a variant
-                    //strPtr = levelCode.find(",", strPtr);
+                    strPtr = levelCode.find(",", strPtr);
                 }
                 
                 break;
