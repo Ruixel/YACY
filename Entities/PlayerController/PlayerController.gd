@@ -44,6 +44,7 @@ const max_fuel: float = 240.0
 # TODO: Move to separate file?
 var keys = []
 const master_key = WorldConstants.MASTER_KEY
+var diamonds = 0
 
 var busy : bool = false
 var pause : bool = false
@@ -59,6 +60,7 @@ func reset():
 	pause = false
 	fuel_amount = 0.0
 	keys = []
+	diamonds = 0
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -279,6 +281,10 @@ func pickupKey(key: int):
 		
 	self.keys.append(key)
 	$PlayerGUI.updateKeys(self.keys)
+
+func pickupDiamond():
+	self.diamonds += 1
+	$PlayerGUI.updateDiamonds(self.diamonds)
 
 func hasKey(key: int) -> bool:
 	if key in self.keys or master_key in self.keys:

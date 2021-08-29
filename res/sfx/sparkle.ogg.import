@@ -11,5 +11,5 @@ dest_files=[ "res://.import/sparkle.ogg-618c6ac2f70e8b445f6ece055f4f5d19.oggstr"
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0

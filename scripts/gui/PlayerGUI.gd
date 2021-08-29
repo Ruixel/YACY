@@ -1,9 +1,30 @@
 extends Control
 
+var max_diamonds = 0
+
 func reset():
 	$Jetpack.visible = false
 	$Items/Keys.visible = false
+	max_diamonds = 0
+	$ItemsLeft/Diamonds.visible = false
 	updateJetpackFuel(0, 240)
+
+func setupCollectables(collectables: Dictionary):
+	for key in collectables:
+		if key == "diamond":
+			loadDiamonds(collectables[key])
+
+func loadDiamonds(max_diamonds: int):
+	if max_diamonds > 0:
+		self.max_diamonds = max_diamonds
+		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]0[/b] / " + str(max_diamonds)
+		$ItemsLeft/Diamonds.visible = true
+
+func updateDiamonds(diamonds: int):
+	if diamonds == max_diamonds:
+		$ItemsLeft/Diamonds/Count.bbcode_text = "[wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
+	else:
+		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
 
 func pickupJetpack():
 	$Jetpack.visible = true

@@ -1,12 +1,20 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/gui/PlayerGUI.gd" type="Script" id=2]
+[ext_resource path="res://res/fonts/aileron_big.tres" type="DynamicFont" id=3]
+[ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Entities/Legacy/Diamond/Diamond.glb" type="PackedScene" id=5]
+[ext_resource path="res://scripts/Spin.gd" type="Script" id=6]
+[ext_resource path="res://Scenes/Env/GlobalEnv.tres" type="Environment" id=7]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
 use_filter = true
 font_data = ExtResource( 1 )
+
+[sub_resource type="World" id=2]
+environment = ExtResource( 7 )
 
 [node name="PlayerGUI" type="Control"]
 anchor_right = 1.0
@@ -111,6 +119,9 @@ anchor_bottom = 1.0
 margin_left = 1.50732
 margin_right = 1.50732
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Keys" type="Control" parent="Items"]
 visible = false
@@ -136,3 +147,63 @@ align = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ItemsLeft" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Diamonds" type="Control" parent="ItemsLeft"]
+visible = false
+margin_left = 10.0
+margin_top = 25.0
+margin_right = 288.0
+margin_bottom = 133.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Count" type="RichTextLabel" parent="ItemsLeft/Diamonds"]
+margin_left = 56.0394
+margin_top = -0.374939
+margin_right = 229.039
+margin_bottom = 69.6251
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[b]5[/b] / 24"
+text = "5 / 24"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="ItemsLeft/Diamonds"]
+margin_left = 6.94937
+margin_top = 5.98226
+margin_right = 56.9494
+margin_bottom = 55.9823
+mouse_filter = 2
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="ItemsLeft/Diamonds/ViewportContainer"]
+size = Vector2( 50, 50 )
+world = SubResource( 2 )
+transparent_bg = true
+handle_input_locally = false
+usage = 3
+debug_draw = 3
+render_target_update_mode = 0
+
+[node name="Camera" type="Camera" parent="ItemsLeft/Diamonds/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+fov = 22.0
+
+[node name="Diamond" parent="ItemsLeft/Diamonds/ViewportContainer/Viewport" instance=ExtResource( 5 )]
+script = ExtResource( 6 )

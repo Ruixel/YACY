@@ -306,6 +306,7 @@ func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
 	new_dia.set_translation(Vector3(pos.x, (level - 1 + lvlheight) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	new_dia.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
 	
+	get_parent().call("add_collectable", "diamond")
 	get_parent().call("add_entity", new_dia)
 
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary

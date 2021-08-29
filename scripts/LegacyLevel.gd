@@ -11,6 +11,7 @@ var objects : Array = []
 var fixed_objects: Dictionary
 var entities : Array = []
 var default_objs : Dictionary
+var collectables: Dictionary
 
 var level : int = 1
 var levelMeshes : Array 
@@ -47,6 +48,7 @@ func setupLevel():
 	levelMeshes = []
 	objects = []
 	fixed_objects = {}
+	collectables = {}
 	
 	# Initialise level meshes
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
@@ -95,6 +97,10 @@ func spawnPlayer():
 		player.set_translation(Vector3(40, 5, 78))
 	
 	player.reset()
+	
+	# Setup PlayerUI
+	player.get_node("PlayerGUI").setupCollectables(self.collectables)
+	
 	#player.busy = false
 	#player.pause = false
 
@@ -110,6 +116,12 @@ func add_entity(new_ent):
 	
 	if new_ent.get_name() == "SpawnLocation":
 		spawnLocation = new_ent
+
+func add_collectable(name: String):
+	if self.collectables.has(name):
+		self.collectables[name] += 1
+	else:
+		self.collectables[name] = 1
 
 func modify_fixed_object(mode, level, new_obj):
 	if weakref(fixed_objects[mode][level]).get_ref():
