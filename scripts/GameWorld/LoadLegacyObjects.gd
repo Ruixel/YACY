@@ -292,6 +292,22 @@ func create_ladder(pos: Vector2, direction: int, level: int):
 	
 	get_parent().call("add_entity", new_ladder)
 
+func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
+	var new_dia = preload("res://Entities/Legacy/Diamond/Diamond.tscn").instance()
+	
+	var lvlheight
+	match height:
+		1: lvlheight = 0.25
+		2: lvlheight = 0.50
+		3: lvlheight = 0.75
+		4: lvlheight = 1.00
+	
+	pos = pos / 5.0
+	new_dia.set_translation(Vector3(pos.x, (level - 1 + lvlheight) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_dia.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
+	
+	get_parent().call("add_entity", new_dia)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

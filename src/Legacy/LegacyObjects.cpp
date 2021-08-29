@@ -94,6 +94,7 @@ namespace Legacy {
         else if (objectName == "door") door_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "key2") key_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "ladder") ladder_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "diamond") diamond_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -395,6 +396,20 @@ namespace Legacy {
             
             //                                                        // Position                  // Direction        // Level   
             if      (objectSize == 4) worldAPI->call("create_ladder", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+    
+    // Diamond
+    // [position_x, position_y, time_bonus, height, level]
+    void diamond_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                         // Position                  // Time Bonus       // Height           // Level   
+            if      (objectSize == 5) worldAPI->call("create_diamond", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]), extractInt(obj[4]));    
+            else if (objectSize == 4) worldAPI->call("create_diamond", extractVec2(obj[0], obj[1]), extractInt(obj[2]), 1,                  extractInt(obj[3]));    
         }
     }
 }

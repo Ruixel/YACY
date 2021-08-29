@@ -44,6 +44,7 @@ namespace Legacy {
     void door_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void key_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void ladder_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void diamond_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
