@@ -309,13 +309,19 @@ func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
 	get_parent().call("add_collectable", "diamond")
 	get_parent().call("add_entity", new_dia)
 
-func create_iceman(pos: Vector2, speed:int, hits: int, level: int):
+func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
 	var new_ice = preload("res://Entities/Legacy/Iceman/Iceman.tscn").instance()
+	
+	match speed:
+		1: new_ice.set_speed(50)
+		2: new_ice.set_speed(80)
+		3: new_ice.set_speed(130)
 	
 	pos = pos / 5.0
 	new_ice.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
 	get_parent().call("add_entity", new_ice)
+	#new_ice.call_deferred("check_valid")
 
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
