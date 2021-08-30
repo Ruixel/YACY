@@ -9,7 +9,9 @@ var onLadder = false
 var ladderNormal := Vector3()
 var ladderUpVector := Vector3()
 var ladderCrossVector := Vector3()
-var gravity = 18
+var canMove := true
+var gravity := 18.0
+var spawnPoint := Transform()
 
 # Player Controller Children
 onready var camera = $EyePoint
@@ -27,6 +29,8 @@ onready var camera_angles = [$EyePoint/FPSCamera, $EyePoint/TPSCameraBehind, $Ey
 var camera_show_body = [false, true, true]
 enum CAMERA_TYPE { FPS, BEHIND, FRONT }
 var cType = CAMERA_TYPE.FPS
+var currentCam
+const underwater_env = preload("res://Scenes/Env/Underwater.tres")
 
 # Movement Variables
 var targetVelocity : Vector3 = Vector3()
@@ -52,6 +56,7 @@ var pause : bool = false
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	changeCameraAngle(CAMERA_TYPE.FPS)
+	currentCam = $EyePoint/FPSCamera
 
 func reset():
 	flying = false
@@ -61,6 +66,8 @@ func reset():
 	fuel_amount = 0.0
 	keys = []
 	diamonds = 0
+	gravity = 18
+	canMove = true
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -211,6 +218,9 @@ func getOffLadder():
 	onLadder = false
 
 func getMoveDirection() -> Vector3:
+	if not self.canMove:
+		return Vector3(0,0,0)
+		
 	var dirVector = Vector3()
 	if Input.is_action_pressed("move_forward"):
 		dirVector += (-camera.global_transform.basis.z * Vector3(1,0,1)).normalized()
@@ -224,6 +234,9 @@ func getMoveDirection() -> Vector3:
 	return dirVector
 
 func getFlyMoveDirection() -> Vector3:
+	if not self.canMove:
+		return Vector3(0,0,0)
+		
 	var dirVector = Vector3()
 	if Input.is_action_pressed("move_forward"):
 		dirVector += (-camera.global_transform.basis.z * Vector3(1,1,1)).normalized()
@@ -241,9 +254,10 @@ func getFlyMoveDirection() -> Vector3:
 	return dirVector
 
 func toggleCameraAngle():
-	var numCameraAngles = camera_angles.size()
-	var newCamAngleIndex = (cType + 1) % numCameraAngles
-	changeCameraAngle(newCamAngleIndex)
+	if not busy:
+		var numCameraAngles = camera_angles.size()
+		var newCamAngleIndex = (cType + 1) % numCameraAngles
+		changeCameraAngle(newCamAngleIndex)
 
 func changeCameraAngle(index):
 	cType = index
@@ -253,6 +267,34 @@ func changeCameraAngle(index):
 	
 	var camAngle = camera_angles[index]
 	camAngle.make_current()
+	currentCam = camAngle
+
+func fallInWater():
+	# TODO: Move to its own function
+	if flying:
+		flying = false
+		$PlayerGUI.toggleJetpack(flying)
+		$AudioNode/Jetpack.stop()
+		$Back/Jetpack/Fire.visible = false
+	
+	$AudioNode/Splash.play()
+	gravity = 1
+	charVelocity = Vector3(0, -2, 0)
+	canMove = false
+	busy = true
+	currentCam.environment = underwater_env
+	
+	yield(get_tree().create_timer(2.5), "timeout")
+	
+	gravity = 18
+	charVelocity = Vector3(0, 0, 0)
+	canMove = true
+	busy = false
+	currentCam.environment = null
+	self.set_transform(self.spawnPoint)
+
+func setSpawnPoint(transform: Transform):
+	self.spawnPoint = transform
 
 func pickupJetpack(has_unlimited_fuel: bool):
 	canFly = true

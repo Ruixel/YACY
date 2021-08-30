@@ -92,9 +92,11 @@ func spawnPlayer():
 	
 	if (spawnLocation != null):
 		player.set_transform(spawnLocation.get_node("Pos").get_global_transform())
+		player.setSpawnPoint(spawnLocation.get_node("Pos").get_global_transform())
 	else:
 		# Player spawns at [200, 390] in the original CY by default  
 		player.set_translation(Vector3(40, 5, 78))
+		player.setSpawnPoint(Transform(Vector3(), Vector3(), Vector3(), Vector3(40, 5, 78)))
 	
 	player.reset()
 	
