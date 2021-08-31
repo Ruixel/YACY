@@ -1,18 +1,23 @@
 extends Control
 
 var max_diamonds = 0
+onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
 	$Jetpack.visible = false
 	$Items/Keys.visible = false
 	max_diamonds = 0
 	$ItemsLeft/Diamonds.visible = false
+	$ItemsLeft/Icemen.visible = false
 	updateJetpackFuel(0, 240)
 
 func setupCollectables(collectables: Dictionary):
 	for key in collectables:
 		if key == "diamond":
 			loadDiamonds(collectables[key])
+		if key == "iceman":
+			loadIcemen(collectables[key])
+	updateItemsLeft()
 
 func loadDiamonds(max_diamonds: int):
 	if max_diamonds > 0:
@@ -25,6 +30,18 @@ func updateDiamonds(diamonds: int):
 		$ItemsLeft/Diamonds/Count.bbcode_text = "[wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
 	else:
 		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
+
+func loadIcemen(total_icemen: int):
+	if total_icemen:
+		$ItemsLeft/Icemen/Count.bbcode_text = "[b]" + str(total_icemen) + "[/b]  left"
+		$ItemsLeft/Icemen.visible = true
+
+func updateItemsLeft():
+	var y = 25
+	for node in items_left_nodes:
+		if node.visible:
+			node.rect_position = Vector2(10, y)
+			y += 50
 
 func pickupJetpack():
 	$Jetpack.visible = true

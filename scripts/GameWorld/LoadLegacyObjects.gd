@@ -320,6 +320,7 @@ func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
 	pos = pos / 5.0
 	new_ice.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
+	get_parent().call("add_collectable", "iceman")
 	get_parent().call("add_entity", new_ice)
 	#new_ice.call_deferred("check_valid")
 
