@@ -18,21 +18,28 @@ func _process(delta):
 
 func target_player():
 	if player_nearby != null:
-		print("targeting")
+		# Get direction vector of iceman and to the player
 		var player_transform = player_nearby.global_transform.origin
 		player_transform = Vector3(player_transform.x, 0, player_transform.z)
 		var self_transform = global_transform.origin
 		self_transform = Vector3(self_transform.x, 0, self_transform.z)
 		
+		# Use the dot product to work out the angle between them
 		var dir = (global_transform.basis.z * Vector3(1, 0, 1)).normalized()
 		var dir_to_player = (player_transform - self_transform).normalized()
 		var dot = dir.dot(dir_to_player)
 		var angle = acos(dot)
+		
+		# Don't turn if iceman is directly infront of player (or nasty errors)
+		if abs(angle) < 0.01 or abs(dot) > 0.99:
+			return
 
-		if abs(angle) > 0.01 and dir.cross(Vector3(0, 1, 0)).dot(dir_to_player) > 0:
+		# Figure if the player is to the left or right to the iceman
+		if dir.cross(Vector3(0, 1, 0)).dot(dir_to_player) > 0:
 			rotate_y(-angle)
 		else:
 			rotate_y(angle)
+		
 
 func _physics_process(delta):
 	if active:
