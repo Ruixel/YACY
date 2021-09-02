@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Entities/PlayerController/Slingshot/Slingshot.glb" type="PackedScene" id=1]
+[ext_resource path="res://Entities/PlayerController/Slingshot/Slingshot.gd" type="Script" id=2]
+
+[node name="Slingshot" instance=ExtResource( 1 )]
+transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0 )
+script = ExtResource( 2 )

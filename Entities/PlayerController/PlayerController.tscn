@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/UI/PlayerGUI.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Entities/Legacy/Jetpack/Flame.material" type="Material" id=7]
 [ext_resource path="res://Entities/Legacy/Jetpack/Wings.material" type="Material" id=8]
 [ext_resource path="res://res/sfx/splash.ogg" type="AudioStream" id=9]
+[ext_resource path="res://Entities/PlayerController/Slingshot/Slingshot.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RayShape" id=1]
 length = 0.638182
@@ -84,6 +85,12 @@ far = 2000.0
 [node name="FPSCamera" type="Camera" parent="EyePoint"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000390053, 7.39247e-05 )
 far = 2000.0
+
+[node name="Hand" type="Spatial" parent="EyePoint"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.14295, -0.187329, -0.197776 )
+
+[node name="Slingshot" parent="EyePoint/Hand" instance=ExtResource( 10 )]
+transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, -0.145, 0, -0.1 )
 
 [node name="PlayerGUI" parent="." instance=ExtResource( 2 )]
 
