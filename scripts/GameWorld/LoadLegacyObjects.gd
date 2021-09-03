@@ -324,6 +324,24 @@ func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
 	get_parent().call("add_entity", new_ice)
 	#new_ice.call_deferred("check_valid")
 
+func create_slingshot(pos: Vector2, level: int):
+	var new_ss = preload("res://Entities/Legacy/SlingshotPickups/SlingshotPickup.tscn").instance()
+	
+	pos = pos / 5.0
+	new_ss.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	
+	get_parent().call("add_entity", new_ss)
+
+var crumb_amounts = [5, 10, 15, 30]
+func create_crumbs(pos: Vector2, amount: int, level: int):
+	var new_cr = preload("res://Entities/Legacy/SlingshotPickups/CrumbPack.tscn").instance()
+	
+	new_cr.set_crumb_amount(crumb_amounts[amount-1])
+	pos = pos / 5.0
+	new_cr.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
+	
+	get_parent().call("add_entity", new_cr)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

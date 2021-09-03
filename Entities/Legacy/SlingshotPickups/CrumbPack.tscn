@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Entities/Legacy/SlingshotPickups/CrumbPack.glb" type="PackedScene" id=1]
+[ext_resource path="res://Entities/Legacy/SlingshotPickups/CrumbPack.gd" type="Script" id=2]
+[ext_resource path="res://res/sfx/blip.ogg" type="AudioStream" id=3]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.0685159, 0.241032, 0.0907392 )
+
+[node name="CrumbPack" type="Spatial"]
+script = ExtResource( 2 )
+
+[node name="Mesh" parent="." instance=ExtResource( 1 )]
+transform = Transform( 0.1, 0, 0, 0, 0.2, 0, 0, 0, 0.1, 0, 0.2, 0 )
+
+[node name="PickupSFX" type="AudioStreamPlayer3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.209824, 0 )
+stream = ExtResource( 3 )
+
+[node name="Area" type="Area" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0733162, 0 )
+shape = SubResource( 1 )
+[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
