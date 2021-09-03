@@ -11,5 +11,5 @@ dest_files=[ "res://.import/shrink.ogg-f4b3a5cf51f56770c9ca23f1a8e2f9a4.oggstr" 
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
