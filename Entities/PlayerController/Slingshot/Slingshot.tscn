@@ -264,4 +264,7 @@ unit_db = -10.0
 [node name="Debounce" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="ProjectileSpawn" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.24201, 1.84774 )
 [connection signal="timeout" from="Debounce" to="." method="_on_Debounce_timeout"]
