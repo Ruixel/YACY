@@ -11,11 +11,11 @@ rings = 4
 albedo_color = Color( 0.352941, 0.184314, 0.0352941, 1 )
 
 [sub_resource type="SphereShape" id=3]
-radius = 0.097563
+radius = 1.66387
 
 [node name="Crumb" type="KinematicBody"]
 collision_layer = 8
-collision_mask = 32785
+collision_mask = 17
 script = ExtResource( 1 )
 
 [node name="CrumbMesh" type="MeshInstance" parent="."]

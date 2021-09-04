@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Entities/Legacy/Iceman/Iceman.gd" type="Script" id=1]
 [ext_resource path="res://res/sfx/rolling.ogg" type="AudioStream" id=2]
@@ -26,6 +26,10 @@ extents = Vector3( 0.117748, 0.979307, 0.450173 )
 [sub_resource type="CylinderShape" id=3]
 radius = 2.15033
 height = 0.990234
+
+[sub_resource type="CylinderShape" id=4]
+radius = 0.484006
+height = 0.190311
 
 [node name="Iceman" type="KinematicBody"]
 collision_layer = 32768
@@ -80,9 +84,16 @@ out_of_range_mode = 1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 shape = SubResource( 3 )
 
+[node name="HitBox" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="HitBox"]
+transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.496038, 0 )
+shape = SubResource( 4 )
+
 [node name="ThinkTimer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
 [connection signal="body_entered" from="NearArea" to="." method="_on_NearArea_body_entered"]
 [connection signal="body_exited" from="NearArea" to="." method="_on_NearArea_body_exited"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]
 [connection signal="timeout" from="ThinkTimer" to="." method="_on_ThinkTimer_timeout"]

@@ -1,6 +1,8 @@
 extends Control
 
 var max_diamonds = 0
+var total_icemen = 0
+var icemen = 0
 onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
@@ -34,8 +36,18 @@ func updateDiamonds(diamonds: int):
 
 func loadIcemen(total_icemen: int):
 	if total_icemen:
+		self.total_icemen = total_icemen
+		self.icemen = total_icemen
 		$ItemsLeft/Icemen/Count.bbcode_text = "[b]" + str(total_icemen) + "[/b]  left"
 		$ItemsLeft/Icemen.visible = true
+
+func killedIceman():
+	self.icemen -= 1
+	
+	if self.icemen == 0:
+		$ItemsLeft/Icemen/Count.bbcode_text = "[wave amp=20 freq=10][b]" + str(self.icemen) + "[/b]  left[/wave]"
+	else:
+		$ItemsLeft/Icemen/Count.bbcode_text = "[b]" + str(self.icemen) + "[/b]  left"
 
 func updateItemsLeft():
 	var y = 25

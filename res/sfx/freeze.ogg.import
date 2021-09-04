@@ -11,5 +11,5 @@ dest_files=[ "res://.import/freeze.ogg-300bb1ce2ad1d88839d465e39f9d52b7.oggstr" 
 
 [params]
 
-loop=true
+loop=false
 loop_offset=0
