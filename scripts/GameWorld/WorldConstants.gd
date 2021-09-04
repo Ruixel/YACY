@@ -12,6 +12,7 @@ const GEOMETRY_COLLISION_BIT = 1
 const OPAQUE_COLLISION_BIT = 2
 const ENTITY_COLLISION_BIT = 4
 const PROJECTILE_COLLISION_BIT = 8
+const PLAYER_COLLISION_BIT = 16
 const ICEMAN_COLLISION_BIT = 32768
 
 const SERVER = "https://yacy.org" #"http://yacy.org"

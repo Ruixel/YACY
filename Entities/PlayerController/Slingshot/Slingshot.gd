@@ -11,9 +11,16 @@ func _ready():
 	if ammo <= 0:
 		$Crumb.visible = false
 
-func add_ammo(amount: int):
-	ammo += amount
+func add_connection(player):
+	player.connect("s_updateAmmo", self, "update_ammo")
+
+func update_ammo(amount: int):
+	ammo = amount
+	print(ammo)
 	$Crumb.visible = true
+	
+	if ammo <= 0 and not pull_back:
+		$Crumb.visible = false
 
 func _unhandled_input(event):
 	if event.is_action_pressed("shoot") and not debounce and ammo > 0:
@@ -25,6 +32,7 @@ func _unhandled_input(event):
 	if event.is_action_released("shoot") and pull_back:
 		pull_back = false
 		ammo -= 1
+		ammo = max(0, ammo)
 		emit_signal("s_updateAmmo", ammo)
 		
 		var projectile = preload("res://Entities/PlayerController/Slingshot/CrumbProjectile.tscn").instance()

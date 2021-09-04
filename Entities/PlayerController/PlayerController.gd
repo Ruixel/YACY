@@ -55,10 +55,15 @@ var ammo := 0
 var busy : bool = false
 var pause : bool = false
 
+# Signals
+signal s_updateAmmo
+
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	changeCameraAngle(CAMERA_TYPE.FPS)
 	currentCam = $EyePoint/FPSCamera
+	
+	self.connect("s_updateAmmo", self, "updateAmmo")
 
 func reset():
 	flying = false
@@ -210,6 +215,8 @@ func _unhandled_input(event):
 				$Back/Jetpack/Fire.visible = false
 		if event.is_action_pressed("change_view"):
 			toggleCameraAngle()
+		if event.is_action_pressed("drop_crumb"):
+			dropCrumb()
 
 func getOnLadder(ladderNormal: Vector3, ladderUpVector: Vector3):
 	self.ladderNormal = ladderNormal
@@ -334,24 +341,27 @@ func pickupDiamond():
 
 func pickupSlingshot():
 	var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()
-	slingshot.add_ammo(ammo)
-	slingshot.connect("s_updateAmmo", self, "updateCrumbs")
+	slingshot.connect("s_updateAmmo", self, "updateAmmo")
+	slingshot.add_connection(self)
 	$EyePoint/Hand.add_child(slingshot)
 	
-	slingshot.connect("s_updateAmmo", $PlayerGUI, "updateCrumbs")
-	$PlayerGUI.updateCrumbs(ammo)
+	emit_signal("s_updateAmmo", self.ammo)
 
 func updateAmmo(ammo: int):
 	self.ammo = ammo
 	$PlayerGUI.updateCrumbs(ammo)
 
 func pickupCrumbs(amount: int):
-	ammo += amount
-	$PlayerGUI.updateCrumbs(ammo)
-	
-	var slingshot = $EyePoint/Hand.get_node_or_null("Slingshot")
-	if slingshot != null:
-		slingshot.add_ammo(amount)
+	emit_signal("s_updateAmmo", ammo + amount)
+
+func dropCrumb():
+	if self.ammo > 0:
+		var crumb = preload("res://Entities/PlayerController/Slingshot/CrumbDrop.tscn").instance()
+		crumb.global_translate(self.global_transform.origin)
+		get_parent().add_child(crumb)
+		
+		self.ammo -= 1
+		emit_signal("s_updateAmmo", self.ammo)
 
 func hasKey(key: int) -> bool:
 	if key in self.keys or master_key in self.keys:
