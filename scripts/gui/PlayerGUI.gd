@@ -4,7 +4,8 @@ var max_diamonds = 0
 onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
-	$Jetpack.visible = false
+	$BR/Jetpack.visible = false
+	$BR/Ammo.visible = false
 	$Items/Keys.visible = false
 	max_diamonds = 0
 	$ItemsLeft/Diamonds.visible = false
@@ -44,17 +45,21 @@ func updateItemsLeft():
 			y += 50
 
 func pickupJetpack():
-	$Jetpack.visible = true
+	$BR/Jetpack.visible = true
 
 func toggleJetpack(on: bool):
 	if on:
-		$Jetpack/JetpackOn.text = "JetPack ON - Press 'F'"
+		$BR/Jetpack/JetpackOn.text = "JetPack ON - Press 'F'"
 	else:
-		$Jetpack/JetpackOn.text = "JetPack OFF - Press 'F'"
+		$BR/Jetpack/JetpackOn.text = "JetPack OFF - Press 'F'"
 
 func updateJetpackFuel(fuel_amount: float, max_fuel: float):
-	$Jetpack/Fuel.color = Color.from_hsv((fuel_amount / max_fuel) * 0.33, 0.9, 0.95, 0.5)
-	$Jetpack/Fuel.rect_scale = Vector2(fuel_amount / max_fuel, 1)
+	$BR/Jetpack/Fuel.color = Color.from_hsv((fuel_amount / max_fuel) * 0.33, 0.9, 0.95, 0.5)
+	$BR/Jetpack/Fuel.rect_scale = Vector2(fuel_amount / max_fuel, 1)
+
+func updateCrumbs(ammo: int):
+	$BR/Ammo/Count.bbcode_text = "[right][b]" + str(ammo) + "[/b] x[/right]"
+	$BR/Ammo.visible = true
 
 func updateKeys(keys: Array):
 	# Show if user has collected any keys

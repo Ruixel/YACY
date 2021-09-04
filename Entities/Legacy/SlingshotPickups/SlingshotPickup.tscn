@@ -122,7 +122,7 @@ tracks/0/keys = {
 script = ExtResource( 6 )
 
 [node name="Hitbox" type="MeshInstance" parent="."]
-transform = Transform( -0.234896, 0, 0.0855805, 0, 0.25, 0, -0.0855805, 0, -0.234896, 0, 0.0969789, 0 )
+transform = Transform( 0.25, 0, 1.62921e-07, 0, 0.25, 0, -1.62921e-07, 0, 0.25, 0, 0.0969789, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 

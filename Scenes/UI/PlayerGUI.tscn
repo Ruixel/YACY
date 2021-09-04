@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/gui/PlayerGUI.gd" type="Script" id=2]
@@ -8,23 +8,21 @@
 [ext_resource path="res://scripts/Spin.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/Env/GlobalEnv.tres" type="Environment" id=7]
 [ext_resource path="res://Entities/Legacy/Iceman/Iceman.glb" type="PackedScene" id=8]
+[ext_resource path="res://Entities/Legacy/SlingshotPickups/CrumbPack.glb" type="PackedScene" id=9]
 
 [sub_resource type="DynamicFont" id=1]
 size = 18
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="World" id=2]
-environment = ExtResource( 7 )
-
-[sub_resource type="ProceduralSky" id=4]
+[sub_resource type="ProceduralSky" id=2]
 ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
 ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
 sun_latitude = 23.23
 sun_longitude = 120.0
 
-[sub_resource type="Environment" id=5]
-background_sky = SubResource( 4 )
+[sub_resource type="Environment" id=3]
+background_sky = SubResource( 2 )
 background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
 ambient_light_color = Color( 0.819608, 0.823529, 0.819608, 1 )
 tonemap_mode = 1
@@ -46,8 +44,14 @@ glow_strength = 0.83
 glow_hdr_threshold = 0.7
 glow_bicubic_upscale = true
 
-[sub_resource type="World" id=3]
-environment = SubResource( 5 )
+[sub_resource type="World" id=4]
+environment = SubResource( 3 )
+
+[sub_resource type="World" id=5]
+environment = ExtResource( 7 )
+
+[sub_resource type="World" id=6]
+environment = SubResource( 3 )
 
 [node name="PlayerGUI" type="Control"]
 anchor_right = 1.0
@@ -72,7 +76,15 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Jetpack" type="Control" parent="."]
+[node name="BR" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Jetpack" type="Control" parent="BR"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -81,7 +93,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="JetpackOn" type="Label" parent="Jetpack"]
+[node name="JetpackOn" type="Label" parent="BR/Jetpack"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -100,7 +112,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="FuelGauge" type="Label" parent="Jetpack"]
+[node name="FuelGauge" type="Label" parent="BR/Jetpack"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -118,7 +130,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="BackRect" type="ColorRect" parent="Jetpack"]
+[node name="BackRect" type="ColorRect" parent="BR/Jetpack"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -132,7 +144,7 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Fuel" type="ColorRect" parent="Jetpack"]
+[node name="Fuel" type="ColorRect" parent="BR/Jetpack"]
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
@@ -145,6 +157,59 @@ color = Color( 0.105882, 0.960784, 0.219608, 0.611765 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Ammo" type="Control" parent="BR"]
+visible = false
+margin_left = 1070.0
+margin_top = 630.0
+margin_right = 1348.0
+margin_bottom = 738.0
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Count" type="RichTextLabel" parent="BR/Ammo"]
+margin_left = 40.0
+margin_right = 213.0
+margin_bottom = 70.0
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[right][b]24[/b][/right]"
+text = "24"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ViewportContainer" type="ViewportContainer" parent="BR/Ammo"]
+margin_left = 225.0
+margin_top = -8.0
+margin_right = 275.0
+margin_bottom = 62.0
+mouse_filter = 2
+stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Viewport" type="Viewport" parent="BR/Ammo/ViewportContainer"]
+size = Vector2( 49, 70 )
+world = SubResource( 4 )
+transparent_bg = true
+handle_input_locally = false
+usage = 3
+debug_draw = 3
+render_target_update_mode = 0
+
+[node name="Camera" type="Camera" parent="BR/Ammo/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+fov = 22.0
+
+[node name="Mesh" parent="BR/Ammo/ViewportContainer/Viewport" instance=ExtResource( 9 )]
+transform = Transform( 0.23, 0, 0, 0, 0.46, 0, 0, 0, 0.23, 0, 0, 0 )
+script = ExtResource( 6 )
+spin_speed = 1.0
 
 [node name="Items" type="Control" parent="."]
 anchor_right = 1.0
@@ -190,6 +255,7 @@ __meta__ = {
 }
 
 [node name="Diamonds" type="Control" parent="ItemsLeft"]
+visible = false
 margin_left = 10.0
 margin_top = 25.0
 margin_right = 288.0
@@ -226,12 +292,12 @@ __meta__ = {
 
 [node name="Viewport" type="Viewport" parent="ItemsLeft/Diamonds/ViewportContainer"]
 size = Vector2( 50, 50 )
-world = SubResource( 2 )
+world = SubResource( 5 )
 transparent_bg = true
 handle_input_locally = false
 usage = 3
 debug_draw = 3
-render_target_update_mode = 3
+render_target_update_mode = 0
 
 [node name="Camera" type="Camera" parent="ItemsLeft/Diamonds/ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
@@ -279,7 +345,7 @@ __meta__ = {
 
 [node name="Viewport" type="Viewport" parent="ItemsLeft/Icemen/ViewportContainer"]
 size = Vector2( 50, 50 )
-world = SubResource( 3 )
+world = SubResource( 6 )
 transparent_bg = true
 handle_input_locally = false
 usage = 3

@@ -6,7 +6,7 @@
 [ext_resource path="res://Entities/PlayerController/Slingshot/Rubber.material" type="Material" id=4]
 [ext_resource path="res://res/sfx/shrink.ogg" type="AudioStream" id=5]
 
-[sub_resource type="ArrayMesh" id=7]
+[sub_resource type="ArrayMesh" id=1]
 resource_name = "slingshot"
 surfaces/0 = {
 "aabb": AABB( -2.62744, -3.06784, 5.755, 5.25489, 1.49285, 1.16448 ),
@@ -45,7 +45,7 @@ surfaces/2 = {
 "vertex_count": 168
 }
 
-[sub_resource type="Skin" id=8]
+[sub_resource type="Skin" id=2]
 resource_name = "Skin"
 bind_count = 11
 bind/0/name = "bone"
@@ -82,7 +82,7 @@ bind/10/name = "bone_10"
 bind/10/bone = -1
 bind/10/pose = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0199221, -4.48163, -4.42516 )
 
-[sub_resource type="Animation" id=9]
+[sub_resource type="Animation" id=3]
 resource_name = "ArmatureAction"
 length = 0.416667
 tracks/0/type = "transform"
@@ -170,16 +170,16 @@ tracks/11/imported = false
 tracks/11/enabled = true
 tracks/11/keys = PoolRealArray( 0.00157411, 1, 0, 4.42453, 2.36735, 0, 0, 0, 1, 1.5, 1.5, 1.5, 0.070835, 1, -0.00126522, 4.39022, 2.39849, 0, 0, 0, 1, 1.5, 1.5, 1.5, 0.129077, 1, -0.025937, 4.31903, 2.6204, 0, 0, 0, 1, 1.5, 1.5, 1.5, 0.335286, 1, -0.025937, 3.82114, 3.78802, 0, 0, 0, 1, 1.5, 1.5, 1.5, 0.402973, 1, -0.025937, 3.75057, 3.96112, 0, 0, 0, 1, 1.5, 1.5, 1.5 )
 
-[sub_resource type="SphereMesh" id=5]
+[sub_resource type="SphereMesh" id=4]
 radius = 1.2
 radial_segments = 6
 rings = 4
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.352941, 0.184314, 0.0352941, 1 )
 
 [node name="Slingshot" type="Spatial"]
-transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, 0 )
+transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, -0.145, 0, -0.1 )
 script = ExtResource( 2 )
 
 [node name="Armature" type="Spatial" parent="."]
@@ -243,19 +243,19 @@ bones/10/enabled = true
 bones/10/bound_children = [  ]
 
 [node name="slingshot" type="MeshInstance" parent="Armature/Skeleton"]
-mesh = SubResource( 7 )
-skin = SubResource( 8 )
+mesh = SubResource( 1 )
+skin = SubResource( 2 )
 material/0 = null
 material/1 = null
 material/2 = null
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-anims/ArmatureAction = SubResource( 9 )
+anims/ArmatureAction = SubResource( 3 )
 
 [node name="Crumb" type="MeshInstance" parent="."]
 transform = Transform( 1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, -0.000316305, 4.41595, 2.37513 )
-mesh = SubResource( 5 )
-material/0 = SubResource( 6 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )
 
 [node name="FireSFX" type="AudioStreamPlayer3D" parent="."]
 stream = ExtResource( 5 )

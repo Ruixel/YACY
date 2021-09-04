@@ -2,22 +2,30 @@ extends Spatial
 
 var debounce := false
 var pull_back := false
-var ammo := 50
+var ammo := 0
+
+signal s_updateAmmo
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	if ammo <= 0:
+		$Crumb.visible = false
+
+func add_ammo(amount: int):
+	ammo += amount
+	$Crumb.visible = true
 
 func _unhandled_input(event):
-	if event.is_action_pressed("shoot") and not debounce:
+	if event.is_action_pressed("shoot") and not debounce and ammo > 0:
 		debounce = true
 		pull_back = true
 		
 		$AnimationPlayer.playback_speed = 1
-		$Crumb.visible = true
 		$AnimationPlayer.play("ArmatureAction")
 	if event.is_action_released("shoot") and pull_back:
 		pull_back = false
+		ammo -= 1
+		emit_signal("s_updateAmmo", ammo)
 		
 		var projectile = preload("res://Entities/PlayerController/Slingshot/CrumbProjectile.tscn").instance()
 		projectile.set_p_owner(get_node("../../.."))
@@ -34,5 +42,7 @@ func _unhandled_input(event):
 
 
 func _on_Debounce_timeout():
-	$Crumb.visible = true
+	if ammo > 0:
+		$Crumb.visible = true
+	
 	debounce = false

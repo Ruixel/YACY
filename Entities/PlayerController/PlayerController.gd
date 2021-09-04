@@ -49,6 +49,8 @@ const max_fuel: float = 240.0
 var keys = []
 const master_key = WorldConstants.MASTER_KEY
 var diamonds = 0
+var hasSlingshot := false
+var ammo := 0
 
 var busy : bool = false
 var pause : bool = false
@@ -68,6 +70,8 @@ func reset():
 	diamonds = 0
 	gravity = 18
 	canMove = true
+	hasSlingshot = false
+	ammo = 0
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -327,6 +331,27 @@ func pickupKey(key: int):
 func pickupDiamond():
 	self.diamonds += 1
 	$PlayerGUI.updateDiamonds(self.diamonds)
+
+func pickupSlingshot():
+	var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()
+	slingshot.add_ammo(ammo)
+	slingshot.connect("s_updateAmmo", self, "updateCrumbs")
+	$EyePoint/Hand.add_child(slingshot)
+	
+	slingshot.connect("s_updateAmmo", $PlayerGUI, "updateCrumbs")
+	$PlayerGUI.updateCrumbs(ammo)
+
+func updateAmmo(ammo: int):
+	self.ammo = ammo
+	$PlayerGUI.updateCrumbs(ammo)
+
+func pickupCrumbs(amount: int):
+	ammo += amount
+	$PlayerGUI.updateCrumbs(ammo)
+	
+	var slingshot = $EyePoint/Hand.get_node_or_null("Slingshot")
+	if slingshot != null:
+		slingshot.add_ammo(amount)
 
 func hasKey(key: int) -> bool:
 	if key in self.keys or master_key in self.keys:
