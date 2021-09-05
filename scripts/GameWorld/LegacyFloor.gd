@@ -30,6 +30,7 @@ var collision_mesh : StaticBody
 var collision_shape : CollisionShape
 
 func _init(lvl : int):
+	self.name = "Floor"
 	mesh = MeshInstance.new()
 	collision_mesh = StaticBody.new()
 	collision_shape = CollisionShape.new()
@@ -97,9 +98,16 @@ func set_property_dict(dict : Dictionary):
 
 func buildFloor() -> Mesh:
 	var gen = get_node("/root/Main/FloorGenerator")
-#	return Mesh.new()
+#	var gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
+
+	# Set collision layers
+	var isOpaque = not WorldTextures.textures[self.floor_texture].isTransparent()
+	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, true)
+
 	return gen.generateFloorMesh(vertices, level, floor_texture, 
 		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
+
 
 func JSON_serialise() -> Dictionary:
 	# Only add values that differ from the default

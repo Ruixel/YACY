@@ -87,7 +87,7 @@ func _ready():
 	aTextureTranslucent_mat.set_shader_param("texture_array", tArray)
 	aTexturePrototype_mat.set_shader_param("texture_array", tArray)
 
-func getWallTexture(id : int) -> LevelTexture:
+func getWallTexture(id : int) -> int:
 	match id:
 		1:  return TextureID.BRICK
 		2:  return TextureID.BARS
@@ -106,7 +106,7 @@ func getWallTexture(id : int) -> LevelTexture:
 		16: return TextureID.PARQUET
 		_:  return TextureID.COLOR
 
-func getPlatTexture(id : int) -> LevelTexture:
+func getPlatTexture(id : int) -> int:
 	match id:
 		1:  return TextureID.GRASS
 		2:  return TextureID.STUCCO

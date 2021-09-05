@@ -61,6 +61,11 @@ func change_wallShape(newShape):
 func _genMesh():
 	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture, colour, wallShape)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
+	
+	# Set collision layers
+	var isOpaque = not WorldTextures.textures[self.texture].isTransparent()
+	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
 
 func selectObj():
 	selection_mesh = MeshInstance.new()

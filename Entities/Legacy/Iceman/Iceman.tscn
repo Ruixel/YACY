@@ -85,6 +85,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 shape = SubResource( 3 )
 
 [node name="HitBox" type="Area" parent="."]
+collision_mask = 9
 
 [node name="CollisionShape" type="CollisionShape" parent="HitBox"]
 transform = Transform( -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0, 0, 1, 0, 0.496038, 0 )

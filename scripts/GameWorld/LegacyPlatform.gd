@@ -58,6 +58,11 @@ func change_platShape(newShape):
 func _genMesh():
 	mesh.mesh = buildPlatform(pos, level, height_offset, texture, colour, size, platShape, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
+	
+	# Set collision layers
+	var isOpaque = not WorldTextures.textures[self.texture].isTransparent()
+	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
 
 func genPrototypeMesh(pLevel : int) -> Mesh:
 	return buildPlatform(Vector2(0,0), pLevel, height_offset, texture, colour, size, platShape, true)

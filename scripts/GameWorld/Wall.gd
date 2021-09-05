@@ -75,7 +75,7 @@ func selectObj():
 	selection_mesh.mesh.surface_set_material(0, WorldTextures.selection_mat)
 
 func get_property_dict() -> Dictionary:
-	var dict : Dictionary= {}
+	var dict : Dictionary = {}
 	dict["Texture"] = texture 
 	dict["Colour"] = colour
 	dict["MinMaxHeight"] = Vector2(min_height, max_height)

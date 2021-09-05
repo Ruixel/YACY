@@ -87,6 +87,11 @@ func set_property_dict(dict : Dictionary):
 func _genMesh():
 	mesh.mesh = buildMesh(level, false)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
+	
+	# Set collision layers
+	var isOpaque = not WorldTextures.textures[self.texture].isTransparent()
+	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
 
 func selectObj():
 	selection_mesh = MeshInstance.new()
