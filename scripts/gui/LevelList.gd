@@ -6,8 +6,14 @@ var imageRequests : Array
 const Level = preload("res://Scenes/Menu/LevelButton.tscn")
 var page = 1
 var searchQuery : String = ""
+
 var orderType = "newest"
+enum OrderType { Newest, Oldest, Plays }
+const orderTypeValues = ["newest", "oldest", "plays"]
+
 var searchType = "level"
+enum SearchType { Search, User, Random }
+const searchTypeValues = ["level", "user", "random"]
 
 var active = true
 
@@ -22,12 +28,10 @@ onready var fadeGui = get_node("/root/Main/Fade")
 onready var errorLabelGui = get_node("../../ErrorLabel")
 onready var mainScene = get_node("/root/Main/")
 
-const searchTypeValues = ["level", "user"]
-const orderTypeValues = ["newest", "oldest", "plays"]
-
 func _ready():
 	searchTypeGui.add_item("Search Levels")
 	searchTypeGui.add_item("From User")
+	searchTypeGui.add_item("Random")
 	
 	orderTypeGui.add_item("Newest")
 	orderTypeGui.add_item("Oldest")
@@ -45,9 +49,14 @@ func loadPage(pageNumber : int):
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
+	# Use a different query for random searches
+	if (searchType == "random"):
+		query = '{"query": "{ getRandomLevels(limit: 24) { title, author, gameNumber, plays, screenshot, mazeFile}}"}'
+	
 	var error = $HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
 
 func clear():
+	# Cancel remaining image requests
 	for imgReq in imageRequests:
 		imgReq.cancel_request()
 		imgReq.disconnect("request_completed", self, "_img_request_completed")
@@ -78,6 +87,9 @@ func _on_request_completed(result, response_code, headers, body):
 		var r = jparse.result
 		if ("data" in r and "searchLevels" in r.data and r.data.searchLevels != null):
 			data = r.data.searchLevels
+			loadLevels()
+		elif ("data" in r and "getRandomLevels" in r.data and r.data.getRandomLevels != null): 
+			data = r.data.getRandomLevels
 			loadLevels()
 		else:
 			errorLabelGui.set_text("Error: Internet server error while retrieving level data")
@@ -187,13 +199,17 @@ func _on_Search_text_entered(new_text):
 
 func _on_SearchType_item_selected(id):
 	# If selecting a user, add ChallengeYou if the search bar hasnt been used
-	if (searchGui.text == "" and id == 1):
+	if (searchGui.text == "" and id == SearchType.User):
 		searchGui.text = "ChallengeYou"
 		searchQuery = "ChallengeYou"
-	
-	if (id == 0):
+	else:
 		searchGui.text = ""
 		searchQuery = ""
+	
+	if (id == SearchType.Random):
+		searchGui.editable = false
+	else:
+		searchGui.editable = true
 	
 	page = 1
 	searchType = searchTypeValues[id]
