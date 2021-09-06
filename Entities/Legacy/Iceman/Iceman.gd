@@ -73,7 +73,7 @@ func _physics_process(delta):
 				active = false
 
 func _on_NearArea_body_entered(body):
-	if body.name == "Player":
+	if body.has_meta("player"):
 		player_nearby = body
 
 func _on_NearArea_body_exited(body):
@@ -85,23 +85,24 @@ func _on_ThinkTimer_timeout():
 		target_player()
 
 func _on_HitBox_body_entered(body):
-	if body.get_name() == "Crumb" and body.has_method("get_p_owner") and not dead:
-		print("Ouch")
-		dead = true
-		var player = body.get_p_owner()
-		if player != null:
-			var gui = player.get_node_or_null("PlayerGUI")
-			if gui != null:
-				gui.call("killedIceman")
-		
-		body.explode(body.global_transform.origin, false)
-		
-		# Explode
-		var split = preload("res://Entities/Legacy/Iceman/Iceman_split.tscn").instance()
-		split.global_transform = self.global_transform
-		get_parent().add_child(split)
-		
-		# Disappear & Clean up
-		self.visible = false
-		self.active = false
-		self.queue_free()
+	if body.has_meta("type"):
+		if body.get_meta("type") == "projectile" and body.has_method("get_p_owner") and not dead:
+			print("Ouch")
+			dead = true
+			var player = body.get_p_owner()
+			if player != null:
+				var gui = player.get_node_or_null("PlayerGUI")
+				if gui != null:
+					gui.call("killedIceman")
+			
+			body.explode(body.global_transform.origin, false)
+			
+			# Explode
+			var split = preload("res://Entities/Legacy/Iceman/Iceman_split.tscn").instance()
+			split.global_transform = self.global_transform
+			get_parent().add_child(split)
+			
+			# Disappear & Clean up
+			self.visible = false
+			self.active = false
+			self.queue_free()

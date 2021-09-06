@@ -8,7 +8,7 @@ var p_owner = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass
+	set_meta("type", "projectile")
 
 func set_p_owner(body):
 	p_owner = body

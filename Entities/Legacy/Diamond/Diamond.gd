@@ -28,15 +28,16 @@ func _physics_process(delta):
 	$Mesh.rotate_y(delta * 0.5)
 
 func _on_Area_body_entered(body):
-	if not expiring and body.get_name() == "Player" and body.busy == false:
+	if not expiring and body.has_meta("player") and body.busy == false:
 		collect(body)
-		
-	if not expiring and body.get_name() == "Crumb" and body.has_method("get_p_owner"):
-		var player = body.get_p_owner()
-		if player != null:
-			collect(player)
-		
-		body.explode(body.global_transform.origin, false)
+	
+	if body.has_meta("type"):
+		if not expiring and body.get_meta("type") == "projectile" and body.has_method("get_p_owner"):
+			var player = body.get_p_owner()
+			if player != null:
+				collect(player)
+			
+			body.explode(body.global_transform.origin, false)
 
 func set_type(type: int):
 	if type < 1 or type > albedo.size():

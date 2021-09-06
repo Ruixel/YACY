@@ -25,7 +25,7 @@ func set_number(num : int):
 
 
 func _on_Area_body_entered(body):
-	if body.get_name() == "Player":
+	if body.has_meta("player"):
 		if body.busy == false:
 			body.busy = true
 			

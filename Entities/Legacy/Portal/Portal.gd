@@ -6,7 +6,7 @@ func set_gameNumber(id : int):
 	gameNumber = id
 
 func _on_Area_body_entered(body):
-	if body.get_name() == "Player" and gameNumber != -1 and body.busy == false:
+	if body.has_meta("player") and gameNumber != -1 and body.busy == false:
 		body.busy = true
 		body.pause = true
 		var fade = get_node("/root/Main/Fade")

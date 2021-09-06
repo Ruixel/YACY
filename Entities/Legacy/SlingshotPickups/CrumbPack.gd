@@ -7,7 +7,7 @@ func set_crumb_amount(amount: int):
 	crumb_amount = amount
 
 func _on_Area_body_entered(body):
-	if not expiring and body.get_name() == "Player" and body.busy == false:
+	if not expiring and body.has_meta("player") and body.busy == false:
 		expiring = true
 		if body.has_method("pickupCrumbs"):
 			body.pickupCrumbs(crumb_amount)

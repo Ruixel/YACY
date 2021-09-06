@@ -64,7 +64,7 @@ func set_keyRequired(key: int):
 	$KeyDisplay/KeyDisplay.mesh.get_material().uv1_offset = Vector3(0.083*(key-1), 0, 0)
 
 func _on_Area_body_entered(body):
-	if body.get_name() == "Player" and not open and body.busy == false:
+	if body.has_meta("player") and not open and body.busy == false:
 		# Player has key?
 		if key_required == 0 or body.hasKey(key_required):
 			$DoorSFX.play()

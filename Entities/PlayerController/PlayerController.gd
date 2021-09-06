@@ -59,6 +59,7 @@ var pause : bool = false
 signal s_updateAmmo
 
 func _ready():
+	set_meta("player", true)
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	changeCameraAngle(CAMERA_TYPE.FPS)
 	currentCam = $EyePoint/FPSCamera

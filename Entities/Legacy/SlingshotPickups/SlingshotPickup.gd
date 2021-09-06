@@ -7,7 +7,7 @@ func _ready():
 	$AnimationPlayer.play("Spin")
 
 func _on_Area_body_entered(body):
-	if not expiring and body.get_name() == "Player" and body.busy == false:
+	if not expiring and body.has_meta("player") and body.busy == false:
 		expiring = true
 		if body.has_method("pickupSlingshot"):
 			body.pickupSlingshot()

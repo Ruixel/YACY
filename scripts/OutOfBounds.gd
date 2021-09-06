@@ -1,7 +1,7 @@
 extends Area
 
 func _on_OOBArea_body_entered(body):
-	if body.get_name() == "Player":
+	if body.has_meta("player"):
 		body.busy = true
 		body.fallInWater()
 		

@@ -17,7 +17,7 @@ func set_keyNumber(key: int):
 	$Armature/Bone/KeyDisplay/KeyDisplay.mesh.get_material().uv1_offset = Vector3(0.083*(key-1), 0, 0)
 
 func _on_Area_body_entered(body):
-	if not expiring and body.get_name() == "Player" and body.busy == false:
+	if not expiring and body.has_meta("player") and body.busy == false:
 		expiring = true
 		if body.has_method("pickupKey"):
 			body.pickupKey(self.key)

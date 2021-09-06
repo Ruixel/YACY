@@ -5,7 +5,7 @@ const ladderIncline = 10 # Degrees
 var debounce: bool = false
 
 func _on_Area_body_entered(body):
-	if not debounce and body.get_name() == "Player":
+	if not debounce and body.has_meta("player"):
 		if body.has_method("getOnLadder"):
 			debounce = true
 			var rotation = self.transform.basis.get_euler().y
@@ -24,7 +24,7 @@ func _on_Area_body_entered(body):
 			debounce = false
 
 func _on_Area_body_exited(body):
-	if body.get_name() == "Player":
+	if body.has_meta("player"):
 		if body.has_method("getOffLadder"):
 			body.getOffLadder()
 			print("hi")
