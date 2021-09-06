@@ -93,3 +93,13 @@ func updateKeys(keys: Array):
 			key_string = key_string + str(key) + ", "
 		key_string = key_string.substr(0, key_string.length() - 2)
 		$Items/Keys/KeysCollected.text = key_string
+
+func freezeScreen(seconds: float):
+	$FrozenScreen/Tween.stop_all()
+	$FrozenScreen.visible = true
+	$FrozenScreen.modulate = Color(1, 1, 1, 0.37)
+	
+	yield(get_tree().create_timer(seconds), "timeout") 
+	$FrozenScreen/Tween.interpolate_property($FrozenScreen, "modulate", 
+	  Color(1, 1, 1, 0.37), Color(1, 1, 1, 0), 1.0,Tween.TRANS_QUAD, Tween.EASE_OUT)
+	$FrozenScreen/Tween.start()

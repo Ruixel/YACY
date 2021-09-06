@@ -106,3 +106,7 @@ func _on_HitBox_body_entered(body):
 			self.visible = false
 			self.active = false
 			self.queue_free()
+	
+	if body.has_meta("player"):
+		if not body.invulnerable:
+			body.call("freeze")

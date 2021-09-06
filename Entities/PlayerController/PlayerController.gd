@@ -54,9 +54,12 @@ var ammo := 0
 
 var busy : bool = false
 var pause : bool = false
+var invulnerable : bool = false
 
 # Signals
 signal s_updateAmmo
+signal s_disabled
+signal s_enabled
 
 func _ready():
 	set_meta("player", true)
@@ -71,6 +74,7 @@ func reset():
 	canFly = false
 	busy = false
 	pause = false
+	invulnerable = false
 	fuel_amount = 0.0
 	keys = []
 	diamonds = 0
@@ -123,7 +127,7 @@ func _physics_process(delta):
 			var slide = direction.slide(self.ladderNormal).normalized() 
 			charVelocity = (slide.project(self.ladderUpVector) * 5.0) + (slide.project(self.ladderCrossVector) * 1.0)
 		
-		if (Input.is_action_pressed("jump")):
+		if (Input.is_action_pressed("jump") and canMove):
 			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
 			charVelocity += Vector3.UP * jumpForce
 			onFloorLastFrame = false
@@ -133,7 +137,7 @@ func _physics_process(delta):
 		targetVelocity += Vector3(0, -5, 0)
 		charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
 		
-		if (Input.is_action_pressed("jump")):
+		if (Input.is_action_pressed("jump") and canMove):
 			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
 			charVelocity += Vector3.UP * jumpForce
 			onFloorLastFrame = false
@@ -205,7 +209,7 @@ func _unhandled_input(event):
 				false: 
 					Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 					gui_mouseLock.visible = true
-		if event.is_action_pressed("toggle_flight") and canFly and not busy and fuel_amount > 0:
+		if event.is_action_pressed("toggle_flight") and canFly and canMove and not busy and fuel_amount > 0:
 			flying = not flying
 			$PlayerGUI.toggleJetpack(flying)
 			if flying:
@@ -216,7 +220,7 @@ func _unhandled_input(event):
 				$Back/Jetpack/Fire.visible = false
 		if event.is_action_pressed("change_view"):
 			toggleCameraAngle()
-		if event.is_action_pressed("drop_crumb"):
+		if event.is_action_pressed("drop_crumb") and canMove:
 			dropCrumb()
 
 func getOnLadder(ladderNormal: Vector3, ladderUpVector: Vector3):
@@ -266,10 +270,9 @@ func getFlyMoveDirection() -> Vector3:
 	return dirVector
 
 func toggleCameraAngle():
-	if not busy:
-		var numCameraAngles = camera_angles.size()
-		var newCamAngleIndex = (cType + 1) % numCameraAngles
-		changeCameraAngle(newCamAngleIndex)
+	var numCameraAngles = camera_angles.size()
+	var newCamAngleIndex = (cType + 1) % numCameraAngles
+	changeCameraAngle(newCamAngleIndex)
 
 func changeCameraAngle(index):
 	cType = index
@@ -368,3 +371,24 @@ func hasKey(key: int) -> bool:
 	if key in self.keys or master_key in self.keys:
 		return true
 	return false
+
+func freeze():
+	if invulnerable:
+		return
+	
+	$AudioNode/Freeze.play()
+	self.busy = true
+	self.canMove = false
+	self.invulnerable = true
+	emit_signal("s_disabled")
+	
+	gui.freezeScreen(3.6)
+	yield(get_tree().create_timer(3.3), "timeout")
+	
+	self.busy = false
+	self.canMove = true
+	emit_signal("s_enabled")
+	
+	# Wait a while for the player to move around
+	yield(get_tree().create_timer(2.5), "timeout")
+	self.invulnerable = false

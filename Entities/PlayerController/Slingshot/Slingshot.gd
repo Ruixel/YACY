@@ -3,6 +3,7 @@ extends Spatial
 var debounce := false
 var pull_back := false
 var ammo := 0
+var enabled := true
 
 signal s_updateAmmo
 
@@ -13,6 +14,14 @@ func _ready():
 
 func add_connection(player):
 	player.connect("s_updateAmmo", self, "update_ammo")
+	player.connect("s_disabled", self, "disable")
+	player.connect("s_enabled", self, "enable")
+
+func enable():
+	enabled = true
+
+func disable():
+	enabled = false
 
 func update_ammo(amount: int):
 	ammo = amount
@@ -23,13 +32,13 @@ func update_ammo(amount: int):
 		$Crumb.visible = false
 
 func _unhandled_input(event):
-	if event.is_action_pressed("shoot") and not debounce and ammo > 0:
+	if event.is_action_pressed("shoot") and not debounce and enabled and ammo > 0:
 		debounce = true
 		pull_back = true
 		
 		$AnimationPlayer.playback_speed = 1
 		$AnimationPlayer.play("ArmatureAction")
-	if event.is_action_released("shoot") and pull_back:
+	if (event.is_action_released("shoot") or not enabled) and pull_back:
 		pull_back = false
 		ammo -= 1
 		ammo = max(0, ammo)
