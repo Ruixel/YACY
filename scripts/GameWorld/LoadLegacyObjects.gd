@@ -302,6 +302,8 @@ func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
 		3: lvlheight = 0.75
 		4: lvlheight = 1.00
 	
+	new_dia.set_type(time_bonus)
+	
 	pos = pos / 5.0
 	new_dia.set_translation(Vector3(pos.x, (level - 1 + lvlheight) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	new_dia.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
