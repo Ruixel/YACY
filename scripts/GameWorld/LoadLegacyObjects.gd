@@ -319,6 +319,11 @@ func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
 		2: new_ice.set_speed(80)
 		3: new_ice.set_speed(130)
 	
+	match hits:
+		11: new_ice.set_hits(20)
+		12: new_ice.set_hits(100)
+		_: new_ice.set_hits(hits)
+	
 	pos = pos / 5.0
 	new_ice.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	

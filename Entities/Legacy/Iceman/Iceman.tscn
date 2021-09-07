@@ -78,6 +78,11 @@ attenuation_model = 1
 max_distance = 8.0
 out_of_range_mode = 1
 
+[node name="LoudHitSFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 4 )
+unit_db = 5.0
+unit_size = 4.0
+
 [node name="NearArea" type="Area" parent="."]
 
 [node name="CollisionShape" type="CollisionShape" parent="NearArea"]

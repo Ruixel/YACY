@@ -1,12 +1,14 @@
 extends KinematicBody
 
 var speed = 100
+var hits := 1
 var active := true
 var dead := false
 
 var player_nearby = null
 var target_checks = 0
 var invalid_checks = 0
+var spin := false
 
 func check_valid():
 	if $GroundRayCast.is_colliding():
@@ -16,7 +18,8 @@ func set_speed(speed: int):
 	self.speed = speed
 
 func _process(delta):
-	$CoM.rotate_x(delta*2.0)
+	if active and not spin:
+		$CoM.rotate_x(delta*2.0)
 
 func target_player():
 	if player_nearby != null:
@@ -45,6 +48,10 @@ func target_player():
 
 var valid_movement: bool
 func _physics_process(delta):
+	if spin:
+		rotate_y(delta * 20.0)
+		return
+	
 	if active:
 		valid_movement = true
 		
@@ -84,10 +91,22 @@ func _on_ThinkTimer_timeout():
 	if player_nearby != null and (randi() % 5) == 0:
 		target_player()
 
+func hit():
+	self.hits -= 1
+	self.spin = true
+	$LoudHitSFX.play()
+	
+	yield(get_tree().create_timer(0.7), "timeout")
+	self.spin = false
+
 func _on_HitBox_body_entered(body):
-	if body.has_meta("type"):
+	if body.has_meta("type") and not spin: # Invulnerable while spinning?
 		if body.get_meta("type") == "projectile" and body.has_method("get_p_owner") and not dead:
-			print("Ouch")
+			if self.hits > 1:
+				hit()
+				body.explode(body.global_transform.origin, false)
+				return
+			
 			dead = true
 			var player = body.get_p_owner()
 			if player != null:
@@ -110,3 +129,6 @@ func _on_HitBox_body_entered(body):
 	if body.has_meta("player"):
 		if not body.invulnerable:
 			body.call("freeze")
+
+func set_hits(hits: int):
+	self.hits = hits
