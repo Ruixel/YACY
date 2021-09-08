@@ -98,6 +98,7 @@ namespace Legacy {
         else if (objectName == "monster") iceman_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "slingshot") slingshot_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "crumbs") crumbs_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "finish") finish_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -444,7 +445,7 @@ namespace Legacy {
     }
 
     // Crumbs
-    // [position_x, position_y, crumb_amound, level]
+    // [position_x, position_y, crumb_amount, level]
     void crumbs_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
     {
         int objects = objectArray.size();
@@ -453,6 +454,20 @@ namespace Legacy {
             
             //                                                        // Position                  // Crumb Amount     // Level   
             if      (objectSize == 4) worldAPI->call("create_crumbs", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+
+    // Finish
+    // [position_x, position_y, unknown, condition, level]
+    void finish_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                        // Position                  // Condition        // Level   
+            if      (objectSize == 5) worldAPI->call("create_finish", extractVec2(obj[0], obj[1]), extractInt(obj[3]), extractInt(obj[4]));    
+            else if (objectSize == 4) worldAPI->call("create_finish", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
         }
     }
 }

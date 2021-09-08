@@ -162,6 +162,14 @@ func create_spawn(pos : Vector2, direction : int, level : int):
 	
 	get_parent().call("add_entity", new_spawn)
 
+func create_finish(pos: Vector2, condition: int, level: int):
+	var new_finish = preload("res://Entities/Legacy/Finish/Finish.tscn").instance()
+	
+	pos = pos / 5.0
+	new_finish.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+	
+	get_parent().call("add_entity", new_finish)
+
 func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, level : int):
 	var new_board = preload("res://Entities/Legacy/MessageBoard/MsgBoard.tscn").instance()
 	new_board.get_node("Viewport/Text").set_text(msg)
