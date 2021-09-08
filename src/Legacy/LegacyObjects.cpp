@@ -89,6 +89,7 @@ namespace Legacy {
         else if (objectName == "portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "teleport") teleport_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "theme") theme_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "backmusic") music_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "jetpack") jetpack_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "fuel") fuel_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "door") door_createEntity(worldAPI, objectArray, objectProperties.size());
@@ -333,6 +334,20 @@ namespace Legacy {
             
             //                                                    // Position                  // Theme ID         // Level   
             if      (objectSize == 4) worldAPI->call("set_theme", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+
+    // Music
+    // [position_x, position_y, music_id, level]
+    void music_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                    // Position                  // Music ID         // Level   
+            if      (objectSize == 5) worldAPI->call("set_music", extractVec2(obj[0], obj[1]), extractInt(obj[3]), extractInt(obj[4]));    
+            if      (objectSize == 4) worldAPI->call("set_music", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
         }
     }
 

@@ -103,6 +103,10 @@ func spawnPlayer():
 	# Setup PlayerUI
 	player.get_node("PlayerGUI").setupCollectables(self.collectables)
 	
+	# Play tunes
+	if not $MusicPlayer.playing:
+		$MusicPlayer.play()
+	
 	#player.busy = false
 	#player.pause = false
 
@@ -165,6 +169,7 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	var obj_loader = get_node("ObjectLoader")
 	obj_loader.set_theme(Vector2(0,0), 1, 1)
+	obj_loader.set_music(Vector2(0,0), 2, 1)
 	
 	var mazeFile = r.data.getLevel.mazeFile
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
@@ -172,3 +177,4 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	var entering_ui = get_node("../EnteringUI")
 	entering_ui.showLevel(r.data.getLevel.title, r.data.getLevel.author)
+	

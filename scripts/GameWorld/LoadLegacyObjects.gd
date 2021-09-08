@@ -373,6 +373,21 @@ func set_theme(pos : Vector2, themeID : int, level : int):
 	get_node("/root/Gameplay").add_child(new_env, true)
 	#new_env.name = "Environment"
 
+const Songs = {
+	1: "res://res/music/Nothing.ogg",
+	2: "res://res/music/Funky.ogg",
+	3: "res://res/music/Scary.ogg",
+	4: "res://res/music/Asian.ogg",
+	5: "res://res/music/Space.ogg",
+	6: "res://res/music/Lounge.ogg"
+}
+func set_music(pos: Vector2, musicID: int, level: int):
+	print("Setting music id: ", musicID)
+	var song_player = get_parent().get_node_or_null("MusicPlayer")
+	if song_player != null:
+		song_player.stream = load(Songs[musicID])
+
+
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
 		get_parent().fixed_objects[WorldConstants.Tools.GROUND][lvl]._genMesh()
