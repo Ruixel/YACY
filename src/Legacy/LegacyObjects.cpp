@@ -100,6 +100,7 @@ namespace Legacy {
         else if (objectName == "slingshot") slingshot_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "crumbs") crumbs_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "finish") finish_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "chaser") chaser_createEntity(worldAPI, objectArray, objectProperties.size());
     }
     
     inline godot::Vector2 extractVec2(godot::String x, godot::String y)
@@ -483,6 +484,19 @@ namespace Legacy {
             //                                                        // Position                  // Condition        // Level   
             if      (objectSize == 5) worldAPI->call("create_finish", extractVec2(obj[0], obj[1]), extractInt(obj[3]), extractInt(obj[4]));    
             else if (objectSize == 4) worldAPI->call("create_finish", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+
+    // Chaser
+    // [position_x, position_y, model, speed, level]
+    void chaser_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                        // Position                  // Model            // Speed            // Level   
+            if      (objectSize == 5) worldAPI->call("create_chaser", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]), extractInt(obj[4]));    
         }
     }
 }

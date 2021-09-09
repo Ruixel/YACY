@@ -357,6 +357,14 @@ func create_crumbs(pos: Vector2, amount: int, level: int):
 	
 	get_parent().call("add_entity", new_cr)
 
+func create_chaser(pos: Vector2, modelID: int, speed: int, level: int):
+	var new_ch = preload("res://Entities/Legacy/Chasers/Chaser.tscn").instance()
+	
+	pos = pos / 5.0
+	new_ch.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.5, pos.y))
+	
+	get_parent().call("add_entity", new_ch)
+
 # Theme IDs: 1 = ???, 2 = Night, 3 = Scary
 const Themes = {
 	1: "res://Scenes/Env/LegacyEnv.tscn", # Need to check

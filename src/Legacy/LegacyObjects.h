@@ -50,6 +50,7 @@ namespace Legacy {
     void slingshot_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void crumbs_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void finish_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void chaser_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
 }
     
 #endif // LEGACYOBJECTS_H_INCLUDED
