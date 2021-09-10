@@ -361,6 +361,7 @@ func create_chaser(pos: Vector2, modelID: int, speed: int, level: int):
 	var new_ch = preload("res://Entities/Legacy/Chasers/Chaser.tscn").instance()
 	
 	pos = pos / 5.0
+	new_ch.set_model(modelID)
 	new_ch.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.5, pos.y))
 	
 	get_parent().call("add_entity", new_ch)

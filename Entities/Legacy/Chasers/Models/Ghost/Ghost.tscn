@@ -4,6 +4,7 @@
 [ext_resource path="res://Entities/Legacy/Chasers/Models/Ghost/Default.material" type="Material" id=2]
 
 [sub_resource type="ArrayMesh" id=1]
+resource_local_to_scene = true
 resource_name = "ghost3d"
 surfaces/0 = {
 "aabb": AABB( -11.2553, -10.7742, -12.5529, 23.1667, 21.6213, 47.9227 ),
@@ -35,7 +36,7 @@ surfaces/1 = {
 [node name="Mesh" type="Spatial" parent="."]
 transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0.03, 0.7, 0.12 )
 
-[node name="ghost3d" type="MeshInstance" parent="Mesh"]
+[node name="MeshInstance" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, -1.19209e-07, -1, 0, 1, -1.19209e-07, -2.40051, -3.37056, -5.37631 )
 mesh = SubResource( 1 )
 material/0 = null

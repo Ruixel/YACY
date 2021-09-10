@@ -5,6 +5,7 @@
 [ext_resource path="res://Entities/Legacy/Chasers/Models/Saucer/Default.material" type="Material" id=3]
 
 [sub_resource type="ArrayMesh" id=1]
+resource_local_to_scene = true
 resource_name = "saucerkk"
 surfaces/0 = {
 "aabb": AABB( -15.0261, -15.0261, -2.20638, 30.0521, 30.0521, 4.70755 ),
@@ -46,9 +47,9 @@ surfaces/2 = {
 [node name="Saucer" type="Spatial"]
 
 [node name="Mesh" type="Spatial" parent="."]
-transform = Transform( 0.02, 0, 0, 0, 0.0187939, -0.0068404, 0, 0.0068404, 0.0187939, 0.15, 0, 0.18 )
+transform = Transform( 0.02, 0, 0, 0, 0.0187939, -0.0068404, 0, 0.0068404, 0.0187939, 0.15, 0.5, 0.18 )
 
-[node name="saucerkk" type="MeshInstance" parent="Mesh"]
+[node name="MeshInstance" type="MeshInstance" parent="Mesh"]
 transform = Transform( 1, 0, 0, 0, -1.19209e-07, -1, 0, 1, -1.19209e-07, -4.57345, -1.98267, -5.66194 )
 mesh = SubResource( 1 )
 material/0 = null
