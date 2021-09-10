@@ -1,15 +1,21 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/Legacy/Chasers/Chaser.gd" type="Script" id=4]
 
 [sub_resource type="CylinderShape" id=1]
-radius = 0.645718
+radius = 1.07161
+height = 0.704145
+
+[sub_resource type="CylinderShape" id=3]
+radius = 2.85695
 height = 0.704145
 
 [sub_resource type="BoxShape" id=2]
 extents = Vector3( 0.306736, 0.300268, 0.385914 )
 
 [node name="Chaser" type="KinematicBody"]
+collision_layer = 64
+collision_mask = 65
 script = ExtResource( 4 )
 
 [node name="NearArea" type="Area" parent="."]
@@ -20,7 +26,20 @@ collision_mask = 16
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 shape = SubResource( 1 )
 
+[node name="FarArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 16
+
+[node name="CollisionShape" type="CollisionShape" parent="FarArea"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
+shape = SubResource( 3 )
+
 [node name="CollisionBody" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 shape = SubResource( 2 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.4
 [connection signal="body_entered" from="NearArea" to="." method="_on_NearArea_body_entered"]
+[connection signal="body_exited" from="FarArea" to="." method="_on_FarArea_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
