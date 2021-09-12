@@ -3,6 +3,7 @@ extends KinematicBody
 const rotationSpeed = 2.0 / 1000
 const maxSpeedOnGround = 3.5
 const maxSpeedinAir = 4
+var speedMultiplier = 1.0
 const movementSharpnessGround = 10
 const jumpForce = 6.5
 var onLadder = false
@@ -51,6 +52,7 @@ const master_key = WorldConstants.MASTER_KEY
 var diamonds = 0
 var hasSlingshot := false
 var ammo := 0
+var chased_by_chaser = null
 
 var busy : bool = false
 var pause : bool = false
@@ -60,6 +62,7 @@ var invulnerable : bool = false
 signal s_updateAmmo
 signal s_disabled
 signal s_enabled
+signal s_newChaser
 
 func _ready():
 	set_meta("player", true)
@@ -133,7 +136,7 @@ func _physics_process(delta):
 			onFloorLastFrame = false
 	elif (not flying && is_on_floor()):
 		onFloorLastFrame = true
-		targetVelocity = getMoveDirection() * maxSpeedOnGround
+		targetVelocity = getMoveDirection() * maxSpeedOnGround * speedMultiplier
 		targetVelocity += Vector3(0, -5, 0)
 		charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
 		
@@ -156,8 +159,8 @@ func _physics_process(delta):
 			
 			var horizontalVelocity = Plane(Vector3.UP, 0).project(charVelocity)
 			horizontalVelocity *= 0.95
-			if (horizontalVelocity.length() > maxSpeedinAir):
-				horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir
+			if (horizontalVelocity.length() > maxSpeedinAir * speedMultiplier):
+				horizontalVelocity = horizontalVelocity.normalized() * maxSpeedinAir * speedMultiplier
 			
 			charVelocity = Vector3(horizontalVelocity.x, charVelocity.y, horizontalVelocity.z)
 			charVelocity += Vector3.DOWN * gravity * delta
@@ -392,3 +395,22 @@ func freeze():
 	# Wait a while for the player to move around
 	yield(get_tree().create_timer(2.5), "timeout")
 	self.invulnerable = false
+
+# Chaser stuff
+func activate_chaser(chaser):
+	if chased_by_chaser != null:
+		chased_by_chaser.disable()
+	
+	chased_by_chaser = chaser
+
+func deactivate_chaser(chaser):
+	if chased_by_chaser == chaser:
+		chased_by_chaser = null
+
+func chaser_triggered(chaser):
+	if chased_by_chaser == chaser:
+		speedMultiplier = 0.3
+
+func chaser_untriggered(chaser):
+	if chased_by_chaser == chaser:
+		speedMultiplier = 1.0

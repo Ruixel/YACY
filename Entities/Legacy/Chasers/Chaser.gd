@@ -2,8 +2,9 @@ extends KinematicBody
 
 var player_inside = null
 var active := false
-var max_speed = 4
-var speed = 4
+var is_player_slow = false
+var max_speed = 4.2
+var speed = 4.2
 var unreachable_frames = 0
 var y_pos := 0.0
 
@@ -15,6 +16,9 @@ const models := {
 	3: "res://Entities/Legacy/Chasers/Models/Ghost/Ghost.tscn"
 }
 
+func set_speed(chaser_speed):
+	max_speed = chaser_speed
+
 func _physics_process(delta):
 	if active and player_inside:
 		if $RayCast.is_colliding():
@@ -25,13 +29,19 @@ func _physics_process(delta):
 		else:
 			unreachable_frames = 0
 		
+		if not is_player_slow:
+			speed -= 0.4 * delta
+		
 		move_and_collide(global_transform.basis.z * Vector3(1, 0, 1) * speed * delta, false)
 		self.translation.y = y_pos
 
 func disable():
-	model.get_node("SFX").stop()
+	if player_inside != null:
+		player_inside.deactivate_chaser(self)
+		
 	self.player_inside = null
 	active = false
+	model.get_node("SFX").stop()
 	$Timer.stop()
 	
 	set_material_opacity(0.175)
@@ -77,17 +87,20 @@ func _on_NearArea_body_entered(body):
 		if check_if_player_behind_wall(body): 
 			return 
 		
-		model.get_node("SFX").play()
-		self.player_inside = body
-		target_player()
 		active = true
 		y_pos = self.translation.y
+		speed = max_speed
+		player_inside = body
 		$Timer.start()
+		model.get_node("SFX").play()
+		body.activate_chaser(self)
 		
 		if id == 3:
 			set_material_opacity(0.6)
 		else: 
 			set_material_opacity(1.0)
+		
+		target_player()
 
 func _on_FarArea_body_exited(body):
 	if body.has_meta("player") and self.player_inside == body:
@@ -123,3 +136,16 @@ func target_player():
 
 func _on_Timer_timeout():
 	target_player()
+
+func _on_SlowArea_body_entered(body):
+	if body.has_meta("player"):
+		body.chaser_triggered(self)
+		
+		speed = max_speed
+		is_player_slow = true
+
+func _on_SlowArea_body_exited(body):
+	if body.has_meta("player"):
+		body.chaser_untriggered(self)
+		
+		is_player_slow = false
