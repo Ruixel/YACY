@@ -4,6 +4,7 @@ var player_inside = null
 var active := false
 var max_speed = 4
 var speed = 4
+var unreachable_frames = 0
 
 var id = null
 var model = null
@@ -15,7 +16,23 @@ const models := {
 
 func _physics_process(delta):
 	if active and player_inside:
+		if $RayCast.is_colliding():
+			target_player()
+			unreachable_frames += 1
+			if unreachable_frames > 5:
+				disable()
+		else:
+			unreachable_frames = 0
+		
 		move_and_slide_with_snap(global_transform.basis.z * Vector3(1, 0, 1) * speed, Vector3(0, -0.1, 0), Vector3(0, 1, 0))
+
+func disable():
+	model.get_node("SFX").stop()
+	self.player_inside = null
+	active = false
+	$Timer.stop()
+	
+	set_material_opacity(0.175)
 
 func set_material_opacity(opacity: float):
 	if model != null:
@@ -45,8 +62,20 @@ func set_model(model_id):
 		var surface = mesh.mesh.surface_get_material(i).duplicate()
 		mesh.mesh.surface_set_material(i, surface)
 
+func check_if_player_behind_wall(player):
+	var space_state = get_world().direct_space_state
+	var ray = space_state.intersect_ray(self.global_transform.origin, player.global_transform.origin, [player], WorldConstants.GEOMETRY_COLLISION_BIT)
+	if not ray.empty():
+		return true
+	
+	return false
+
 func _on_NearArea_body_entered(body):
 	if body.has_meta("player") and player_inside == null:
+		if check_if_player_behind_wall(body): 
+			return 
+		
+		model.get_node("SFX").play()
 		self.player_inside = body
 		target_player()
 		active = true
@@ -59,11 +88,7 @@ func _on_NearArea_body_entered(body):
 
 func _on_FarArea_body_exited(body):
 	if body.has_meta("player") and self.player_inside == body:
-		self.player_inside = null
-		active = false
-		$Timer.stop()
-		
-		set_material_opacity(0.175)
+		disable()
 
 func target_player():
 	if player_inside != null:
@@ -81,15 +106,10 @@ func target_player():
 		
 		# Don't turn if chaser is directly infront of player (or nasty errors)
 		if abs(angle) < 0.01 or abs(dot) > 0.99:
-#			var plane = Plane(dir_to_player, self_transform.distance_to(Vector3(0,0,0)))
-#			if not plane.is_point_over(player_transform):
-#				rotate_y(deg2rad(180.0))
 			var test = self_transform + (dir * 0.2)
 			if self_transform.distance_to(player_transform) < test.distance_to(player_transform):
 				rotate_y(deg2rad(180.0))
-#			if dir.cross(Vector3(0, 1, 0)).dot(dir_to_player) < 0:
-#				rotate_y(deg2rad(180.0))
-			#print(dir_to_player.angle_to())
+				
 			return
 
 		# Figure if the player is to the left or right to the chaser

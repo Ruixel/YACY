@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Entities/Legacy/Chasers/Models/Ghost/eyes.material" type="Material" id=1]
 [ext_resource path="res://Entities/Legacy/Chasers/Models/Ghost/Default.material" type="Material" id=2]
+[ext_resource path="res://res/sfx/ghost.ogg" type="AudioStream" id=3]
 
 [sub_resource type="ArrayMesh" id=1]
 resource_local_to_scene = true
@@ -41,3 +42,6 @@ transform = Transform( 1, 0, 0, 0, -1.19209e-07, -1, 0, 1, -1.19209e-07, -2.4005
 mesh = SubResource( 1 )
 material/0 = null
 material/1 = null
+
+[node name="SFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 3 )

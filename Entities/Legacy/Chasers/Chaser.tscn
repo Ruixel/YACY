@@ -6,16 +6,15 @@
 radius = 1.07161
 height = 0.704145
 
-[sub_resource type="CylinderShape" id=3]
+[sub_resource type="CylinderShape" id=2]
 radius = 2.85695
 height = 0.704145
 
-[sub_resource type="BoxShape" id=2]
-extents = Vector3( 0.306736, 0.300268, 0.385914 )
+[sub_resource type="BoxShape" id=3]
+extents = Vector3( 0.241362, 0.243112, 0.232098 )
 
 [node name="Chaser" type="KinematicBody"]
 collision_layer = 64
-collision_mask = 65
 script = ExtResource( 4 )
 
 [node name="NearArea" type="Area" parent="."]
@@ -32,14 +31,19 @@ collision_mask = 16
 
 [node name="CollisionShape" type="CollisionShape" parent="FarArea"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 2 )
 
 [node name="CollisionBody" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
-shape = SubResource( 2 )
+shape = SubResource( 3 )
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 0.4
+wait_time = 0.5
+
+[node name="RayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.456461, 0 )
+enabled = true
+cast_to = Vector3( 0, 0, 0.3 )
 [connection signal="body_entered" from="NearArea" to="." method="_on_NearArea_body_entered"]
 [connection signal="body_exited" from="FarArea" to="." method="_on_FarArea_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

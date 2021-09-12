@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
+[ext_resource path="res://res/sfx/crunch.ogg" type="AudioStream" id=1]
 [ext_resource path="res://Entities/Legacy/Chasers/Models/Pumpkin/01-Default.material" type="Material" id=2]
 
 [sub_resource type="ArrayMesh" id=2]
@@ -27,3 +28,6 @@ transform = Transform( 0.03, 0, 0, 0, 0.03, 0, 0, 0, 0.03, 0, 0.5, 0 )
 transform = Transform( 1, 0, 0, 0, -1.19209e-07, -1, 0, 1, -1.19209e-07, 0, 0, 0 )
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="SFX" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 1 )
