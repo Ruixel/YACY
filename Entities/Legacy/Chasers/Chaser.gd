@@ -5,6 +5,7 @@ var active := false
 var max_speed = 4
 var speed = 4
 var unreachable_frames = 0
+var y_pos := 0.0
 
 var id = null
 var model = null
@@ -24,7 +25,8 @@ func _physics_process(delta):
 		else:
 			unreachable_frames = 0
 		
-		move_and_slide_with_snap(global_transform.basis.z * Vector3(1, 0, 1) * speed, Vector3(0, -0.1, 0), Vector3(0, 1, 0))
+		move_and_collide(global_transform.basis.z * Vector3(1, 0, 1) * speed * delta, false)
+		self.translation.y = y_pos
 
 func disable():
 	model.get_node("SFX").stop()
@@ -79,6 +81,7 @@ func _on_NearArea_body_entered(body):
 		self.player_inside = body
 		target_player()
 		active = true
+		y_pos = self.translation.y
 		$Timer.start()
 		
 		if id == 3:
