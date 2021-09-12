@@ -5,6 +5,7 @@ var active := false
 var is_player_slow = false
 var max_speed = 4.2
 var speed = 4.2
+var speed_multiplier = 1.0
 var unreachable_frames = 0
 var y_pos := 0.0
 
@@ -15,6 +16,9 @@ const models := {
 	2: "res://Entities/Legacy/Chasers/Models/Saucer/Saucer.tscn",
 	3: "res://Entities/Legacy/Chasers/Models/Ghost/Ghost.tscn"
 }
+
+func _ready():
+	set_meta("type", "chaser")
 
 func set_speed(chaser_speed):
 	max_speed = chaser_speed
@@ -32,7 +36,7 @@ func _physics_process(delta):
 		if not is_player_slow:
 			speed -= 0.4 * delta
 		
-		move_and_collide(global_transform.basis.z * Vector3(1, 0, 1) * speed * delta, false)
+		move_and_collide(global_transform.basis.z * Vector3(1, 0, 1) * speed * delta * speed_multiplier, false)
 		self.translation.y = y_pos
 
 func disable():
@@ -149,3 +153,10 @@ func _on_SlowArea_body_exited(body):
 		body.chaser_untriggered(self)
 		
 		is_player_slow = false
+
+func slow_down():
+	speed_multiplier = 0.5
+	$CrumbTimer.start()
+
+func _on_CrumbTimer_timeout():
+	speed_multiplier = 1.0

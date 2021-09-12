@@ -364,8 +364,8 @@ func pickupCrumbs(amount: int):
 func dropCrumb():
 	if self.ammo > 0:
 		var crumb = preload("res://Entities/PlayerController/Slingshot/CrumbDrop.tscn").instance()
-		crumb.global_translate(self.global_transform.origin)
 		get_parent().add_child(crumb)
+		crumb.global_translate(self.global_transform.origin)
 		
 		self.ammo -= 1
 		emit_signal("s_updateAmmo", self.ammo)

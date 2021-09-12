@@ -56,8 +56,13 @@ wait_time = 0.5
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.456461, 0 )
 enabled = true
 cast_to = Vector3( 0, 0, 0.3 )
+
+[node name="CrumbTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 [connection signal="body_entered" from="NearArea" to="." method="_on_NearArea_body_entered"]
 [connection signal="body_entered" from="SlowArea" to="." method="_on_SlowArea_body_entered"]
 [connection signal="body_exited" from="SlowArea" to="." method="_on_SlowArea_body_exited"]
 [connection signal="body_exited" from="FarArea" to="." method="_on_FarArea_body_exited"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="timeout" from="CrumbTimer" to="." method="_on_CrumbTimer_timeout"]
