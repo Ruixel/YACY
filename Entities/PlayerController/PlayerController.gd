@@ -342,9 +342,10 @@ func pickupKey(key: int):
 	self.keys.append(key)
 	$PlayerGUI.updateKeys(self.keys)
 
-func pickupDiamond():
+func pickupDiamond(time_save: int = 0):
 	self.diamonds += 1
 	$PlayerGUI.updateDiamonds(self.diamonds)
+	$PlayerGUI.time_save(time_save)
 
 func pickupSlingshot():
 	var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()

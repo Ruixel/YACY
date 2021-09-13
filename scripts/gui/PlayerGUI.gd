@@ -3,13 +3,18 @@ extends Control
 var max_diamonds = 0
 var total_icemen = 0
 var icemen = 0
+var time = 0
 onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
+	if $BR/Jetpack.visible:
+		$BR/Ammo.rect_position.y += 50
+	
 	$BR/Jetpack.visible = false
 	$BR/Ammo.visible = false
 	$Items/Keys.visible = false
 	max_diamonds = 0
+	time = 0
 	$ItemsLeft/Diamonds.visible = false
 	$ItemsLeft/Icemen.visible = false
 	updateJetpackFuel(0, 240)
@@ -54,10 +59,13 @@ func updateItemsLeft():
 	for node in items_left_nodes:
 		if node.visible:
 			node.rect_position = Vector2(10, y)
-			y += 50
+			y += 60
+
+
 
 func pickupJetpack():
 	$BR/Jetpack.visible = true
+	$BR/Ammo.rect_position.y -= 50
 
 func toggleJetpack(on: bool):
 	if on:
@@ -103,3 +111,21 @@ func freezeScreen(seconds: float):
 	$FrozenScreen/Tween.interpolate_property($FrozenScreen, "modulate", 
 	  Color(1, 1, 1, 0.37), Color(1, 1, 1, 0), 1.0,Tween.TRANS_QUAD, Tween.EASE_OUT)
 	$FrozenScreen/Tween.start()
+
+# Clock UI
+func draw_clock():
+	var minutes = time / 60
+	var seconds = time % 60
+	
+	$Clock.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b][/center]"
+	
+func _on_Timer_timeout():
+	time += 1
+	draw_clock()
+
+func time_save(seconds: int):
+	time -= seconds
+	if time < 0:
+		time = 0
+	
+	draw_clock()

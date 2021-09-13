@@ -161,10 +161,14 @@ __meta__ = {
 
 [node name="Ammo" type="Control" parent="BR"]
 visible = false
-margin_left = 1070.0
-margin_top = 630.0
-margin_right = 1348.0
-margin_bottom = 738.0
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -298.0
+margin_top = -82.9999
+margin_right = -20.0
+margin_bottom = 25.0001
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -362,6 +366,25 @@ transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -0.4, 0 )
 script = ExtResource( 6 )
 spin_speed = 1.0
 
+[node name="Clock" type="RichTextLabel" parent="."]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -86.5
+margin_top = 25.0
+margin_right = 86.4995
+margin_bottom = 95.0
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[center][b]00:00[/b][/center]"
+text = "00:00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Timer" type="Timer" parent="Clock"]
+autostart = true
+
 [node name="FrozenScreen" type="TextureRect" parent="."]
 visible = false
 modulate = Color( 1, 1, 1, 0.372549 )
@@ -372,3 +395,4 @@ texture = ExtResource( 10 )
 expand = true
 
 [node name="Tween" type="Tween" parent="FrozenScreen"]
+[connection signal="timeout" from="Clock/Timer" to="." method="_on_Timer_timeout"]

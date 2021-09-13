@@ -16,7 +16,7 @@ func collect(body):
 	$OmniLight.visible = false
 	
 	if body.has_method("pickupDiamond"):
-		body.pickupDiamond()
+		body.pickupDiamond(time_save)
 	
 	$PickupSFX.play()
 	yield($PickupSFX, "finished")
