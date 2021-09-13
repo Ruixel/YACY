@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Scenes/Env/LegacyEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scripts/OutOfBounds.gd" type="Script" id=8]
 [ext_resource path="res://res/txrs/glass256.png" type="Texture" id=9]
 [ext_resource path="res://res/music/Funky.ogg" type="AudioStream" id=10]
+[ext_resource path="res://Scenes/BubblesResize.gd" type="Script" id=11]
 
 [sub_resource type="BoxShape" id=1]
 
@@ -90,7 +91,7 @@ shape = SubResource( 1 )
 
 [node name="Bubbles" type="Particles2D" parent="OOBArea"]
 visible = false
-position = Vector2( 699.669, 788.934 )
+position = Vector2( 683, 788.934 )
 rotation = -1.5708
 emitting = false
 amount = 240
@@ -101,5 +102,6 @@ visibility_rect = Rect2( 3.46936, -1146.11, 1354.03, 2194.14 )
 local_coords = false
 process_material = SubResource( 4 )
 texture = ExtResource( 9 )
+script = ExtResource( 11 )
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
 [connection signal="body_entered" from="OOBArea" to="OOBArea" method="_on_OOBArea_body_entered"]
