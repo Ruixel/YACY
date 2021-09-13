@@ -4,6 +4,7 @@ var max_diamonds = 0
 var total_icemen = 0
 var icemen = 0
 var time = 0
+var global_time = 0
 onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
@@ -14,10 +15,17 @@ func reset():
 	$BR/Ammo.visible = false
 	$Items/Keys.visible = false
 	max_diamonds = 0
-	time = 0
 	$ItemsLeft/Diamonds.visible = false
 	$ItemsLeft/Icemen.visible = false
 	updateJetpackFuel(0, 240)
+	
+	global_time += time
+	time = 0
+	var global_minutes = global_time / 60
+	var global_seconds = global_time % 60
+	$Clock/GlobalClock.visible = true
+	$Clock/GlobalClock.bbcode_text = "[right]" + str("%02d" % global_minutes) + ":" + str("%02d" % global_seconds) + "[/right]"
+	draw_clock()
 
 func setupCollectables(collectables: Dictionary):
 	for key in collectables:
@@ -118,7 +126,7 @@ func draw_clock():
 	var seconds = time % 60
 	
 	$Clock.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b][/center]"
-	
+
 func _on_Timer_timeout():
 	time += 1
 	draw_clock()

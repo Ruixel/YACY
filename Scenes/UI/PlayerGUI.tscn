@@ -385,6 +385,23 @@ __meta__ = {
 [node name="Timer" type="Timer" parent="Clock"]
 autostart = true
 
+[node name="GlobalClock" type="RichTextLabel" parent="Clock"]
+visible = false
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -108.5
+margin_top = 50.0
+margin_right = 64.4998
+margin_bottom = 120.0
+custom_fonts/bold_font = ExtResource( 3 )
+custom_fonts/normal_font = ExtResource( 4 )
+bbcode_enabled = true
+bbcode_text = "[right]00:00[/right]"
+text = "00:00"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="FrozenScreen" type="TextureRect" parent="."]
 visible = false
 modulate = Color( 1, 1, 1, 0.372549 )

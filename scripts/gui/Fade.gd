@@ -1,4 +1,7 @@
-extends ColorRect
+extends CanvasLayer
+
+onready var rect_obj = $Fade
+onready var tween_obj = $Fade/Tween
 
 var faded = false
 var fading = false
@@ -10,11 +13,11 @@ func fade(duration):
 	faded = true
 	fading = true 
 	
-	self.set_visible(true)
-	$Tween.interpolate_property(self, "modulate", Color(0, 0, 0, 0), Color(0, 0, 0, 1), 
+	rect_obj.set_visible(true)
+	tween_obj.interpolate_property(rect_obj, "modulate", Color(0, 0, 0, 0), Color(0, 0, 0, 1), 
 	  duration, Tween.TRANS_LINEAR, Tween.EASE_IN)
-	$Tween.start()
-	yield($Tween, "tween_completed")
+	tween_obj.start()
+	yield(tween_obj, "tween_completed")
 	
 	fading = false
 	emit_signal("s_fade_complete")
@@ -23,11 +26,11 @@ func unfade(duration):
 	faded = false
 	fading = true 
 	
-	$Tween.interpolate_property(self, "modulate", Color(0, 0, 0, 1), Color(0, 0, 0, 0), 
+	tween_obj.interpolate_property(rect_obj, "modulate", Color(0, 0, 0, 1), Color(0, 0, 0, 0), 
 	  duration, Tween.TRANS_LINEAR, Tween.EASE_OUT)
-	$Tween.start()
-	yield($Tween, "tween_completed")
+	tween_obj.start()
+	yield(tween_obj, "tween_completed")
 	
-	self.set_visible(false)
+	rect_obj.set_visible(false)
 	fading = false
 	emit_signal("s_unfade_complete")
