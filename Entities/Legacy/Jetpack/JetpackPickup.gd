@@ -19,8 +19,9 @@ func _on_Area_body_entered(body):
 	if not expiring and body.has_meta("player") and body.busy == false:
 		expiring = true
 		if body.has_method("pickupJetpack"):
-			body.pickupJetpack(unlimited_fuel)
-		
-		$PickupSFX.play()
-		yield($PickupSFX, "finished")
-		self.queue_free()
+			var picked_up = body.pickupJetpack(unlimited_fuel)
+			
+			if picked_up:
+				$PickupSFX.play()
+				yield($PickupSFX, "finished")
+				self.queue_free()

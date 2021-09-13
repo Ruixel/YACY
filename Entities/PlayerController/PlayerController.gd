@@ -90,6 +90,10 @@ func reset():
 	$AudioNode/Jetpack.stop()
 	$Back/Jetpack.visible = false
 	$Back/Jetpack/Fire.visible = false
+	
+	# Remove weapons
+	for wep in $EyePoint/Hand.get_children():
+		wep.queue_free()
 
 func _process(delta):
 	# Rotate camera horizontally and vertically
@@ -314,21 +318,28 @@ func fallInWater():
 func setSpawnPoint(transform: Transform):
 	self.spawnPoint = transform
 
-func pickupJetpack(has_unlimited_fuel: bool):
-	canFly = true
-	unlimited_fuel = has_unlimited_fuel
+func pickupJetpack(has_unlimited_fuel: bool) -> bool:
+	if not canFly:
+		canFly = true
+		unlimited_fuel = has_unlimited_fuel
+		
+		if has_unlimited_fuel:
+			fuel_amount = max_fuel
+		
+		$Back/Jetpack.visible = true
+		$PlayerGUI.pickupJetpack()
+		$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+		return true
 	
-	if has_unlimited_fuel:
-		fuel_amount = max_fuel
-	
-	$Back/Jetpack.visible = true
-	$PlayerGUI.pickupJetpack()
-	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+	return false
 
-func pickupFuel(amount: int):
-	fuel_amount = min(fuel_amount + amount, max_fuel)
+func pickupFuel(amount: int) -> bool:
+	if fuel_amount < max_fuel:
+		fuel_amount = min(fuel_amount + amount, max_fuel)
+		$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+		return true
 	
-	$PlayerGUI.updateJetpackFuel(fuel_amount, max_fuel)
+	return false
 
 func pickupKey(key: int):
 	# If it's a master key, replace all keys with master
@@ -347,13 +358,18 @@ func pickupDiamond(time_save: int = 0):
 	$PlayerGUI.updateDiamonds(self.diamonds)
 	$PlayerGUI.time_save(time_save)
 
-func pickupSlingshot():
-	var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()
-	slingshot.connect("s_updateAmmo", self, "updateAmmo")
-	slingshot.add_connection(self)
-	$EyePoint/Hand.add_child(slingshot)
+func pickupSlingshot() -> bool:
+	if not hasSlingshot:
+		var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()
+		slingshot.connect("s_updateAmmo", self, "updateAmmo")
+		slingshot.add_connection(self)
+		$EyePoint/Hand.add_child(slingshot)
+		
+		emit_signal("s_updateAmmo", self.ammo)
+		hasSlingshot = true
+		return true
 	
-	emit_signal("s_updateAmmo", self.ammo)
+	return false
 
 func updateAmmo(ammo: int):
 	self.ammo = ammo
@@ -365,7 +381,8 @@ func pickupCrumbs(amount: int):
 func dropCrumb():
 	if self.ammo > 0:
 		var crumb = preload("res://Entities/PlayerController/Slingshot/CrumbDrop.tscn").instance()
-		get_parent().add_child(crumb)
+		var level_debris = get_parent().get_node("LevelDebris")
+		level_debris.add_child(crumb)
 		crumb.global_translate(self.global_transform.origin)
 		
 		self.ammo -= 1

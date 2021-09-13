@@ -49,6 +49,10 @@ func setupLevel():
 	objects = []
 	fixed_objects = {}
 	collectables = {}
+	var level_debris = get_node_or_null("LevelDebris")
+	if level_debris != null:
+		for item in level_debris.get_children():
+			item.queue_free()
 	
 	# Initialise level meshes
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):

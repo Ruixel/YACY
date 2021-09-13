@@ -52,6 +52,11 @@ script = ExtResource( 3 )
 stream = ExtResource( 10 )
 volume_db = -15.0
 
+[node name="LevelDebris" type="Spatial" parent="LegacyLevel"]
+__meta__ = {
+"_editor_description_": "Debris that stays until the level is changed"
+}
+
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 5 )
 Loader = NodePath("../LegacyLevel/ObjectLoader")
