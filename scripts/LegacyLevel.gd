@@ -12,6 +12,7 @@ var fixed_objects: Dictionary
 var entities : Array = []
 var default_objs : Dictionary
 var collectables: Dictionary
+var weather = WorldConstants.Weather.PARTLY_CLOUDY
 
 var level : int = 1
 var levelMeshes : Array 
@@ -49,6 +50,7 @@ func setupLevel():
 	objects = []
 	fixed_objects = {}
 	collectables = {}
+	weather = WorldConstants.Weather.PARTLY_CLOUDY
 	var level_debris = get_node_or_null("LevelDebris")
 	if level_debris != null:
 		for item in level_debris.get_children():
@@ -84,6 +86,19 @@ func level_finished_loading():
 	fade.unfade(1)
 	emit_signal("s_levelLoaded")
 	spawnPlayer()
+	
+	# Add weather effects
+	match weather:
+		WorldConstants.Weather.FOG:
+			add_fog(null, null, 0.35, 0.8, 5, 100) 
+		WorldConstants.Weather.HEAVY_FOG:
+			add_fog(null, null, 0.18, 0.5, 3, 100) 
+		WorldConstants.Weather.RAIN:
+			add_fog(null, null, 0.55, 0.6, 5, 150) # Rain
+			attach_to_player("res://Entities/Legacy/Weather/RainParticles.tscn")
+		WorldConstants.Weather.SNOW:
+			add_fog(Color(1.0, 1.0, 1.0, 1.0), Color(0.85, 0.85, 0.85, 1.0), 0.55, 0.9, 5, 200) # Snow
+			attach_to_player("res://Entities/Legacy/Weather/SnowParticles.tscn")
 
 func spawnPlayer():
 	if player == null:
@@ -181,4 +196,38 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	var entering_ui = get_node("../EnteringUI")
 	entering_ui.showLevel(r.data.getLevel.title, r.data.getLevel.author)
+
+func set_weather(weather_enum):
+	self.weather = weather_enum
 	
+func add_fog(fog_color, bg_color, fog_depth_curve: float, light_energy: float, fog_start: int, fog_end: int):
+	var water = get_parent().get_node_or_null("Environment/Water")
+	if water != null:
+		water.mesh.surface_get_material(0).flags_unshaded = false
+	
+	var light = get_parent().get_node_or_null("Environment/DirectionalLight")
+	if light != null:
+		light.light_energy = min(light_energy, light.light_energy)
+	
+	var world_env = get_parent().get_node("Environment/WorldEnvironment").environment
+	world_env.background_mode = Environment.BG_COLOR_SKY
+	world_env.fog_enabled = true
+	world_env.fog_depth_begin = fog_start
+	world_env.fog_depth_end = fog_end
+	world_env.fog_depth_curve = fog_depth_curve
+	
+	if fog_color == null:
+		world_env.fog_color = world_env.background_color
+	else:
+		if bg_color != null:
+			world_env.background_color = bg_color
+		world_env.fog_color = fog_color
+	
+	world_env.fog_color.a = 1.0
+
+func attach_to_player(obj_location):
+	if player != null:
+		var new_obj = load(obj_location).instance()
+		player.get_node("Attachments").add_child(new_obj)
+	else:
+		push_warning("Tried to attach object to non-existent player: " + obj_location)

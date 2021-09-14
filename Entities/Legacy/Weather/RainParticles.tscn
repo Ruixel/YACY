@@ -1,0 +1,42 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://res/sfx/rain.ogg" type="AudioStream" id=1]
+
+[sub_resource type="GradientTexture" id=1]
+
+[sub_resource type="Curve" id=2]
+_data = [ Vector2( 0.0379747, 0.254545 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=3]
+curve = SubResource( 2 )
+
+[sub_resource type="ParticlesMaterial" id=4]
+trail_size_modifier = SubResource( 3 )
+trail_color_modifier = SubResource( 1 )
+emission_shape = 2
+emission_box_extents = Vector3( 10, 1, 10 )
+gravity = Vector3( 0, -80, 0 )
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+params_billboard_mode = 2
+albedo_color = Color( 1, 1, 1, 0.192157 )
+
+[sub_resource type="QuadMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 0.01, 1 )
+
+[node name="RainParticles" type="Particles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
+amount = 500
+lifetime = 0.8
+visibility_aabb = AABB( -11.1052, -13.3061, -11.2199, 22.2105, 26.6121, 22.4398 )
+local_coords = false
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 6 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -25.0
+autoplay = true

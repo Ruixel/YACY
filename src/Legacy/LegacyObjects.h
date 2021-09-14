@@ -39,6 +39,7 @@ namespace Legacy {
     void portal_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void teleport_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void theme_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
+    void weather_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void music_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void jetpack_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);
     void fuel_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize);

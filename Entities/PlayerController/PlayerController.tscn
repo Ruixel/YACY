@@ -139,3 +139,5 @@ transform = Transform( 0.0221961, 0, 0.0221961, 0, 0.0313901, 0, -0.0221961, 0, 
 mesh = SubResource( 4 )
 material/0 = null
 material/1 = null
+
+[node name="Attachments" type="Spatial" parent="."]

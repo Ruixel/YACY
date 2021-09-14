@@ -401,6 +401,9 @@ func set_music(pos: Vector2, musicID: int, level: int):
 	if song_player != null:
 		song_player.stream = load(Songs[musicID])
 
+func set_weather(pos: Vector2, weatherID: int, level: int):
+	print("Weather ID: ", weatherID)
+	get_parent().call("set_weather", weatherID - 1)
 
 func finalise():
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):

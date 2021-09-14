@@ -89,6 +89,7 @@ namespace Legacy {
         else if (objectName == "portal") portal_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "teleport") teleport_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "theme") theme_createEntity(worldAPI, objectArray, objectProperties.size());
+        else if (objectName == "weather") weather_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "backmusic") music_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "jetpack") jetpack_createEntity(worldAPI, objectArray, objectProperties.size());
         else if (objectName == "fuel") fuel_createEntity(worldAPI, objectArray, objectProperties.size());
@@ -335,6 +336,19 @@ namespace Legacy {
             
             //                                                    // Position                  // Theme ID         // Level   
             if      (objectSize == 4) worldAPI->call("set_theme", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
+        }
+    }
+
+    // Weather
+    // [position_x, position_y, weather_id, level]
+    void weather_createEntity(godot::Node* worldAPI, godot::PoolStringArray objectArray, int objectSize)
+    {
+        int objects = objectArray.size();
+        for (int i = 0; i < objects; i++) {
+            godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
+            
+            //                                                      // Position                  // Weather ID       // Level   
+            if      (objectSize == 4) worldAPI->call("set_weather", extractVec2(obj[0], obj[1]), extractInt(obj[2]), extractInt(obj[3]));    
         }
     }
 

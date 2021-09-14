@@ -94,6 +94,10 @@ func reset():
 	# Remove weapons
 	for wep in $EyePoint/Hand.get_children():
 		wep.queue_free()
+	
+	# Remove attachments
+	for obj in $Attachments.get_children():
+		obj.queue_free()
 
 func _process(delta):
 	# Rotate camera horizontally and vertically

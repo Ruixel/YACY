@@ -44,3 +44,7 @@ enum WallShape {
 enum PlatShape {
 	QUAD, DIAMOND, TRI_TR, TRI_BL, TRI_TL, TRI_BR
 }
+
+enum Weather {
+	PARTLY_CLOUDY, FOG, HEAVY_FOG, RAIN, SNOW
+}

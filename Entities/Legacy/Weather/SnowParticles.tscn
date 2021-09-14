@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://res/sfx/wind.ogg" type="AudioStream" id=1]
+
+[sub_resource type="ParticlesMaterial" id=4]
+emission_shape = 2
+emission_box_extents = Vector3( 6, 1, 6 )
+direction = Vector3( 0, 1, 0 )
+gravity = Vector3( 0, -2, 0 )
+initial_velocity = -5.0
+damping = 0.1
+scale_random = 0.4
+
+[sub_resource type="SpatialMaterial" id=5]
+flags_transparent = true
+flags_unshaded = true
+params_billboard_mode = 2
+albedo_color = Color( 1, 1, 1, 0.380392 )
+
+[sub_resource type="QuadMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 0.1, 0.1 )
+
+[node name="SnowParticles" type="Particles"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
+amount = 600
+lifetime = 2.5
+visibility_aabb = AABB( -11.1052, -13.3061, -11.2199, 22.2105, 26.6121, 22.4398 )
+local_coords = false
+process_material = SubResource( 4 )
+draw_pass_1 = SubResource( 6 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+volume_db = -5.0
+autoplay = true
