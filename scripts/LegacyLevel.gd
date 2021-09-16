@@ -90,9 +90,9 @@ func level_finished_loading():
 	# Add weather effects
 	match weather:
 		WorldConstants.Weather.FOG:
-			add_fog(null, null, 0.35, 0.8, 5, 100) 
+			add_fog(null, null, 0.40, 0.8, 1, 60) 
 		WorldConstants.Weather.HEAVY_FOG:
-			add_fog(null, null, 0.18, 0.5, 3, 100) 
+			add_fog(null, null, 0.27, 0.5, 1, 50) 
 		WorldConstants.Weather.RAIN:
 			add_fog(null, null, 0.55, 0.6, 5, 150) # Rain
 			attach_to_player("res://Entities/Legacy/Weather/RainParticles.tscn")

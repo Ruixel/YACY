@@ -436,3 +436,13 @@ func chaser_triggered(chaser):
 func chaser_untriggered(chaser):
 	if chased_by_chaser == chaser:
 		speedMultiplier = 1.0
+
+func finish_level():
+	gui.display_level_finish()
+	
+	self.busy = true
+	self.canMove = false
+	self.invulnerable = true
+	self.lock_mouse = false
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	emit_signal("s_disabled")

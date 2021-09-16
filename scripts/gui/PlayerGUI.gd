@@ -137,3 +137,10 @@ func time_save(seconds: int):
 		time = 0
 	
 	draw_clock()
+
+func display_level_finish():
+	if $Clock/Timer.is_connected("timeout", self, "_on_Timer_timeout"):
+		$Clock/Timer.disconnect("timeout", self, "_on_Timer_timeout")
+		
+	var finish_ui = load("res://Scenes/UI/WinScreen.tscn").instance()
+	add_child(finish_ui)
