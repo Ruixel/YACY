@@ -18,6 +18,8 @@ var level : int = 1
 var levelMeshes : Array 
 var entityLocation
 
+var gameNumber = null
+
 var player = null
 var spawnLocation = null
 
@@ -118,6 +120,7 @@ func spawnPlayer():
 		player.setSpawnPoint(Transform(Basis(Vector3(0,0,0)), Vector3(40, 1, 76)))
 	
 	player.reset()
+	player._setup()
 	
 	# Setup PlayerUI
 	player.get_node("PlayerGUI").setupCollectables(self.collectables)
@@ -179,7 +182,17 @@ func get_mazeFile(gameNumber):
 	
 func load_level(gameNumber):
 	get_mazeFile(gameNumber)
+	self.gameNumber = gameNumber
 	#$HTTPRequest.request("http://localhost:4000/getMaze.php?maze=" + str(gameNumber))
+
+func restart_level():
+	if self.gameNumber != null:
+		var fade = get_node("/root/Main/Fade")
+		fade.fade(0.3)
+		yield(fade, "s_fade_complete")
+		
+		clear_level()
+		get_mazeFile(self.gameNumber)
 
 func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
@@ -189,6 +202,11 @@ func _on_request_completed(result, response_code, headers, body):
 	var obj_loader = get_node("ObjectLoader")
 	obj_loader.set_theme(Vector2(0,0), 1, 1)
 	obj_loader.set_music(Vector2(0,0), 2, 1)
+	
+	$GameManager.load_level_info({ 
+		"name": r.data.getLevel.title,
+		"author": r.data.getLevel.author
+	})
 	
 	var mazeFile = r.data.getLevel.mazeFile
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")

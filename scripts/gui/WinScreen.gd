@@ -10,3 +10,12 @@ func _on_Menu_pressed():
 			pause_menu.exit_level()
 	else:
 		push_error("Cannot find the pause menu node")
+
+func _on_Replay_pressed():
+	var level_manager = get_node_or_null("../../../../LegacyLevel")
+	if level_manager != null:
+		if not debounce:
+			debounce = true
+			level_manager.restart_level()
+	else:
+		push_error("Cannot find the level_manager")

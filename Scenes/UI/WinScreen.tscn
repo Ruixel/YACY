@@ -127,4 +127,5 @@ margin_right = 290.0
 margin_bottom = 30.0
 rect_min_size = Vector2( 75, 0 )
 text = "Back To Menu"
+[connection signal="pressed" from="VBoxContainer/Actions/Replay" to="." method="_on_Replay_pressed"]
 [connection signal="pressed" from="VBoxContainer/Actions/Menu" to="." method="_on_Menu_pressed"]

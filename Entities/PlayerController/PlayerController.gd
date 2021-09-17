@@ -65,12 +65,16 @@ signal s_enabled
 signal s_newChaser
 
 func _ready():
+	_setup()
+	
+	self.connect("s_updateAmmo", self, "updateAmmo")
+
+func _setup():
 	set_meta("player", true)
+	lock_mouse = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	changeCameraAngle(CAMERA_TYPE.FPS)
 	currentCam = $EyePoint/FPSCamera
-	
-	self.connect("s_updateAmmo", self, "updateAmmo")
 
 func reset():
 	flying = false

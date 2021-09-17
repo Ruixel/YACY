@@ -110,6 +110,7 @@ func loadLevels():
 		var new_lvl = Level.instance()
 		levels.append(new_lvl)
 		new_lvl.setMazeFile(item.mazeFile)
+		new_lvl.setGameNumber(item.gameNumber)
 		new_lvl.get_node("Title").text = item.title
 		new_lvl.get_node("Author").text = item.author
 		new_lvl.get_node("Plays").text = "Plays: " + str(item.plays)
@@ -178,13 +179,14 @@ func _level_selected(btn):
 	fadeGui.fade(0.6)
 	yield(fadeGui, "s_fade_complete")
 	
-	var mazeFile = btn.mazeFile
+	var gameNumber = btn.gameNumber
 	mainScene.unload_background()
 	
 	var level_scene = load("res://Scenes/PlayLegacyLevel.tscn")
 	var level = level_scene.instance()
 	get_node("/root/").add_child(level)
-	level.get_node("LegacyWorldLoader/Button").loadLevel(mazeFile)
+	#level.get_node("LegacyWorldLoader/Button").loadLevel(mazeFile)
+	level.get_node("LegacyLevel").load_level(gameNumber)
 	
 	levelBrowserGui.set_visible(false)
 	yield(level.get_node("LegacyLevel"), "s_levelLoaded")

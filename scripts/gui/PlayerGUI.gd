@@ -8,9 +8,20 @@ var global_time = 0
 onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
+	# Shift back UI
 	if $BR/Jetpack.visible:
 		$BR/Ammo.rect_position.y += 50
 	
+	# Reset win screen
+	var win_screen = get_node_or_null("WinScreen")
+	if win_screen != null:
+		win_screen.queue_free()
+	
+	if not $Clock/Timer.is_connected("timeout", self, "_on_Timer_timeout"):
+		global_time -= time
+		$Clock/Timer.connect("timeout", self, "_on_Timer_timeout")
+	
+	# Reset Player Stats/Items
 	$BR/Jetpack.visible = false
 	$BR/Ammo.visible = false
 	$Items/Keys.visible = false
@@ -19,6 +30,7 @@ func reset():
 	$ItemsLeft/Icemen.visible = false
 	updateJetpackFuel(0, 240)
 	
+	# Update ingame timer
 	global_time += time
 	time = 0
 	var global_minutes = global_time / 60
