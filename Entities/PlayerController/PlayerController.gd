@@ -68,6 +68,10 @@ func _ready():
 	_setup()
 	
 	self.connect("s_updateAmmo", self, "updateAmmo")
+	var pause_node = get_node_or_null("../PauseMenu")
+	if pause_node != null:
+		pause_node.connect("pause", self, "onPause")
+		pause_node.connect("unpause", self, "onUnpause")
 
 func _setup():
 	set_meta("player", true)
@@ -450,3 +454,18 @@ func finish_level():
 	self.lock_mouse = false
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	emit_signal("s_disabled")
+
+func onPause():
+	busy = true
+	pause = true
+	
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	gui.visible = false
+
+func onUnpause():
+	busy = false
+	pause = false
+	
+	if lock_mouse:
+		Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	gui.visible = true

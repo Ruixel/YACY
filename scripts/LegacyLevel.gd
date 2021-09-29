@@ -37,6 +37,8 @@ const toolToObjectDict = {
 func _ready():
 	EntityManager._reset()
 	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+	if get_node_or_null("PauseMenu") != null:
+		$PauseMenu.connect("change_music_volume", self, "on_music_volume_change")
 	
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
@@ -212,7 +214,7 @@ func _on_request_completed(result, response_code, headers, body):
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
 	loader.loadLevel(mazeFile)
 	
-	var entering_ui = get_node("../EnteringUI")
+	var entering_ui = $EnteringUI
 	entering_ui.showLevel(r.data.getLevel.title, r.data.getLevel.author)
 
 func set_weather(weather_enum):
@@ -249,3 +251,12 @@ func attach_to_player(obj_location):
 		player.get_node("Attachments").add_child(new_obj)
 	else:
 		push_warning("Tried to attach object to non-existent player: " + obj_location)
+
+func on_music_volume_change(new_volume, allow_play = true):
+	if new_volume <= 0:
+		$MusicPlayer.stop()
+	else:
+		if not $MusicPlayer.playing and allow_play:
+			$MusicPlayer.play()
+		var db_decrease = ((100.0 - new_volume) / 100.0) * 30.0
+		$MusicPlayer.volume_db = -5.0 - (db_decrease)

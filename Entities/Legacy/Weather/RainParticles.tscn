@@ -28,6 +28,7 @@ material = SubResource( 5 )
 size = Vector2( 0.01, 1 )
 
 [node name="RainParticles" type="Particles"]
+pause_mode = 2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
 amount = 500
 lifetime = 0.8

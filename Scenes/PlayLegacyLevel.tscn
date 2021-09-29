@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://Scenes/Env/LegacyEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=2]
@@ -12,17 +12,34 @@
 [ext_resource path="res://res/music/Funky.ogg" type="AudioStream" id=10]
 [ext_resource path="res://Scenes/BubblesResize.gd" type="Script" id=11]
 [ext_resource path="res://scripts/GameManager.gd" type="Script" id=12]
+[ext_resource path="res://res/fonts/aileron_big.tres" type="DynamicFont" id=13]
+[ext_resource path="res://res/txrs/gui/black_gradient.png" type="Texture" id=14]
+[ext_resource path="res://res/txrs/gui/empty_grabber.png" type="Texture" id=15]
+[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=16]
+[ext_resource path="res://res/fonts/aileron_medium.tres" type="DynamicFont" id=17]
 
-[sub_resource type="BoxShape" id=1]
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+expand_margin_top = 6.0
 
-[sub_resource type="Gradient" id=2]
+[sub_resource type="StyleBoxFlat" id=2]
+content_margin_top = 0.0
+content_margin_bottom = 0.0
+bg_color = Color( 1, 1, 1, 1 )
+border_width_bottom = 4
+
+[sub_resource type="BoxShape" id=3]
+
+[sub_resource type="Gradient" id=4]
 offsets = PoolRealArray( 0, 0.540741, 1 )
 colors = PoolColorArray( 1, 1, 1, 1, 0.576471, 0.568627, 0.568627, 0.811765, 1, 1, 1, 0 )
 
-[sub_resource type="GradientTexture" id=3]
-gradient = SubResource( 2 )
+[sub_resource type="GradientTexture" id=5]
+gradient = SubResource( 4 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticlesMaterial" id=6]
 emission_shape = 2
 emission_box_extents = Vector3( 1, 600, 1 )
 flag_disable_z = true
@@ -33,7 +50,7 @@ orbit_velocity_random = 0.0
 linear_accel = 6.9
 scale = 0.2
 scale_random = 0.85
-color_ramp = SubResource( 3 )
+color_ramp = SubResource( 5 )
 
 [node name="Gameplay" type="Spatial"]
 
@@ -48,6 +65,7 @@ script = ExtResource( 3 )
 [node name="HTTPRequest" type="HTTPRequest" parent="LegacyLevel"]
 
 [node name="MusicPlayer" type="AudioStreamPlayer" parent="LegacyLevel"]
+pause_mode = 2
 stream = ExtResource( 10 )
 volume_db = -15.0
 
@@ -58,6 +76,131 @@ __meta__ = {
 
 [node name="GameManager" type="Node" parent="LegacyLevel"]
 script = ExtResource( 12 )
+
+[node name="EnteringUI" parent="LegacyLevel" instance=ExtResource( 7 )]
+pause_mode = 2
+mouse_filter = 2
+
+[node name="PauseMenu" type="Control" parent="LegacyLevel"]
+pause_mode = 2
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="LegacyLevel/PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.168627 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="LegacyLevel/PauseMenu"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -541.0
+mouse_filter = 2
+texture = ExtResource( 14 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolume" type="Control" parent="LegacyLevel/PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.814514
+margin_bottom = -0.814514
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Panel" parent="LegacyLevel/PauseMenu/MusicVolume"]
+modulate = Color( 0, 0, 0, 0.709804 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -405.0
+margin_top = -64.9999
+margin_right = -28.0
+margin_bottom = -14.9999
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider" type="HSlider" parent="LegacyLevel/PauseMenu/MusicVolume"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -400.0
+margin_top = -60.0
+margin_right = -25.0
+margin_bottom = -20.0
+mouse_filter = 1
+custom_icons/grabber_disabled = ExtResource( 15 )
+custom_icons/grabber_highlight = ExtResource( 15 )
+custom_icons/grabber = ExtResource( 15 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area = SubResource( 2 )
+value = 75.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="LegacyLevel/PauseMenu/MusicVolume"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -622.113
+margin_top = -69.9276
+margin_right = -417.113
+margin_bottom = -10.9276
+custom_fonts/font = ExtResource( 17 )
+text = "Music"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Author" type="Label" parent="LegacyLevel/PauseMenu"]
+margin_left = 30.0
+margin_top = 90.0
+margin_right = 207.999
+margin_bottom = 226.0
+rect_pivot_offset = Vector2( 71.0751, 15.0001 )
+custom_fonts/font = ExtResource( 16 )
+text = "By ChallengeYou
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="LegacyLevel/PauseMenu"]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 514.0
+margin_bottom = 89.0
+custom_fonts/font = ExtResource( 13 )
+text = "ChallengeYou Palace"
+
+[node name="Description" type="RichTextLabel" parent="LegacyLevel/PauseMenu"]
+margin_left = 30.0
+margin_top = 120.0
+margin_right = 380.0
+margin_bottom = 320.0
+text = "A annoying game that makes you want to hit your head on a wall, but it has fun school questions. "
 
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 5 )
@@ -77,24 +220,13 @@ __meta__ = {
 
 [node name="HTTPRequest" type="HTTPRequest" parent="LegacyWorldLoader/Button"]
 
-[node name="PauseMenu" type="Control" parent="."]
-margin_right = 40.0
-margin_bottom = 40.0
-script = ExtResource( 4 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="EnteringUI" parent="." instance=ExtResource( 7 )]
-mouse_filter = 2
-
 [node name="OOBArea" type="Area" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -10.5, 0 )
 script = ExtResource( 8 )
 
 [node name="CollisionShape" type="CollisionShape" parent="OOBArea"]
 transform = Transform( 200, 0, 0, 0, 20, 0, 0, 0, 200, 0, -20, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 3 )
 
 [node name="Bubbles" type="Particles2D" parent="OOBArea"]
 visible = false
@@ -107,8 +239,9 @@ preprocess = 0.5
 randomness = 0.08
 visibility_rect = Rect2( 3.46936, -1146.11, 1354.03, 2194.14 )
 local_coords = false
-process_material = SubResource( 4 )
+process_material = SubResource( 6 )
 texture = ExtResource( 9 )
 script = ExtResource( 11 )
+[connection signal="value_changed" from="LegacyLevel/PauseMenu/MusicVolume/HSlider" to="LegacyLevel/PauseMenu" method="_on_volume_changed"]
 [connection signal="pressed" from="LegacyWorldLoader/Button" to="LegacyWorldLoader/Button" method="_on_Button_pressed"]
 [connection signal="body_entered" from="OOBArea" to="OOBArea" method="_on_OOBArea_body_entered"]
