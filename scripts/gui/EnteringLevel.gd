@@ -1,5 +1,8 @@
 extends Control
 
+func _ready():
+	get_parent().connect("get_level_info", self, "set_level_info")
+
 func showLevel(title: String, author: String):
 	$Timer.stop()
 	$Tween.stop_all()
@@ -13,8 +16,6 @@ func showLevel(title: String, author: String):
 	$Tween.interpolate_property(self, "modulate", Color(1,1,1,0), Color(1,1,1,1), 1, Tween.TRANS_CUBIC, Tween.EASE_IN)
 	$Tween.start()
 	$Timer.start()
-	
-	#
 
 
 func _on_Timer_timeout():
@@ -23,3 +24,6 @@ func _on_Timer_timeout():
 	
 	$Tween.interpolate_property(self, "modulate", Color(1,1,1,1), Color(1,1,1,0), 3, Tween.TRANS_CUBIC, Tween.EASE_OUT)
 	$Tween.start()
+
+func set_level_info(info):
+	showLevel(info.title, info.author)

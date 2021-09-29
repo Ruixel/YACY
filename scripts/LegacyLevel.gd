@@ -24,6 +24,7 @@ var player = null
 var spawnLocation = null
 
 signal s_levelLoaded
+signal get_level_info
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
@@ -176,7 +177,7 @@ func clear_level():
 	EntityManager._reset()
 
 func get_mazeFile(gameNumber):
-	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile }}"}'
+	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile, description, lastEdited, plays, numRating, totalRating }}"}'
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
@@ -214,8 +215,7 @@ func _on_request_completed(result, response_code, headers, body):
 	var loader = get_node("/root/Gameplay/LegacyWorldLoader/Button")
 	loader.loadLevel(mazeFile)
 	
-	var entering_ui = $EnteringUI
-	entering_ui.showLevel(r.data.getLevel.title, r.data.getLevel.author)
+	emit_signal("get_level_info", r.data.getLevel)
 
 func set_weather(weather_enum):
 	self.weather = weather_enum
