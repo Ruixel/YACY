@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Scenes/Env/LegacyEnv.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=2]
@@ -21,18 +21,15 @@
 [ext_resource path="res://res/txrs/gui/calendar.png" type="Texture" id=19]
 [ext_resource path="res://res/txrs/gui/thumbs_up.png" type="Texture" id=20]
 [ext_resource path="res://scripts/gui/Menu/PauseMenuButtons.gd" type="Script" id=21]
+[ext_resource path="res://res/sfx/ui/success.mp3" type="AudioStream" id=22]
+[ext_resource path="res://res/sfx/ui/hover.mp3" type="AudioStream" id=23]
+[ext_resource path="res://Scenes/UI/WhiteSliderGrabberArea.tres" type="StyleBox" id=24]
 
 [sub_resource type="StyleBoxFlat" id=1]
 content_margin_top = 20.0
 content_margin_bottom = 20.0
 bg_color = Color( 0.6, 0.6, 0.6, 0 )
 expand_margin_top = 6.0
-
-[sub_resource type="StyleBoxFlat" id=2]
-content_margin_top = 0.0
-content_margin_bottom = 0.0
-bg_color = Color( 1, 1, 1, 1 )
-border_width_bottom = 4
 
 [sub_resource type="BoxShape" id=3]
 
@@ -167,7 +164,8 @@ custom_icons/grabber_disabled = ExtResource( 15 )
 custom_icons/grabber_highlight = ExtResource( 15 )
 custom_icons/grabber = ExtResource( 15 )
 custom_styles/slider = SubResource( 1 )
-custom_styles/grabber_area = SubResource( 2 )
+custom_styles/grabber_area_highlight = ExtResource( 24 )
+custom_styles/grabber_area = ExtResource( 24 )
 value = 75.0
 __meta__ = {
 "_edit_use_anchors_": false
@@ -404,6 +402,12 @@ __meta__ = {
 
 [node name="Tween" type="Tween" parent="LegacyLevel/PauseMenu/MenuButtons/Continue"]
 
+[node name="Click" type="AudioStreamPlayer" parent="LegacyLevel/PauseMenu/MenuButtons"]
+stream = ExtResource( 22 )
+
+[node name="Hover" type="AudioStreamPlayer" parent="LegacyLevel/PauseMenu/MenuButtons"]
+stream = ExtResource( 23 )
+
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 5 )
 Loader = NodePath("../LegacyLevel/ObjectLoader")
@@ -444,6 +448,7 @@ local_coords = false
 process_material = SubResource( 6 )
 texture = ExtResource( 9 )
 script = ExtResource( 11 )
+
 [connection signal="value_changed" from="LegacyLevel/PauseMenu/MusicVolume/HSlider" to="LegacyLevel/PauseMenu" method="_on_volume_changed"]
 [connection signal="button_down" from="LegacyLevel/PauseMenu/MenuButtons/Exit/Button" to="LegacyLevel/PauseMenu/MenuButtons" method="_on_Exit_button_down"]
 [connection signal="mouse_entered" from="LegacyLevel/PauseMenu/MenuButtons/Exit/Button" to="LegacyLevel/PauseMenu/MenuButtons" method="_on_Exit_mouse_entered"]

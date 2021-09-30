@@ -22,6 +22,8 @@ func _on_Level_mouse_entered():
 	ctween.interpolate_property($Shine, "color", $Shine.color, Color(1,1,1,0.1),
 	  0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	ctween.start()
+	
+	$Hover.play()
 
 
 func _on_Level_mouse_exited():
@@ -39,6 +41,8 @@ func _on_Level_mouse_exited():
 func _on_Level_button_down():
 	ctween.stop_all()
 	$Shine.color = Color(0, 0, 0, 0.2)
+	
+	$Click.play()
 
 func _on_Level_button_up():
 	ctween.stop_all()

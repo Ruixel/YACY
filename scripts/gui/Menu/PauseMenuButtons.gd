@@ -12,6 +12,8 @@ func on_mouse_hover(tween, label, hover_color):
 	tween.interpolate_property(label, "modulate", label.modulate, 
 	 hover_color, 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
+	
+	$Hover.play()
 
 func on_mouse_exit(tween, label):
 	tween.stop_all()
@@ -35,6 +37,7 @@ func _on_Exit_mouse_exited():
 	on_mouse_exit($Exit/Tween, $Exit/ButtonLabel)
 func _on_Exit_button_down():
 	on_mouse_hover($Exit/Tween, $Exit/ButtonLabel, Color(0.6, 0.1, 0.1))
+	$Click.play()
 
 func _on_Restart_mouse_entered():
 	on_mouse_hover($Restart/Tween, $Restart/ButtonLabel, Color(0.65, 0.65, 0.65))
@@ -42,6 +45,7 @@ func _on_Restart_mouse_exited():
 	on_mouse_exit($Restart/Tween, $Restart/ButtonLabel)
 func _on_Restart_button_down():
 	on_mouse_hover($Restart/Tween, $Restart/ButtonLabel, Color(0.4, 0.4, 0.4))
+	$Click.play()
 
 func _on_Continue_mouse_entered():
 	on_mouse_hover($Continue/Tween, $Continue/ButtonLabel, Color(0.65, 0.65, 0.65))

@@ -95,7 +95,6 @@ func is_valid(ground):
 	# Iterate through each point 
 	var verts = ground.vertices
 	for p in vertices:
-		var i = 0
 		var j = 3
 		var c = false
 		for i in range(0, 4):
