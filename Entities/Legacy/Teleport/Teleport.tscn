@@ -19,46 +19,32 @@ uv1_offset = Vector3( 1, 0.001, 0 )
 resource_local_to_scene = true
 material = SubResource( 1 )
 
-[sub_resource type="ViewportTexture" id=3]
-viewport_path = NodePath("Viewport")
-
-[sub_resource type="SpatialMaterial" id=4]
-resource_local_to_scene = true
-render_priority = 1
-flags_transparent = true
-albedo_texture = SubResource( 3 )
-
-[sub_resource type="PlaneMesh" id=5]
-resource_local_to_scene = true
-material = SubResource( 4 )
-
-[sub_resource type="BoxShape" id=6]
-extents = Vector3( 0.404882, 0.284678, 0.394621 )
-
-[sub_resource type="DynamicFont" id=7]
+[sub_resource type="DynamicFont" id=3]
 size = 200
 outline_size = 2
 outline_color = Color( 0.823529, 0.823529, 0.823529, 0.733333 )
 font_data = ExtResource( 2 )
 
+[sub_resource type="ViewportTexture" id=4]
+viewport_path = NodePath("Viewport")
+
+[sub_resource type="SpatialMaterial" id=5]
+resource_local_to_scene = true
+render_priority = 1
+flags_transparent = true
+albedo_texture = SubResource( 4 )
+
+[sub_resource type="PlaneMesh" id=6]
+resource_local_to_scene = true
+material = SubResource( 5 )
+
+[sub_resource type="BoxShape" id=7]
+extents = Vector3( 0.404882, 0.284678, 0.394621 )
+
 [node name="Teleport" type="MeshInstance"]
 mesh = SubResource( 2 )
 material/0 = null
 script = ExtResource( 3 )
-
-[node name="Pos" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-
-[node name="Number" type="MeshInstance" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0.01, 0 )
-mesh = SubResource( 5 )
-material/0 = null
-
-[node name="Area" type="Area" parent="."]
-
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321482, 0 )
-shape = SubResource( 6 )
 
 [node name="Viewport" type="Viewport" parent="."]
 size = Vector2( 256, 256 )
@@ -72,7 +58,7 @@ gui_disable_input = true
 [node name="Text" type="Label" parent="Viewport"]
 anchor_bottom = 1.0
 margin_right = 256.0
-custom_fonts/font = SubResource( 7 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
 text = "1"
@@ -80,4 +66,19 @@ align = 1
 valign = 1
 autowrap = true
 clip_text = true
+
+[node name="Pos" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+
+[node name="Number" type="MeshInstance" parent="."]
+transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0.01, 0 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="Area" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="Area"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321482, 0 )
+shape = SubResource( 7 )
+
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
