@@ -176,6 +176,8 @@ func _level_selected(btn):
 		return
 	active = false
 	
+	$LoadLevel.play()
+	
 	fadeGui.fade(0.6)
 	yield(fadeGui, "s_fade_complete")
 	

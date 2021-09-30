@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scripts/gui/LevelList.gd" type="Script" id=1]
 [ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=2]
+[ext_resource path="res://res/sfx/ui/tv_turning_on.WAV" type="AudioStream" id=3]
 
 [sub_resource type="StyleBoxEmpty" id=1]
 
@@ -103,6 +104,10 @@ __meta__ = {
 
 [node name="HTTPRequest" type="HTTPRequest" parent="ScrollContainer/GridContainer"]
 
+[node name="LoadLevel" type="AudioStreamPlayer" parent="ScrollContainer/GridContainer"]
+stream = ExtResource( 3 )
+volume_db = -5.0
+
 [node name="Pagination" type="HBoxContainer" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -158,6 +163,7 @@ margin_bottom = 101.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="item_selected" from="SearchTerms/SearchType" to="ScrollContainer/GridContainer" method="_on_SearchType_item_selected"]
 [connection signal="text_entered" from="SearchTerms/Search" to="ScrollContainer/GridContainer" method="_on_Search_text_entered"]
 [connection signal="item_selected" from="SearchTerms/OrderType" to="ScrollContainer/GridContainer" method="_on_OrderType_item_selected"]
