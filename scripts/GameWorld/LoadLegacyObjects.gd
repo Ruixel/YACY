@@ -169,6 +169,7 @@ func create_finish(pos: Vector2, condition: int, level: int):
 	new_finish.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
 	get_parent().call("add_entity", new_finish)
+	get_parent().call("set_finish_condition", condition)
 
 func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, level : int):
 	var new_board = preload("res://Entities/Legacy/MessageBoard/MsgBoard.tscn").instance()
@@ -211,6 +212,7 @@ func create_portal(pos : Vector2, title : String, condition : int, gameNumber: S
 	new_portal.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
 	get_parent().call("add_entity", new_portal)
+	get_parent().call("add_optional_condition", WorldConstants.Objectives.PORTAL)
 
 func create_teleport(pos : Vector2, number : int, level : int):
 	var new_tp = preload("res://Entities/Legacy/Teleport/Teleport.tscn").instance()

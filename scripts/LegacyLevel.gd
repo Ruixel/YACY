@@ -13,6 +13,8 @@ var entities : Array = []
 var default_objs : Dictionary
 var collectables: Dictionary
 var weather = WorldConstants.Weather.PARTLY_CLOUDY
+var finish_conditions = []
+var optional_conditions = []
 
 var level : int = 1
 var levelMeshes : Array 
@@ -25,6 +27,7 @@ var spawnLocation = null
 
 signal s_levelLoaded
 signal get_level_info
+signal get_finish_conditions
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
@@ -55,6 +58,8 @@ func setupLevel():
 	objects = []
 	fixed_objects = {}
 	collectables = {}
+	finish_conditions = []
+	optional_conditions = []
 	weather = WorldConstants.Weather.PARTLY_CLOUDY
 	var level_debris = get_node_or_null("LevelDebris")
 	if level_debris != null:
@@ -90,6 +95,7 @@ func level_finished_loading():
 	var fade = get_node("/root/Main/Fade")
 	fade.unfade(1)
 	emit_signal("s_levelLoaded")
+	emit_signal("get_finish_conditions", finish_conditions + optional_conditions)
 	spawnPlayer()
 	
 	# Add weather effects
@@ -260,3 +266,16 @@ func on_music_volume_change(new_volume, allow_play = true):
 			$MusicPlayer.play()
 		var db_decrease = ((100.0 - new_volume) / 100.0) * 30.0
 		$MusicPlayer.volume_db = -5.0 - (db_decrease)
+
+func set_finish_condition(condition: int):
+	if (condition == 1 or condition == 4):
+		finish_conditions.append(WorldConstants.Objectives.DIAMONDS)
+		
+	if (condition == 3 or condition == 4):
+		finish_conditions.append(WorldConstants.Objectives.ICEMEN)
+	
+	finish_conditions.append(WorldConstants.Objectives.FINISH)
+
+func add_optional_condition(condition):
+	if not optional_conditions.has(condition):
+		optional_conditions.append(condition)

@@ -7,6 +7,8 @@ const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Se
 
 var busy = false
 var paused = false
+var description = ""
+var conditions = ["None, feel free to explore around"]
 
 export var can_pause = true
 
@@ -18,6 +20,7 @@ signal change_music_volume
 func _ready():
 	get_parent().connect("get_level_info", self, "set_level_info")
 	get_parent().connect("s_levelLoaded", self, "unpause")
+	get_parent().connect("get_finish_conditions", self, "set_level_conditions")
 	
 	call_deferred("_on_volume_changed", 75.0, false)
 
@@ -54,10 +57,8 @@ func set_level_info(info):
 	$Title.text = info.title
 	$Author.text = "By " + info.author
 	
-	var desc_and_obj = info.description
-	desc_and_obj += "\n\nObjectives:\n"
-	desc_and_obj += " - Find the Finish"
-	$Description.text = desc_and_obj
+	self.description = info.description
+	set_description_and_conditions()
 	
 	# Gonna be a while until any game reaches 1 million plays lol
 	var plays = int(info.plays)
@@ -97,3 +98,30 @@ func _on_Restart_pressed():
 
 func _on_Continue_pressed():
 	unpause()
+
+func set_level_conditions(conditions):
+	self.conditions = []
+	for condition in conditions:
+		match condition:
+			WorldConstants.Objectives.DIAMONDS: 
+				self.conditions.append("Collect all diamonds")
+			WorldConstants.Objectives.ICEMEN: 
+				self.conditions.append("Destroy all the icemen")
+			WorldConstants.Objectives.FINISH: 
+				self.conditions.append("Reach the finish")
+			WorldConstants.Objectives.PORTAL: 
+				self.conditions.append("There are portals that lead to other levels")
+	
+	if self.conditions.empty():
+		self.conditions.append("None, feel free to explore around")
+	
+	set_description_and_conditions()
+
+func set_description_and_conditions():
+	var desc_and_obj = description
+	desc_and_obj += "\n\nObjectives:\n"
+	
+	for condition in self.conditions:
+		desc_and_obj += " - " + condition + "\n"
+	
+	$Description.text = desc_and_obj

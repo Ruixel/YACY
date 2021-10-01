@@ -26,6 +26,10 @@ enum Mode {
 	SELECT, MULTISELECT, CREATE, EDIT
 }
 
+enum Objectives {
+	DIAMONDS, ICEMEN, FINISH, PORTAL
+}
+
 const ToolToString = {
 	Tools.NOTHING: "Nothing",
 	Tools.WALL: "Wall",
