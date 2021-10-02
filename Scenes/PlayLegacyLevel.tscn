@@ -215,10 +215,7 @@ margin_top = 120.0
 margin_right = 380.0
 margin_bottom = 320.0
 custom_fonts/normal_font = ExtResource( 16 )
-text = "A annoying game that makes you want to hit your head on a wall, but it has fun school questions. 
-
-Objectives:
- - Find the Finish"
+bbcode_enabled = true
 __meta__ = {
 "_edit_use_anchors_": false
 }

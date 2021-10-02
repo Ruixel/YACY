@@ -99,6 +99,7 @@ shape = SubResource( 4 )
 [node name="ThinkTimer" type="Timer" parent="."]
 wait_time = 3.0
 autostart = true
+
 [connection signal="body_entered" from="NearArea" to="." method="_on_NearArea_body_entered"]
 [connection signal="body_exited" from="NearArea" to="." method="_on_NearArea_body_exited"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_HitBox_body_entered"]

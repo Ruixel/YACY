@@ -18,6 +18,9 @@ func collect(body):
 	if body.has_method("pickupDiamond"):
 		body.pickupDiamond(time_save)
 	
+	var level_manager = get_parent().get_parent()
+	level_manager.call("player_collect", "diamond")
+	
 	$PickupSFX.play()
 	yield($PickupSFX, "finished")
 	self.queue_free()

@@ -12,6 +12,7 @@ var fixed_objects: Dictionary
 var entities : Array = []
 var default_objs : Dictionary
 var collectables: Dictionary
+var collected: Dictionary # Move to other script?
 var weather = WorldConstants.Weather.PARTLY_CLOUDY
 var finish_conditions = []
 var optional_conditions = []
@@ -28,6 +29,7 @@ var spawnLocation = null
 signal s_levelLoaded
 signal get_level_info
 signal get_finish_conditions
+signal all_collected
 
 const toolToObjectDict = {
 	WorldConstants.Tools.WALL: Wall,
@@ -269,13 +271,23 @@ func on_music_volume_change(new_volume, allow_play = true):
 
 func set_finish_condition(condition: int):
 	if (condition == 1 or condition == 4):
-		finish_conditions.append(WorldConstants.Objectives.DIAMONDS)
+		finish_conditions.append([WorldConstants.Objectives.DIAMONDS, false])
 		
 	if (condition == 3 or condition == 4):
-		finish_conditions.append(WorldConstants.Objectives.ICEMEN)
+		finish_conditions.append([WorldConstants.Objectives.ICEMEN, false])
 	
-	finish_conditions.append(WorldConstants.Objectives.FINISH)
+	finish_conditions.append([WorldConstants.Objectives.FINISH, false])
 
 func add_optional_condition(condition):
-	if not optional_conditions.has(condition):
-		optional_conditions.append(condition)
+	if not optional_conditions.has([condition, false]):
+		optional_conditions.append([condition, false])
+
+func player_collect(name: String, amount: int = 1):
+	if self.collected.has(name):
+		self.collected[name] += amount
+	else:
+		self.collected[name] = amount
+	
+	if self.collectables.has(name):
+		if self.collected[name] == self.collectables[name]:
+			emit_signal("all_collected", name)

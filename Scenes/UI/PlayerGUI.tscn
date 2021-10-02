@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://scripts/gui/PlayerGUI.gd" type="Script" id=2]
@@ -48,10 +48,24 @@ glow_bicubic_upscale = true
 [sub_resource type="World" id=4]
 environment = SubResource( 3 )
 
-[sub_resource type="World" id=5]
-environment = ExtResource( 7 )
+[sub_resource type="StyleBoxFlat" id=5]
+bg_color = Color( 0, 0, 0, 0.243137 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="World" id=6]
+environment = ExtResource( 7 )
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0, 0, 0, 0.243137 )
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="World" id=7]
 environment = SubResource( 3 )
 
 [node name="PlayerGUI" type="Control"]
@@ -270,16 +284,28 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="Panel" type="Panel" parent="ItemsLeft/Diamonds"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 3.0
+margin_right = -139.0
+margin_bottom = -50.0
+custom_styles/panel = SubResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Count" type="RichTextLabel" parent="ItemsLeft/Diamonds"]
-margin_left = 56.0394
-margin_top = -0.374939
-margin_right = 229.039
-margin_bottom = 69.6251
+margin_left = 56.2754
+margin_top = 0.625061
+margin_right = 229.275
+margin_bottom = 70.6251
 custom_fonts/bold_font = ExtResource( 3 )
 custom_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[b]5[/b] / 24"
-text = "5 / 24"
+bbcode_text = " [b]5[/b] / 24"
+text = " 5 / 24"
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -297,7 +323,7 @@ __meta__ = {
 
 [node name="Viewport" type="Viewport" parent="ItemsLeft/Diamonds/ViewportContainer"]
 size = Vector2( 50, 50 )
-world = SubResource( 5 )
+world = SubResource( 6 )
 transparent_bg = true
 handle_input_locally = false
 usage = 3
@@ -319,6 +345,18 @@ margin_top = 75.0
 margin_right = 288.0
 margin_bottom = 183.0
 mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel" type="Panel" parent="ItemsLeft/Icemen"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 4.0
+margin_top = 3.0
+margin_right = -139.0
+margin_bottom = -50.0
+custom_styles/panel = SubResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -350,7 +388,7 @@ __meta__ = {
 
 [node name="Viewport" type="Viewport" parent="ItemsLeft/Icemen/ViewportContainer"]
 size = Vector2( 50, 50 )
-world = SubResource( 6 )
+world = SubResource( 7 )
 transparent_bg = true
 handle_input_locally = false
 usage = 3
@@ -412,4 +450,5 @@ texture = ExtResource( 10 )
 expand = true
 
 [node name="Tween" type="Tween" parent="FrozenScreen"]
+
 [connection signal="timeout" from="Clock/Timer" to="." method="_on_Timer_timeout"]

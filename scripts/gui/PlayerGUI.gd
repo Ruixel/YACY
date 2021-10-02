@@ -50,29 +50,45 @@ func setupCollectables(collectables: Dictionary):
 func loadDiamonds(max_diamonds: int):
 	if max_diamonds > 0:
 		self.max_diamonds = max_diamonds
-		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]0[/b] / " + str(max_diamonds)
+#		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]0[/b] / " + str(max_diamonds)
+		updateDiamonds(0)
 		$ItemsLeft/Diamonds.visible = true
 
 func updateDiamonds(diamonds: int):
 	if diamonds == max_diamonds:
-		$ItemsLeft/Diamonds/Count.bbcode_text = "[wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
+		$ItemsLeft/Diamonds/Count.bbcode_text = " [wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
+		$ItemsLeft/Diamonds/Panel.get_stylebox("panel").bg_color = Color(0.2, 1.0, 0.2, 0.24)
 	else:
-		$ItemsLeft/Diamonds/Count.bbcode_text = "[b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
+		$ItemsLeft/Diamonds/Count.bbcode_text = " [b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
+		$ItemsLeft/Diamonds/Panel.get_stylebox("panel").bg_color = Color(0.0, 0.0, 0.0, 0.24)
+	
+	var big_text_width = $ItemsLeft/Diamonds/Count.get_font("bold_font").get_string_size(str(diamonds))
+	var small_text_width = $ItemsLeft/Diamonds/Count.get_font("normal_font").get_string_size("  / " + str(max_diamonds))
+	$ItemsLeft/Diamonds/Panel.rect_size.x = big_text_width.x + small_text_width.x + 66
 
 func loadIcemen(total_icemen: int):
 	if total_icemen:
 		self.total_icemen = total_icemen
 		self.icemen = total_icemen
-		$ItemsLeft/Icemen/Count.bbcode_text = "[b]" + str(total_icemen) + "[/b]  left"
+		
+		self.icemen += 1
+		killedIceman()
+		
 		$ItemsLeft/Icemen.visible = true
 
 func killedIceman():
 	self.icemen -= 1
 	
 	if self.icemen == 0:
-		$ItemsLeft/Icemen/Count.bbcode_text = "[wave amp=20 freq=10][b]" + str(self.icemen) + "[/b]  left[/wave]"
+		$ItemsLeft/Icemen/Count.bbcode_text = " [wave amp=20 freq=10][b]" + str(self.icemen) + "[/b]  left[/wave]"
+		$ItemsLeft/Icemen/Panel.get_stylebox("panel").bg_color = Color(0.2, 1.0, 0.2, 0.24)
 	else:
-		$ItemsLeft/Icemen/Count.bbcode_text = "[b]" + str(self.icemen) + "[/b]  left"
+		$ItemsLeft/Icemen/Count.bbcode_text = " [b]" + str(self.icemen) + "[/b]  left"
+		$ItemsLeft/Icemen/Panel.get_stylebox("panel").bg_color = Color(0.0, 0.0, 0.0, 0.24)
+	
+	var big_text_width = $ItemsLeft/Icemen/Count.get_font("bold_font").get_string_size(str(self.icemen))
+	var small_text_width = $ItemsLeft/Icemen/Count.get_font("normal_font").get_string_size("   left")
+	$ItemsLeft/Icemen/Panel.rect_size.x = big_text_width.x + small_text_width.x + 66
 
 func updateItemsLeft():
 	var y = 25

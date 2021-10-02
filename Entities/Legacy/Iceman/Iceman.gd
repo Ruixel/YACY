@@ -121,6 +121,10 @@ func _on_HitBox_body_entered(body):
 			split.global_transform = self.global_transform
 			get_parent().add_child(split)
 			
+			# Let the level manager know
+			var level_manager = get_parent().get_parent()
+			level_manager.call("player_collect", "iceman")
+			
 			# Disappear & Clean up
 			self.visible = false
 			self.active = false

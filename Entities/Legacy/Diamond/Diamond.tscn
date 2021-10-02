@@ -57,4 +57,5 @@ max_db = 2.0
 light_color = Color( 0, 0.815686, 1, 1 )
 omni_range = 4.0
 omni_attenuation = 3.4822
+
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]

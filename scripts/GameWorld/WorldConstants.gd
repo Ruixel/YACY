@@ -27,7 +27,7 @@ enum Mode {
 }
 
 enum Objectives {
-	DIAMONDS, ICEMEN, FINISH, PORTAL
+	DIAMONDS, ICEMEN, FINISH, PORTAL, NONE
 }
 
 const ToolToString = {
