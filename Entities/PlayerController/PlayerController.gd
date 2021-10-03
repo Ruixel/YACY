@@ -93,6 +93,7 @@ func reset():
 	canMove = true
 	hasSlingshot = false
 	ammo = 0
+	speedMultiplier = 1.0
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
