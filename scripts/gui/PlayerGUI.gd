@@ -97,8 +97,6 @@ func updateItemsLeft():
 			node.rect_position = Vector2(10, y)
 			y += 60
 
-
-
 func pickupJetpack():
 	$BR/Jetpack.visible = true
 	$BR/Ammo.rect_position.y -= 50

@@ -168,6 +168,8 @@ func create_finish(pos: Vector2, condition: int, level: int):
 	pos = pos / 5.0
 	new_finish.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
+	new_finish.set_condition(condition)
+	
 	get_parent().call("add_entity", new_finish)
 	get_parent().call("set_finish_condition", condition)
 
