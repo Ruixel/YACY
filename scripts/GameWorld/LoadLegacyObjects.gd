@@ -208,6 +208,8 @@ func create_portal(pos : Vector2, title : String, condition : int, gameNumber: S
 	var t = new_portal.get_node("Viewport").get_texture()
 	new_portal.get_node("TextArea").get_surface_material(0).albedo_texture = t
 	
+	new_portal.set_condition(condition)
+	
 	pos = pos / 5.0
 	new_portal.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	

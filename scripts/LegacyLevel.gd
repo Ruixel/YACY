@@ -60,9 +60,12 @@ func setupLevel():
 	objects = []
 	fixed_objects = {}
 	collectables = {}
+	collected = {}
 	finish_conditions = []
 	optional_conditions = []
 	weather = WorldConstants.Weather.PARTLY_CLOUDY
+	
+	# Remove temporary level debris
 	var level_debris = get_node_or_null("LevelDebris")
 	if level_debris != null:
 		for item in level_debris.get_children():
