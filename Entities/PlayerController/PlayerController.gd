@@ -55,6 +55,7 @@ var ammo := 0
 var chased_by_chaser = null
 
 var busy : bool = false
+var tp_busy : bool = false
 var pause : bool = false
 var invulnerable : bool = false
 
@@ -84,6 +85,7 @@ func reset():
 	flying = false
 	canFly = false
 	busy = false
+	tp_busy = false
 	pause = false
 	invulnerable = false
 	fuel_amount = 0.0

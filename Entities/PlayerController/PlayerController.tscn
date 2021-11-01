@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://Entities/PlayerController/PlayerController.gd" type="Script" id=1]
 [ext_resource path="res://Scenes/UI/PlayerGUI.tscn" type="PackedScene" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://Entities/Legacy/Jetpack/Wings.material" type="Material" id=8]
 [ext_resource path="res://res/sfx/splash.ogg" type="AudioStream" id=9]
 [ext_resource path="res://res/sfx/freeze.ogg" type="AudioStream" id=10]
+[ext_resource path="res://res/sfx/teleport.ogg" type="AudioStream" id=11]
 
 [sub_resource type="RayShape" id=1]
 length = 0.638182
@@ -114,6 +115,10 @@ unit_db = -5.0
 [node name="Freeze" type="AudioStreamPlayer3D" parent="AudioNode"]
 stream = ExtResource( 10 )
 unit_db = -2.0
+
+[node name="Teleport" type="AudioStreamPlayer3D" parent="AudioNode"]
+stream = ExtResource( 11 )
+unit_db = -3.0
 
 [node name="PlayerHead" parent="." instance=ExtResource( 5 )]
 transform = Transform( -1.30337e-08, 0, 0.1, 0, 0.08, 0, -0.08, 0, -1.62921e-08, 0, 0.251803, -0.00973667 )

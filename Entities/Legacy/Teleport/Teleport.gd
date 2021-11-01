@@ -6,6 +6,7 @@ const TeleportColours = [
 ]
 
 var number : int = 1
+var player = null
 
 func set_number(num : int):
 	var text = str(num)
@@ -23,16 +24,27 @@ func set_number(num : int):
 	
 	EntityManager.add_teleport(number, self)
 
-
 func _on_Area_body_entered(body):
 	if body.has_meta("player"):
-		if body.busy == false:
-			body.busy = true
+		if body.tp_busy == false:
+			body.tp_busy = true
 			
-			# Get correspoding teleport
-			var tp = EntityManager.get_teleport(number, self)
-			if tp != null:
-				body.set_transform(tp.get_node("Pos").get_global_transform())
+			self.player = body
+			set_process(true)
+
+func _process(delta):
+	if player == null:
+		set_process(false)
+		return
+	
+	var velocity = Vector3(player.charVelocity.x, 0, player.charVelocity.z).length()
+	#print("Velocity: ", velocity)
+	if velocity < 0.2:
+		var tp = EntityManager.get_teleport(number, self)
+		if tp != null:
+			player.get_node("AudioNode/Teleport").play()
+			player.set_transform(tp.get_node("Pos").get_global_transform().translated(Vector3(0, -0.1, 0)))
 			
-			yield(get_tree().create_timer(1.0), "timeout")
-			body.busy = false
+		set_process(false)
+		yield(get_tree().create_timer(1.0), "timeout")
+		player.tp_busy = false
