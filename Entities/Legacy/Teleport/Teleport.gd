@@ -36,6 +36,10 @@ func _process(delta):
 	if player == null:
 		set_process(false)
 		return
+		
+	if not $Area.overlaps_body(player):
+		player.tp_busy = false
+		set_process(false)
 	
 	var velocity = Vector3(player.charVelocity.x, 0, player.charVelocity.z).length()
 	#print("Velocity: ", velocity)
