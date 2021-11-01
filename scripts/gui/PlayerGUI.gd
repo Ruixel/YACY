@@ -95,7 +95,7 @@ func updateItemsLeft():
 	for node in items_left_nodes:
 		if node.visible:
 			node.rect_position = Vector2(10, y)
-			y += 60
+			y += 65
 
 func pickupJetpack():
 	$BR/Jetpack.visible = true
@@ -170,3 +170,4 @@ func display_level_finish():
 		
 	var finish_ui = load("res://Scenes/UI/WinScreen.tscn").instance()
 	add_child(finish_ui)
+	finish_ui.set_time(time)

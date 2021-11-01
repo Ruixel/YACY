@@ -193,6 +193,14 @@ func get_mazeFile(gameNumber):
 	headers.append("Content-Type: application/json")
 	
 	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
+	add_play_count(gameNumber)
+
+func add_play_count(gameNumber):
+	var mutation = '{"query": "mutation { addPlayCount(gameNumber: ' + str(gameNumber) + ') }"}'
+	var headers : PoolStringArray
+	headers.append("Content-Type: application/json")
+	
+	$AddPlayCount.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, mutation)
 	
 func load_level(gameNumber):
 	get_mazeFile(gameNumber)
@@ -294,3 +302,6 @@ func player_collect(name: String, amount: int = 1):
 	if self.collectables.has(name):
 		if self.collected[name] == self.collectables[name]:
 			emit_signal("all_collected", name)
+
+func get_gameNumber():
+	return self.gameNumber

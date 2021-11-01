@@ -68,7 +68,7 @@ func set_level_info(info):
 	# Gonna be a while until any game reaches 1 million plays lol
 	var plays = int(info.plays)
 	if plays >= 1000:
-		$Stats/Plays.text = str(floor(plays / 1000)) + "," + str(int(plays) % 1000)
+		$Stats/Plays.text = str(floor(plays / 1000)) + "," + str("%03d" % (int(plays) % 1000))
 	else:
 		$Stats/Plays.text = str(plays)
 	

@@ -405,6 +405,8 @@ stream = ExtResource( 22 )
 [node name="Hover" type="AudioStreamPlayer" parent="LegacyLevel/PauseMenu/MenuButtons"]
 stream = ExtResource( 23 )
 
+[node name="AddPlayCount" type="HTTPRequest" parent="LegacyLevel"]
+
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 5 )
 Loader = NodePath("../LegacyLevel/ObjectLoader")
