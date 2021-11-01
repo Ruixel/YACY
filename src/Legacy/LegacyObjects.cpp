@@ -157,9 +157,9 @@ namespace Legacy {
         for (int i = 0; i < objects; i++) {
             godot::PoolStringArray obj = extractObjectProperties(objectArray[i]);
             
-            //                                                      // Displacement              // Start Position            // Front Material         // Height           // Level
-            if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[4]), extractInt(obj[6]), extractInt(obj[7]));
-            else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[4]), 1,                  extractInt(obj[6]));
+            //                                                      // Displacement              // Start Position            // Front Material         // Back Material          // Height           // Level
+            if      (objectSize == 8) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[5]), extractTexColour(obj[4]), extractInt(obj[6]), extractInt(obj[7]));
+            else if (objectSize == 7) worldAPI->call("create_wall", extractVec2(obj[0], obj[1]), extractVec2(obj[2], obj[3]), extractTexColour(obj[5]), extractTexColour(obj[4]), 1,                  extractInt(obj[6]));
         }
     }
     

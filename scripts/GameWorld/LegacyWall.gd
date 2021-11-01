@@ -11,6 +11,8 @@ var level : int
 
 var texture : int = 3
 var colour := Color(1, 1, 1)
+var back_texture : int = 3
+var back_colour := Color(1, 1, 1)
 
 var max_height : float = 1.0
 var min_height : float = 0.0
@@ -58,8 +60,12 @@ func change_colour(newColour : Color):
 func change_wallShape(newShape):
 	wallShape = newShape
 
+func replicate_material():
+	back_texture = texture
+	back_colour = colour
+
 func _genMesh():
-	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture, colour, wallShape)
+	mesh.mesh = buildWall(start, end, level, min_height, max_height, texture, colour, back_texture, back_colour, wallShape)
 	collision_shape.shape = mesh.mesh.create_convex_shape()
 	
 	# Set collision layers
@@ -181,7 +187,7 @@ static func _createWallTriMesh(surface_tool : SurfaceTool, wall_vertices : Array
 
 # Build Mesh
 static func buildWall(start : Vector2, end : Vector2, level : int, min_height : float, 
-	max_height : float, tex : int, colour : Color, wallShape) -> Mesh:
+	max_height : float, tex : int, colour : Color, back_tex : int, back_colour : Color, wallShape) -> Mesh:
 	
 	# Only create mesh for valid walls
 	if end.x == -1:
@@ -198,6 +204,10 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 	if tex != WorldTextures.TextureID.COLOR:
 		meshColor = Color(1,1,1)
 	
+	var back_meshColor = back_colour
+	if back_tex != WorldTextures.TextureID.COLOR:
+		back_meshColor = Color(1,1,1)
+	
 	# Calculate wall vertices
 	var wall_vertices = []
 	wall_vertices.insert(0, Vector3(start.x, maxHeight, start.y))
@@ -210,20 +220,20 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 		
 		# Rearrange vertices for the backwall
 		var bVertices = [wall_vertices[3], wall_vertices[2], wall_vertices[1], wall_vertices[0]]
-		_createWallQuadMesh(surface_tool, bVertices, 4, tex, meshColor)
+		_createWallQuadMesh(surface_tool, bVertices, 4, back_tex, back_meshColor)
 		
 	elif wallShape == WorldConstants.WallShape.HALFWALLBOTTOM:
 		_createWallTriMesh(surface_tool, wall_vertices, 0, tex, meshColor, false)
 		
 		var bVertices = [wall_vertices[1], wall_vertices[0], wall_vertices[2]]
-		_createWallTriMesh(surface_tool, bVertices, 3, tex, meshColor, true)
+		_createWallTriMesh(surface_tool, bVertices, 3, back_tex, back_meshColor, true)
 	
 	elif wallShape == WorldConstants.WallShape.HALFWALLTOP:
 		var fVertices = [wall_vertices[0], wall_vertices[1], wall_vertices[3]]
 		_createWallTriMesh(surface_tool, fVertices, 0, tex, meshColor, false)
 		
 		var bVertices = [wall_vertices[1], wall_vertices[0], wall_vertices[3]]
-		_createWallTriMesh(surface_tool, bVertices, 3, tex, meshColor, true)
+		_createWallTriMesh(surface_tool, bVertices, 3, back_tex, back_meshColor, true)
 	
 	elif wallShape == WorldConstants.WallShape.QCIRCLEWALL:
 		var steps = 5
@@ -244,13 +254,13 @@ static func buildWall(start : Vector2, end : Vector2, level : int, min_height : 
 		
 			# Rearrange vertices for the backwall
 			var bVertices = [w_vertices[3], w_vertices[2], w_vertices[1], w_vertices[0]]
-			_createWallQuadMesh(surface_tool, bVertices, idx+4, tex, meshColor)
+			_createWallQuadMesh(surface_tool, bVertices, idx+4, back_tex, back_meshColor)
 			
 			idx = idx + 8
 			curHeight = curHeight + h_delta
 			start = end
 	
-	surface_tool.set_material(WorldTextures.getWallMaterial(tex))
+	surface_tool.set_material(WorldTextures.getWallMaterial(tex, back_tex))
 	return surface_tool.commit()
 
 func buildWallSelectionMesh(start : Vector2, end : Vector2, level : int, min_height : float, max_height : float,

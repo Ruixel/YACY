@@ -8,19 +8,27 @@ const Ramp = preload("res://scripts/GameWorld/LegacyRamp.gd")
 const Floor = preload("res://scripts/GameWorld/LegacyFloor.gd")
 const Hole = preload("res://scripts/GameWorld/LegacyHole.gd")
 
-func create_wall(disp : Vector2, start : Vector2, texColour, height : int, level: int):
+func create_wall(disp : Vector2, start : Vector2, texColour, backTexColour, height : int, level: int):
 	start = start / 5.0
 	disp = disp / 5.0
 	var end : Vector2 = start + disp
 	
 	var new_wall = Wall.new(start, level)
 	new_wall.end = end
+	new_wall.change_height_value(height)
+	
+	# Wall Materials 
 	if typeof(texColour) == TYPE_INT:
 		new_wall.texture = WorldTextures.getWallTexture(texColour)
 	else:
 		new_wall.texture = WorldTextures.TextureID.COLOR
 		new_wall.colour = texColour
-	new_wall.change_height_value(height)
+		
+	if typeof(backTexColour) == TYPE_INT:
+		new_wall.back_texture = WorldTextures.getWallTexture(backTexColour)
+	else:
+		new_wall.back_texture = WorldTextures.TextureID.COLOR
+		new_wall.back_colour = backTexColour
 	
 	get_parent().call("add_geometric_object", new_wall, level)
 
@@ -51,6 +59,7 @@ func create_triwall(pos : Vector2, is_bottom : int, texColour, direction : int, 
 	else:
 		new_triwall.texture = WorldTextures.TextureID.COLOR
 		new_triwall.colour = texColour
+	new_triwall.replicate_material()
 	
 	get_parent().call("add_geometric_object", new_triwall, level)
 

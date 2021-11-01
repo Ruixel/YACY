@@ -144,8 +144,11 @@ func getDoorTexture(id: int) -> int:
 		_:  return TextureID.COLOR
 
 const translucentIDs = [TextureID.BARS, TextureID.GLASS]
-func getWallMaterial(tex : int) -> ShaderMaterial:
-	if translucentIDs.has(tex):
+func getWallMaterial(tex : int, back_tex = null) -> ShaderMaterial:
+	if back_tex == null:
+		back_tex = tex
+	
+	if translucentIDs.has(tex) or translucentIDs.has(back_tex):
 		return aTextureTranslucent_mat
 	else: 
 		return aTexture_mat
