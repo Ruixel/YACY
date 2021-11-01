@@ -203,6 +203,8 @@ func add_play_count(gameNumber):
 	$AddPlayCount.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, mutation)
 	
 func load_level(gameNumber):
+	PlayerSettings.save_settings()
+	
 	get_mazeFile(gameNumber)
 	self.gameNumber = gameNumber
 	#$HTTPRequest.request("http://localhost:4000/getMaze.php?maze=" + str(gameNumber))
@@ -274,6 +276,7 @@ func attach_to_player(obj_location):
 func on_music_volume_change(new_volume, allow_play = true):
 	if new_volume <= 0:
 		$MusicPlayer.stop()
+		$MusicPlayer.volume_db = -1000000 # lol
 	else:
 		if not $MusicPlayer.playing and allow_play:
 			$MusicPlayer.play()

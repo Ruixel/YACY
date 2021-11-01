@@ -27,11 +27,15 @@ func _ready():
 	get_parent().connect("get_finish_conditions", self, "set_level_conditions")
 	get_parent().connect("all_collected", self, "on_player_all_collected")
 	
-	call_deferred("_on_volume_changed", 75.0, false)
+	var volume = PlayerSettings.music_volume
+	$MusicVolume/HSlider.value = volume
+	call_deferred("_on_volume_changed", volume, false)
 
 func exit_level():
 	busy = true
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	
+	PlayerSettings.save_settings()
 	
 	fade.fade(0.5)
 	yield(fade, "s_fade_complete")
@@ -91,8 +95,9 @@ func unpause():
 	emit_signal("unpause")
 	$MenuButtons.call("_on_Continue_mouse_exited")
 
-func _on_volume_changed(value):
-	emit_signal("change_music_volume", value)
+func _on_volume_changed(value, allow_play = true):
+	PlayerSettings.music_volume = value
+	emit_signal("change_music_volume", value, allow_play)
 
 func _on_Exit_pressed():
 	exit_level()

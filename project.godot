@@ -25,6 +25,7 @@ WorldTextures="*res://scripts/GameWorld/WorldTextures.gd"
 HoleManager="*res://scripts/GameWorld/HoleManager.gd"
 Utils="*res://scripts/Utils.gd"
 EntityManager="*res://scripts/GameWorld/EntityManager.gd"
+PlayerSettings="*res://scripts/PlayerSettings.gd"
 
 [display]
 

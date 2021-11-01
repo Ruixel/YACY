@@ -5,6 +5,9 @@ var time = null
 
 var can_submit = true
 
+func _ready():
+	$VBoxContainer/NameDetails/Name.text = PlayerSettings.player_name
+
 func set_time(time):
 	var minutes = time / 60
 	var seconds = time % 60
@@ -54,6 +57,9 @@ func _on_Submit_pressed():
 	headers.append("Content-Type: application/json")
 	
 	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, mutation)
+	
+	# Save nickname
+	PlayerSettings.player_name = nickname
 
 
 func _on_HTTPRequest_request_completed(result, response_code, headers, body):
