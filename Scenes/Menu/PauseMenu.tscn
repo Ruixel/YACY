@@ -1,0 +1,394 @@
+[gd_scene load_steps=16 format=2]
+
+[ext_resource path="res://scripts/IngameMenu.gd" type="Script" id=1]
+[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=2]
+[ext_resource path="res://res/fonts/aileron_big.tres" type="DynamicFont" id=3]
+[ext_resource path="res://res/sfx/ui/hover.mp3" type="AudioStream" id=4]
+[ext_resource path="res://res/sfx/ui/success.mp3" type="AudioStream" id=5]
+[ext_resource path="res://res/txrs/gui/thumbs_up.png" type="Texture" id=6]
+[ext_resource path="res://scripts/gui/Menu/PauseMenuButtons.gd" type="Script" id=7]
+[ext_resource path="res://res/txrs/gui/play_icon.png" type="Texture" id=8]
+[ext_resource path="res://res/txrs/gui/calendar.png" type="Texture" id=9]
+[ext_resource path="res://res/txrs/gui/empty_grabber.png" type="Texture" id=10]
+[ext_resource path="res://res/txrs/gui/black_gradient.png" type="Texture" id=11]
+[ext_resource path="res://Scenes/UI/WhiteSliderGrabberArea.tres" type="StyleBox" id=12]
+[ext_resource path="res://res/fonts/aileron_medium.tres" type="DynamicFont" id=13]
+[ext_resource path="res://res/txrs/gui/clock_icon.png" type="Texture" id=14]
+
+[sub_resource type="StyleBoxFlat" id=1]
+content_margin_top = 20.0
+content_margin_bottom = 20.0
+bg_color = Color( 0.6, 0.6, 0.6, 0 )
+expand_margin_top = 6.0
+
+[node name="PauseMenu" type="Control"]
+pause_mode = 2
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0, 0, 0, 0.341176 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -541.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect2" type="TextureRect" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -541.0
+mouse_filter = 2
+texture = ExtResource( 11 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MusicVolume" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_top = -0.814514
+margin_bottom = -0.814514
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Back" type="Panel" parent="MusicVolume"]
+modulate = Color( 0, 0, 0, 0.709804 )
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -405.0
+margin_top = -64.9999
+margin_right = -28.0
+margin_bottom = -14.9999
+mouse_filter = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HSlider" type="HSlider" parent="MusicVolume"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -400.0
+margin_top = -60.0
+margin_right = -25.0
+margin_bottom = -20.0
+mouse_filter = 1
+custom_icons/grabber_disabled = ExtResource( 10 )
+custom_icons/grabber_highlight = ExtResource( 10 )
+custom_icons/grabber = ExtResource( 10 )
+custom_styles/slider = SubResource( 1 )
+custom_styles/grabber_area_highlight = ExtResource( 12 )
+custom_styles/grabber_area = ExtResource( 12 )
+value = 75.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="MusicVolume"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = -622.113
+margin_top = -69.9276
+margin_right = -417.113
+margin_bottom = -10.9276
+custom_fonts/font = ExtResource( 13 )
+text = "Music"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Author" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 90.0
+margin_right = 207.999
+margin_bottom = 226.0
+rect_pivot_offset = Vector2( 71.0751, 15.0001 )
+custom_fonts/font = ExtResource( 2 )
+text = "By ChallengeYou
+"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Title" type="Label" parent="."]
+margin_left = 30.0
+margin_top = 30.0
+margin_right = 514.0
+margin_bottom = 89.0
+custom_fonts/font = ExtResource( 3 )
+text = "ChallengeYou Palace"
+
+[node name="Description" type="RichTextLabel" parent="."]
+margin_left = 30.0
+margin_top = 120.0
+margin_right = 380.0
+margin_bottom = 320.0
+custom_fonts/normal_font = ExtResource( 2 )
+bbcode_enabled = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Stats" type="Control" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -41.0
+margin_right = -1.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayIcon" type="TextureRect" parent="Stats"]
+margin_left = -19.0
+margin_top = 43.0
+margin_right = 45.0
+margin_bottom = 115.0
+rect_scale = Vector2( 0.35, 0.35 )
+texture = ExtResource( 8 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Plays" type="Label" parent="Stats"]
+margin_left = -184.0
+margin_top = 34.0
+margin_right = -34.0
+margin_bottom = 76.0
+custom_fonts/font = ExtResource( 13 )
+text = "1,431"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DateIcon" type="TextureRect" parent="Stats"]
+margin_left = -20.0
+margin_top = 83.0
+margin_right = 51.0
+margin_bottom = 155.0
+rect_scale = Vector2( 0.35, 0.35 )
+texture = ExtResource( 9 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Date" type="Label" parent="Stats"]
+margin_left = -286.0
+margin_top = 76.0
+margin_right = -34.0
+margin_bottom = 118.0
+custom_fonts/font = ExtResource( 13 )
+text = "21 Sep 2008"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LikeIcon" type="TextureRect" parent="Stats"]
+margin_left = -20.0
+margin_top = 124.0
+margin_right = 51.0
+margin_bottom = 196.0
+rect_scale = Vector2( 0.35, 0.35 )
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="LikeRatio" type="Label" parent="Stats"]
+margin_left = -286.0
+margin_top = 117.0
+margin_right = -34.0
+margin_bottom = 159.0
+custom_fonts/font = ExtResource( 13 )
+text = "98%"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RecordIcon" type="TextureRect" parent="Stats"]
+margin_left = -21.5249
+margin_top = 170.939
+margin_right = 60.4751
+margin_bottom = 253.939
+rect_scale = Vector2( 0.35, 0.35 )
+texture = ExtResource( 14 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Record" type="Label" parent="Stats"]
+margin_left = -286.0
+margin_top = 156.0
+margin_right = -34.0
+margin_bottom = 198.0
+custom_fonts/font = ExtResource( 13 )
+text = "-- : --"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="RecordHolder" type="Label" parent="Stats"]
+margin_left = -285.0
+margin_top = 190.0
+margin_right = -33.0
+margin_bottom = 232.0
+custom_fonts/font = ExtResource( 2 )
+text = "By No One"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MenuButtons" type="Control" parent="."]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -40.0
+margin_right = 40.0
+script = ExtResource( 7 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Exit" type="Control" parent="MenuButtons"]
+margin_left = 35.0
+margin_top = -40.0
+margin_right = 75.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonLabel" type="Label" parent="MenuButtons/Exit"]
+margin_right = 271.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 13 )
+text = "Exit to Main Menu"
+
+[node name="Button" type="ToolButton" parent="MenuButtons/Exit"]
+margin_right = 333.0
+margin_bottom = 40.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="MenuButtons/Exit"]
+
+[node name="Restart" type="Control" parent="MenuButtons"]
+margin_left = 35.0
+margin_top = -85.0
+margin_right = 75.0
+margin_bottom = -45.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonLabel" type="Label" parent="MenuButtons/Restart"]
+margin_right = 271.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 13 )
+text = "Restart"
+
+[node name="Button" type="ToolButton" parent="MenuButtons/Restart"]
+margin_right = 333.0
+margin_bottom = 40.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="MenuButtons/Restart"]
+
+[node name="Continue" type="Control" parent="MenuButtons"]
+margin_left = 35.0
+margin_top = -130.0
+margin_right = 75.0
+margin_bottom = -90.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonLabel" type="Label" parent="MenuButtons/Continue"]
+margin_right = 271.0
+margin_bottom = 40.0
+custom_fonts/font = ExtResource( 13 )
+text = "Continue"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="ToolButton" parent="MenuButtons/Continue"]
+margin_top = -51.0
+margin_right = 333.0
+margin_bottom = 40.0
+focus_mode = 0
+mouse_default_cursor_shape = 2
+shortcut_in_tooltip = false
+enabled_focus_mode = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Tween" type="Tween" parent="MenuButtons/Continue"]
+
+[node name="Click" type="AudioStreamPlayer" parent="MenuButtons"]
+stream = ExtResource( 5 )
+
+[node name="Hover" type="AudioStreamPlayer" parent="MenuButtons"]
+stream = ExtResource( 4 )
+
+[connection signal="value_changed" from="MusicVolume/HSlider" to="." method="_on_volume_changed"]
+[connection signal="button_down" from="MenuButtons/Exit/Button" to="MenuButtons" method="_on_Exit_button_down"]
+[connection signal="mouse_entered" from="MenuButtons/Exit/Button" to="MenuButtons" method="_on_Exit_mouse_entered"]
+[connection signal="mouse_exited" from="MenuButtons/Exit/Button" to="MenuButtons" method="_on_Exit_mouse_exited"]
+[connection signal="pressed" from="MenuButtons/Exit/Button" to="." method="_on_Exit_pressed"]
+[connection signal="button_down" from="MenuButtons/Restart/Button" to="MenuButtons" method="_on_Restart_button_down"]
+[connection signal="mouse_entered" from="MenuButtons/Restart/Button" to="MenuButtons" method="_on_Restart_mouse_entered"]
+[connection signal="mouse_exited" from="MenuButtons/Restart/Button" to="MenuButtons" method="_on_Restart_mouse_exited"]
+[connection signal="pressed" from="MenuButtons/Restart/Button" to="." method="_on_Restart_pressed"]
+[connection signal="button_down" from="MenuButtons/Continue/Button" to="MenuButtons" method="_on_Continue_button_down"]
+[connection signal="mouse_entered" from="MenuButtons/Continue/Button" to="MenuButtons" method="_on_Continue_mouse_entered"]
+[connection signal="mouse_exited" from="MenuButtons/Continue/Button" to="MenuButtons" method="_on_Continue_mouse_exited"]
+[connection signal="pressed" from="MenuButtons/Continue/Button" to="." method="_on_Continue_pressed"]
