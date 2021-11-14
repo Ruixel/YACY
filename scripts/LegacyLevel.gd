@@ -188,7 +188,7 @@ func clear_level():
 	EntityManager._reset()
 
 func get_mazeFile(gameNumber):
-	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile, description, lastEdited, plays, numRating, totalRating }}"}'
+	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile, description, lastEdited, plays, numRating, totalRating, highscore { nickname, time } }}"}'
 	var headers : PoolStringArray
 	headers.append("Content-Type: application/json")
 	
@@ -229,7 +229,8 @@ func _on_request_completed(result, response_code, headers, body):
 	
 	$GameManager.load_level_info({ 
 		"name": r.data.getLevel.title,
-		"author": r.data.getLevel.author
+		"author": r.data.getLevel.author,
+		"highscore": r.data.getLevel.highscore
 	})
 	
 	var mazeFile = r.data.getLevel.mazeFile

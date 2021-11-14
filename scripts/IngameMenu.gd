@@ -86,6 +86,18 @@ func set_level_info(info):
 		$Stats/LikeRatio.text = "%d%%" % like_ratio
 	else:
 		$Stats/LikeRatio.text = "--"
+	
+	# Highscore
+	if info.highscore != null:
+		var time = info.highscore.time as int
+		var minutes = time / 60
+		var seconds = time % 60
+		
+		$Stats/Record.text = str("%02d" % minutes) + ":" + str("%02d" % seconds)
+		$Stats/RecordHolder.text = "By " + info.highscore.nickname
+	else:
+		$Stats/Record.text = "-- : --"
+		$Stats/RecordHolder.text = "By Noone"
 
 func unpause():
 	paused = false
