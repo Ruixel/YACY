@@ -2,18 +2,31 @@ extends Control
 
 var debounce := false
 var time = null
+var world_record = -1
 
 var can_submit = true
 
 func _ready():
 	$VBoxContainer/NameDetails/Name.text = PlayerSettings.player_name
+	
+	var level_manager = get_node_or_null("../../../../LegacyLevel/GameManager")
+	world_record = -1
+	if level_manager != null:
+		if (level_manager.level_info.highscore != null):
+			world_record = level_manager.level_info.highscore.time
 
 func set_time(time):
 	var minutes = time / 60
 	var seconds = time % 60
 	self.time = time
 	
-	$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You got the world record![/center]"
+	if world_record == -1 or time < world_record:
+		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You got the world record![/center]"
+	elif time == world_record:
+		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You tied the world record![/center]"
+	else:
+		var diff = time - world_record
+		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You were " + str(diff) + " seconds off the record[/center]"
 
 func _on_Menu_pressed():
 	var pause_menu = get_node_or_null("../../../PauseMenu")
