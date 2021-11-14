@@ -67,12 +67,18 @@ signal s_newChaser
 
 func _ready():
 	_setup()
+	reset()
 	
 	self.connect("s_updateAmmo", self, "updateAmmo")
 	var pause_node = get_node_or_null("../PauseMenu")
 	if pause_node != null:
 		pause_node.connect("pause", self, "onPause")
 		pause_node.connect("unpause", self, "onUnpause")
+
+func set_can_pause(value: bool):
+	var pause_node = get_node_or_null("../PauseMenu")
+	if pause_node != null:
+		pause_node.can_pause = value
 
 func _setup():
 	set_meta("player", true)
@@ -96,6 +102,7 @@ func reset():
 	hasSlingshot = false
 	ammo = 0
 	speedMultiplier = 1.0
+	set_can_pause(true)
 	
 	$PlayerGUI.reset()
 	$AudioNode/Jetpack.stop()
@@ -319,6 +326,7 @@ func fallInWater():
 	charVelocity = Vector3(0, -2, 0)
 	canMove = false
 	busy = true
+	set_can_pause(false)
 	currentCam.environment = underwater_env
 	
 	yield(get_tree().create_timer(2.5), "timeout")
@@ -327,6 +335,7 @@ func fallInWater():
 	charVelocity = Vector3(0, 0, 0)
 	canMove = true
 	busy = false
+	set_can_pause(true)
 	currentCam.environment = null
 	self.set_transform(self.spawnPoint)
 
@@ -455,6 +464,7 @@ func finish_level():
 	self.canMove = false
 	self.invulnerable = true
 	self.lock_mouse = false
+	set_can_pause(false)
 	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	emit_signal("s_disabled")
 

@@ -50,7 +50,7 @@ func exit_level():
 	get_node("../..").queue_free()
 
 func _input(event):
-	if event.is_action_pressed("pause") and not busy:
+	if event.is_action_pressed("pause") and not busy and can_pause:
 		paused = not paused
 		visible = paused
 		get_tree().paused = paused
