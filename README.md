@@ -1,6 +1,6 @@
 ![yacy thing cropped_panda](https://user-images.githubusercontent.com/13946497/144519134-77e72422-98ac-4d7c-8b5a-5801483213e9.png)
 
-YACY is a recreation of the LevelCrafter editor that allowed an easy way to make 3D levels and share them with friends easily. Originally created by Kevin Manley of Ingenion LLC back in 2007, it unfortunately has become obsolute due to the discontinuation of Adobe Shockwave Player. This project aims to provide a modern experience without any third party plug-ins.
+YACY is a recreation of the LevelCrafter editor that allowed an easy way to make 3D levels and share them with friends easily. Originally created by Kevin Manley of Ingenion LLC back in 2007, it unfortunately has become obsolete due to the discontinuation of Adobe Shockwave Player. This project aims to provide a modern experience without any third party plug-ins.
 
 This recreation has a built-in level browser to view and play the many levels that have been archived over time. You are currently able to finish levels and submit your highscores to compete with other players around the world.
 
