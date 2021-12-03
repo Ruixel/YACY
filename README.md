@@ -5,7 +5,7 @@ YACY is a recreation of the LevelCrafter editor that allowed an easy way to make
 This recreation has a built-in level browser to view and play the many levels that have been archived over time. You are currently able to finish levels and submit your highscores to compete with other players around the world.
 
 ## Download
-You can find the latest version of YACY in either [GitHub Releases](https://github.com/Ruixel/YACY/releases) or Itch.io (TODO).
+You can find the latest version of YACY in either [GitHub Releases](https://github.com/Ruixel/YACY/releases) or [Itch.io](https://bagster.itch.io/yacy).
 
 ## Building
 YACY uses the [Godot Engine v3.3](https://godotengine.org/) as its core. You can open this project up in the editor by selecting ``project.godot`` from the main folder. For performance critical areas, the project uses C++ source code that is implemented via GDNative. 
