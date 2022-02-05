@@ -11,7 +11,7 @@ namespace YACY.Legacy
         public override void _Ready()
         {
             GD.Print("Hello world");
-            LoadLevelFromFileSystem("user://Ashoto District.cy");
+            LoadLevelFromFileSystem("user://Valynstad.cy");
         }
 
         public void LoadLevelFromFileSystem(string fileName)
@@ -30,7 +30,7 @@ namespace YACY.Legacy
             }
 
             GameFile.Open(fileName, File.ModeFlags.Read);
-            GD.Print(GameFile.ToString());
+            CYLevelParser.ParseCYLevel(GameFile.GetAsText());
             GameFile.Close();
         }
     }

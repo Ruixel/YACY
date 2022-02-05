@@ -1,10 +1,10 @@
 namespace YACY.Legacy
 {
-    public interface ILegacyLevelData
+    public struct LegacyLevelData
     {
-        string Title { get; }
-        string Author { get; }
-        
+        public string Title { get; set; }
+        public string Author { get; set; }
+
         // Legacy Object List
     }
 }
