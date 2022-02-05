@@ -156,5 +156,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6864, 0.361241, -2.62016 )
 
 [node name="SlingshotPickup" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77279, 1.25073, 1.87974 )
+
 [connection signal="body_entered" from="Spatial/Area2" to="Spatial" method="_on_Area2_body_entered"]
 [connection signal="area_entered" from="Ladder/Area" to="Ladder" method="_on_Area_area_entered"]

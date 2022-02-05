@@ -71,7 +71,6 @@ visible = false
 
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 5 )
-Loader = NodePath("../LegacyLevel/ObjectLoader")
 
 [node name="Button" type="Button" parent="LegacyWorldLoader"]
 visible = false
