@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Godot;
 
 namespace YACY.Legacy
 {
-    public static class CYLevelParser 
+    public static class CYLevelParser
     {
         // Parses Adobe Shockwave Lingo's file structure for CY Levels
         // It consists of a dictionary where keys can be defined with either "" or starting with a #
@@ -54,10 +56,10 @@ namespace YACY.Legacy
                         if (levelCode[strPtr] == '[')
                         {
                             var extractedData = ExtractLingoArray(levelCode, strPtr, levelSize, depth);
-                            
+
                             levelData.Add(key, extractedData.Objects);
                             objectCount += extractedData.Objects.Count;
-                            
+
                             strPtr = extractedData.FinalIndex;
                         }
                         else
@@ -65,11 +67,11 @@ namespace YACY.Legacy
                             // String/Variant value
                             var valueEndIndex = levelCode.Find(',', strPtr + 1);
                             var value = levelCode.Substring(strPtr, valueEndIndex - strPtr);
-                            
+
                             // If the value has speech marks, remove them
                             if (value.StartsWith("\"") && value.EndsWith("\""))
                                 value = value.Substring(1, value.Length - 2);
-                            
+
                             levelHeaders.Add(key, value);
                             strPtr = valueEndIndex;
                         }
@@ -84,14 +86,27 @@ namespace YACY.Legacy
 
                 strPtr++;
             }
-            
+
             // Check if there is metadata
             if (!levelHeaders.ContainsKey("name") || !levelHeaders.ContainsKey("creator"))
             {
                 // Throw some sort of exception
                 GD.PrintErr($"Level did not contain metadata");
             }
-            
+
+            if (levelData.ContainsKey("board"))
+            {
+                foreach (var board in levelData["board"])
+                {
+                    GD.Print($"Board: {board}");
+                    var boardProperties = ExtractObjectProperties(board);
+                    foreach (var prop in boardProperties)
+                    {
+                        GD.Print($" - {prop}");
+                    }
+                }
+            }
+
             GD.Print($"Loaded: {levelHeaders["name"]} by {levelHeaders["creator"]}");
 
             var legacyLevelData = new LegacyLevelData
@@ -168,6 +183,83 @@ namespace YACY.Legacy
             returnData.Objects = objects;
             returnData.FinalIndex = strPtr;
             return returnData;
+        }
+
+        private static ICollection<string> ExtractObjectProperties(string objectArrayString)
+        {
+            var objectProperties = new List<string>();
+
+            // Remove excess characters
+            var cleanObjectStringBuilder = new StringBuilder();
+            var maxLength = objectArrayString.Length - 1;
+            var isInTextProperty = false;
+
+            // Build clean string by removing all [ and ]
+            for (var index = 0; index < maxLength; index++)
+            {
+                var ch = objectArrayString[index];
+
+                if ((ch != '[' && ch != ']') || isInTextProperty)
+                {
+                    cleanObjectStringBuilder.Append(ch);
+                }
+
+                if (ch == '"')
+                    isInTextProperty = !isInTextProperty;
+            }
+
+            var cleanObjectString = cleanObjectStringBuilder.ToString();
+            var strPtr = 0;
+            maxLength = cleanObjectString.Length;
+
+            // Usually if there's more than 15 properties, it's a sign of an infinite loop
+            while (strPtr < maxLength && objectProperties.Count < 15)
+            {
+                var ch = cleanObjectString[strPtr];
+
+                // Check if numerical value
+                string property;
+                if (Char.IsDigit(ch) || ch == '-')
+                {
+                    var endIndex = cleanObjectString.Find(", ", strPtr);
+                    if (endIndex != -1)
+                    {
+                        property = cleanObjectString.Substring(strPtr, endIndex - strPtr);
+                        strPtr = endIndex;
+                    }
+                    else
+                    {
+                        property = cleanObjectString.Substring(strPtr, maxLength - strPtr);
+                        strPtr = maxLength;
+                    }
+                    
+                    objectProperties.Add(property);
+                }
+                
+                // Check if colour value
+                else if (ch == 'c')
+                {
+                    var endIndex = cleanObjectString.Find(')', strPtr);
+                    property = cleanObjectString.Substring(strPtr, endIndex - strPtr + 1);
+
+                    objectProperties.Add(property);
+                    strPtr = endIndex;
+                }
+                
+                // Check if text value
+                else if (ch == '"')
+                {
+                    var endIndex = cleanObjectString.Find('"', strPtr + 1);
+                    property = cleanObjectString.Substring(strPtr + 1, endIndex - strPtr - 1);
+
+                    objectProperties.Add(property);
+                    strPtr = endIndex;
+                }
+
+                strPtr++;
+            }
+
+            return objectProperties;
         }
     }
 }
