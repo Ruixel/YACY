@@ -4,7 +4,7 @@ namespace YACY.Legacy
 {
     public interface ICYObject
     {
-        void CreateObject();
+        void CreateObject(Node worldAPI);
         string SerializeObject();
     }
 }

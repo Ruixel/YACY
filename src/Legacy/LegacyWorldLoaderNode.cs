@@ -1,4 +1,5 @@
 using Godot;
+using Godot.Collections;
 
 namespace YACY.Legacy
 {
@@ -8,18 +9,33 @@ namespace YACY.Legacy
 
         HTTPClient Client;
 
+        private Node ObjectLoader;
+        private Node WorldApi;
+
         public override void _Ready()
         {
             GD.Print("Hello world");
-            LoadLevelFromFileSystem("user://Valynstad.cy");
+            
+            WorldApi = GetNode<Node>(_loaderNodePath);
+            ObjectLoader = WorldApi.GetNode<Node>("ObjectLoader");
+
+            // var test = new Array();
+            // test.Add("res://res/levels/Panda.cy");
+            // WorldApi = GetNode<Node>(_loaderNodePath);
+            // WorldApi.Connect("ready", this, "LoadLevelFromFileSystem", test);
+            OnReady();
+        }
+
+        public async void OnReady()
+        {
+            await ToSignal(WorldApi, "ready");
+            LoadLevelFromFileSystem("res://res/levels/Panda.cy");
         }
 
         public void LoadLevelFromFileSystem(string fileName)
         {
-            var WorldAPI = GetNode<Node>(_loaderNodePath);
-
-            var GameFile = new File();
-            if (GameFile.FileExists(fileName))
+            var gameFile = new File();
+            if (gameFile.FileExists(fileName))
             {
                 GD.Print($"[C#] Found: {fileName}");
             }
@@ -29,9 +45,15 @@ namespace YACY.Legacy
                 return;
             }
 
-            GameFile.Open(fileName, File.ModeFlags.Read);
-            CYLevelParser.ParseCYLevel(GameFile.GetAsText());
-            GameFile.Close();
+            gameFile.Open(fileName, File.ModeFlags.Read);
+            var level = CYLevelParser.ParseCYLevel(gameFile.GetAsText());
+            gameFile.Close();
+            
+            GD.Print($"There are {level.Objects["walls"].Count} walls");
+            foreach (var wall in level.Objects["walls"])
+            {
+                wall.CreateObject(ObjectLoader);
+            }
         }
     }
 }

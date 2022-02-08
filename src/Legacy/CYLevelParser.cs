@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Godot;
+using YACY.Legacy.Objects;
 
 namespace YACY.Legacy
 {
@@ -16,6 +18,7 @@ namespace YACY.Legacy
         {
             var levelHeaders = new Dictionary<string, string>();
             var levelData = new Dictionary<string, ICollection<string>>();
+            var levelObjects = new Dictionary<string, ICollection<ICYObject>>();
 
             var strPtr = 0; // String index
             var depth = 0; // Depth inside arrays
@@ -94,25 +97,44 @@ namespace YACY.Legacy
                 GD.PrintErr($"Level did not contain metadata");
             }
 
-            if (levelData.ContainsKey("board"))
-            {
-                foreach (var board in levelData["board"])
-                {
-                    GD.Print($"Board: {board}");
-                    var boardProperties = ExtractObjectProperties(board);
-                    foreach (var prop in boardProperties)
-                    {
-                        GD.Print($" - {prop}");
-                    }
-                }
-            }
+            // Print Boards
+            // if (levelData.ContainsKey("board"))
+            // {
+            //     foreach (var board in levelData["board"])
+            //     {
+            //         GD.Print($"Board: {board}");
+            //         var boardProperties = ExtractObjectProperties(board);
+            //         foreach (var prop in boardProperties)
+            //         {
+            //             GD.Print($" - {prop}");
+            //         }
+            //     }
+            // }
 
             GD.Print($"Loaded: {levelHeaders["name"]} by {levelHeaders["creator"]}");
+
+            foreach (var data in levelData)
+            {
+                if (data.Key == "walls")
+                {
+                    var walls = new List<ICYObject>();
+                    foreach (var wallData in data.Value)
+                    {
+                        var properties = ExtractObjectProperties(wallData);
+                        var wall = new CYWall(properties);
+                        walls.Add(wall);
+                    }
+                    
+                    levelObjects.Add(data.Key, walls);
+                }
+            }
 
             var legacyLevelData = new LegacyLevelData
             {
                 Title = levelHeaders["name"],
-                Author = levelHeaders["creator"]
+                Author = levelHeaders["creator"],
+                RawObjectData = levelData,
+                Objects = levelObjects
             };
             return legacyLevelData;
         }
@@ -185,7 +207,7 @@ namespace YACY.Legacy
             return returnData;
         }
 
-        private static ICollection<string> ExtractObjectProperties(string objectArrayString)
+        private static IList<string> ExtractObjectProperties(string objectArrayString)
         {
             var objectProperties = new List<string>();
 

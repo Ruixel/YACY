@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace YACY.Legacy
 {
     public struct LegacyLevelData
@@ -5,6 +7,7 @@ namespace YACY.Legacy
         public string Title { get; set; }
         public string Author { get; set; }
 
-        // Legacy Object List
+        public Dictionary<string, ICollection<string>> RawObjectData { get; set; }
+        public Dictionary<string, ICollection<ICYObject>> Objects { get; set; }
     }
 }

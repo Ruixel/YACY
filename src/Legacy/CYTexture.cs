@@ -5,19 +5,19 @@ namespace YACY.Legacy
 {
     public struct CYTexture
     {
-        public int _texture { get; }
-        public Color _color { get; }
+        public int Texture { get; }
+        public Color Color { get; }
 
         public CYTexture(int texture)
         {
-            _texture = texture;
-            _color = Colors.White;
+            Texture = texture;
+            Color = Colors.White;
         }
 
         public CYTexture(Color color)
         {
-            _texture = 0;
-            _color = color;
+            Texture = -1;
+            Color = color;
         }
     }
 }
