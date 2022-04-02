@@ -49,11 +49,7 @@ namespace YACY.Legacy
             var level = CYLevelParser.ParseCYLevel(gameFile.GetAsText());
             gameFile.Close();
             
-            GD.Print($"There are {level.Objects["walls"].Count} walls");
-            foreach (var wall in level.Objects["walls"])
-            {
-                wall.CreateObject(ObjectLoader);
-            }
+            CYLevelFactory.CreateObjectsInWorld(level, WorldApi);
         }
     }
 }

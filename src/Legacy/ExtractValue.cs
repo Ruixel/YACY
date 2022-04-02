@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using Godot;
+using Object = Godot.Object;
 
 namespace YACY.Legacy
 {
@@ -11,11 +12,11 @@ namespace YACY.Legacy
             return new Vector2(x.ToFloat(), y.ToFloat());
         }
 
-        public static CYTexture ExtractTexColor(string material)
+        public static object ExtractTexColor(string material)
         {
             if (material.IsValidInteger())
             {
-                return new CYTexture(material.ToInt());
+                return new CYTexture(material.ToInt()).ToVariant();
             }
 
             var cleanedString = new StringBuilder();
@@ -32,7 +33,7 @@ namespace YACY.Legacy
                 return new CYTexture(new Color(0, 0, 0));
             }
 
-            return new CYTexture(new Color(split[0].ToFloat(), split[1].ToFloat(), split[2].ToFloat()));
+            return new CYTexture(new Color(split[0].ToFloat(), split[1].ToFloat(), split[2].ToFloat())).ToVariant();
         }
 
         public static int ExtractInt(string property)

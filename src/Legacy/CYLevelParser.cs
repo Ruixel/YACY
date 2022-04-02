@@ -113,27 +113,25 @@ namespace YACY.Legacy
 
             GD.Print($"Loaded: {levelHeaders["name"]} by {levelHeaders["creator"]}");
 
+            var rawLevelObjects = new Dictionary<string, ICollection<IList<string>>>();
             foreach (var data in levelData)
             {
-                if (data.Key == "walls")
+                var rawObjectIndex = data.Key;
+                var rawObjectList = new List<IList<string>>();
+                foreach (var objectData in data.Value)
                 {
-                    var walls = new List<ICYObject>();
-                    foreach (var wallData in data.Value)
-                    {
-                        var properties = ExtractObjectProperties(wallData);
-                        var wall = new CYWall(properties);
-                        walls.Add(wall);
-                    }
-                    
-                    levelObjects.Add(data.Key, walls);
+                    var rawObject = ExtractObjectProperties(objectData);
+                    rawObjectList.Add(rawObject);
                 }
+                
+                rawLevelObjects.Add(rawObjectIndex, rawObjectList);
             }
 
             var legacyLevelData = new LegacyLevelData
             {
                 Title = levelHeaders["name"],
                 Author = levelHeaders["creator"],
-                RawObjectData = levelData,
+                RawObjectData = rawLevelObjects,
                 Objects = levelObjects
             };
             return legacyLevelData;

@@ -1,9 +1,10 @@
 using System;
 using Godot;
+using Object = Godot.Object;
 
 namespace YACY.Legacy
 {
-    public struct CYTexture
+    public class CYTexture : Object
     {
         public int Texture { get; }
         public Color Color { get; }
@@ -18,6 +19,18 @@ namespace YACY.Legacy
         {
             Texture = -1;
             Color = color;
+        }
+
+        public object ToVariant()
+        {
+            if (this.Texture == -1)
+            {
+                return Color;
+            }
+            else
+            {
+                return Texture;
+            }
         }
     }
 }
