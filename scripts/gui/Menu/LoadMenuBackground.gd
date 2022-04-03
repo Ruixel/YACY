@@ -43,7 +43,7 @@ func load_background(bg_id = -1):
 		bg_id = rng.randi_range(0, backgrounds.size() - 1)
 	
 	print(bg_id)
-	bg.get_node("LegacyWorldLoader").loadLevelFromFilesystem(backgrounds[bg_id][0])
+	bg.get_node("LegacyWorldLoader").LoadLevelFromFilesystem(backgrounds[bg_id][0])
 	bg.get_node("BGCamera").transform = str2var(backgrounds[bg_id][1])
 	
 #	bg.get_node("LegacyWorldLoader").loadLevelFromFilesystem("res://res/levels/Glass Tower 2.cy")

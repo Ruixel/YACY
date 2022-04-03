@@ -29,10 +29,10 @@ namespace YACY.Legacy
 		public async void OnReady()
 		{
 			await ToSignal(WorldApi, "ready");
-			LoadLevelFromFileSystem("res://res/levels/Panda.cy");
+			//LoadLevelFromFileSystem("res://res/levels/Panda.cy");
 		}
 
-		public void LoadLevelFromFileSystem(string fileName)
+		public void LoadLevelFromFilesystem(string fileName)
 		{
 			var gameFile = new File();
 			if (gameFile.FileExists(fileName))

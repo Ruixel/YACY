@@ -37,7 +37,7 @@ namespace YACY.Legacy
 			else if (objType == "hole") hole_createObject(objectLoader, objects);
 
 			// Entities
-			else if (objType == "start") start_createEntity(objectLoader, objects);
+			else if (objType == "begin") start_createEntity(objectLoader, objects);
 			else if (objType == "finish") finish_createEntity(objectLoader, objects);
 			else if (objType == "board") message_createEntity(objectLoader, objects);
 			else if (objType == "portal") portal_createEntity(objectLoader, objects);
@@ -61,6 +61,7 @@ namespace YACY.Legacy
 		// [displacement_x, displacement_y, start_x, start_y, front_material, back_material, height, level]
 		private static void wall_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -78,6 +79,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, size, material, height, level
 		private static void plat_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -100,6 +102,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, size, material, height, level]
 		private static void diaplat_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -120,6 +123,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, size, material, height, direction, level]
 		private static void triplat_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -151,6 +155,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, isDiagonal, material, size, height, level]
 		private static void pillar_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -169,6 +174,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, direction, material, level]
 		private static void ramp_createObject(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -221,6 +227,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, unknown, condition, level]
 		private static void finish_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -238,6 +245,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, message, direction, height, level]
 		private static void message_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -297,6 +305,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, music_id, level]
 		private static void music_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -334,6 +343,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, direction, key, texture, level]
 		private static void door_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -374,6 +384,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, time_bonus, height, level]
 		private static void diamond_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)
@@ -391,6 +402,7 @@ namespace YACY.Legacy
 		// [position_x, position_y, speed, hits, level]
 		private static void iceman_createEntity(Node objectLoader, ICollection<IList<string>> objs)
 		{
+			if (objs.Count <= 0) return;
 			var objectSize = objs.First().Count;
 
 			foreach (var obj in objs)

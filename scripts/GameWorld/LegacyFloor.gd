@@ -97,8 +97,8 @@ func set_property_dict(dict : Dictionary):
 		set(dictToObj[prop], dict[prop])
 
 func buildFloor() -> Mesh:
-#	var gen = get_node("/root/Main/FloorGenerator")
-	var gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
+	var gen = get_node("/root/Main/FloorGenerator")
+#	var gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
 
 	# Set collision layers
 	var isOpaque = not WorldTextures.textures[self.floor_texture].isTransparent()
