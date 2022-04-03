@@ -33,6 +33,9 @@ namespace YACY.Legacy
 			else if (objType == "pillar") pillar_createObject(objectLoader, objects);
 			else if (objType == "ramp") ramp_createObject(objectLoader, objects);
 
+			else if (objType == "floor") ground_createObject(objectLoader, objects);
+			else if (objType == "hole") hole_createObject(objectLoader, objects);
+
 			// Entities
 			else if (objType == "start") start_createEntity(objectLoader, objects);
 			else if (objType == "finish") finish_createEntity(objectLoader, objects);
@@ -176,6 +179,31 @@ namespace YACY.Legacy
 				else if (objectSize == 4)
 					objectLoader.Call("create_ramp", ExtractVec2(obj[0], obj[1]), ExtractInt(obj[2]), 5,
 						ExtractInt(obj[3]));
+			}
+		}
+
+		// Ground
+		// [x1, y1, x2, y2, x3, y3, x4, y4, floor_material, isVisible, ceil_material]
+		private static void ground_createObject(Node objectLoader, ICollection<IList<string>> objs)
+		{
+			var level = 1;
+			foreach (var obj in objs)
+			{
+				objectLoader.Call("create_floor", ExtractVec2(obj[0], obj[1]), ExtractVec2(obj[2], obj[3]),
+					ExtractVec2(obj[4], obj[5]), ExtractVec2(obj[6], obj[7]), ExtractTexColor(obj[8]),
+					ExtractInt(obj[9]), ExtractTexColor(obj[10]), level);
+
+				level++;
+			}
+		}
+
+		// Hole
+		// [position_x, position_y, size, level]
+		private static void hole_createObject(Node objectLoader, ICollection<IList<string>> objs)
+		{
+			foreach (var obj in objs)
+			{
+				objectLoader.Call("create_hole", ExtractVec2(obj[0], obj[1]), ExtractInt(obj[2]), ExtractInt(obj[3]));
 			}
 		}
 

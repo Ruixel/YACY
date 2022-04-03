@@ -3,6 +3,7 @@
 [ext_resource path="res://src/Legacy/LegacyWorldLoaderNode.cs" type="Script" id=1]
 [ext_resource path="res://res/materials/selection.tres" type="Material" id=2]
 [ext_resource path="res://Entities/Penguin/body_m.material" type="Material" id=3]
+[ext_resource path="res://src/Legacy/FloorGenerator.cs" type="Script" id=4]
 [ext_resource path="res://scripts/Grid.gd" type="Script" id=5]
 [ext_resource path="res://scripts/PlacementCursor.gd" type="Script" id=6]
 [ext_resource path="res://scripts/JSONSerialiser.gd" type="Script" id=7]
@@ -14,7 +15,6 @@
 [ext_resource path="res://Entities/Editor/PolygonCursor.obj" type="ArrayMesh" id=13]
 [ext_resource path="res://scripts/3DCursor.gd" type="Script" id=14]
 [ext_resource path="res://scripts/CursorBase.gd" type="Script" id=15]
-[ext_resource path="res://scripts/GameWorld/GenerateFloor.gdns" type="Script" id=17]
 [ext_resource path="res://scripts/GameWorld/LoadLegacyObjects.gd" type="Script" id=19]
 [ext_resource path="res://scripts/PolygonCursor.gd" type="Script" id=20]
 [ext_resource path="res://scripts/SelectCursor.gd" type="Script" id=21]
@@ -113,7 +113,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00506687, 0.00805092, 0.000
 [node name="Environment" parent="." instance=ExtResource( 9 )]
 
 [node name="FloorGenerator" type="Node" parent="."]
-script = ExtResource( 17 )
+script = ExtResource( 4 )
 
 [node name="WorldLoaderNode" type="Node" parent="."]
 script = ExtResource( 1 )

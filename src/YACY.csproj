@@ -1,0 +1,8 @@
+<Project Sdk="Godot.NET.Sdk/3.3.0">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
+  </ItemGroup>
+</Project>

@@ -105,7 +105,7 @@ func buildFloor() -> Mesh:
 	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
 	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, true)
 
-	return gen.generateFloorMesh(vertices, level, floor_texture, 
+	return gen.GenerateFloorMesh(vertices, level, floor_texture, 
 		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
 
 
