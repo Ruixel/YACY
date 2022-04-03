@@ -33,7 +33,7 @@ namespace YACY.Legacy
                 return new CYTexture(new Color(0, 0, 0));
             }
 
-            return new CYTexture(new Color(split[0].ToFloat(), split[1].ToFloat(), split[2].ToFloat())).ToVariant();
+            return new CYTexture(new Color(split[0].ToFloat()/255.0f, split[1].ToFloat()/255.0f, split[2].ToFloat()/255.0f)).ToVariant();
         }
 
         public static int ExtractInt(string property)
