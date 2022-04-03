@@ -129,6 +129,8 @@ script = ExtResource( 19 )
 [node name="JSONSerialiser" type="Node" parent="WorldInterface"]
 script = ExtResource( 7 )
 
+[node name="Entities" type="Node" parent="WorldInterface"]
+
 [node name="EditorCamera" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 20, 10 )
 

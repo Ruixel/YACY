@@ -160,7 +160,7 @@ func modify_fixed_object(mode, level, new_obj):
 	fixed_objects[mode][level]._genMesh()
 
 func add_entity(new_entity):
-	pass
+	$Entities.add_child(new_entity)
 
 # Prototype functions
 func get_prototype(type) -> Array:
