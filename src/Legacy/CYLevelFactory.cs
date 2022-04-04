@@ -21,6 +21,8 @@ namespace YACY.Legacy
 			{
 				CreateObjects(objectLoader, objectsData.Key, objectsData.Value);
 			}
+			
+			objectLoader.CallDeferred("finalise");
 		}
 
 		private static void CreateObjects(Node objectLoader, string objType, ICollection<IList<string>> objects)

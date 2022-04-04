@@ -154,4 +154,4 @@ func getWallMaterial(tex : int, back_tex = null) -> ShaderMaterial:
 		return aTexture_mat
 
 func getColorTextureID() -> int: 
-    return TextureID.COLOR
+	return TextureID.COLOR

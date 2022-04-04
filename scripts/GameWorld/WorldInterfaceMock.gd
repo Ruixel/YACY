@@ -162,6 +162,12 @@ func modify_fixed_object(mode, level, new_obj):
 func add_entity(new_entity):
 	$Entities.add_child(new_entity)
 
+func add_collectable(type):
+	pass
+
+func set_finish_condition(condition):
+	pass
+
 # Prototype functions
 func get_prototype(type) -> Array:
 	var prototype_size = Vector2()

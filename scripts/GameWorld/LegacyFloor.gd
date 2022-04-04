@@ -97,16 +97,18 @@ func set_property_dict(dict : Dictionary):
 		set(dictToObj[prop], dict[prop])
 
 func buildFloor() -> Mesh:
-	var gen = get_node("/root/Main/FloorGenerator")
-#	var gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
+	var gen = get_node_or_null("/root/Main/FloorGenerator")
+	if gen == null:
+		gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
 
 	# Set collision layers
 	var isOpaque = not WorldTextures.textures[self.floor_texture].isTransparent()
 	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
 	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, true)
 
+	var holes = HoleManager.get_holes(level)
 	return gen.GenerateFloorMesh(vertices, level, floor_texture, 
-		floor_colour, ceil_texture, ceil_colour, HoleManager.get_holes(level))
+		floor_colour, ceil_texture, ceil_colour, holes)
 
 
 func JSON_serialise() -> Dictionary:
