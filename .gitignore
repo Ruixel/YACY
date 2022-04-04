@@ -10,6 +10,7 @@ api.json
 
 # Mono-specific ignores
 .mono/
+.idea/
 
 # C++ Projects
 src/**/*.obj

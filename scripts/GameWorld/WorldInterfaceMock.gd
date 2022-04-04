@@ -160,6 +160,12 @@ func modify_fixed_object(mode, level, new_obj):
 	fixed_objects[mode][level]._genMesh()
 
 func add_entity(new_entity):
+	$Entities.add_child(new_entity)
+
+func add_collectable(type):
+	pass
+
+func set_finish_condition(condition):
 	pass
 
 # Prototype functions

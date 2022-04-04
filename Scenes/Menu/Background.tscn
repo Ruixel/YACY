@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/LegacyLevel.gd" type="Script" id=1]
 [ext_resource path="res://scripts/GameWorld/LoadLegacyObjects.gd" type="Script" id=2]
-[ext_resource path="res://scripts/GameWorld/LegacyWorldLoader.gdns" type="Script" id=3]
+[ext_resource path="res://src/Legacy/LegacyWorldLoaderNode.cs" type="Script" id=3]
 [ext_resource path="res://Scenes/Env/DefaultEnv.tscn" type="PackedScene" id=4]
 
 [node name="Background" type="Node"]
@@ -19,7 +19,7 @@ script = ExtResource( 2 )
 
 [node name="LegacyWorldLoader" type="Node" parent="."]
 script = ExtResource( 3 )
-Loader = NodePath("../../../Main/Background/LegacyLevel/ObjectLoader")
+_loaderNodePath = NodePath("../LegacyLevel")
 
 [node name="BGCamera" type="Camera" parent="."]
 transform = Transform( -0.899474, 0.0758798, -0.430336, 0, 0.984808, 0.173648, 0.436974, 0.156192, -0.885809, 34.1838, 13.6522, 16.1528 )

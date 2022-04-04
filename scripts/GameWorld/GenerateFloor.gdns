@@ -1,7 +1,13 @@
 [gd_resource type="NativeScript" load_steps=2 format=2]
 
-[ext_resource path="res://yacy.gdnlib" type="GDNativeLibrary" id=1]
+[sub_resource type="GDNativeLibrary" id=1]
+entry/OSX.64 = "bin/osx/libyacy.dylib"
+entry/Windows.64 = "res://bin/win64/libyacy.dll"
+entry/X11.64 = "bin/x11/libyacy.so"
+dependency/OSX.64 = [  ]
+dependency/Windows.64 = [  ]
+dependency/X11.64 = [  ]
 
 [resource]
 class_name = "GenerateFloor"
-library = ExtResource( 1 )
+library = SubResource( 1 )

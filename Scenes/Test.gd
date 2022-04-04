@@ -13,5 +13,5 @@ func loadLevel(mazeFile):
 
 func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
-	get_parent().loadLevelFromString(response)
+	get_parent().LoadLevelFromString(response)
 	get_parent().get_parent().get_node("LegacyLevel").call("level_finished_loading")

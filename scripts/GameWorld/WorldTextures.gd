@@ -152,3 +152,6 @@ func getWallMaterial(tex : int, back_tex = null) -> ShaderMaterial:
 		return aTextureTranslucent_mat
 	else: 
 		return aTexture_mat
+
+func getColorTextureID() -> int: 
+	return TextureID.COLOR
