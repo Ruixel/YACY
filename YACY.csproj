@@ -4,5 +4,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
+    <PackageReference Include="SimpleInjector" Version="5.3.3" />
   </ItemGroup>
 </Project>
