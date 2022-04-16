@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://src/Core.cs" type="Script" id=1]
 [ext_resource path="res://Entities/Editor/Camera/EditorCamera.tscn" type="PackedScene" id=2]
@@ -10,6 +10,12 @@
 [ext_resource path="res://scripts/PlacementCursor.gd" type="Script" id=8]
 [ext_resource path="res://scripts/CursorBase.gd" type="Script" id=9]
 [ext_resource path="res://Entities/Editor/PolygonCursor.obj" type="ArrayMesh" id=10]
+[ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=11]
+[ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture" id=16]
+[ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/Label.gd" type="Script" id=18]
+[ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="DynamicFontData" id=20]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
@@ -18,6 +24,9 @@ detail_enabled = true
 detail_blend_mode = 0
 detail_uv_layer = 0
 uv1_scale = Vector3( 80, 80, 1 )
+distance_fade_mode = 1
+distance_fade_min_distance = 50.0
+distance_fade_max_distance = 0.0
 
 [sub_resource type="QuadMesh" id=2]
 material = SubResource( 1 )
@@ -43,6 +52,34 @@ emission = Color( 0, 1, 0.0392157, 1 )
 emission_energy = 1.4
 emission_operator = 0
 emission_on_uv2 = false
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.564706 )
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color( 0, 0, 0, 0.156863 )
+shadow_size = 6
+shadow_offset = Vector2( 0, 4 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 12
+outline_size = 1
+outline_color = Color( 0, 0, 0, 0.133333 )
+extra_spacing_char = 1
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 28
+extra_spacing_top = 5
+extra_spacing_bottom = 5
+extra_spacing_char = 1
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=16]
+size = 78
+font_data = ExtResource( 20 )
 
 [node name="Spatial" type="Node"]
 script = ExtResource( 1 )
@@ -84,3 +121,86 @@ mesh = ExtResource( 10 )
 material/0 = SubResource( 3 )
 material/1 = SubResource( 3 )
 material/2 = SubResource( 3 )
+
+[node name="Control" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="Polygon2D" type="Polygon2D" parent="Control"]
+position = Vector2( -1326, 324 )
+scale = Vector2( 2.26946, 2.09677 )
+color = Color( 1, 1, 1, 0.298039 )
+polygon = PoolVector2Array( 654.781, 143.554, 507, 176, 575, 288, 681.66, 256.108 )
+script = ExtResource( 11 )
+
+[node name="Level6" type="Panel" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -70.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 175.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 14 )
+
+[node name="Label" type="Label" parent="Control/Level6"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -23.5
+margin_right = 24.5
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 13 )
+text = "LEVEL"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Level6"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_right = -8.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/Level6/MarginContainer"]
+margin_right = 34.0
+margin_bottom = 155.0
+alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
+margin_top = 21.0
+margin_right = 34.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 0, 30 )
+texture_normal = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+margin_top = 55.0
+margin_right = 34.0
+margin_bottom = 100.0
+custom_fonts/font = SubResource( 15 )
+text = "1"
+align = 1
+valign = 1
+clip_text = true
+script = ExtResource( 18 )
+
+[node name="TextureButton2" type="TextureButton" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
+margin_top = 104.0
+margin_right = 34.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 0, 30 )
+texture_normal = ExtResource( 16 )
+expand = true
+
+[node name="Label" type="Label" parent="Control"]
+margin_left = 15.0
+margin_top = 665.0
+margin_right = 165.0
+margin_bottom = 760.0
+custom_fonts/font = SubResource( 16 )
+text = "wall"
