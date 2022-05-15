@@ -17,7 +17,7 @@ namespace YACY.Build.Tools
 		private const float CamAngleMin = 15;
 		private const float CamAngleMax = 85;
 		private const float CamDragSpeed = 2;
-
+		private const float CamKeyboardDragSpeed = 8;
 
 		public EditorCamera()
 		{
@@ -42,13 +42,31 @@ namespace YACY.Build.Tools
 			}
 			else if (Input.IsActionPressed("editor_camera_pan"))
 			{
-				var ang = this.Rotation.y;
 				var ySpeed = _mouseMotion.y * delta;
 				var xSpeed = _mouseMotion.x * delta;
 
 				_cameraPosition.x += CamDragSpeed *
 				                     ((Mathf.Cos(this.Rotation.y) * ySpeed) + (Mathf.Sin(this.Rotation.y) * -xSpeed));
 				_cameraPosition.y += CamDragSpeed *
+				                     ((Mathf.Sin(this.Rotation.y) * -ySpeed) + (Mathf.Cos(this.Rotation.y) * -xSpeed));
+			}
+			
+			// Pan camera using keyboard
+			if (Input.IsActionPressed("move_forward") || Input.IsActionPressed("move_left") ||
+			    Input.IsActionPressed("move_right") || Input.IsActionPressed("move_back"))
+			{
+				var forwards = Input.IsActionPressed("move_forward") ? 1 : 0;
+				var backwards = Input.IsActionPressed("move_back") ? 1 : 0;
+				
+				var right = Input.IsActionPressed("move_right") ? 1 : 0;
+				var left = Input.IsActionPressed("move_left") ? 1 : 0;
+				
+				var ySpeed = (forwards - backwards) * delta;
+				var xSpeed = -(right - left) * delta;
+
+				_cameraPosition.x += CamKeyboardDragSpeed *
+				                     ((Mathf.Cos(this.Rotation.y) * ySpeed) + (Mathf.Sin(this.Rotation.y) * -xSpeed));
+				_cameraPosition.y += CamKeyboardDragSpeed *
 				                     ((Mathf.Sin(this.Rotation.y) * -ySpeed) + (Mathf.Cos(this.Rotation.y) * -xSpeed));
 			}
 		}
