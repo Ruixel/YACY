@@ -116,5 +116,10 @@ namespace YACY.Build.Tools
 				_cameraZoom = Mathf.Clamp(_cameraZoom, CamZoomMin, CamZoomMax);
 			}
 		}
+
+		public Camera GetCamera()
+		{
+			return _camera;
+		}
 	}
 }

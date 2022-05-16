@@ -1,28 +1,12 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://src/Core.cs" type="Script" id=1]
-[ext_resource path="res://res/txrs/editor/rect63.png" type="Texture" id=3]
 [ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=11]
 [ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="DynamicFontData" id=14]
 [ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture" id=16]
 [ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture" id=17]
 [ext_resource path="res://Scenes/Label.gd" type="Script" id=18]
 [ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="DynamicFontData" id=20]
-
-[sub_resource type="SpatialMaterial" id=1]
-flags_transparent = true
-albedo_texture = ExtResource( 3 )
-detail_enabled = true
-detail_blend_mode = 0
-detail_uv_layer = 0
-uv1_scale = Vector3( 80, 80, 1 )
-distance_fade_mode = 1
-distance_fade_min_distance = 50.0
-distance_fade_max_distance = 0.0
-
-[sub_resource type="QuadMesh" id=2]
-material = SubResource( 1 )
-size = Vector2( 80, 80 )
 
 [sub_resource type="StyleBoxFlat" id=14]
 bg_color = Color( 0.117647, 0.117647, 0.117647, 0.564706 )
@@ -54,11 +38,6 @@ font_data = ExtResource( 20 )
 
 [node name="Spatial" type="Node"]
 script = ExtResource( 1 )
-
-[node name="MeshInstance" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0 )
-mesh = SubResource( 2 )
-material/0 = null
 
 [node name="Control" type="Control" parent="."]
 anchor_right = 1.0

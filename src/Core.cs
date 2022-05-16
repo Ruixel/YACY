@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using SimpleInjector;
+using YACY.Build;
 using YACY.Build.Tools;
 using Container = SimpleInjector.Container;
 
@@ -18,11 +19,14 @@ namespace YACY
 			// Create DI Container
 			_container = new Container();
 			_container.Register<IWallManager, WallManager>(Lifestyle.Singleton);
+			_container.Register<IBuildManager, BuildManager>(Lifestyle.Singleton);
 			
 			_container.Verify();
 			
 			// Add build tools
-			AddBuildTools();
+			//AddBuildTools();
+			
+			_container.GetInstance<IBuildManager>().EnableBuildMode(this);
 		}
 
 		private void AddBuildTool<T>() where T : Node, new()
@@ -34,8 +38,8 @@ namespace YACY
 
 		private void AddBuildTools()
 		{
-			AddBuildTool<Cursor>();
-			AddBuildTool<EditorCamera>();
+			//AddBuildTool<Cursor>();
+			//AddBuildTool<EditorCamera>();
 		}
 
 		public void RemoveBuildTools()
