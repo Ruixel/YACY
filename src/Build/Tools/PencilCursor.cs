@@ -69,7 +69,7 @@ namespace YACY.Build.Tools
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))
 				{
 					GD.Print($"start: {_pencilStart}, end {_pencilEnd}");
-					_buffer.Mesh = WallGenerator.GenerateFlatWall(_pencilStart, _pencilEnd, 1, 0, 1);
+					_buffer.Mesh = WallGenerator.GenerateWall(_pencilStart, _pencilEnd, 1, 0, 1, 0.1f);
 					
 					_buffer.Visible = true;
 				}
