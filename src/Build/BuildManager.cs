@@ -9,21 +9,21 @@ namespace YACY.Build
 {
 	public class BuildManager : IBuildManager
 	{
+		private readonly IWallManager _wallManager;
+
 		private Node _root;
 		private bool _enabled;
-		
-		private Dictionary<Type, object> _buildTools;
 
 		private EditorCamera _editorCamera;
 		private Cursor _cursor;
 		private Grid _grid;
 
 		public event EventHandler onLevelChange;
-		
-		public BuildManager()
+
+		public BuildManager(IWallManager wallManager)
 		{
+			_wallManager = wallManager;
 			_enabled = false;
-			_buildTools = new Dictionary<Type, object>();
 		}
 
 		public void EnableBuildMode(Node root)
@@ -33,12 +33,10 @@ namespace YACY.Build
 				_root = root;
 				_enabled = true;
 			}
-			
-			//AddBuildTools();
+
 			CreateBuildTools(root);
 
 			onLevelChange?.Invoke(this, EventArgs.Empty);
-			//var camera = GetBuildTool<EditorCamera>();
 		}
 
 		public bool IsEnabled()
@@ -49,7 +47,7 @@ namespace YACY.Build
 		public Ray GetMouseRay()
 		{
 			var mousePosition = _root.GetViewport().GetMousePosition();
-			
+
 			var rayOrigin = _editorCamera.GetCamera().GetCameraTransform().origin;
 			var rayDirection = _editorCamera.GetCamera().ProjectRayNormal(mousePosition);
 
@@ -66,7 +64,7 @@ namespace YACY.Build
 			_editorCamera = new EditorCamera();
 			_cursor = new Cursor(this);
 			_grid = new Grid();
-			
+
 			root.AddChild(_editorCamera);
 			root.AddChild(_cursor);
 			root.AddChild(_grid);
@@ -84,43 +82,5 @@ namespace YACY.Build
 
 			_enabled = false;
 		}
-
-		/*private void AddBuildTool<T>() where T : Node, new()
-		{
-			var tool = new T();
-			_root.AddChild(tool);
-			_buildTools.Add(typeof(T), tool);
-		}
-		
-		private void AddBuildTools()
-		{
-			AddBuildTool<Cursor>();
-			AddBuildTool<EditorCamera>();
-		}
-
-		public T GetBuildTool<T>()
-		{
-			if (_buildTools.TryGetValue(typeof(T), out var tool))
-			{
-				return (T) tool;
-			}
-
-			throw new NullReferenceException($"Build tool ${typeof(T)} not found.");
-		}
-
-		public void RemoveBuildTools()
-		{
-			foreach (var pair in _buildTools)
-			{
-				var type = pair.Key;
-				if (type.IsAssignableFrom(typeof(ITool)))
-				{
-					var tool = (type) pair.Value;
-					tool.
-				}
-			}
-
-			_buildTools.Clear();
-		}*/
 	}
 }

@@ -11,6 +11,7 @@ namespace YACY
 		private ICursorMode _cursorMode;
 
 		private Vector2 _mouseMotion;
+		private bool _isMousePressed;
 
 		public Cursor(IBuildManager buildManager)
 		{
@@ -20,19 +21,20 @@ namespace YACY
 			_cursorMode = new PencilCursor(buildManager, this);
 
 			_mouseMotion = new Vector2();
+			_isMousePressed = false;
 		}
 
 		public override void _Ready()
 		{
 			GD.Print("Cursor is ready :D");
-			
+
 			_cursorMode.Enable();
 		}
 
 		public override void _Process(float delta)
 		{
 			_cursorMode.Process(delta, _mouseMotion);
-			
+
 			_mouseMotion = Vector2.Zero; // Reset
 		}
 
@@ -46,6 +48,26 @@ namespace YACY
 
 		public override void _UnhandledInput(InputEvent @event)
 		{
+			if (@event is InputEventMouseButton mouseButton)
+			{
+				if (mouseButton.ButtonIndex == 1)
+				{
+					var isPressed = mouseButton.Pressed;
+					if (_isMousePressed ^ isPressed)
+					{
+						if (isPressed)
+						{
+							_cursorMode.onMousePress();
+							_isMousePressed = true;
+						}
+						else
+						{
+							_cursorMode.onMouseRelease();
+							_isMousePressed = false;
+						}
+					}
+				}
+			}
 		}
 
 		private void onLevelChange(object sender, EventArgs eventArgs)

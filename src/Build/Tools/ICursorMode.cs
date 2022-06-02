@@ -6,6 +6,8 @@ namespace YACY.Build.Tools
 	{
 		void Enable();
 		void Process(float delta, Vector2 mouseMotion);
+		void onMousePress();
+		void onMouseRelease();
 		void onToolChange();
 		void onModeChange();
 		void onLevelChange();

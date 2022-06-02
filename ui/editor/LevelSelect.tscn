@@ -36,6 +36,7 @@ margin_left = -70.0
 margin_top = 20.0
 margin_right = -20.0
 margin_bottom = 175.0
+mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 custom_styles/panel = SubResource( 14 )
