@@ -90,6 +90,13 @@ namespace YACY.Build.Tools
 		{
 			_mouseDown = false;
 			_buffer.Visible = false;
+			
+			// Don't add empty wall
+			if (!_pencilStart.IsEqualApprox(_pencilEnd))
+			{
+				var wall = new Wall(_pencilStart, _pencilEnd);
+				Core.GetService<IWallManager>().AddWall(wall);
+			}
 		}
 
 		public void onToolChange()

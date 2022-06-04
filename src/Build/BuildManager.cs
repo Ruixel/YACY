@@ -9,8 +9,6 @@ namespace YACY.Build
 {
 	public class BuildManager : IBuildManager
 	{
-		private readonly IWallManager _wallManager;
-
 		private Node _root;
 		private bool _enabled;
 
@@ -22,7 +20,6 @@ namespace YACY.Build
 
 		public BuildManager(IWallManager wallManager)
 		{
-			_wallManager = wallManager;
 			_enabled = false;
 		}
 
