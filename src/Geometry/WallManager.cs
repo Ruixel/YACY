@@ -74,7 +74,7 @@ namespace YACY.Geometry
 			return walls;
 		}
 
-		private List<Wall> GetWallsAtPosition(Vector2 pos)
+		public List<Wall> GetWallsAtPosition(Vector2 pos)
 		{
 			if (_gridMap.TryGetValue(pos, out var walls))
 			{
@@ -96,7 +96,7 @@ namespace YACY.Geometry
 				GD.Print("Already part of a wall here :P");
 
 			
-			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition), new List<Wall>());
+			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition), GetWallsAtPosition(wall.EndPosition), true);
 			_wallContainer.AddChild(wall);
 			
 			AddToGrid(wall.StartPosition, wall);

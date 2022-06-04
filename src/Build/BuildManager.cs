@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Godot;
 using YACY.Build.Tools;
+using YACY.Geometry;
 using YACY.Util;
 
 namespace YACY.Build

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Remoting.Messaging;
 using Godot;
+using YACY.Build;
+using YACY.Geometry;
 using YACY.Util;
 
 namespace YACY.MeshGen
@@ -71,7 +73,8 @@ namespace YACY.MeshGen
 			return surfaceTool.Commit();
 		}
 
-		public static Mesh GenerateComplexWall(Wall wall, List<Wall> startWalls, List<Wall> endWalls)
+		public static Mesh GenerateComplexWall(Wall wall, List<Wall> startWalls, List<Wall> endWalls,
+			bool propagate = false)
 		{
 			var surfaceTool = new SurfaceTool();
 			surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
@@ -96,7 +99,7 @@ namespace YACY.MeshGen
 			var frontStart = new Vector2(vertices[0].x, vertices[0].z);
 			var frontEnd = new Vector2(vertices[3].x, vertices[3].z);
 			wall.FrontLine = new Tuple<Vector2, Vector2>(frontStart, frontEnd - frontStart);
-			
+
 			var backStart = new Vector2(vertices[4].x, vertices[4].z);
 			var backEnd = new Vector2(vertices[7].x, vertices[7].z);
 			wall.BackLine = new Tuple<Vector2, Vector2>(backStart, backEnd - backStart);
@@ -106,21 +109,54 @@ namespace YACY.MeshGen
 			{
 				var otherWall = startWalls[0];
 				// Start line
-				var frontIntersect = (Vector2)Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1, wall.FrontLine.Item2,
+				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+					wall.FrontLine.Item2,
 					otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
 
 				vertices[0] = new Vector3(frontIntersect.x, top, frontIntersect.y);
 				vertices[1] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
-				
-				var backIntersect = (Vector2)Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1, wall.BackLine.Item2,
+
+				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+					wall.BackLine.Item2,
 					otherWall.BackLine.Item1, otherWall.BackLine.Item2);
 
 				vertices[4] = new Vector3(backIntersect.x, top, backIntersect.y);
 				vertices[5] = new Vector3(backIntersect.x, bottom, backIntersect.y);
-				
-				GD.Print($"Intersection: {frontIntersect}");
+
+				GD.Print($"Front Intersection: {frontIntersect}");
+
+				if (propagate)
+				{
+					var otherWallsStartWalls = Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
+					otherWallsStartWalls.Remove(otherWall);
+					var otherWallsEndWalls = Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
+					otherWallsEndWalls.Add(wall);
+					otherWallsEndWalls.Remove(otherWall);
+					otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+				}
 			}
 
+			// Get end first wall
+			if (endWalls.Count >= 1)
+			{
+				var otherWall = endWalls[0];
+				// Start line
+				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+					wall.FrontLine.Item2,
+					otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
+
+				vertices[2] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
+				vertices[3] = new Vector3(frontIntersect.x, top, frontIntersect.y);
+
+				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+					wall.BackLine.Item2,
+					otherWall.BackLine.Item1, otherWall.BackLine.Item2);
+
+				vertices[6] = new Vector3(backIntersect.x, bottom, backIntersect.y);
+				vertices[7] = new Vector3(backIntersect.x, top, backIntersect.y);
+
+				GD.Print($"End Intersection: {frontIntersect}");
+			}
 
 			AddQuad(surfaceTool, vertices, 1, wall.Color, 0);
 			AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, wall.Color, 4, true);
