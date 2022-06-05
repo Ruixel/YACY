@@ -210,6 +210,7 @@ anchor_bottom = 1.0
 margin_top = -298.0
 margin_right = 350.0
 margin_bottom = 2.0
+stretch = true
 
 [node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
 size = Vector2( 350, 300 )

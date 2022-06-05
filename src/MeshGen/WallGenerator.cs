@@ -98,41 +98,51 @@ namespace YACY.MeshGen
 			// Calculate lines 
 			var frontStart = new Vector2(vertices[0].x, vertices[0].z);
 			var frontEnd = new Vector2(vertices[3].x, vertices[3].z);
-			wall.FrontLine = new Tuple<Vector2, Vector2>(frontStart, frontEnd - frontStart);
+			wall.FrontLine = new Tuple<Vector2, Vector2>(frontStart, (frontEnd - frontStart).Normalized());
 
 			var backStart = new Vector2(vertices[4].x, vertices[4].z);
 			var backEnd = new Vector2(vertices[7].x, vertices[7].z);
-			wall.BackLine = new Tuple<Vector2, Vector2>(backStart, backEnd - backStart);
+			wall.BackLine = new Tuple<Vector2, Vector2>(backStart, (backEnd - backStart).Normalized());
 
 			// Get first wall
 			if (startWalls.Count >= 1)
 			{
 				var otherWall = startWalls[0];
-				// Start line
-				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
-					wall.FrontLine.Item2,
-					otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
 
-				vertices[0] = new Vector3(frontIntersect.x, top, frontIntersect.y);
-				vertices[1] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
-
-				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
-					wall.BackLine.Item2,
-					otherWall.BackLine.Item1, otherWall.BackLine.Item2);
-
-				vertices[4] = new Vector3(backIntersect.x, top, backIntersect.y);
-				vertices[5] = new Vector3(backIntersect.x, bottom, backIntersect.y);
-
-				GD.Print($"Front Intersection: {frontIntersect}");
-
-				if (propagate)
+				var dot = wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2);
+				
+				// Make sure they are not parallel
+				if (Mathf.Abs(dot) < 0.999)
+				//if (wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2) != 0)
 				{
-					var otherWallsStartWalls = Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
-					otherWallsStartWalls.Remove(otherWall);
-					var otherWallsEndWalls = Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
-					otherWallsEndWalls.Add(wall);
-					otherWallsEndWalls.Remove(otherWall);
-					otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+					// Start line
+					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+						wall.FrontLine.Item2,
+						otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
+
+					vertices[0] = new Vector3(frontIntersect.x, top, frontIntersect.y);
+					vertices[1] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
+
+					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+						wall.BackLine.Item2,
+						otherWall.BackLine.Item1, otherWall.BackLine.Item2);
+
+					vertices[4] = new Vector3(backIntersect.x, top, backIntersect.y);
+					vertices[5] = new Vector3(backIntersect.x, bottom, backIntersect.y);
+
+					GD.Print($"Front Intersection: {frontIntersect}");
+
+					if (propagate)
+					{
+						var otherWallsStartWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
+						otherWallsStartWalls.Remove(otherWall);
+						var otherWallsEndWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
+						otherWallsEndWalls.Add(wall);
+						otherWallsEndWalls.Remove(otherWall);
+						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+					}
 				}
 			}
 
@@ -140,22 +150,41 @@ namespace YACY.MeshGen
 			if (endWalls.Count >= 1)
 			{
 				var otherWall = endWalls[0];
-				// Start line
-				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
-					wall.FrontLine.Item2,
-					otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
 
-				vertices[2] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
-				vertices[3] = new Vector3(frontIntersect.x, top, frontIntersect.y);
+				var dot = wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2);
+				
+				// Make sure they are not parallel
+				if (Mathf.Abs(dot) < 0.999)
+				{
+					// Start line
+					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+						wall.FrontLine.Item2,
+						otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
 
-				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
-					wall.BackLine.Item2,
-					otherWall.BackLine.Item1, otherWall.BackLine.Item2);
+					vertices[2] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
+					vertices[3] = new Vector3(frontIntersect.x, top, frontIntersect.y);
 
-				vertices[6] = new Vector3(backIntersect.x, bottom, backIntersect.y);
-				vertices[7] = new Vector3(backIntersect.x, top, backIntersect.y);
+					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+						wall.BackLine.Item2,
+						otherWall.BackLine.Item1, otherWall.BackLine.Item2);
 
-				GD.Print($"End Intersection: {frontIntersect}");
+					vertices[6] = new Vector3(backIntersect.x, bottom, backIntersect.y);
+					vertices[7] = new Vector3(backIntersect.x, top, backIntersect.y);
+
+					GD.Print($"End Intersection: {frontIntersect}");
+
+					if (propagate)
+					{
+						var otherWallsStartWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
+						otherWallsStartWalls.Add(wall);
+						otherWallsStartWalls.Remove(otherWall);
+						var otherWallsEndWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
+						otherWallsEndWalls.Remove(otherWall);
+						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+					}
+				}
 			}
 
 			AddQuad(surfaceTool, vertices, 1, wall.Color, 0);
