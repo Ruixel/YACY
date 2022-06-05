@@ -60,25 +60,26 @@ namespace YACY.Geometry
 			}
 		}*/
 		
-		private List<Wall> GetWalls(IEnumerable<int> entityIds)
+		private List<Wall> GetWalls(IEnumerable<int> entityIds, int omitId = -1)
 		{
 			var walls = new List<Wall>();
 			foreach (var entityId in entityIds)
 			{
 				if (_wallMap.TryGetValue(entityId, out var wall))
 				{
-					walls.Add(wall);
+					if (omitId != wall.Id)
+						walls.Add(wall);
 				}
 			}
 
 			return walls;
 		}
 
-		public List<Wall> GetWallsAtPosition(Vector2 pos)
+		public List<Wall> GetWallsAtPosition(Vector2 pos, int omitId = -1)
 		{
 			if (_gridMap.TryGetValue(pos, out var walls))
 			{
-				return GetWalls(walls);
+				return GetWalls(walls, omitId);
 			}
 			
 			return new List<Wall>();
@@ -96,12 +97,12 @@ namespace YACY.Geometry
 				GD.Print("Already part of a wall here :P");
 
 			
-			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition), GetWallsAtPosition(wall.EndPosition), true);
-			_wallContainer.AddChild(wall);
-			
 			AddToGrid(wall.StartPosition, wall);
 			AddToGrid(wall.EndPosition, wall);
 			_wallMap.Add(wall.Id, wall);
+			
+			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition, wall.Id), GetWallsAtPosition(wall.EndPosition, wall.Id), true);
+			_wallContainer.AddChild(wall);
 		}
 	}
 }

@@ -7,6 +7,6 @@ namespace YACY.Geometry
 	{
 		void HelloWorld();
 		void AddWall(Wall wall);
-		List<Wall> GetWallsAtPosition(Vector2 pos);
+		List<Wall> GetWallsAtPosition(Vector2 pos, int omitId);
 	}
 }

@@ -47,7 +47,7 @@ namespace YACY
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
 		{
 			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, propagate);
-			GD.Print($"FrontLine: {FrontLine.Item1}");
+			//GD.Print($"FrontLine: {FrontLine.Item1}");
 		}
 	}
 }

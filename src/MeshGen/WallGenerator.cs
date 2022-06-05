@@ -110,22 +110,30 @@ namespace YACY.MeshGen
 				var otherWall = startWalls[0];
 
 				var dot = wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2);
-				
+				GD.Print($"front dot: {dot}");
+
 				// Make sure they are not parallel
 				if (Mathf.Abs(dot) < 0.999)
-				//if (wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2) != 0)
 				{
+					var frontLine = otherWall.FrontLine;
+					var backLine = otherWall.BackLine;
+					if (wall.StartPosition.IsEqualApprox(otherWall.StartPosition))
+					{
+						frontLine = otherWall.BackLine;
+						backLine = otherWall.FrontLine;
+					}
+
 					// Start line
 					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
 						wall.FrontLine.Item2,
-						otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
+						frontLine.Item1, frontLine.Item2);
 
 					vertices[0] = new Vector3(frontIntersect.x, top, frontIntersect.y);
 					vertices[1] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
 
 					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
 						wall.BackLine.Item2,
-						otherWall.BackLine.Item1, otherWall.BackLine.Item2);
+						backLine.Item1, backLine.Item2);
 
 					vertices[4] = new Vector3(backIntersect.x, top, backIntersect.y);
 					vertices[5] = new Vector3(backIntersect.x, bottom, backIntersect.y);
@@ -135,12 +143,10 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
-						otherWallsStartWalls.Remove(otherWall);
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
-						otherWallsEndWalls.Add(wall);
-						otherWallsEndWalls.Remove(otherWall);
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+						
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
 				}
@@ -152,21 +158,29 @@ namespace YACY.MeshGen
 				var otherWall = endWalls[0];
 
 				var dot = wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2);
-				
+
 				// Make sure they are not parallel
 				if (Mathf.Abs(dot) < 0.999)
 				{
-					// Start line
+					var frontLine = otherWall.FrontLine;
+					var backLine = otherWall.BackLine;
+					if (wall.EndPosition.IsEqualApprox(otherWall.EndPosition))
+					{
+						frontLine = otherWall.BackLine;
+						backLine = otherWall.FrontLine;
+					}
+
+					// Start lin
 					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
 						wall.FrontLine.Item2,
-						otherWall.FrontLine.Item1, otherWall.FrontLine.Item2);
+						frontLine.Item1, frontLine.Item2);
 
 					vertices[2] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
 					vertices[3] = new Vector3(frontIntersect.x, top, frontIntersect.y);
 
 					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
 						wall.BackLine.Item2,
-						otherWall.BackLine.Item1, otherWall.BackLine.Item2);
+						backLine.Item1, backLine.Item2);
 
 					vertices[6] = new Vector3(backIntersect.x, bottom, backIntersect.y);
 					vertices[7] = new Vector3(backIntersect.x, top, backIntersect.y);
@@ -176,12 +190,10 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition);
-						otherWallsStartWalls.Add(wall);
-						otherWallsStartWalls.Remove(otherWall);
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition);
-						otherWallsEndWalls.Remove(otherWall);
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+						
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
 				}
