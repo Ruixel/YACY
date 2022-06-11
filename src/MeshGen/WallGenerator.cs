@@ -105,65 +105,113 @@ namespace YACY.MeshGen
 			wall.BackLine = new Tuple<Vector2, Vector2>(backStart, (backEnd - backStart).Normalized());
 
 			// Get first wall
-			if (startWalls.Count >= 1)
+			if (startWalls.Count >= 2)
 			{
-				var closestFrontIntersect = new Vector2(9999, 9999);
-				var closestFrontIntersectDistance = 9999f;
-				var closestBackIntersect = new Vector2(9999, 9999);
-				var closestBackIntersectDistance = 9999f;
+				var closestFrontIntersect = new Vector2(vertices[0].x, vertices[0].z);
+				var closestBackIntersect = new Vector2(vertices[4].x, vertices[4].z);
 
+				var frontLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
+				var frontLineDot = -3f;
+				var backLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
+				var backLineDot = -3f;
 				foreach (var otherWall in startWalls)
 				{
-					var dot = wall.FrontLine.Item2.Dot(otherWall.FrontLine.Item2);
-
-					// Make sure they are not parallel
-					if (Mathf.Abs(dot) < 0.999)
+					if (IsClockwise(wall.BackLine.Item2, otherWall.BackLine.Item2))
 					{
-						var frontLine = otherWall.FrontLine;
-						var backLine = otherWall.FrontLine;
-						if (wall.FrontLine.Item2.y * otherWall.FrontLine.Item2.x < wall.FrontLine.Item2.x * otherWall.FrontLine.Item2.y)
+						var fldot = wall.BackLine.Item2.Dot(otherWall.FrontLine.Item2);
+						if (fldot > frontLineDot)
 						{
 							frontLine = otherWall.BackLine;
-							backLine = otherWall.BackLine;
+							frontLineDot = fldot;
 						}
+					}
+					else
+					{
+						var fldot = wall.BackLine.Item2.Dot(otherWall.FrontLine.Item2);
+						if (-fldot - 2 > frontLineDot)
+						{
+							frontLine = otherWall.BackLine;
+							frontLineDot = -fldot - 2;
+						}
+					}
 
+					if (!IsClockwise(wall.FrontLine.Item2, otherWall.FrontLine.Item2))
+					{
+						var bldot = wall.FrontLine.Item2.Dot(otherWall.BackLine.Item2);
+						if (bldot > backLineDot)
+						{
+							backLine = otherWall.FrontLine;
+							backLineDot = bldot;
+						}
+					}
+					else
+					{
+						var bldot = wall.FrontLine.Item2.Dot(otherWall.BackLine.Item2);
+						if (-bldot - 2 > backLineDot)
+						{
+							backLine = otherWall.FrontLine;
+							backLineDot = -bldot - 2;
+						}
+					}
+
+					if (propagate)
+					{
+						var otherWallsStartWalls =
+							Core.GetService<IWallManager>()
+								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
+						var otherWallsEndWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+
+						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+					}
+				}
+
+
+				// Make sure they are not parallel
+				//if (Mathf.Abs(dot) < 0.999)
+				{
+					/*if (IsClockwise(wall.FrontLine.Item2, otherWall.FrontLine.Item2)
+					{
+						frontLine = otherWall.BackLine;
+						backLine = otherWall.BackLine;
+					}*/
+
+					if (Math.Abs(frontLineDot - (-1f)) > 0.01)
+					{
 						var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
 							wall.FrontLine.Item2,
 							frontLine.Item1, frontLine.Item2);
 
-						var frontDistance = frontIntersect.DistanceTo(wall.FrontLine.Item1);
-						if (frontDistance < closestFrontIntersectDistance)
-						{
-							closestFrontIntersect = frontIntersect;
-							closestFrontIntersectDistance = frontDistance;
-						}
+						closestFrontIntersect = frontIntersect;
+					}
 
+					/*var frontDistance = frontIntersect.DistanceTo(wall.FrontLine.Item1);
+					if (frontDistance < closestFrontIntersectDistance)
+					{
+						closestFrontIntersect = frontIntersect;
+						closestFrontIntersectDistance = frontDistance;
+					}*/
+
+					if (Math.Abs(backLineDot - (-1f)) > 0.01)
+					{
 						var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
 							wall.BackLine.Item2,
 							backLine.Item1, backLine.Item2);
 
-						var backDistance = backIntersect.DistanceTo(wall.FrontLine.Item1);
-						if (backDistance < closestBackIntersectDistance)
-						{
-							closestBackIntersect = backIntersect;
-							closestBackIntersectDistance = backDistance;
-						}
-
-
-						GD.Print($"Front Intersection: {frontIntersect}");
-
-						if (propagate)
-						{
-							var otherWallsStartWalls =
-								Core.GetService<IWallManager>()
-									.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
-							var otherWallsEndWalls =
-								Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
-
-							otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
-						}
+						closestBackIntersect = backIntersect;
 					}
+
+					/*var backDistance = backIntersect.DistanceTo(wall.FrontLine.Item1);
+					if (backDistance < closestBackIntersectDistance)
+					{
+						closestBackIntersect = backIntersect;
+						closestBackIntersectDistance = backDistance;
+					}*/
+
+
+					//GD.Print($"Front Intersection: {frontIntersect}");
 				}
+
 
 				vertices[0] = new Vector3(closestFrontIntersect.x, top, closestFrontIntersect.y);
 				vertices[1] = new Vector3(closestFrontIntersect.x, bottom, closestFrontIntersect.y);
@@ -292,6 +340,11 @@ namespace YACY.MeshGen
 		public static Mesh AddPlane(List<Vector3> vertices)
 		{
 			return new PlaneMesh();
+		}
+
+		public static bool IsClockwise(Vector2 v1, Vector2 v2)
+		{
+			return v1.y * v2.x < v1.x * v2.y;
 		}
 
 		private static void MergeWithAdjacentWalls(Wall wall, List<Wall> adjacentWalls, List<Vector3> vertices,
