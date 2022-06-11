@@ -105,7 +105,7 @@ namespace YACY.MeshGen
 			wall.BackLine = new Tuple<Vector2, Vector2>(backStart, (backEnd - backStart).Normalized());
 
 			// Get first wall
-			if (startWalls.Count >= 2)
+			if (startWalls.Count >= 1)
 			{
 				var closestFrontIntersect = new Vector2(vertices[0].x, vertices[0].z);
 				var closestBackIntersect = new Vector2(vertices[4].x, vertices[4].z);
@@ -114,46 +114,44 @@ namespace YACY.MeshGen
 				var frontLineDot = -3f;
 				var backLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
 				var backLineDot = -3f;
+
 				foreach (var otherWall in startWalls)
 				{
-					if (IsClockwise(wall.BackLine.Item2, otherWall.BackLine.Item2))
+					var otherWallFrontLine = otherWall.FrontLine;
+					var otherWallBackLine = otherWall.BackLine;
+					if (!wall.StartPosition.IsEqualApprox(otherWall.StartPosition))
 					{
-						var fldot = wall.BackLine.Item2.Dot(otherWall.FrontLine.Item2);
-						if (fldot > frontLineDot)
-						{
-							frontLine = otherWall.BackLine;
-							frontLineDot = fldot;
-						}
-					}
-					else
-					{
-						var fldot = wall.BackLine.Item2.Dot(otherWall.FrontLine.Item2);
-						if (-fldot - 2 > frontLineDot)
-						{
-							frontLine = otherWall.BackLine;
-							frontLineDot = -fldot - 2;
-						}
+						//otherWallFrontLine = otherWall.BackLine;
+						//otherWallBackLine = otherWall.FrontLine;
+
+						otherWallFrontLine =
+							new Tuple<Vector2, Vector2>(otherWall.BackLine.Item1, -otherWall.BackLine.Item2);
+						otherWallBackLine =
+							new Tuple<Vector2, Vector2>(otherWall.FrontLine.Item1, -otherWall.FrontLine.Item2);
 					}
 
-					if (!IsClockwise(wall.FrontLine.Item2, otherWall.FrontLine.Item2))
+					// Get closest front line
+					var fldot = wall.BackLine.Item2.Dot(otherWallFrontLine.Item2);
+					if (!IsClockwise(wall.BackLine.Item2, otherWallBackLine.Item2))
+						fldot = -fldot - 2;
+
+					if (fldot > frontLineDot)
 					{
-						var bldot = wall.FrontLine.Item2.Dot(otherWall.BackLine.Item2);
-						if (bldot > backLineDot)
-						{
-							backLine = otherWall.FrontLine;
-							backLineDot = bldot;
-						}
-					}
-					else
-					{
-						var bldot = wall.FrontLine.Item2.Dot(otherWall.BackLine.Item2);
-						if (-bldot - 2 > backLineDot)
-						{
-							backLine = otherWall.FrontLine;
-							backLineDot = -bldot - 2;
-						}
+						frontLine = otherWallBackLine;
+						frontLineDot = fldot;
 					}
 
+					// Get closest back line
+					var bldot = wall.FrontLine.Item2.Dot(otherWallBackLine.Item2);
+					if (IsClockwise(wall.FrontLine.Item2, otherWallFrontLine.Item2))
+						bldot = -bldot - 2;
+					if (bldot > backLineDot)
+					{
+						backLine = otherWallFrontLine;
+						backLineDot = bldot;
+					}
+
+					// Update all adjacent walls
 					if (propagate)
 					{
 						var otherWallsStartWalls =
@@ -167,57 +165,117 @@ namespace YACY.MeshGen
 				}
 
 
-				// Make sure they are not parallel
-				//if (Mathf.Abs(dot) < 0.999)
+				if (Math.Abs(frontLineDot - (-1f)) > 0.01)
 				{
-					/*if (IsClockwise(wall.FrontLine.Item2, otherWall.FrontLine.Item2)
-					{
-						frontLine = otherWall.BackLine;
-						backLine = otherWall.BackLine;
-					}*/
+					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+						wall.FrontLine.Item2,
+						frontLine.Item1, frontLine.Item2);
 
-					if (Math.Abs(frontLineDot - (-1f)) > 0.01)
-					{
-						var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
-							wall.FrontLine.Item2,
-							frontLine.Item1, frontLine.Item2);
-
-						closestFrontIntersect = frontIntersect;
-					}
-
-					/*var frontDistance = frontIntersect.DistanceTo(wall.FrontLine.Item1);
-					if (frontDistance < closestFrontIntersectDistance)
-					{
-						closestFrontIntersect = frontIntersect;
-						closestFrontIntersectDistance = frontDistance;
-					}*/
-
-					if (Math.Abs(backLineDot - (-1f)) > 0.01)
-					{
-						var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
-							wall.BackLine.Item2,
-							backLine.Item1, backLine.Item2);
-
-						closestBackIntersect = backIntersect;
-					}
-
-					/*var backDistance = backIntersect.DistanceTo(wall.FrontLine.Item1);
-					if (backDistance < closestBackIntersectDistance)
-					{
-						closestBackIntersect = backIntersect;
-						closestBackIntersectDistance = backDistance;
-					}*/
-
-
-					//GD.Print($"Front Intersection: {frontIntersect}");
+					closestFrontIntersect = frontIntersect;
 				}
 
+				if (Math.Abs(backLineDot - (-1f)) > 0.01)
+				{
+					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+						wall.BackLine.Item2,
+						backLine.Item1, backLine.Item2);
+
+					closestBackIntersect = backIntersect;
+				}
 
 				vertices[0] = new Vector3(closestFrontIntersect.x, top, closestFrontIntersect.y);
 				vertices[1] = new Vector3(closestFrontIntersect.x, bottom, closestFrontIntersect.y);
 
 				vertices[4] = new Vector3(closestBackIntersect.x, top, closestBackIntersect.y);
 				vertices[5] = new Vector3(closestBackIntersect.x, bottom, closestBackIntersect.y);
+			}
+
+
+			// Wall end point
+			if (endWalls.Count >= 1)
+			{
+				var closestFrontIntersect = new Vector2(vertices[2].x, vertices[2].z);
+				var closestBackIntersect = new Vector2(vertices[6].x, vertices[6].z);
+
+				var frontLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
+				var frontLineDot = -3f;
+				var backLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
+				var backLineDot = -3f;
+
+				foreach (var otherWall in endWalls)
+				{
+					var otherWallFrontLine = otherWall.FrontLine;
+					var otherWallBackLine = otherWall.BackLine;
+					if (!wall.EndPosition.IsEqualApprox(otherWall.EndPosition))
+					{
+						//otherWallFrontLine = otherWall.BackLine;
+						//otherWallBackLine = otherWall.FrontLine;
+						
+						otherWallFrontLine =
+							new Tuple<Vector2, Vector2>(otherWall.BackLine.Item1, -otherWall.BackLine.Item2);
+						otherWallBackLine =
+							new Tuple<Vector2, Vector2>(otherWall.FrontLine.Item1, -otherWall.FrontLine.Item2);
+					}
+
+					// Get closest front line
+					var fldot = wall.BackLine.Item2.Dot(otherWallFrontLine.Item2);
+					if (IsClockwise(wall.BackLine.Item2, otherWallBackLine.Item2))
+						fldot = -fldot - 2;
+
+					if (fldot > frontLineDot)
+					{
+						frontLine = otherWallBackLine;
+						frontLineDot = fldot;
+					}
+
+					// Get closest back line
+					var bldot = wall.FrontLine.Item2.Dot(otherWallBackLine.Item2);
+					if (!IsClockwise(wall.FrontLine.Item2, otherWallFrontLine.Item2))
+						bldot = -bldot - 2;
+
+					if (bldot > backLineDot)
+					{
+						backLine = otherWallFrontLine;
+						backLineDot = bldot;
+					}
+
+					// Update all adjacent walls
+					if (propagate)
+					{
+						var otherWallsStartWalls =
+							Core.GetService<IWallManager>()
+								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
+						var otherWallsEndWalls =
+							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+
+						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
+					}
+				}
+
+
+				if (Math.Abs(frontLineDot - (-1f)) > 0.01)
+				{
+					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+						wall.FrontLine.Item2,
+						frontLine.Item1, frontLine.Item2);
+
+					closestFrontIntersect = frontIntersect;
+				}
+
+				if (Math.Abs(backLineDot - (-1f)) > 0.01)
+				{
+					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+						wall.BackLine.Item2,
+						backLine.Item1, backLine.Item2);
+
+					closestBackIntersect = backIntersect;
+				}
+
+				vertices[3] = new Vector3(closestFrontIntersect.x, top, closestFrontIntersect.y);
+				vertices[2] = new Vector3(closestFrontIntersect.x, bottom, closestFrontIntersect.y);
+
+				vertices[7] = new Vector3(closestBackIntersect.x, top, closestBackIntersect.y);
+				vertices[6] = new Vector3(closestBackIntersect.x, bottom, closestBackIntersect.y);
 			}
 
 			// Get end first wall
