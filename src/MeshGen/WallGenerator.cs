@@ -11,7 +11,8 @@ namespace YACY.MeshGen
 	public static class WallGenerator
 	{
 		private static int[] _quadIndices = new[] {0, 1, 3, 1, 2, 3};
-		private static Material _colorMaterial = ResourceLoader.Load<ShaderMaterial>("res://res/materials/Color.tres");
+		private static int[] _triIndices = new[] {0, 1, 2};
+		private static Material _colorMaterial = ResourceLoader.Load<SpatialMaterial>("res://res/materials/test_mat.tres");
 
 		public static Mesh GenerateFlatWall(Vector2 start, Vector2 end, int level, float minHeight, float maxHeight)
 		{
@@ -27,9 +28,10 @@ namespace YACY.MeshGen
 			vertices.Add(new Vector3(end.x, bottom, end.y));
 			vertices.Add(new Vector3(end.x, top, end.y));
 
-			AddQuad(surfaceTool, vertices, 1, Colors.White, 0);
-
-			AddQuad(surfaceTool, vertices, 1, Colors.White, 4, true);
+			var index = 0;
+			AddQuad(surfaceTool, vertices, 1, Colors.White, ref index);
+			
+			AddQuad(surfaceTool, vertices, 1, Colors.White, ref index, true);
 
 			surfaceTool.Index();
 			return surfaceTool.Commit();
@@ -54,20 +56,21 @@ namespace YACY.MeshGen
 			var vertices = flatVertices.ConvertAll(v => v + normal * thickness);
 			vertices.AddRange(flatVertices.ConvertAll(v => v - normal * thickness));
 
-			AddQuad(surfaceTool, vertices, 1, Colors.White, 0);
-			AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, Colors.White, 4, true);
+			var index = 0;
+			AddQuad(surfaceTool, vertices, 1, Colors.White, ref index);
+			AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, Colors.White, ref index, true);
 
 			var frontVertices = new List<Vector3> {vertices[2], vertices[3], vertices[7], vertices[6]};
-			AddQuad(surfaceTool, frontVertices, 1, Colors.White, 8, true);
+			AddQuad(surfaceTool, frontVertices, 1, Colors.White, ref index, true);
 
 			var backVertices = new List<Vector3> {vertices[0], vertices[1], vertices[5], vertices[4]};
-			AddQuad(surfaceTool, backVertices, 1, Colors.White, 12, true);
+			AddQuad(surfaceTool, backVertices, 1, Colors.White, ref index, true);
 
 			var topVertices = new List<Vector3> {vertices[0], vertices[3], vertices[7], vertices[4]};
-			AddQuad(surfaceTool, topVertices, 1, Colors.White, 16);
+			AddQuad(surfaceTool, topVertices, 1, Colors.White, ref index);
 
 			var bottomVertices = new List<Vector3> {vertices[1], vertices[2], vertices[6], vertices[5]};
-			AddQuad(surfaceTool, bottomVertices, 1, Colors.White, 20, true);
+			AddQuad(surfaceTool, bottomVertices, 1, Colors.White, ref index, true);
 
 			surfaceTool.Index();
 			return surfaceTool.Commit();
@@ -325,20 +328,33 @@ namespace YACY.MeshGen
 				}
 			}*/
 
-			AddQuad(surfaceTool, vertices, 1, wall.Color, 0);
-			AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, wall.Color, 4, true);
+			var index = 0;
+			AddQuad(surfaceTool, vertices, 1, wall.Color, ref index);
+			AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, wall.Color, ref index, true);
 
 			var frontVertices = new List<Vector3> {vertices[2], vertices[3], vertices[7], vertices[6]};
-			AddQuad(surfaceTool, frontVertices, 1, wall.Color, 8, true);
+			AddQuad(surfaceTool, frontVertices, 1, wall.Color, ref index, true);
 
 			var backVertices = new List<Vector3> {vertices[0], vertices[1], vertices[5], vertices[4]};
-			AddQuad(surfaceTool, backVertices, 1, wall.Color, 12, true);
+			AddQuad(surfaceTool, backVertices, 1, wall.Color, ref index, true);
 
 			var topVertices = new List<Vector3> {vertices[0], vertices[3], vertices[7], vertices[4]};
-			AddQuad(surfaceTool, topVertices, 1, wall.Color, 16);
+			AddQuad(surfaceTool, topVertices, 1, wall.Color, ref index);
 
 			var bottomVertices = new List<Vector3> {vertices[1], vertices[2], vertices[6], vertices[5]};
-			AddQuad(surfaceTool, bottomVertices, 1, wall.Color, 20, true);
+			AddQuad(surfaceTool, bottomVertices, 1, wall.Color, ref index, true);
+
+			if (startWalls.Count >= 2)
+			{
+				var gapfill = new List<Vector3> {vertices[0], vertices[4], new Vector3(start.x, top, start.y)};
+				AddTri(surfaceTool, gapfill, 1, wall.Color, ref index, true);
+			}
+			
+			if (endWalls.Count >= 2)
+			{
+				var gapfill = new List<Vector3> {vertices[3], vertices[7], new Vector3(end.x, top, end.y)};
+				AddTri(surfaceTool, gapfill, 1, wall.Color, ref index, false);
+			}
 
 			surfaceTool.Index();
 			surfaceTool.SetMaterial(_colorMaterial);
@@ -346,7 +362,7 @@ namespace YACY.MeshGen
 		}
 
 		public static void AddQuad(SurfaceTool surfaceTool, IList<Vector3> vertices, int textureID, Color color,
-			int indexOffset, bool generateBack = false)
+			ref int indexOffset, bool generateBack = false)
 		{
 			if (generateBack)
 				vertices = new List<Vector3> {vertices[3], vertices[2], vertices[1], vertices[0]};
@@ -393,6 +409,49 @@ namespace YACY.MeshGen
 			{
 				surfaceTool.AddIndex(quadIndex + indexOffset);
 			}
+
+			indexOffset += 4;
+		}
+		
+		public static void AddTri(SurfaceTool surfaceTool, IList<Vector3> vertices, int textureID, Color color,
+			ref int indexOffset, bool generateBack = false)
+		{
+			if (generateBack)
+			{
+				vertices = new List<Vector3> {vertices[2], vertices[1], vertices[0]};
+			}
+			
+			var normal = -(vertices[2] - vertices[1]).Cross(vertices[0] - vertices[1]).Normalized();
+
+			var wallLength = Mathf.Sqrt(Mathf.Pow(vertices[2].z - vertices[0].z, 2) +
+			                            Mathf.Pow(vertices[2].x - vertices[0].x, 2));
+			var textureFloat = textureID / 256;
+			var textureScale = new Vector2(1, 1); // Get it from somewhere
+
+			var textureSize = 1;
+
+			//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
+			surfaceTool.AddColor(color);
+			surfaceTool.AddNormal(normal);
+			surfaceTool.AddVertex(vertices[0]);
+
+			//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
+			surfaceTool.AddColor(color);
+			surfaceTool.AddNormal(normal);
+			surfaceTool.AddVertex(vertices[1]);
+
+			//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
+			surfaceTool.AddColor(color);
+			surfaceTool.AddNormal(normal);
+			surfaceTool.AddVertex(vertices[2]);
+
+
+			foreach (var triIndex in _triIndices)
+			{
+				surfaceTool.AddIndex(triIndex + indexOffset);
+			}
+
+			indexOffset += 3;
 		}
 
 		public static Mesh AddPlane(List<Vector3> vertices)

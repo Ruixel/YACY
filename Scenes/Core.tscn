@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://src/Core.cs" type="Script" id=1]
 [ext_resource path="res://scripts/gui/WaveEffect.gd" type="Script" id=2]
@@ -107,6 +107,9 @@ outline_color = Color( 0, 0, 0, 0.509804 )
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 3 )
+
+[sub_resource type="PlaneMesh" id=23]
+size = Vector2( 200, 200 )
 
 [node name="Spatial" type="Node"]
 script = ExtResource( 1 )
@@ -279,3 +282,17 @@ bbcode_text = "
 text = "
  Selected
 "
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Control"]
+transform = Transform( 0.958998, -0.172437, 0.224919, 0, 0.793608, 0.608429, -0.283413, -0.583482, 0.761069, -0.940005, 1.62994, 0 )
+shadow_enabled = true
+shadow_bias = -0.1
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0932, 3.02727, 8.57601 )
+shadow_enabled = true
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+visible = false
+mesh = SubResource( 23 )
+material/0 = null
