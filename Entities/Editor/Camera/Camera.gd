@@ -6,7 +6,7 @@ const CAM_ZOOM_MAX = 20
 const CAM_ANGLE_MIN = 15.0
 const CAM_ANGLE_MAX = 85.0
 
-const CAM_DRAG_SPEED = 0.5
+const CAM_DRAG_SPEED = 2
 
 onready var EditorGUI = get_node("../GUI")
 
@@ -18,7 +18,8 @@ var camHeight = 0
 var mouse_motion = Vector2()
 
 func _ready() -> void:
-	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+	#EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+	pass
 
 func on_level_change(level):
 	camHeight = WorldConstants.LEVEL_HEIGHT * (level - 1)

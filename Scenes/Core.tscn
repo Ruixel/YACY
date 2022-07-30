@@ -1,0 +1,299 @@
+[gd_scene load_steps=23 format=2]
+
+[ext_resource path="res://src/Core.cs" type="Script" id=1]
+[ext_resource path="res://scripts/gui/WaveEffect.gd" type="Script" id=2]
+[ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=3]
+[ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=11]
+[ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="DynamicFontData" id=14]
+[ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture" id=16]
+[ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture" id=17]
+[ext_resource path="res://Scenes/Label.gd" type="Script" id=18]
+[ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="DynamicFontData" id=20]
+
+[sub_resource type="StyleBoxFlat" id=14]
+bg_color = Color( 0.117647, 0.117647, 0.117647, 0.564706 )
+corner_radius_top_left = 16
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+corner_radius_bottom_left = 16
+shadow_color = Color( 0, 0, 0, 0.156863 )
+shadow_size = 6
+shadow_offset = Vector2( 0, 4 )
+
+[sub_resource type="DynamicFont" id=13]
+size = 12
+outline_size = 1
+outline_color = Color( 0, 0, 0, 0.133333 )
+extra_spacing_char = 1
+font_data = ExtResource( 14 )
+
+[sub_resource type="DynamicFont" id=15]
+size = 28
+extra_spacing_top = 5
+extra_spacing_bottom = 5
+extra_spacing_char = 1
+font_data = ExtResource( 14 )
+
+[sub_resource type="ProceduralSky" id=2]
+ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
+ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
+sun_latitude = 23.23
+sun_longitude = 120.0
+
+[sub_resource type="Environment" id=3]
+background_sky = SubResource( 2 )
+background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
+ambient_light_color = Color( 0.819608, 0.823529, 0.819608, 1 )
+tonemap_mode = 1
+tonemap_exposure = 0.9
+ssao_enabled = true
+ssao_radius = 0.8
+ssao_intensity = 2.0
+ssao_radius2 = 1.6
+ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
+ssao_blur = 2
+dof_blur_far_distance = 0.58
+dof_blur_far_transition = 14.25
+dof_blur_near_distance = 3.64
+glow_enabled = true
+glow_levels/4 = true
+glow_levels/5 = false
+glow_intensity = 0.39
+glow_strength = 0.83
+glow_hdr_threshold = 0.7
+glow_bicubic_upscale = true
+
+[sub_resource type="World" id=17]
+environment = SubResource( 3 )
+
+[sub_resource type="CubeMesh" id=18]
+size = Vector3( 0.5, 0.8, 0.15 )
+
+[sub_resource type="SpatialMaterial" id=20]
+flags_transparent = true
+albedo_color = Color( 0, 0, 0, 0.537255 )
+
+[sub_resource type="ArrayMesh" id=21]
+surfaces/0 = {
+"aabb": AABB( -0.278868, -0.428868, -0.103868, 0.557735, 0.857745, 0.207745 ),
+"array_data": PoolByteArray( 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 61, 0, 0, 127, 64, 0, 0, 0, 0, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 189, 127, 127, 129, 64, 85, 57, 0, 0, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 61, 0, 0, 127, 64, 85, 53, 0, 0, 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 189, 127, 127, 129, 64, 0, 60, 0, 0, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 61, 0, 0, 127, 64, 0, 0, 0, 56, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 189, 127, 127, 129, 64, 85, 57, 0, 56, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 61, 0, 0, 127, 64, 85, 53, 0, 56, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 189, 127, 127, 129, 64, 0, 60, 0, 56, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 61, 127, 0, 127, 127, 85, 53, 0, 0, 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 189, 129, 0, 0, 63, 0, 0, 0, 56, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 189, 127, 0, 127, 127, 85, 57, 0, 0, 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 61, 129, 0, 0, 63, 85, 53, 0, 56, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 61, 127, 0, 127, 127, 85, 53, 0, 56, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 189, 129, 0, 0, 63, 0, 0, 0, 60, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 189, 127, 0, 127, 127, 85, 57, 0, 56, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 61, 129, 0, 0, 63, 85, 53, 0, 60, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 61, 0, 127, 129, 64, 85, 53, 0, 56, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 61, 0, 129, 127, 64, 85, 57, 0, 56, 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 61, 0, 127, 129, 64, 85, 57, 0, 56, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 61, 0, 129, 127, 64, 0, 60, 0, 56, 185, 199, 142, 62, 134, 148, 219, 62, 126, 184, 212, 189, 0, 127, 129, 64, 85, 53, 0, 60, 185, 199, 142, 190, 134, 148, 219, 190, 126, 184, 212, 189, 0, 129, 127, 64, 85, 57, 0, 60, 185, 199, 142, 190, 134, 148, 219, 62, 126, 184, 212, 189, 0, 127, 129, 64, 85, 57, 0, 60, 185, 199, 142, 62, 134, 148, 219, 190, 126, 184, 212, 189, 0, 129, 127, 64, 0, 60, 0, 60 ),
+"array_index_data": PoolByteArray( 0, 0, 4, 0, 2, 0, 2, 0, 4, 0, 6, 0, 1, 0, 5, 0, 3, 0, 3, 0, 5, 0, 7, 0, 8, 0, 12, 0, 10, 0, 10, 0, 12, 0, 14, 0, 9, 0, 13, 0, 11, 0, 11, 0, 13, 0, 15, 0, 16, 0, 20, 0, 18, 0, 18, 0, 20, 0, 22, 0, 17, 0, 21, 0, 19, 0, 19, 0, 21, 0, 23, 0 ),
+"blend_shape_data": [  ],
+"format": 2194711,
+"index_count": 36,
+"material": SubResource( 20 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 24
+}
+
+[sub_resource type="DynamicFont" id=16]
+size = 78
+font_data = ExtResource( 20 )
+
+[sub_resource type="DynamicFont" id=19]
+size = 72
+outline_size = 5
+outline_color = Color( 0, 0, 0, 0.584314 )
+use_mipmaps = true
+use_filter = true
+extra_spacing_char = 2
+font_data = ExtResource( 3 )
+
+[sub_resource type="DynamicFont" id=22]
+size = 18
+outline_size = 2
+outline_color = Color( 0, 0, 0, 0.509804 )
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 3 )
+
+[sub_resource type="PlaneMesh" id=23]
+size = Vector2( 200, 200 )
+
+[node name="Spatial" type="Node"]
+script = ExtResource( 1 )
+
+[node name="Control" type="Control" parent="."]
+visible = false
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Polygon2D" type="Polygon2D" parent="Control"]
+position = Vector2( -165, 564 )
+scale = Vector2( 2.26946, 2.09677 )
+color = Color( 1, 1, 1, 0.298039 )
+offset = Vector2( -511.575, -114.462 )
+polygon = PoolVector2Array( 666.238, 153.093, 507, 176, 575, 288, 681.66, 256.108 )
+script = ExtResource( 11 )
+
+[node name="Polygon2D2" type="Polygon2D" parent="Control"]
+position = Vector2( -165, 564 )
+scale = Vector2( 2.26946, 2.09677 )
+color = Color( 1, 1, 1, 0.298039 )
+offset = Vector2( -511.575, -114.462 )
+polygon = PoolVector2Array( 684.304, 162.631, 511.575, 153.093, 550.792, 275.662, 668.441, 258.493 )
+script = ExtResource( 11 )
+
+[node name="Polygon2D3" type="Polygon2D" parent="Control"]
+position = Vector2( -152, 691 )
+scale = Vector2( 2.26946, 2.09677 )
+color = Color( 1, 1, 1, 0.298039 )
+polygon = PoolVector2Array( -6.60945, -10.4923, 139.681, -33.3848, 155.984, 93.954, -18.066, 102.062, -7.58138, -0.943726 )
+script = ExtResource( 11 )
+
+[node name="Level6" type="Panel" parent="Control"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -70.0
+margin_top = 20.0
+margin_right = -20.0
+margin_bottom = 175.0
+mouse_filter = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_styles/panel = SubResource( 14 )
+
+[node name="Label" type="Label" parent="Control/Level6"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -23.5
+margin_right = 24.5
+margin_bottom = 21.0
+custom_fonts/font = SubResource( 13 )
+text = "LEVEL"
+align = 1
+valign = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/Level6"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_right = -8.0
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="Control/Level6/MarginContainer"]
+margin_right = 34.0
+margin_bottom = 155.0
+alignment = 1
+
+[node name="TextureButton" type="TextureButton" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
+margin_top = 21.0
+margin_right = 34.0
+margin_bottom = 51.0
+rect_min_size = Vector2( 0, 30 )
+texture_normal = ExtResource( 17 )
+expand = true
+
+[node name="Label" type="Label" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+margin_top = 55.0
+margin_right = 34.0
+margin_bottom = 100.0
+custom_fonts/font = SubResource( 15 )
+text = "1"
+align = 1
+valign = 1
+clip_text = true
+script = ExtResource( 18 )
+
+[node name="TextureButton2" type="TextureButton" parent="Control/Level6/MarginContainer/VBoxContainer2"]
+modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
+margin_top = 104.0
+margin_right = 34.0
+margin_bottom = 134.0
+rect_min_size = Vector2( 0, 30 )
+texture_normal = ExtResource( 16 )
+expand = true
+
+[node name="ViewportContainer" type="ViewportContainer" parent="Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_top = -298.0
+margin_right = 350.0
+margin_bottom = 2.0
+stretch = true
+
+[node name="Viewport" type="Viewport" parent="Control/ViewportContainer"]
+size = Vector2( 350, 300 )
+world = SubResource( 17 )
+transparent_bg = true
+handle_input_locally = false
+usage = 3
+debug_draw = 3
+render_target_update_mode = 0
+
+[node name="Camera" type="Camera" parent="Control/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+fov = 22.0
+
+[node name="Mesh" type="Spatial" parent="Control/ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.342518, 0 )
+script = ExtResource( 2 )
+wave_speed = 1.0
+
+[node name="Cube" type="MeshInstance" parent="Control/ViewportContainer/Viewport/Mesh"]
+transform = Transform( 0.809437, 0, 0.587206, 0, 1, 0, -0.587206, 0, 0.809437, -0.404548, -0.0145401, -0.655358 )
+mesh = SubResource( 18 )
+material/0 = null
+
+[node name="MeshInstance" type="MeshInstance" parent="Control/ViewportContainer/Viewport/Mesh/Cube"]
+mesh = SubResource( 21 )
+material/0 = null
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Control/ViewportContainer/Viewport"]
+transform = Transform( 0.551573, 0, 0.834127, 0, 1, 0, -0.834127, 0, 0.551573, 0, 0, -0.0118456 )
+light_color = Color( 0.4, 0.384314, 0.384314, 1 )
+
+[node name="Label" type="Label" parent="Control"]
+visible = false
+margin_left = 15.0
+margin_top = 665.0
+margin_right = 165.0
+margin_bottom = 760.0
+custom_fonts/font = SubResource( 16 )
+text = "wall"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 86.0
+margin_top = -106.0
+margin_right = 289.0
+margin_bottom = -11.0
+custom_fonts/normal_font = SubResource( 19 )
+bbcode_enabled = true
+bbcode_text = "[wave amp=30 freq=2] Wall[/wave]"
+text = " Wall"
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control"]
+anchor_top = 1.0
+anchor_bottom = 1.0
+margin_left = 85.0
+margin_top = -144.0
+margin_right = 288.0
+margin_bottom = -49.0
+custom_fonts/normal_font = SubResource( 22 )
+bbcode_enabled = true
+bbcode_text = "
+[wave amp=20 freq=3] Selected[/wave]
+"
+text = "
+ Selected
+"
+
+[node name="DirectionalLight" type="DirectionalLight" parent="Control"]
+transform = Transform( 0.958998, -0.172437, 0.224919, 0, 0.793608, 0.608429, -0.283413, -0.583482, 0.761069, -0.940005, 1.62994, 0 )
+shadow_enabled = true
+shadow_bias = -0.1
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0932, 3.02727, 8.57601 )
+shadow_enabled = true
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+visible = false
+mesh = SubResource( 23 )
+material/0 = null

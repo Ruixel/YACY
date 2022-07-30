@@ -17,7 +17,8 @@ var grid_pos = Vector2i.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	WorldAPI.connect("update_prototype", self, "on_update_prototype")
+	#WorldAPI.connect("update_prototype", self, "on_update_prototype")
+	pass
 
 func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	if mouse_motion != Vector2():
