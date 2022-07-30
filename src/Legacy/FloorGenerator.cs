@@ -3,10 +3,8 @@ using System.Linq;
 using Godot;
 using Godot.Collections;
 using Poly2Tri;
-using Poly2Tri.Triangulation;
 using Poly2Tri.Triangulation.Delaunay;
 using Poly2Tri.Triangulation.Polygon;
-using Poly2Tri.Utility;
 
 namespace YACY.Legacy
 {

@@ -34,9 +34,9 @@ var grid_height  : float = 0
 
 # Connect signals
 func _ready():
-	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
-	EditorGUI.get_node("ObjectList").connect("s_changeMode", self, "on_mode_change")
-	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
+	#EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
+	#EditorGUI.get_node("ObjectList").connect("s_changeMode", self, "on_mode_change")
+	#EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
 	
 	childCursor.cursor_ready()
 
