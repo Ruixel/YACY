@@ -16,7 +16,6 @@ namespace YACY.Build.Tools
 			ResourceLoader.Load<PackedScene>("res://Entities/Editor/Cursor/WallCursorMesh.tscn");
 
 		private Spatial _mesh;
-		private MeshInstance _buffer;
 
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
@@ -34,9 +33,6 @@ namespace YACY.Build.Tools
 			_mesh = _cursorMesh.Instance<Spatial>();
 			_mesh.Visible = false;
 			parent.AddChild(_mesh);
-
-			_buffer = new MeshInstance();
-			parent.AddChild(_buffer);
 		}
 
 		public void Enable()
@@ -83,13 +79,11 @@ namespace YACY.Build.Tools
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))
 				{
 					GD.Print($"start: {_pencilStart}, end {_pencilEnd}");
-					_buffer.Mesh = WallGenerator.GenerateWall(_pencilStart, _pencilEnd, 1, 0, 1, 0.1f);
-					
-					_buffer.Visible = true;
+					_pencilService.GeneratePreview(_pencilStart, _pencilEnd);
 				}
 				else
 				{
-					_buffer.Visible = false; // Hide 0x0 walls
+					_pencilService.HidePreview();
 				}
 			}
 		}
@@ -103,7 +97,7 @@ namespace YACY.Build.Tools
 		public void onMouseRelease()
 		{
 			_mouseDown = false;
-			_buffer.Visible = false;
+			_pencilService.HidePreview();
 			
 			// Don't add empty wall
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))

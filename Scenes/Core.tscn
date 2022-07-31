@@ -341,7 +341,7 @@ custom_styles/hover = ExtResource( 12 )
 custom_styles/pressed = ExtResource( 13 )
 custom_styles/focus = SubResource( 33 )
 custom_styles/normal = ExtResource( 9 )
-script = ExtResource( 10 )
+script = ExtResource( 2 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Control/Panel/GridContainer/Item"]
 anchor_right = 1.0
@@ -404,7 +404,7 @@ custom_styles/hover = ExtResource( 12 )
 custom_styles/pressed = ExtResource( 13 )
 custom_styles/focus = SubResource( 34 )
 custom_styles/normal = ExtResource( 9 )
-script = ExtResource( 2 )
+script = ExtResource( 10 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Control/Panel/GridContainer/Item2"]
 anchor_right = 1.0
@@ -465,7 +465,7 @@ custom_styles/hover = ExtResource( 12 )
 custom_styles/pressed = ExtResource( 13 )
 custom_styles/focus = SubResource( 35 )
 custom_styles/normal = ExtResource( 9 )
-script = ExtResource( 2 )
+script = ExtResource( 10 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Control/Panel/GridContainer/Item3"]
 anchor_right = 1.0
