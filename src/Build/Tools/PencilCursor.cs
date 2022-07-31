@@ -7,7 +7,7 @@ namespace YACY.Build.Tools
 {
 	public class PencilCursor : ICursorMode
 	{
-		private readonly IBuildManager _buildManager;
+		private IBuildManager _buildManager;
 
 		private bool _mouseDown;
 		private Vector2 _position;
@@ -21,9 +21,12 @@ namespace YACY.Build.Tools
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
 
-		public PencilCursor(IBuildManager buildManager, Node parent)
+		private IPencilService _pencilService;
+
+		public PencilCursor(Node parent)
 		{
-			_buildManager = buildManager;
+			//_buildManager = buildManager;
+			//_pencilService = pencilService;
 
 			_mouseDown = false;
 			_position = new Vector2();
@@ -38,7 +41,17 @@ namespace YACY.Build.Tools
 
 		public void Enable()
 		{
+			if (_pencilService == null)
+				throw new Exception(
+					"The pencil tool needs to be connected to an adequate service before being enabled.");
+			
+			_buildManager = Core.GetService<IBuildManager>();
 			_mesh.Visible = true;
+		}
+
+		public void LoadPencilService(IPencilService pencilService)
+		{
+			_pencilService = pencilService;
 		}
 
 		public void Process(float delta, Vector2 mouseMotion)

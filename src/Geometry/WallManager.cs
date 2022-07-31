@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using YACY.Build;
+using YACY.Build.Tools;
 using YACY.MeshGen;
 
 namespace YACY.Geometry
@@ -12,6 +13,7 @@ namespace YACY.Geometry
 
 		private Dictionary<Vector2, List<int>> _gridMap;
 		private Dictionary<int, Wall> _wallMap;
+		private IPencilService _pencilServiceImplementation;
 
 		public WallManager()
 		{
@@ -103,6 +105,12 @@ namespace YACY.Geometry
 			
 			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition, wall.Id), GetWallsAtPosition(wall.EndPosition, wall.Id), true);
 			_wallContainer.AddChild(wall);
+		}
+
+		public void AddLine(Vector2 startPosition, Vector2 endPosition)
+		{
+			var wall = new Wall(startPosition, endPosition);
+			AddWall(wall);
 		}
 	}
 }

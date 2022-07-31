@@ -16,6 +16,8 @@ namespace YACY
 		private readonly Container _container;
 		private int _nextId = 1;
 		
+		private static bool _isReady = false;
+		
 		public Core()
 		{
 			_buildTools = new List<Node>();
@@ -27,6 +29,7 @@ namespace YACY
 			_container.Register<IBuildManager, BuildManager>(Lifestyle.Singleton);
 			
 			_container.Verify();
+			_isReady = true;
 			
 			// Add build tools
 			//AddBuildTools();
@@ -62,7 +65,10 @@ namespace YACY
 
 		public static TService GetService<TService>() where TService : class
 		{
-			return _singleton._container.GetInstance<TService>();
+			if (_isReady)
+				return _singleton._container.GetInstance<TService>();
+
+			return null;
 		}
 		
 		public override void _Ready()
