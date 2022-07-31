@@ -108,8 +108,7 @@ namespace YACY.Build.Tools
 			// Don't add empty wall
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))
 			{
-				var wall = new Wall(_pencilStart, _pencilEnd);
-				Core.GetService<IWallManager>().AddWall(wall);
+				_pencilService.AddLine(_pencilStart, _pencilEnd);
 			}
 		}
 

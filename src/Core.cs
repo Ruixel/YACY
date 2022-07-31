@@ -27,9 +27,9 @@ namespace YACY
 			_container.Register<ILevelManager, LevelManager>(Lifestyle.Singleton);
 			_container.Register<IWallManager, WallManager>(Lifestyle.Singleton);
 			_container.Register<IBuildManager, BuildManager>(Lifestyle.Singleton);
+			_container.Register<ILegacyGeometryManager, LegacyGeometryManager>(Lifestyle.Singleton);
 			
 			_container.Verify();
-			_isReady = true;
 			
 			// Add build tools
 			//AddBuildTools();
@@ -38,6 +38,7 @@ namespace YACY
 			_container.GetInstance<IBuildManager>().EnableBuildMode(this);
 
 			_singleton = this;
+			_isReady = true;
 		}
 
 		private void AddBuildTool<T>() where T : Node, new()
