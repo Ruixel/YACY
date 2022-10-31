@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Godot;
+using YACY.Build.Tools;
 
 namespace YACY.Geometry
 {
-	public interface IWallManager
+	public interface IWallManager: IPencilService
 	{
 		void HelloWorld();
 		void AddWall(Wall wall);

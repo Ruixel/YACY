@@ -36,6 +36,39 @@ namespace YACY.MeshGen
 			surfaceTool.Index();
 			return surfaceTool.Commit();
 		}
+		
+		public static Mesh GenerateSelectionFlatWall(Vector2 start, Vector2 end, int level, float minHeight, float maxHeight,
+			float outlineWidth)
+		{
+			var surfaceTool = new SurfaceTool();
+			surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
+
+			var bottom = (level - 1 + minHeight) * Constants.LevelHeight - outlineWidth;
+			var top = (level - 1 + maxHeight) * Constants.LevelHeight + outlineWidth;
+
+			var wallVector = (end - start).Normalized();
+			end = end + wallVector * outlineWidth;
+			start = start - wallVector * outlineWidth;
+
+			var normalVector = new Vector3(wallVector.x, 0, wallVector.y).Cross(new Vector3(0, 1, 0));
+			
+			var vertices = new List<Vector3>();
+			vertices.Add(new Vector3(start.x, top, start.y));
+			vertices.Add(new Vector3(start.x, bottom, start.y));
+			vertices.Add(new Vector3(end.x, bottom, end.y));
+			vertices.Add(new Vector3(end.x, top, end.y));
+
+			var frontVertices = vertices.ConvertAll(v => v - (normalVector * 0.02f));
+			var backVertices = vertices.ConvertAll(v => v + (normalVector * 0.02f));
+
+			var index = 0;
+			AddQuad(surfaceTool, frontVertices, 1, Colors.Black, ref index);
+			
+			AddQuad(surfaceTool, backVertices, 1, Colors.Black, ref index, true);
+			
+			surfaceTool.Index();
+			return surfaceTool.Commit();
+		}
 
 		public static Mesh GenerateWall(Vector2 start, Vector2 end, int level, float minHeight, float maxHeight,
 			float thickness)

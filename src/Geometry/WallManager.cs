@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Godot;
 using YACY.Build;
+using YACY.Build.Tools;
 using YACY.MeshGen;
 
 namespace YACY.Geometry
@@ -13,11 +14,16 @@ namespace YACY.Geometry
 		private Dictionary<Vector2, List<int>> _gridMap;
 		private Dictionary<int, Wall> _wallMap;
 
+		private MeshInstance _previewWall;
+
 		public WallManager()
 		{
 			_wallContainer = new Spatial();
 			_gridMap = new Dictionary<Vector2, List<int>>();
 			_wallMap = new Dictionary<int, Wall>();
+
+			_previewWall = new MeshInstance();
+			_wallContainer.AddChild(_previewWall);
 		}
 		
 		public void HelloWorld()
@@ -25,7 +31,7 @@ namespace YACY.Geometry
 			GD.Print("HelloWorld from the Wall Manager");
 		}
 
-		private void GetContainer()
+		private void CreateContainer()
 		{
 			Core.GetService<ILevelManager>().GetContainer().AddChild(_wallContainer);
 		}
@@ -103,6 +109,23 @@ namespace YACY.Geometry
 			
 			wall.GenerateMergedMesh(GetWallsAtPosition(wall.StartPosition, wall.Id), GetWallsAtPosition(wall.EndPosition, wall.Id), true);
 			_wallContainer.AddChild(wall);
+		}
+
+		public void AddLine(Vector2 startPosition, Vector2 endPosition)
+		{
+			var wall = new Wall(startPosition, endPosition);
+			AddWall(wall);
+		}
+
+		public void GeneratePreview(Vector2 startPosition, Vector2 endPosition)
+		{
+			_previewWall.Visible = true;
+			_previewWall.Mesh = WallGenerator.GenerateWall(startPosition, endPosition, 1, 0, 1, 0.1f);
+		}
+
+		public void HidePreview()
+		{
+			_previewWall.Visible = false;
 		}
 	}
 }
