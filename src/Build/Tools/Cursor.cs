@@ -46,6 +46,12 @@ namespace YACY
 			if (@event is InputEventMouseMotion mouseEvent)
 			{
 				_mouseMotion = mouseEvent.Relative;
+			} else if (@event is InputEventKey keyEvent)
+			{
+				if (keyEvent.Pressed)
+				{
+					_cursorMode.onKeyPressed(OS.GetScancodeString(keyEvent.Scancode));
+				}
 			}
 		}
 

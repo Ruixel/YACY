@@ -33,5 +33,10 @@ namespace YACY.Legacy.Objects
 		{
 			_meshInstance.Mesh = WallGenerator.GenerateFlatWall(StartPosition, EndPosition, 1, 0, 1);
 		}
+		
+		public Mesh CreateSelectionMesh()
+		{
+			return WallGenerator.GenerateSelectionFlatWall(StartPosition, EndPosition, 1, 0, 1, 0.05f);
+		}
 	}
 }

@@ -52,6 +52,8 @@ namespace YACY.Geometry
 			wall.GenerateMesh();
 			
 			_geometryContainer.AddChild(wall);
+			
+			Core.GetService<ISelectionManager>().SelectEntity(wall);
 		}
 	}
 }

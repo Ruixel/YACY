@@ -1,7 +1,6 @@
-[gd_scene load_steps=39 format=2]
+[gd_scene load_steps=38 format=2]
 
 [ext_resource path="res://src/Core.cs" type="Script" id=1]
-[ext_resource path="res://scripts/gui/EditorItem.gd" type="Script" id=2]
 [ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=3]
 [ext_resource path="res://Scenes/UI/DarkRoundFrame.tres" type="StyleBox" id=4]
 [ext_resource path="res://res/fonts/aileron_bold_outline.tres" type="DynamicFont" id=5]
@@ -341,7 +340,7 @@ custom_styles/hover = ExtResource( 12 )
 custom_styles/pressed = ExtResource( 13 )
 custom_styles/focus = SubResource( 33 )
 custom_styles/normal = ExtResource( 9 )
-script = ExtResource( 2 )
+script = ExtResource( 10 )
 
 [node name="ViewportContainer2" type="ViewportContainer" parent="Control/Panel/GridContainer/Item"]
 anchor_right = 1.0

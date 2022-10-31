@@ -28,6 +28,7 @@ namespace YACY
 			_container.Register<IWallManager, WallManager>(Lifestyle.Singleton);
 			_container.Register<IBuildManager, BuildManager>(Lifestyle.Singleton);
 			_container.Register<ILegacyGeometryManager, LegacyGeometryManager>(Lifestyle.Singleton);
+			_container.Register<ISelectionManager, SelectionManager>(Lifestyle.Singleton);
 			
 			_container.Verify();
 			

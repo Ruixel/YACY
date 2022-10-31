@@ -16,7 +16,11 @@ namespace YACY
 		public Tuple<Vector2, Vector2> FrontLine;
 		public Tuple<Vector2, Vector2> BackLine;
 
+		public float StartHeight { get; set; }
+		public float EndHeight { get; set; }
+
 		private MeshInstance _meshInstance;
+		private MeshInstance _meshOutline;
 
 		private static Random random = new Random();
 
@@ -33,21 +37,33 @@ namespace YACY
 			StartPosition = startPosition;
 			EndPosition = endPosition;
 
+			StartHeight = 0;
+			EndHeight = 1;
+
 			Color = AvailableColors[random.Next(AvailableColors.Count)];
 
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
+
+			_meshOutline = new MeshInstance();
+			_meshInstance.AddChild(_meshOutline);
 		}
 
 		public void GenerateMesh()
 		{
-			_meshInstance.Mesh = WallGenerator.GenerateWall(StartPosition, EndPosition, 1, 0, 1, 0.1f);
+			_meshInstance.Mesh = WallGenerator.GenerateWall(StartPosition, EndPosition, 1, StartHeight, EndHeight, 0.1f);
+			_meshOutline.Mesh = _meshInstance.Mesh.CreateOutline(0.05f);
 		}
 
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
 		{
 			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, propagate);
 			//GD.Print($"FrontLine: {FrontLine.Item1}");
+		}
+		
+		public Mesh CreateSelectionMesh()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

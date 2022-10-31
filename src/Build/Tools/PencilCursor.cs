@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Xml;
 using Godot;
 using YACY.Geometry;
 using YACY.MeshGen;
@@ -21,6 +24,9 @@ namespace YACY.Build.Tools
 		private Vector2 _pencilEnd;
 
 		private IPencilService _pencilService;
+		
+		private static readonly List<int> MaxHeightList = new List<int> {4, 3, 2, 1, 2, 3, 4, 4, 4, 3};
+		private static readonly List<int> MinHeightList = new List<int> {0, 0, 0, 0, 1, 2, 3, 2, 1, 1};
 
 		public PencilCursor(Node parent)
 		{
@@ -74,6 +80,7 @@ namespace YACY.Build.Tools
 			// Pencil is down, and the position on the grid has changed
 			if (_mouseDown && !_position.IsEqualApprox(previousPosition))
 			{
+				Core.GetService<ISelectionManager>().Deselect();
 				_pencilEnd = _position;
 
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))
@@ -104,6 +111,11 @@ namespace YACY.Build.Tools
 			{
 				_pencilService.AddLine(_pencilStart, _pencilEnd);
 			}
+		}
+
+		public void onKeyPressed(string scancode)
+		{
+			GD.Print($"Scancode pressed: {scancode}");
 		}
 
 		public void onToolChange()
