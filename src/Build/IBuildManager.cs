@@ -4,7 +4,7 @@ using YACY.Util;
 
 namespace YACY.Build
 {
-	public interface IBuildManager
+	public interface IBuildManager : IManager
 	{
 		event EventHandler onLevelChange;
 		

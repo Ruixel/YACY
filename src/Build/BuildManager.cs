@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Godot;
 using YACY.Build.Tools;
 using YACY.Geometry;
@@ -8,6 +6,8 @@ using YACY.Util;
 
 namespace YACY.Build
 {
+	// Takes care of adding, editing and removing entities from the level
+	// When active, it gives the player building tools
 	public class BuildManager : IBuildManager
 	{
 		private Node _root;
@@ -19,7 +19,7 @@ namespace YACY.Build
 
 		public event EventHandler onLevelChange;
 
-		public BuildManager(IWallManager wallManager)
+		public BuildManager()
 		{
 			_enabled = false;
 		}
@@ -79,6 +79,11 @@ namespace YACY.Build
 			_grid = null;
 
 			_enabled = false;
+		}
+
+		public void Ready()
+		{
+			GD.Print("Build Manager: Ready");
 		}
 	}
 }

@@ -4,7 +4,7 @@ using YACY.Build.Tools;
 
 namespace YACY.Geometry
 {
-	public interface IWallManager: IPencilService
+	public interface IWallManager: IPencilService, IManager
 	{
 		void HelloWorld();
 		void AddWall(Wall wall);

@@ -47,7 +47,7 @@ namespace YACY.Build.Tools
 				throw new Exception(
 					"The pencil tool needs to be connected to an adequate service before being enabled.");
 			
-			_buildManager = Core.GetService<IBuildManager>();
+			_buildManager = Core.GetManager<BuildManager>();
 			_mesh.Visible = true;
 		}
 
@@ -80,7 +80,7 @@ namespace YACY.Build.Tools
 			// Pencil is down, and the position on the grid has changed
 			if (_mouseDown && !_position.IsEqualApprox(previousPosition))
 			{
-				Core.GetService<ISelectionManager>().Deselect();
+				Core.GetManager<SelectionManager>().Deselect();
 				_pencilEnd = _position;
 
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))

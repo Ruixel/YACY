@@ -20,10 +20,14 @@ namespace YACY
 		public SelectionManager()
 		{
 			_container = new Spatial();
-			_containerInLevel = false;
 
 			_selectionMesh = new MeshInstance();
 			_container.AddChild(_selectionMesh);
+		}
+		
+		public void Ready()
+		{
+			Core.GetManager<LevelManager>().GetContainer().AddChild(_container);
 		}
 		
 		public void SelectEntity(IEntity entity)
@@ -45,12 +49,6 @@ namespace YACY
 
 		private void GenerateSelectionMesh()
 		{
-			if (!_containerInLevel)
-			{
-				Core.GetService<ILevelManager>().GetContainer().AddChild(_container);
-				_containerInLevel = true;
-			}
-
 			if (_selected.Count >= 1)
 			{
 				_selectionMesh.Mesh = _selected[0].CreateSelectionMesh();

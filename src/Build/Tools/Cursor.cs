@@ -30,7 +30,7 @@ namespace YACY
 			GD.Print("Cursor is ready :D");
 
 			//(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetService<IWallManager>());
-			(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetService<ILegacyGeometryManager>());
+			(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetManager<LegacyGeometryManager>());
 			_cursorMode.Enable();
 		}
 

@@ -191,10 +191,10 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>()
+							Core.GetManager<WallManager>()
 								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+							Core.GetManager<WallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -279,10 +279,10 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>()
+							Core.GetManager<WallManager>()
 								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+							Core.GetManager<WallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -352,9 +352,9 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
+							Core.GetManager<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+							Core.GetManager<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
 						
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -538,9 +538,9 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
+							Core.GetManager<WallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+							Core.GetManager<WallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
