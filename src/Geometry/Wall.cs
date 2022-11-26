@@ -1,17 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using YACY.Build;
 using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.MeshGen;
 
 namespace YACY.Geometry
 {
-	public class Wall : BuildEntity, IEntity
+	public class Wall : PencilBuildEntity, IStoredPosition
 	{
-		public Vector2 StartPosition { get; }
-		public Vector2 EndPosition { get; }
-		public Color Color { get; }
+		public Color Color { get; set; }
 
 		public Tuple<Vector2, Vector2> FrontLine;
 		public Tuple<Vector2, Vector2> BackLine;
@@ -30,11 +29,18 @@ namespace YACY.Geometry
 				Colors.SpringGreen, Colors.DodgerBlue, Colors.Firebrick, Colors.DarkSlateBlue, Colors.HotPink, Colors.Maroon
 			};
 
-		public Wall(Vector2 startPosition, Vector2 endPosition)
+		public Wall(Vector2 startPosition, Vector2 endPosition): base(startPosition, endPosition)
 		{
-			StartPosition = startPosition;
-			EndPosition = endPosition;
+			AddDefaultProperties();
+		}
 
+		public Wall(): base(Vector2.Zero, Vector2.Zero)
+		{
+			AddDefaultProperties();
+		}
+
+		private void AddDefaultProperties()
+		{
 			StartHeight = 0;
 			EndHeight = 1;
 
@@ -47,10 +53,14 @@ namespace YACY.Geometry
 			_meshInstance.AddChild(_meshOutline);
 		}
 
-		public void GenerateMesh()
+		public override void GenerateMesh()
 		{
-			_meshInstance.Mesh = WallGenerator.GenerateWall(StartPosition, EndPosition, 1, StartHeight, EndHeight, 0.1f);
-			_meshOutline.Mesh = _meshInstance.Mesh.CreateOutline(0.05f);
+			if (!StartPosition.IsEqualApprox(EndPosition))
+			{
+				var startWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(StartPosition, Id);
+				var endWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(EndPosition, Id);
+				GenerateMergedMesh(startWalls, endWalls, true);
+			}
 		}
 
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
@@ -62,6 +72,11 @@ namespace YACY.Geometry
 		public Mesh CreateSelectionMesh()
 		{
 			throw new NotImplementedException();
+		}
+
+		public IEnumerable<Vector2> GetPositions()
+		{
+			return new[] {StartPosition, EndPosition};
 		}
 	}
 }

@@ -20,7 +20,7 @@ namespace YACY
 			_buildManager = buildManager;
 			_buildManager.onLevelChange += onLevelChange;
 
-			_cursorMode = new PencilCursor<LegacyWall>(this);
+			_cursorMode = new PencilCursor<Wall>(this);
 
 			_mouseMotion = new Vector2();
 			_isMousePressed = false;

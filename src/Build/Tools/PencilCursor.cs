@@ -33,9 +33,6 @@ namespace YACY.Build.Tools
 
 		public PencilCursor(Node parent)
 		{
-			//_buildManager = buildManager;
-			//_pencilService = pencilService;
-
 			_mouseDown = false;
 			_position = new Vector2();
 			
@@ -116,7 +113,6 @@ namespace YACY.Build.Tools
 			// Don't add empty wall
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))
 			{
-				//_pencilService.AddLine(_pencilStart, _pencilEnd);
 				var newEntity = new T();
 				newEntity.StartPosition = _pencilStart;
 				newEntity.EndPosition = _pencilEnd;
