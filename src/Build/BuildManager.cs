@@ -1,6 +1,8 @@
 using System;
+using System.Runtime.InteropServices;
 using Godot;
 using YACY.Build.Tools;
+using YACY.Entities;
 using YACY.Geometry;
 using YACY.Util;
 
@@ -16,6 +18,8 @@ namespace YACY.Build
 		private EditorCamera _editorCamera;
 		private Cursor _cursor;
 		private Grid _grid;
+
+		private Spatial _previewContainer;
 
 		public event EventHandler onLevelChange;
 
@@ -57,15 +61,36 @@ namespace YACY.Build
 			return _grid;
 		}
 
+		public void AddPreviewMesh(BuildEntity entity)
+		{
+			if (_previewContainer.GetChildCount() > 0)
+			{
+				RemovePreviewMesh();
+			}
+			
+			_previewContainer.AddChild(entity);
+		}
+
+		public void RemovePreviewMesh()
+		{
+			foreach (Node child in _previewContainer.GetChildren())
+			{
+				_previewContainer.RemoveChild(child);
+				child.QueueFree();
+			}
+		}
+
 		private void CreateBuildTools(Node root)
 		{
 			_editorCamera = new EditorCamera();
 			_cursor = new Cursor(this);
 			_grid = new Grid();
+			_previewContainer = new Spatial();
 
 			root.AddChild(_editorCamera);
 			root.AddChild(_cursor);
 			root.AddChild(_grid);
+			root.AddChild(_previewContainer);
 		}
 
 		private void DestroyBuildTools(Node root)
@@ -73,10 +98,12 @@ namespace YACY.Build
 			root.RemoveChild(_editorCamera);
 			root.RemoveChild(_cursor);
 			root.RemoveChild(_grid);
+			root.RemoveChild(_previewContainer);
 
 			_editorCamera = null;
 			_cursor = null;
 			_grid = null;
+			_previewContainer = null;
 
 			_enabled = false;
 		}

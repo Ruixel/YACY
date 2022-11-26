@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using Godot;
+using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.MeshGen;
 
-namespace YACY
+namespace YACY.Geometry
 {
-	public class Wall : Spatial, IEntity
+	public class Wall : BuildEntity, IEntity
 	{
-		public int Id { get; }
 		public Vector2 StartPosition { get; }
 		public Vector2 EndPosition { get; }
 		public Color Color { get; }
@@ -32,8 +32,6 @@ namespace YACY
 
 		public Wall(Vector2 startPosition, Vector2 endPosition)
 		{
-			Id = Core.GetCore().GetNextId();
-			
 			StartPosition = startPosition;
 			EndPosition = endPosition;
 

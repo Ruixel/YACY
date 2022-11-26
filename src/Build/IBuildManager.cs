@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using YACY.Entities;
 using YACY.Util;
 
 namespace YACY.Build
@@ -12,5 +13,8 @@ namespace YACY.Build
 		bool IsEnabled();
 		Ray GetMouseRay();
 		Grid GetGrid();
+
+		void AddPreviewMesh(BuildEntity entity);
+		void RemovePreviewMesh();
 	}
 }
