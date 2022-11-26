@@ -3,7 +3,7 @@ using YACY.Entities;
 
 namespace YACY
 {
-	public interface ISelectionManager
+	public interface ISelectionManager: IManager
 	{
 		void SelectEntity(IEntity entity);
 		void Deselect();

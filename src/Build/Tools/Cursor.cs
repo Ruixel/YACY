@@ -3,6 +3,7 @@ using Godot;
 using YACY.Build;
 using YACY.Build.Tools;
 using YACY.Geometry;
+using YACY.Legacy.Objects;
 
 namespace YACY
 {
@@ -19,7 +20,7 @@ namespace YACY
 			_buildManager = buildManager;
 			_buildManager.onLevelChange += onLevelChange;
 
-			_cursorMode = new PencilCursor(this);
+			_cursorMode = new PencilCursor<Wall>(this);
 
 			_mouseMotion = new Vector2();
 			_isMousePressed = false;
@@ -30,7 +31,7 @@ namespace YACY
 			GD.Print("Cursor is ready :D");
 
 			//(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetService<IWallManager>());
-			(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetService<ILegacyGeometryManager>());
+			//(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetManager<LegacyGeometryManager>());
 			_cursorMode.Enable();
 		}
 

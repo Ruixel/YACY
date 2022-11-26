@@ -1,14 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Runtime.InteropServices;
 using System.Xml;
 using Godot;
+using YACY.Entities;
 using YACY.Geometry;
+using YACY.Legacy.Objects;
 using YACY.MeshGen;
 
 namespace YACY.Build.Tools
 {
-	public class PencilCursor : ICursorMode
+	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, new()
 	{
 		private IBuildManager _buildManager;
 
@@ -23,16 +26,13 @@ namespace YACY.Build.Tools
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
 
-		private IPencilService _pencilService;
-		
 		private static readonly List<int> MaxHeightList = new List<int> {4, 3, 2, 1, 2, 3, 4, 4, 4, 3};
 		private static readonly List<int> MinHeightList = new List<int> {0, 0, 0, 0, 1, 2, 3, 2, 1, 1};
 
+		private T _previewEntity; 
+
 		public PencilCursor(Node parent)
 		{
-			//_buildManager = buildManager;
-			//_pencilService = pencilService;
-
 			_mouseDown = false;
 			_position = new Vector2();
 			
@@ -43,17 +43,8 @@ namespace YACY.Build.Tools
 
 		public void Enable()
 		{
-			if (_pencilService == null)
-				throw new Exception(
-					"The pencil tool needs to be connected to an adequate service before being enabled.");
-			
-			_buildManager = Core.GetService<IBuildManager>();
+			_buildManager = Core.GetManager<BuildManager>();
 			_mesh.Visible = true;
-		}
-
-		public void LoadPencilService(IPencilService pencilService)
-		{
-			_pencilService = pencilService;
 		}
 
 		public void Process(float delta, Vector2 mouseMotion)
@@ -80,17 +71,30 @@ namespace YACY.Build.Tools
 			// Pencil is down, and the position on the grid has changed
 			if (_mouseDown && !_position.IsEqualApprox(previousPosition))
 			{
-				Core.GetService<ISelectionManager>().Deselect();
 				_pencilEnd = _position;
+				
+				if (_previewEntity == null)
+				{
+					_previewEntity = new T();
+					_previewEntity.StartPosition = _pencilStart;
+					_previewEntity.EndPosition = _pencilEnd;
+					
+					Core.GetManager<SelectionManager>().Deselect();
+					
+					Core.GetManager<BuildManager>().AddPreviewMesh(_previewEntity);
+				}
 
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))
 				{
 					GD.Print($"start: {_pencilStart}, end {_pencilEnd}");
-					_pencilService.GeneratePreview(_pencilStart, _pencilEnd);
+					
+					_previewEntity.EndPosition = _pencilEnd;
+					_previewEntity.Visible = true;
+					_previewEntity.GenerateMesh();
 				}
 				else
 				{
-					_pencilService.HidePreview();
+					_previewEntity.Visible = false;
 				}
 			}
 		}
@@ -104,13 +108,21 @@ namespace YACY.Build.Tools
 		public void onMouseRelease()
 		{
 			_mouseDown = false;
-			_pencilService.HidePreview();
+			Core.GetManager<BuildManager>().RemovePreviewMesh();
 			
 			// Don't add empty wall
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))
 			{
-				_pencilService.AddLine(_pencilStart, _pencilEnd);
+				var newEntity = new T();
+				newEntity.StartPosition = _pencilStart;
+				newEntity.EndPosition = _pencilEnd;
+				
+				Core.GetManager<LevelManager>().AddEntity<T>(newEntity);
+				newEntity.GenerateMesh();
 			}
+			
+			Core.GetManager<BuildManager>().RemovePreviewMesh();
+			_previewEntity = null;
 		}
 
 		public void onKeyPressed(string scancode)

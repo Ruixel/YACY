@@ -9,7 +9,6 @@ namespace YACY.Geometry
 	public class WallManager : IWallManager
 	{
 		private Spatial _wallContainer;
-		private bool _containerInLevel = false;
 
 		private Dictionary<Vector2, List<int>> _gridMap;
 		private Dictionary<int, Wall> _wallMap;
@@ -33,7 +32,7 @@ namespace YACY.Geometry
 
 		private void CreateContainer()
 		{
-			Core.GetService<ILevelManager>().GetContainer().AddChild(_wallContainer);
+			Core.GetManager<LevelManager>().GetContainer().AddChild(_wallContainer);
 		}
 
 		private void AddToGrid(Vector2 pos, Wall wall)
@@ -93,15 +92,8 @@ namespace YACY.Geometry
 		
 		public void AddWall(Wall wall)
 		{
-			if (!_containerInLevel)
-			{
-				Core.GetService<ILevelManager>().GetContainer().AddChild(_wallContainer);
-				_containerInLevel = true;
-			}
-			
 			if (_gridMap.ContainsKey(wall.StartPosition) || _gridMap.ContainsKey(wall.EndPosition))
 				GD.Print("Already part of a wall here :P");
-
 			
 			AddToGrid(wall.StartPosition, wall);
 			AddToGrid(wall.EndPosition, wall);
@@ -126,6 +118,12 @@ namespace YACY.Geometry
 		public void HidePreview()
 		{
 			_previewWall.Visible = false;
+		}
+
+		public void Ready()
+		{
+			var levelContainer = Core.GetManager<LevelManager>().GetContainer();
+			levelContainer.AddChild(_wallContainer);
 		}
 	}
 }

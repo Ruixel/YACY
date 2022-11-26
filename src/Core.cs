@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using Godot;
 using SimpleInjector;
 using YACY.Build;
@@ -13,7 +15,7 @@ namespace YACY
 		private readonly List<Node> _buildTools;
 		private static Core _singleton;
 			
-		private readonly Container _container;
+		private readonly Dictionary<Type, IManager> _container;
 		private int _nextId = 1;
 		
 		private static bool _isReady = false;
@@ -23,23 +25,29 @@ namespace YACY
 			_buildTools = new List<Node>();
 			
 			// Create DI Container
-			_container = new Container();
-			_container.Register<ILevelManager, LevelManager>(Lifestyle.Singleton);
-			_container.Register<IWallManager, WallManager>(Lifestyle.Singleton);
-			_container.Register<IBuildManager, BuildManager>(Lifestyle.Singleton);
-			_container.Register<ILegacyGeometryManager, LegacyGeometryManager>(Lifestyle.Singleton);
-			_container.Register<ISelectionManager, SelectionManager>(Lifestyle.Singleton);
+			_container = new Dictionary<Type, IManager>();
+			Register<LevelManager>();
+			//Register<WallManager>();
+			Register<BuildManager>();
+			//Register<LegacyGeometryManager>();
+			Register<SelectionManager>();
 			
-			_container.Verify();
-			
-			// Add build tools
-			//AddBuildTools();
-			
-			_container.GetInstance<ILevelManager>().AddNodeContainer(this);
-			_container.GetInstance<IBuildManager>().EnableBuildMode(this);
-
 			_singleton = this;
 			_isReady = true;
+			
+			// Run ready
+			foreach (var manager in _container)
+			{
+				manager.Value.Ready();
+			}
+			
+			GetManager<LevelManager>().AddNodeContainer(this);
+			GetManager<BuildManager>().EnableBuildMode(this);
+		}
+
+		private void Register<T>() where T: IManager, new()
+		{
+			_container.Add(typeof (T), new T());
 		}
 
 		private void AddBuildTool<T>() where T : Node, new()
@@ -65,12 +73,10 @@ namespace YACY
 			_buildTools.Clear();
 		}
 
-		public static TService GetService<TService>() where TService : class
+		public static T GetManager<T>() where T : IManager
 		{
-			if (_isReady)
-				return _singleton._container.GetInstance<TService>();
-
-			return null;
+			_singleton._container.TryGetValue(typeof(T), out var manager);
+			return (T)manager;
 		}
 		
 		public override void _Ready()

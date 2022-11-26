@@ -9,7 +9,6 @@ namespace YACY.Geometry
 	public class LegacyGeometryManager : ILegacyGeometryManager
 	{
 		private Spatial _geometryContainer;
-		private bool _containerInLevel = false;
 		
 		private List<LegacyWall> _geometry;
 		
@@ -42,18 +41,19 @@ namespace YACY.Geometry
 
 		public void AddWall(LegacyWall wall)
 		{
-			if (!_containerInLevel)
-			{
-				Core.GetService<ILevelManager>().GetContainer().AddChild(_geometryContainer);
-				_containerInLevel = true;
-			}
-			
 			_geometry.Add(wall);
 			wall.GenerateMesh();
 			
 			_geometryContainer.AddChild(wall);
 			
-			Core.GetService<ISelectionManager>().SelectEntity(wall);
+			Core.GetManager<SelectionManager>().SelectEntity(wall);
+		}
+
+		public void Ready()
+		{
+			Core.GetManager<LevelManager>().GetContainer().AddChild(_geometryContainer);
+			
+			GD.Print("Legacy Geometry Manager: Loaded");
 		}
 	}
 }

@@ -4,6 +4,7 @@ using System.Runtime.Remoting.Messaging;
 using Godot;
 using YACY.Build;
 using YACY.Geometry;
+using YACY.Legacy.Objects;
 using YACY.Util;
 
 namespace YACY.MeshGen
@@ -190,11 +191,10 @@ namespace YACY.MeshGen
 					// Update all adjacent walls
 					if (propagate)
 					{
-						var otherWallsStartWalls =
-							Core.GetService<IWallManager>()
-								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
-						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+						var otherWallsStartWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+						var otherWallsEndWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -278,11 +278,10 @@ namespace YACY.MeshGen
 					// Update all adjacent walls
 					if (propagate)
 					{
-						var otherWallsStartWalls =
-							Core.GetService<IWallManager>()
-								.GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
-						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+						var otherWallsStartWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+						var otherWallsEndWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -352,9 +351,9 @@ namespace YACY.MeshGen
 					if (propagate)
 					{
 						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
+							Core.GetManager<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
 						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+							Core.GetManager<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
 						
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
@@ -537,10 +536,10 @@ namespace YACY.MeshGen
 
 					if (propagate)
 					{
-						var otherWallsStartWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.StartPosition, otherWall.Id);
-						var otherWallsEndWalls =
-							Core.GetService<IWallManager>().GetWallsAtPosition(otherWall.EndPosition, otherWall.Id);
+						var otherWallsStartWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+						var otherWallsEndWalls = Core.GetManager<LevelManager>()
+							.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}
