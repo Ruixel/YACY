@@ -1,4 +1,6 @@
+using System;
 using Godot;
+using YACY.Util;
 
 namespace YACY.Build.Tools
 {
@@ -10,7 +12,8 @@ namespace YACY.Build.Tools
 		private Vector2 _cameraPosition = new Vector2(0, 10);
 		private float _cameraAngle = 35f;
 		private float _cameraZoom = 6f;
-		private float _cameraHeight = 0f;
+		private float _cameraHeight = Constants.LevelHeight;
+		private float _cameraHeightTarget = Constants.LevelHeight;
 
 		private const float CamZoomMin = 5;
 		private const float CamZoomMax = 20;
@@ -25,6 +28,11 @@ namespace YACY.Build.Tools
 			_camera.Rotation = new Vector3(Mathf.Deg2Rad(-45), Mathf.Deg2Rad(-90), 0);
 
 			AddChild(_camera);
+
+			Core.GetManager<BuildManager>().onLevelChange += (sender, level) =>
+			{
+				_cameraHeightTarget = level * Constants.LevelHeight;
+			};
 		}
 
 		private void ProcessInput(float delta)
@@ -83,6 +91,7 @@ namespace YACY.Build.Tools
 			cameraTransform.origin.x = -Mathf.Cos(Mathf.Deg2Rad((_cameraAngle))) * _cameraZoom;
 
 			cameraRotation.x = -Mathf.Deg2Rad(_cameraAngle);
+			_cameraHeight = Mathf.Lerp(_cameraHeight, _cameraHeightTarget, 0.2f);
 
 			_camera.Transform = cameraTransform;
 			_camera.Rotation = cameraRotation;

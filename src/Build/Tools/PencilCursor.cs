@@ -57,7 +57,7 @@ namespace YACY.Build.Tools
 				var ray = _buildManager.GetMouseRay();
 				var grid = _buildManager.GetGrid();
 
-				var gridIntersection = grid.GridPlane.IntersectRay(ray.Origin, ray.Direction);
+				var gridIntersection = grid.GridPlane.IntersectRay(ray.Origin - new Vector3(0, grid.Height, 0), ray.Direction);
 				if (gridIntersection.HasValue)
 				{
 					_position.x = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.x / grid.Spacing), 0, grid.Size.x);
