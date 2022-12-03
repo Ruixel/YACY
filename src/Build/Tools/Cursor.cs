@@ -80,7 +80,7 @@ namespace YACY
 			}
 		}
 
-		private void onLevelChange(object sender, EventArgs eventArgs)
+		private void onLevelChange(object sender, int eventArgs)
 		{
 			GD.Print("Level changed");
 		}

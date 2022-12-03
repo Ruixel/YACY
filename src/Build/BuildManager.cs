@@ -4,6 +4,7 @@ using Godot;
 using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.Geometry;
+using YACY.UI;
 using YACY.Util;
 
 namespace YACY.Build
@@ -18,13 +19,20 @@ namespace YACY.Build
 		private EditorCamera _editorCamera;
 		private Cursor _cursor;
 		private Grid _grid;
+		private Control _ui;
 
 		private Spatial _previewContainer;
+		
+		private PackedScene _uiScene = ResourceLoader.Load<PackedScene>("res://Scenes/UI/BuildUI.tscn");
 
-		public event EventHandler onLevelChange;
+		public event EventHandler<int> onLevelChange;
+		
+		public int Level { get; private set; }
 
 		public BuildManager()
 		{
+			Level = 1;
+			
 			_enabled = false;
 		}
 
@@ -38,7 +46,7 @@ namespace YACY.Build
 
 			CreateBuildTools(root);
 
-			onLevelChange?.Invoke(this, EventArgs.Empty);
+			onLevelChange?.Invoke(this, 1);
 		}
 
 		public bool IsEnabled()
@@ -86,11 +94,13 @@ namespace YACY.Build
 			_cursor = new Cursor(this);
 			_grid = new Grid();
 			_previewContainer = new Spatial();
+			_ui = _uiScene.Instance<BuildInterface>();
 
 			root.AddChild(_editorCamera);
 			root.AddChild(_cursor);
 			root.AddChild(_grid);
 			root.AddChild(_previewContainer);
+			root.AddChild(_ui);
 		}
 
 		private void DestroyBuildTools(Node root)
@@ -99,13 +109,25 @@ namespace YACY.Build
 			root.RemoveChild(_cursor);
 			root.RemoveChild(_grid);
 			root.RemoveChild(_previewContainer);
+			root.RemoveChild(_ui);
 
 			_editorCamera = null;
 			_cursor = null;
 			_grid = null;
 			_previewContainer = null;
+			_ui = null;
 
 			_enabled = false;
+		}
+
+		public void SetLevel(int level)
+		{
+			var levelManager = Core.GetManager<LevelManager>();
+			level = (level > levelManager.MaxLevel) ? levelManager.MaxLevel : level;
+			level = (level < levelManager.MinLevel) ? levelManager.MinLevel : level;
+
+			Level = level;
+			onLevelChange?.Invoke(this, level);
 		}
 
 		public void Ready()

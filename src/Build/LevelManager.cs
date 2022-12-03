@@ -14,12 +14,18 @@ namespace YACY.Build
 
 		private Dictionary<Type, Dictionary<int, BuildEntity>> _entities;
 		private Dictionary<Type, Dictionary<Vector2, List<int>>> _gridMap;
+		
+		public int MaxLevel { get; }
+		public int MinLevel { get; }
 
 		public LevelManager()
 		{
 			_levelContainer = new Spatial();
 			_entities = new Dictionary<Type, Dictionary<int, BuildEntity>>();
 			_gridMap = new Dictionary<Type, Dictionary<Vector2, List<int>>>();
+
+			MaxLevel = 20;
+			MinLevel = 0;
 		}
 		
 		public void AddNodeContainer(Node root)

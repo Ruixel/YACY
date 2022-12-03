@@ -1,12 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using Godot;
-using SimpleInjector;
 using YACY.Build;
-using YACY.Build.Tools;
-using YACY.Geometry;
-using Container = SimpleInjector.Container;
 
 namespace YACY
 {
@@ -17,8 +12,8 @@ namespace YACY
 			
 		private readonly Dictionary<Type, IManager> _container;
 		private int _nextId = 1;
-		
-		private static bool _isReady = false;
+
+		public static bool _isReady;
 		
 		public Core()
 		{
@@ -27,9 +22,7 @@ namespace YACY
 			// Create DI Container
 			_container = new Dictionary<Type, IManager>();
 			Register<LevelManager>();
-			//Register<WallManager>();
 			Register<BuildManager>();
-			//Register<LegacyGeometryManager>();
 			Register<SelectionManager>();
 			
 			_singleton = this;
@@ -40,6 +33,11 @@ namespace YACY
 			{
 				manager.Value.Ready();
 			}
+
+			GetManager<BuildManager>().onLevelChange += (sender, level) =>
+			{
+				GD.Print($"Level set to {level}");
+			};
 			
 			GetManager<LevelManager>().AddNodeContainer(this);
 			GetManager<BuildManager>().EnableBuildMode(this);
@@ -48,29 +46,6 @@ namespace YACY
 		private void Register<T>() where T: IManager, new()
 		{
 			_container.Add(typeof (T), new T());
-		}
-
-		private void AddBuildTool<T>() where T : Node, new()
-		{
-			var tool = new T();
-			AddChild(tool);
-			_buildTools.Add(tool);
-		}
-
-		private void AddBuildTools()
-		{
-			//AddBuildTool<Cursor>();
-			//AddBuildTool<EditorCamera>();
-		}
-
-		public void RemoveBuildTools()
-		{
-			foreach (var tool in _buildTools)
-			{
-				RemoveChild(tool);
-			}
-
-			_buildTools.Clear();
 		}
 
 		public static T GetManager<T>() where T : IManager
