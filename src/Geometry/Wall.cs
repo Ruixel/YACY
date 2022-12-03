@@ -17,6 +17,7 @@ namespace YACY.Geometry
 
 		public float StartHeight { get; set; }
 		public float EndHeight { get; set; }
+		public int Level { get; }
 
 		private MeshInstance _meshInstance;
 		private MeshInstance _meshOutline;
@@ -29,13 +30,15 @@ namespace YACY.Geometry
 				Colors.SpringGreen, Colors.DodgerBlue, Colors.Firebrick, Colors.DarkSlateBlue, Colors.HotPink, Colors.Maroon
 			};
 
-		public Wall(Vector2 startPosition, Vector2 endPosition): base(startPosition, endPosition)
+		public Wall(Vector2 startPosition, Vector2 endPosition, int level): base(startPosition, endPosition)
 		{
+			Level = level;
 			AddDefaultProperties();
 		}
 
 		public Wall(): base(Vector2.Zero, Vector2.Zero)
 		{
+			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
 		}
 
@@ -65,7 +68,7 @@ namespace YACY.Geometry
 
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
 		{
-			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, propagate);
+			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, Level, propagate);
 			//GD.Print($"FrontLine: {FrontLine.Item1}");
 		}
 		

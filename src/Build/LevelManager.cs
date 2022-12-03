@@ -13,7 +13,7 @@ namespace YACY.Build
 		private bool _containerAdded;
 
 		private Dictionary<Type, Dictionary<int, BuildEntity>> _entities;
-		private Dictionary<Type, Dictionary<Vector2, List<int>>> _gridMap;
+		private LevelData[] _levelData;
 		
 		public int MaxLevel { get; }
 		public int MinLevel { get; }
@@ -22,10 +22,16 @@ namespace YACY.Build
 		{
 			_levelContainer = new Spatial();
 			_entities = new Dictionary<Type, Dictionary<int, BuildEntity>>();
-			_gridMap = new Dictionary<Type, Dictionary<Vector2, List<int>>>();
 
 			MaxLevel = 20;
 			MinLevel = 0;
+
+			_levelData = new LevelData[MaxLevel - MinLevel + 1];
+			for (int i = MinLevel; i <= MaxLevel; i++)
+			{
+				var levelData = new LevelData(i);
+				_levelData[i] = levelData;
+			}
 		}
 		
 		public void AddNodeContainer(Node root)
@@ -44,50 +50,59 @@ namespace YACY.Build
 			return _levelContainer;
 		}
 
-		public void AddEntity<T>(BuildEntity entity) where T : BuildEntity
+		public void AddEntity<T>(BuildEntity entity, int? level = null) where T : BuildEntity
 		{
-			// Add to main container
+			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
+			var levelItemMap = _levelData[receivedLevel]._itemMap;
+			
+			// Check main container exists
 			if (!_entities.TryGetValue(typeof(T), out var list))
 			{
 				list = new Dictionary<int, BuildEntity>();
 				_entities.Add(typeof(T), list);
-
-				if (entity is IStoredPosition)
-				{
-					var gridMap = new Dictionary<Vector2, List<int>>();
-					_gridMap.Add(typeof(T), gridMap);
-				}
 			}
 			
+			
+			// Add to entity container
 			_levelContainer.AddChild(entity);
 			list.Add(entity.Id, entity);
 
 			// If positions of entity need to be remembered
 			if (entity is IStoredPosition entityWithStoredPos)
 			{
+				// Check level container exists
+				if (!levelItemMap.ContainsKey(typeof(T)))
+				{
+					var gridMap = new Dictionary<Vector2, List<int>>();
+					levelItemMap.Add(typeof(T), gridMap);
+				}
+			
 				var positionsToAdd = entityWithStoredPos.GetPositions();
 				var entityId = entity.Id;
 
 				foreach (var pos in positionsToAdd)
 				{
-					if (_gridMap[typeof(T)].TryGetValue(pos, out var grid))
+					if (levelItemMap[typeof(T)].TryGetValue(pos, out var grid))
 					{
 						grid.Add(entityId);
 					}
 					else
 					{
 						grid = new List<int> {entityId};
-						_gridMap[typeof(T)].Add(pos, grid);
+						levelItemMap[typeof(T)].Add(pos, grid);
 					}
 				}
 			}
 		}
 		
-		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1) where T : BuildEntity, IStoredPosition
+		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1, int? level = null) where T : BuildEntity, IStoredPosition
 		{
-			if (!_gridMap.ContainsKey(typeof(T))) return new List<T>();
+			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
+			var levelItemMap = _levelData[receivedLevel]._itemMap;
 			
-			if (_gridMap[typeof(T)].TryGetValue(pos, out var entities))
+			if (!levelItemMap.ContainsKey(typeof(T))) return new List<T>();
+			
+			if (levelItemMap[typeof(T)].TryGetValue(pos, out var entities))
 			{
 				var foundEntities = new List<T>();
 				foreach (var entityId in entities)
@@ -108,6 +123,18 @@ namespace YACY.Build
 		public void Ready()
 		{
 			GD.Print("Level Manager: Ready");
+		}
+	}
+
+	class LevelData
+	{
+		public Dictionary<Type, Dictionary<Vector2, List<int>>> _itemMap;
+		private int _level;
+
+		public LevelData(int level)
+		{
+			_level = level;
+			_itemMap = new Dictionary<Type, Dictionary<Vector2, List<int>>>();
 		}
 	}
 }

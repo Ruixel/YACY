@@ -20,8 +20,8 @@ namespace YACY.MeshGen
 			var surfaceTool = new SurfaceTool();
 			surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
 
-			var bottom = (level - 1 + minHeight) * Constants.LevelHeight;
-			var top = (level - 1 + maxHeight) * Constants.LevelHeight;
+			var bottom = (level + minHeight) * Constants.LevelHeight;
+			var top = (level + maxHeight) * Constants.LevelHeight;
 
 			var vertices = new List<Vector3>();
 			vertices.Add(new Vector3(start.x, top, start.y));
@@ -44,8 +44,8 @@ namespace YACY.MeshGen
 			var surfaceTool = new SurfaceTool();
 			surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
 
-			var bottom = (level - 1 + minHeight) * Constants.LevelHeight - outlineWidth;
-			var top = (level - 1 + maxHeight) * Constants.LevelHeight + outlineWidth;
+			var bottom = (level + minHeight) * Constants.LevelHeight - outlineWidth;
+			var top = (level + maxHeight) * Constants.LevelHeight + outlineWidth;
 
 			var wallVector = (end - start).Normalized();
 			end = end + wallVector * outlineWidth;
@@ -110,14 +110,14 @@ namespace YACY.MeshGen
 			return surfaceTool.Commit();
 		}
 
-		public static Mesh GenerateComplexWall(Wall wall, List<Wall> startWalls, List<Wall> endWalls,
+		public static Mesh GenerateComplexWall(Wall wall, List<Wall> startWalls, List<Wall> endWalls, int level,
 			bool propagate = false)
 		{
 			var surfaceTool = new SurfaceTool();
 			surfaceTool.Begin(Mesh.PrimitiveType.Triangles);
 
-			var bottom = (1 - 1 + 0) * Constants.LevelHeight;
-			var top = (1 - 1 + 1) * Constants.LevelHeight;
+			var bottom = (level + 0) * Constants.LevelHeight;
+			var top = (level + 1) * Constants.LevelHeight;
 
 			var start = wall.StartPosition;
 			var end = wall.EndPosition;

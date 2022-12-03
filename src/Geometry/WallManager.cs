@@ -105,8 +105,8 @@ namespace YACY.Geometry
 
 		public void AddLine(Vector2 startPosition, Vector2 endPosition)
 		{
-			var wall = new Wall(startPosition, endPosition);
-			AddWall(wall);
+			//var wall = new Wall(startPosition, endPosition, );
+			//AddWall(wall);
 		}
 
 		public void GeneratePreview(Vector2 startPosition, Vector2 endPosition)

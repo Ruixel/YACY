@@ -13,7 +13,7 @@ namespace YACY.Build.Tools
 {
 	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, new()
 	{
-		private IBuildManager _buildManager;
+		private BuildManager _buildManager;
 
 		private bool _mouseDown;
 		private Vector2 _position;
@@ -81,7 +81,7 @@ namespace YACY.Build.Tools
 					
 					Core.GetManager<SelectionManager>().Deselect();
 					
-					Core.GetManager<BuildManager>().AddPreviewMesh(_previewEntity);
+					_buildManager.AddPreviewMesh(_previewEntity);
 				}
 
 				if (!_pencilStart.IsEqualApprox(_pencilEnd))
@@ -108,7 +108,7 @@ namespace YACY.Build.Tools
 		public void onMouseRelease()
 		{
 			_mouseDown = false;
-			Core.GetManager<BuildManager>().RemovePreviewMesh();
+			_buildManager.RemovePreviewMesh();
 			
 			// Don't add empty wall
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))
@@ -117,7 +117,7 @@ namespace YACY.Build.Tools
 				newEntity.StartPosition = _pencilStart;
 				newEntity.EndPosition = _pencilEnd;
 				
-				Core.GetManager<LevelManager>().AddEntity<T>(newEntity);
+				Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
 				newEntity.GenerateMesh();
 			}
 			

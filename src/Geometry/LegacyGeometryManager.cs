@@ -24,8 +24,8 @@ namespace YACY.Geometry
 		}
 		public void AddLine(Vector2 startPosition, Vector2 endPosition)
 		{
-			var newWall = new LegacyWall(startPosition, endPosition);
-			AddWall(newWall);
+			//var newWall = new LegacyWall(startPosition, endPosition);
+			//AddWall(newWall);
 		}
 
 		public void GeneratePreview(Vector2 startPosition, Vector2 endPosition)
