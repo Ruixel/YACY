@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Decision1.wav-896b0859d0d2eeebea25a4a8cc1f0f58.sample"
+
+[deps]
+
+source_file="res://res/sfx/ui/Decision1.wav"
+dest_files=[ "res://.import/Decision1.wav-896b0859d0d2eeebea25a4a8cc1f0f58.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

@@ -7,7 +7,7 @@ const easing_method = Tween.TRANS_QUAD
 var vp_container = preload("res://Scenes/UI/SelectedItem.tscn")
 
 func _ready():
-	change_item("res://Entities/Editor/SelectedView/Wall.tscn", "Wall")
+	change_item("res://Scenes/UI/Previews/Selected/ThickWall.tscn", "Wall")
 
 func change_item(item_scene, item_name):
 	var old_vp = get_node_or_null("ViewportContainer")

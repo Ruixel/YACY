@@ -1,9 +1,12 @@
-using System;
-using System.Collections.Generic;
 using Godot;
+using YACY.Build;
 
 namespace YACY.Legacy.Objects
 {
+	[BuildItem(
+		Name = "Wall",
+		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn", 
+		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
     public class CYWall : ICYObject
     {
         public Vector2 StartPosition;

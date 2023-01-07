@@ -8,6 +8,10 @@ using YACY.MeshGen;
 
 namespace YACY.Geometry
 {
+	[BuildItem(
+		Name = "Thick Wall",
+		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
+		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
 	public class Wall : PencilBuildEntity, IStoredPosition
 	{
 		public Color Color { get; set; }
