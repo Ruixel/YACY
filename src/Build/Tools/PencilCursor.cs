@@ -109,6 +109,7 @@ namespace YACY.Build.Tools
 		{
 			_mouseDown = true;
 			_pencilStart = _position;
+			_pencilEnd = _position;
 		}
 
 		public void onMouseRelease()

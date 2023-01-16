@@ -32,15 +32,6 @@ namespace YACY
 
 		private void onToolChange(object sender, (ToolType, Type) toolEvent)
 		{
-			//var t = toolEvent.Item2;
-			//switch (toolEvent.Item1)
-			//{
-			//	case ToolType.Pencil:
-			//		//_cursorMode = new PencilCursor<t>(this);
-			//		MethodInfo method = GetType().GetMethod("CreatePencilCursor")!.MakeGenericMethod(new Type[] {t});
-			//		method.Invoke(this, new object[] { });
-			//		break;
-			//}
 		}
 
 		public void UsePencilCursor<T>() where T : PencilBuildEntity, new()
@@ -54,8 +45,6 @@ namespace YACY
 		{
 			GD.Print("Cursor is ready :D");
 
-			//(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetService<IWallManager>());
-			//(_cursorMode as PencilCursor)?.LoadPencilService(Core.GetManager<LegacyGeometryManager>());
 			_cursorMode.Enable();
 		}
 

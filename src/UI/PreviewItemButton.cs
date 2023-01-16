@@ -57,8 +57,6 @@ public class PreviewItemButton : Button
 	{
 		_mouseEntered = true;
 		GetNode<AudioStreamPlayer>("ButtonSFX").Play();
-		
-		GD.Print("Hi :3");
 	}
 
 	private void OnMouseExit()
