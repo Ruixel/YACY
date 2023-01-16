@@ -25,7 +25,8 @@ namespace YACY.Build
 		
 		private PackedScene _uiScene = ResourceLoader.Load<PackedScene>("res://Scenes/UI/BuildUI.tscn");
 
-		public event EventHandler<int> onLevelChange;
+		public event EventHandler<int> OnLevelChange;
+		public event EventHandler<(ToolType, Type)> OnToolChange;
 		
 		public int Level { get; private set; }
 
@@ -46,7 +47,7 @@ namespace YACY.Build
 
 			CreateBuildTools(root);
 
-			onLevelChange?.Invoke(this, 1);
+			OnLevelChange?.Invoke(this, 1);
 		}
 
 		public bool IsEnabled()
@@ -127,7 +128,26 @@ namespace YACY.Build
 			level = (level < levelManager.MinLevel) ? levelManager.MinLevel : level;
 
 			Level = level;
-			onLevelChange?.Invoke(this, level);
+			OnLevelChange?.Invoke(this, level);
+		}
+
+		public void SetTool<T>() where T : PencilBuildEntity, new()
+		{
+			BuildItemAttribute itemMetadata = null;
+			var attrs = System.Attribute.GetCustomAttributes(typeof(T));
+			foreach (var attribute in attrs)
+			{
+				if (attribute is BuildItemAttribute itemAttribute)
+				{
+					itemMetadata = itemAttribute;
+				}
+			}
+
+			if (itemMetadata != null)
+			{
+				_cursor.UsePencilCursor<T>();
+				//OnToolChange?.Invoke(this, (itemMetadata.Tool, typeof(T)));
+			}
 		}
 
 		public void Ready()

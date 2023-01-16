@@ -4,9 +4,15 @@ using YACY.Build;
 using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.MeshGen;
+using YACY.Util;
 
 namespace YACY.Legacy.Objects
 {
+	[BuildItem(
+		Name = "Wall",
+        Tool = ToolType.Pencil,
+		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn", 
+		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
 	public class LegacyWall : PencilBuildEntity, IEntity
 	{
 		public Color Color { get; }

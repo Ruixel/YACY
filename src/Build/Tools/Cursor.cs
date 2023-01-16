@@ -1,9 +1,12 @@
 using System;
+using System.Reflection;
 using Godot;
 using YACY.Build;
 using YACY.Build.Tools;
+using YACY.Entities;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
+using YACY.Util;
 
 namespace YACY
 {
@@ -18,12 +21,33 @@ namespace YACY
 		public Cursor(IBuildManager buildManager)
 		{
 			_buildManager = buildManager;
-			_buildManager.onLevelChange += onLevelChange;
+			_buildManager.OnLevelChange += onLevelChange;
+			_buildManager.OnToolChange += onToolChange;
 
 			_cursorMode = new PencilCursor<Wall>(this);
 
 			_mouseMotion = new Vector2();
 			_isMousePressed = false;
+		}
+
+		private void onToolChange(object sender, (ToolType, Type) toolEvent)
+		{
+			//var t = toolEvent.Item2;
+			//switch (toolEvent.Item1)
+			//{
+			//	case ToolType.Pencil:
+			//		//_cursorMode = new PencilCursor<t>(this);
+			//		MethodInfo method = GetType().GetMethod("CreatePencilCursor")!.MakeGenericMethod(new Type[] {t});
+			//		method.Invoke(this, new object[] { });
+			//		break;
+			//}
+		}
+
+		public void UsePencilCursor<T>() where T : PencilBuildEntity, new()
+		{
+			_cursorMode.Delete();
+			_cursorMode = new PencilCursor<T>(this);
+			_cursorMode.Enable();
 		}
 
 		public override void _Ready()
@@ -84,5 +108,6 @@ namespace YACY
 		{
 			GD.Print("Level changed");
 		}
+
 	}
 }

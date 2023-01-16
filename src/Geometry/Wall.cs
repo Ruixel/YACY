@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using YACY.Build;
-using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.MeshGen;
+using YACY.Util;
 
 namespace YACY.Geometry
 {
 	[BuildItem(
-		Name = "Thick Wall",
+		Name = "Fat Wall",
+		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
 	public class Wall : PencilBuildEntity, IStoredPosition

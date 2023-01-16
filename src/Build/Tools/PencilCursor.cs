@@ -47,6 +47,12 @@ namespace YACY.Build.Tools
 			_mesh.Visible = true;
 		}
 
+		public void Delete()
+		{
+			_mesh.Visible = false;
+			_mesh.QueueFree();
+		}
+
 		public void Process(float delta, Vector2 mouseMotion)
 		{
 			var previousPosition = _position;
@@ -122,7 +128,11 @@ namespace YACY.Build.Tools
 			}
 			
 			Core.GetManager<BuildManager>().RemovePreviewMesh();
-			_previewEntity = null;
+			if (_previewEntity != null)
+			{
+				_previewEntity.QueueFree();
+				_previewEntity = null;
+			}
 		}
 
 		public void onKeyPressed(string scancode)

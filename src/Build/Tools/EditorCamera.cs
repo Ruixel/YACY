@@ -29,7 +29,7 @@ namespace YACY.Build.Tools
 
 			AddChild(_camera);
 
-			Core.GetManager<BuildManager>().onLevelChange += (sender, level) =>
+			Core.GetManager<BuildManager>().OnLevelChange += (sender, level) =>
 			{
 				_cameraHeightTarget = level * Constants.LevelHeight;
 			};

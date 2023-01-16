@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Godot.Collections;
 using YACY.Build;
+using YACY.Entities;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
 using ItemList = YACY.Build.ItemList;
@@ -19,7 +20,7 @@ public class BuildInterface : Control
 		_buildManager = Core.GetManager<BuildManager>();
 		
 		_levelSelector = GetNode<Control>("LevelSelector");
-		_buildManager.onLevelChange += (sender, level) =>
+		_buildManager.OnLevelChange += (sender, level) =>
 		{
 			_levelSelector.GetNode<Label>("MarginContainer/VBoxContainer/Label").Text = level.ToString();
 		};
@@ -30,11 +31,11 @@ public class BuildInterface : Control
 		levelDownButton.Connect("pressed", this, "GoDownLevel");
 
 		CreatePreviewButton<Wall>();
-		CreatePreviewButton<CYWall>();
+		CreatePreviewButton<LegacyWall>();
 		
 	}
 
-	private void CreatePreviewButton<T>()
+	private void CreatePreviewButton<T>() where T : PencilBuildEntity, new()
 	{
 		BuildItemAttribute itemMetadata = null;
 		var attrs = System.Attribute.GetCustomAttributes(typeof(T));
@@ -50,6 +51,14 @@ public class BuildInterface : Control
 		previewButton.GetNode<Viewport>("ViewportContainer/Viewport").World.ResourceLocalToScene = true;
 		previewButton.AddMesh(itemMetadata?.ItemPanelPreview);
 		previewButton.SetName(itemMetadata?.Name);
+
+		previewButton.onPressed += (sender, args) =>
+		{
+			GD.Print($"Toggling {itemMetadata?.Name}");
+
+			GetNode<Control>("ItemSelected").Call("change_item", itemMetadata?.SelectionPreview, itemMetadata?.Name );
+			Core.GetManager<BuildManager>().SetTool<T>();
+		};
 		
 		GetNode<GridContainer>("ItemPanel/GridContainer").AddChild(previewButton);
 	}

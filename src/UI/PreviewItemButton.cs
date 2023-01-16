@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace YACY.UI;
@@ -9,6 +10,8 @@ public class PreviewItemButton : Button
 	private bool _mouseEntered;
 	
 	private static float RotationSpeed = 3;
+	
+	public event EventHandler onPressed;
 
 	private PreviewItemButton()
 	{
@@ -34,6 +37,8 @@ public class PreviewItemButton : Button
 	private void OnPress()
 	{
 		GetNode<AudioStreamPlayer>("SelectSFX").Play();
+		
+		onPressed?.Invoke(this, EventArgs.Empty);
 	}
 
 	public override void _Process(float delta)

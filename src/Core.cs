@@ -34,7 +34,7 @@ namespace YACY
 				manager.Value.Ready();
 			}
 
-			GetManager<BuildManager>().onLevelChange += (sender, level) =>
+			GetManager<BuildManager>().OnLevelChange += (sender, level) =>
 			{
 				GD.Print($"Level set to {level}");
 			};

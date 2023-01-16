@@ -1,26 +1,19 @@
-[gd_scene load_steps=40 format=2]
+[gd_scene load_steps=23 format=2]
 
 [ext_resource path="res://Scenes/Label.gd" type="Script" id=1]
-[ext_resource path="res://scripts/gui/EditorItem.gd" type="Script" id=2]
-[ext_resource path="res://Scenes/UI/Previews/ItemPanel/ThickPlatform.tscn" type="PackedScene" id=3]
 [ext_resource path="res://scripts/gui/SelectedItem.gd" type="Script" id=4]
 [ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=5]
 [ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=6]
-[ext_resource path="res://Scenes/UI/Previews/ItemPanel/Iceman.tscn" type="PackedScene" id=7]
 [ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="DynamicFontData" id=9]
 [ext_resource path="res://res/fonts/aileron_bold_outline.tres" type="DynamicFont" id=10]
 [ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture" id=11]
 [ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture" id=12]
-[ext_resource path="res://Scenes/UI/WhiteRoundFrame.tres" type="StyleBox" id=13]
 [ext_resource path="res://Scenes/UI/DarkRoundFrame.tres" type="StyleBox" id=14]
-[ext_resource path="res://Scenes/UI/WhiteRoundFrame_Pressed.tres" type="StyleBox" id=15]
-[ext_resource path="res://Scenes/UI/WhiteRoundFrame_Hover.tres" type="StyleBox" id=16]
 [ext_resource path="res://scripts/gui/LevelSelector.gd" type="Script" id=17]
 [ext_resource path="res://src/UI/BuildInterface.cs" type="Script" id=18]
 [ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=19]
 [ext_resource path="res://Scenes/UI/BlackButton.tres" type="StyleBox" id=20]
-[ext_resource path="res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn" type="PackedScene" id=21]
 
 [sub_resource type="DynamicFont" id=19]
 size = 72
@@ -58,79 +51,6 @@ corner_radius_bottom_left = 16
 shadow_color = Color( 0, 0, 0, 0.156863 )
 shadow_size = 6
 shadow_offset = Vector2( 0, 4 )
-
-[sub_resource type="StyleBoxEmpty" id=33]
-
-[sub_resource type="ProceduralSky" id=2]
-ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
-ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
-sun_latitude = 23.23
-sun_longitude = 120.0
-
-[sub_resource type="Environment" id=3]
-background_sky = SubResource( 2 )
-background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
-ambient_light_color = Color( 0.819608, 0.823529, 0.819608, 1 )
-tonemap_mode = 1
-tonemap_exposure = 0.9
-ssao_enabled = true
-ssao_radius = 0.8
-ssao_intensity = 2.0
-ssao_radius2 = 1.6
-ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
-ssao_blur = 2
-dof_blur_far_distance = 0.58
-dof_blur_far_transition = 14.25
-dof_blur_near_distance = 3.64
-glow_enabled = true
-glow_levels/4 = true
-glow_levels/5 = false
-glow_intensity = 0.39
-glow_strength = 0.83
-glow_hdr_threshold = 0.7
-glow_bicubic_upscale = true
-
-[sub_resource type="World" id=27]
-environment = SubResource( 3 )
-
-[sub_resource type="StyleBoxEmpty" id=34]
-
-[sub_resource type="ProceduralSky" id=40]
-ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
-ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
-sun_latitude = 23.23
-sun_longitude = 120.0
-
-[sub_resource type="Environment" id=41]
-background_sky = SubResource( 40 )
-background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
-ambient_light_color = Color( 0.819608, 0.823529, 0.819608, 1 )
-tonemap_mode = 1
-tonemap_exposure = 0.9
-ssao_enabled = true
-ssao_radius = 0.8
-ssao_intensity = 2.0
-ssao_radius2 = 1.6
-ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
-ssao_blur = 2
-dof_blur_far_distance = 0.58
-dof_blur_far_transition = 14.25
-dof_blur_near_distance = 3.64
-glow_enabled = true
-glow_levels/4 = true
-glow_levels/5 = false
-glow_intensity = 0.39
-glow_strength = 0.83
-glow_hdr_threshold = 0.7
-glow_bicubic_upscale = true
-
-[sub_resource type="World" id=28]
-environment = SubResource( 41 )
-
-[sub_resource type="StyleBoxEmpty" id=35]
-
-[sub_resource type="World" id=31]
-environment = SubResource( 41 )
 
 [sub_resource type="StyleBoxFlat" id=38]
 bg_color = Color( 0, 0, 0, 0.564706 )
@@ -317,160 +237,6 @@ margin_bottom = 134.0
 custom_constants/hseparation = 10
 columns = 7
 
-[node name="Item" type="Button" parent="ItemPanel/GridContainer"]
-margin_right = 143.0
-margin_bottom = 124.0
-mouse_default_cursor_shape = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/hover = ExtResource( 16 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 33 )
-custom_styles/normal = ExtResource( 13 )
-script = ExtResource( 2 )
-
-[node name="ViewportContainer2" type="ViewportContainer" parent="ItemPanel/GridContainer/Item"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-stretch = true
-
-[node name="Viewport" type="Viewport" parent="ItemPanel/GridContainer/Item/ViewportContainer2"]
-size = Vector2( 143, 124 )
-world = SubResource( 27 )
-transparent_bg = true
-handle_input_locally = false
-usage = 3
-debug_draw = 3
-render_target_update_mode = 3
-
-[node name="Camera" type="Camera" parent="ItemPanel/GridContainer/Item/ViewportContainer2/Viewport"]
-transform = Transform( 1, 0, 0, 0, 0.921789, 0.387693, 0, -0.387693, 0.921789, 0, 1.30977, 3.38549 )
-fov = 22.0
-
-[node name="Mesh" parent="ItemPanel/GridContainer/Item/ViewportContainer2/Viewport" instance=ExtResource( 21 )]
-
-[node name="DirectionalLight" type="DirectionalLight" parent="ItemPanel/GridContainer/Item/ViewportContainer2/Viewport"]
-transform = Transform( 0.551573, 0, 0.834127, 0, 1, 0, -0.834127, 0, 0.551573, 0, 0, -0.0118456 )
-light_color = Color( 0.4, 0.384314, 0.384314, 1 )
-
-[node name="Label" type="Label" parent="ItemPanel/GridContainer/Item"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -20.0
-margin_top = -29.0
-margin_right = 20.0
-margin_bottom = -6.0
-custom_fonts/font = ExtResource( 10 )
-text = "Wall"
-align = 1
-
-[node name="Tween" type="Tween" parent="ItemPanel/GridContainer/Item"]
-
-[node name="Item2" type="Button" parent="ItemPanel/GridContainer"]
-margin_left = 153.0
-margin_right = 296.0
-margin_bottom = 124.0
-mouse_default_cursor_shape = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/hover = ExtResource( 16 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 34 )
-custom_styles/normal = ExtResource( 13 )
-script = ExtResource( 2 )
-
-[node name="ViewportContainer2" type="ViewportContainer" parent="ItemPanel/GridContainer/Item2"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-stretch = true
-
-[node name="Viewport" type="Viewport" parent="ItemPanel/GridContainer/Item2/ViewportContainer2"]
-size = Vector2( 143, 124 )
-world = SubResource( 28 )
-transparent_bg = true
-handle_input_locally = false
-usage = 3
-debug_draw = 3
-render_target_update_mode = 3
-
-[node name="Camera" type="Camera" parent="ItemPanel/GridContainer/Item2/ViewportContainer2/Viewport"]
-transform = Transform( 1, 0, 0, 0, 0.921789, 0.387693, 0, -0.387693, 0.921789, 0, 1.30977, 3.38549 )
-fov = 22.0
-
-[node name="Mesh" parent="ItemPanel/GridContainer/Item2/ViewportContainer2/Viewport" instance=ExtResource( 3 )]
-
-[node name="DirectionalLight" type="DirectionalLight" parent="ItemPanel/GridContainer/Item2/ViewportContainer2/Viewport"]
-transform = Transform( 0.551573, 0, 0.834127, 0, 1, 0, -0.834127, 0, 0.551573, 0, 0, -0.0118456 )
-light_color = Color( 0.4, 0.384314, 0.384314, 1 )
-
-[node name="Label" type="Label" parent="ItemPanel/GridContainer/Item2"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -36.5
-margin_top = -29.0
-margin_right = 36.5
-margin_bottom = -6.0
-custom_fonts/font = ExtResource( 10 )
-text = "Platform"
-align = 1
-
-[node name="Item3" type="Button" parent="ItemPanel/GridContainer"]
-margin_left = 306.0
-margin_right = 449.0
-margin_bottom = 124.0
-mouse_default_cursor_shape = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_styles/hover = ExtResource( 16 )
-custom_styles/pressed = ExtResource( 15 )
-custom_styles/focus = SubResource( 35 )
-custom_styles/normal = ExtResource( 13 )
-script = ExtResource( 2 )
-
-[node name="ViewportContainer2" type="ViewportContainer" parent="ItemPanel/GridContainer/Item3"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-mouse_filter = 2
-stretch = true
-
-[node name="Viewport" type="Viewport" parent="ItemPanel/GridContainer/Item3/ViewportContainer2"]
-size = Vector2( 143, 124 )
-world = SubResource( 31 )
-transparent_bg = true
-handle_input_locally = false
-usage = 3
-debug_draw = 3
-render_target_update_mode = 3
-
-[node name="Camera" type="Camera" parent="ItemPanel/GridContainer/Item3/ViewportContainer2/Viewport"]
-transform = Transform( 1, 0, 0, 0, 0.921789, 0.387693, 0, -0.387693, 0.921789, 0, 1.30977, 3.38549 )
-fov = 22.0
-
-[node name="Mesh" parent="ItemPanel/GridContainer/Item3/ViewportContainer2/Viewport" instance=ExtResource( 7 )]
-
-[node name="DirectionalLight" type="DirectionalLight" parent="ItemPanel/GridContainer/Item3/ViewportContainer2/Viewport"]
-transform = Transform( 0.551573, 0, 0.834127, 0, 1, 0, -0.834127, 0, 0.551573, 0, 0, -0.0118456 )
-light_color = Color( 0.796078, 0.792157, 0.792157, 1 )
-
-[node name="Label" type="Label" parent="ItemPanel/GridContainer/Item3"]
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-margin_left = -36.5
-margin_top = -29.0
-margin_right = 36.5
-margin_bottom = -6.0
-custom_fonts/font = ExtResource( 10 )
-text = "Iceman"
-align = 1
-
 [node name="ItemType" type="Control" parent="ItemPanel"]
 margin_top = -50.0
 margin_right = 549.0
@@ -538,11 +304,3 @@ text = "Experimental"
 
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Up" to="LevelSelector" method="_on_Up_pressed"]
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Down" to="LevelSelector" method="_on_Down_pressed"]
-[connection signal="mouse_entered" from="ItemPanel/GridContainer/Item" to="ItemPanel/GridContainer/Item" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="ItemPanel/GridContainer/Item" to="ItemPanel/GridContainer/Item" method="_on_mouse_exited"]
-[connection signal="mouse_entered" from="ItemPanel/GridContainer/Item2" to="ItemPanel/GridContainer/Item2" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="ItemPanel/GridContainer/Item2" to="ItemPanel/GridContainer/Item2" method="_on_mouse_exited"]
-[connection signal="pressed" from="ItemPanel/GridContainer/Item2" to="ItemSelected" method="_on_Item_pressed" binds= [ "res://Entities/Editor/SelectedView/Platform.tscn", "Platform" ]]
-[connection signal="mouse_entered" from="ItemPanel/GridContainer/Item3" to="ItemPanel/GridContainer/Item3" method="_on_mouse_entered"]
-[connection signal="mouse_exited" from="ItemPanel/GridContainer/Item3" to="ItemPanel/GridContainer/Item3" method="_on_mouse_exited"]
-[connection signal="pressed" from="ItemPanel/GridContainer/Item3" to="ItemSelected" method="_on_Item_pressed" binds= [ "res://Entities/Editor/SelectedView/Iceman.tscn", "Iceman" ]]

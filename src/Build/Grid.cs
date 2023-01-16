@@ -25,7 +25,7 @@ namespace YACY.Build
 			Height = GetHeightFromLevel(Core.GetManager<BuildManager>().Level);
 			GridPlane = new Plane(new Vector3(0, Height-1, 0), 0f);
 
-			Core.GetManager<BuildManager>().onLevelChange += (_, level) =>
+			Core.GetManager<BuildManager>().OnLevelChange += (_, level) =>
 			{
 				Height = GetHeightFromLevel(level);
 				GridPlane = new Plane(new Vector3(0, 1, 0), 0f);

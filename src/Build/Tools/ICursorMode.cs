@@ -5,6 +5,7 @@ namespace YACY.Build.Tools
 	public interface ICursorMode
 	{
 		void Enable();
+		void Delete();
 		void Process(float delta, Vector2 mouseMotion);
 		void onMousePress();
 		void onMouseRelease();
