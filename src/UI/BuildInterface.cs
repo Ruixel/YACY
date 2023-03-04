@@ -5,13 +5,13 @@ using YACY.Build;
 using YACY.Entities;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
-using ItemList = YACY.Build.ItemList;
 
 namespace YACY.UI;
 
 public class BuildInterface : Control
 {
 	private Control _levelSelector;
+	private Control _itemEditor;
 	private BuildManager _buildManager;
 	
 	private PackedScene _itemPreviewButton = ResourceLoader.Load<PackedScene>("res://Scenes/UI/Previews/PreviewItemButton.tscn");
@@ -20,6 +20,7 @@ public class BuildInterface : Control
 		_buildManager = Core.GetManager<BuildManager>();
 		
 		_levelSelector = GetNode<Control>("LevelSelector");
+		_itemEditor = GetNode<Control>("ItemEditor");
 		_buildManager.OnLevelChange += (sender, level) =>
 		{
 			_levelSelector.GetNode<Label>("MarginContainer/VBoxContainer/Label").Text = level.ToString();
@@ -32,10 +33,12 @@ public class BuildInterface : Control
 
 		CreatePreviewButton<Wall>();
 		CreatePreviewButton<LegacyWall>();
-		
+
+		var textureProperties = new TexturePropertyUI();
+		textureProperties.Render(_itemEditor); 
 	}
 
-	private void CreatePreviewButton<T>() where T : PencilBuildEntity, new()
+	private void CreatePreviewButton<T>() where T : PencilBuildEntity, IEntity, new()
 	{
 		BuildItemAttribute itemMetadata = null;
 		var attrs = System.Attribute.GetCustomAttributes(typeof(T));

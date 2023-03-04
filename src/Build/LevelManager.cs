@@ -21,6 +21,7 @@ namespace YACY.Build
 		public LevelManager()
 		{
 			_levelContainer = new Spatial();
+			_levelContainer.Name = "LevelContainer";
 			_entities = new Dictionary<Type, Dictionary<int, BuildEntity>>();
 
 			MaxLevel = 20;
@@ -39,7 +40,6 @@ namespace YACY.Build
 			if (_containerAdded)
 				return;
 			
-			_levelContainer = new Spatial();
 			root.AddChild(_levelContainer);
 
 			_containerAdded = true;

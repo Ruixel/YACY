@@ -13,7 +13,7 @@ namespace YACY.Geometry
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
-	public class Wall : PencilBuildEntity, IStoredPosition
+	public class Wall : PencilBuildEntity, IStoredPosition, IEntity
 	{
 		public Color Color { get; set; }
 

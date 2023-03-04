@@ -12,4 +12,5 @@ theme = SubResource( 1 )
 fixed_column_width = 182
 fixed_icon_size = Vector2( 32, 32 )
 script = ExtResource( 1 )
+
 [connection signal="item_selected" from="." to="." method="_on_TextureList_item_selected"]

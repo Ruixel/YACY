@@ -21,6 +21,7 @@ namespace YACY
 			
 			// Create DI Container
 			_container = new Dictionary<Type, IManager>();
+			Register<TextureManager>();
 			Register<LevelManager>();
 			Register<BuildManager>();
 			Register<SelectionManager>();

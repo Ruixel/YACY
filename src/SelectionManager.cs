@@ -20,8 +20,10 @@ namespace YACY
 		public SelectionManager()
 		{
 			_container = new Spatial();
+			_container.Name = "SelectionContainer";
 
 			_selectionMesh = new MeshInstance();
+			_selectionMesh.Name = "SelectionMesh";
 			_container.AddChild(_selectionMesh);
 		}
 		
@@ -53,6 +55,7 @@ namespace YACY
 			{
 				_selectionMesh.Mesh = _selected[0].CreateSelectionMesh();
 				_selectionMesh.Mesh.SurfaceSetMaterial(0, _selectionMaterial);
+				_selectionMesh.Visible = true;
 			}
 		}
 	}

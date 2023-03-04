@@ -11,7 +11,7 @@ using YACY.MeshGen;
 
 namespace YACY.Build.Tools
 {
-	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, new()
+	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, IEntity, new()
 	{
 		private BuildManager _buildManager;
 
@@ -126,6 +126,8 @@ namespace YACY.Build.Tools
 				
 				Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
 				newEntity.GenerateMesh();
+				
+				Core.GetManager<SelectionManager>().SelectEntity(newEntity);
 			}
 			
 			Core.GetManager<BuildManager>().RemovePreviewMesh();

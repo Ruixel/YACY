@@ -131,7 +131,7 @@ namespace YACY.Build
 			OnLevelChange?.Invoke(this, level);
 		}
 
-		public void SetTool<T>() where T : PencilBuildEntity, new()
+		public void SetTool<T>() where T : PencilBuildEntity, IEntity, new()
 		{
 			BuildItemAttribute itemMetadata = null;
 			var attrs = System.Attribute.GetCustomAttributes(typeof(T));
