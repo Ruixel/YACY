@@ -5,9 +5,9 @@ namespace YACY
 {
 	public interface ISelectionManager: IManager
 	{
-		void SelectEntity(IEntity entity);
+		void SelectEntity(BuildEntity entity);
 		void Deselect();
-		List<IEntity> GetItemsSelected();
+		List<BuildEntity> GetItemsSelected();
 		
 	}
 }

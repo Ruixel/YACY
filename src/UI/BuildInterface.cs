@@ -38,7 +38,7 @@ public class BuildInterface : Control
 		textureProperties.Render(_itemEditor); 
 	}
 
-	private void CreatePreviewButton<T>() where T : PencilBuildEntity, IEntity, new()
+	private void CreatePreviewButton<T>() where T : PencilBuildEntity, new()
 	{
 		BuildItemAttribute itemMetadata = null;
 		var attrs = System.Attribute.GetCustomAttributes(typeof(T));

@@ -7,7 +7,7 @@ namespace YACY;
 public class TextureManager : ITextureManager
 {
 	public List<TextureInfo> TextureInfo { get; private set; }
-	public List<GameTexture> Textures { get; private set; }
+	public Dictionary<string, GameTexture> Textures { get; private set; }
 	private TextureArray TextureArray;
 
 	private const Image.Format TextureFormat = Image.Format.Rgba8;
@@ -24,7 +24,7 @@ public class TextureManager : ITextureManager
 		TextureArray = new TextureArray();
 		TextureArray.Create(256, 256, (uint) TextureInfo.Count, TextureFormat, 7);
 
-		Textures = new List<GameTexture>();
+		Textures = new Dictionary<string, GameTexture>();
 
 		var layer = 0;
 		foreach (var textureInfo in TextureInfo)
@@ -44,7 +44,7 @@ public class TextureManager : ITextureManager
 			// Add into texture list
 			var texture = new ImageTexture();
 			texture.CreateFromImage(imgData);
-			Textures.Add(new GameTexture(texture, textureInfo));
+			Textures.Add(textureInfo.Name, new GameTexture(texture, textureInfo));
 
 			layer++;
 		}

@@ -51,6 +51,11 @@ namespace YACY.Build
 			return _levelContainer;
 		}
 
+		public BuildEntity GetEntity(int id)
+		{
+			return _entities[id];
+		}
+
 		public void AddEntity<T>(BuildEntity entity, int? level = null) where T : BuildEntity
 		{
 			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
@@ -105,6 +110,16 @@ namespace YACY.Build
 			return entitiesIterator.ToList();
 		}
 
+		public void BroadcastCommandToSelectedEntity(BuildEntity entity, ICommand command)
+		{
+			var selectionManager = Core.GetManager<SelectionManager>();
+			var selectedEntity = selectionManager.GetItemsSelected()[0];
+
+			if (selectedEntity != null)
+			{
+				entity.ExecuteCommand(command);
+			}
+		}
 
 		public void Ready()
 		{

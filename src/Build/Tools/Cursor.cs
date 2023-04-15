@@ -34,7 +34,7 @@ namespace YACY
 		{
 		}
 
-		public void UsePencilCursor<T>() where T : PencilBuildEntity, IEntity, new()
+		public void UsePencilCursor<T>() where T : PencilBuildEntity, new()
 		{
 			_cursorMode.Delete();
 			_cursorMode = new PencilCursor<T>(this);

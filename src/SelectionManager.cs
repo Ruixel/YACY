@@ -7,7 +7,7 @@ namespace YACY
 {
 	public class SelectionManager: ISelectionManager
 	{
-		private List<IEntity> _selected;
+		private List<BuildEntity> _selected;
 		
 		private Spatial _container;
 		private bool _containerInLevel;
@@ -32,19 +32,19 @@ namespace YACY
 			Core.GetManager<LevelManager>().GetContainer().AddChild(_container);
 		}
 		
-		public void SelectEntity(IEntity entity)
+		public void SelectEntity(BuildEntity entity)
 		{
-			_selected = new List<IEntity> {entity};
+			_selected = new List<BuildEntity> {entity};
 			GenerateSelectionMesh();
 		}
 
 		public void Deselect()
 		{
-			_selected = new List<IEntity>();
+			_selected = new List<BuildEntity>();
 			_selectionMesh.Mesh = null;
 		}
 
-		public List<IEntity> GetItemsSelected()
+		public List<BuildEntity> GetItemsSelected()
 		{
 			return _selected;
 		}

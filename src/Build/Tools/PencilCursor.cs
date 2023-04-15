@@ -11,7 +11,7 @@ using YACY.MeshGen;
 
 namespace YACY.Build.Tools
 {
-	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, IEntity, new()
+	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, new()
 	{
 		private BuildManager _buildManager;
 

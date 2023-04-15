@@ -13,7 +13,7 @@ namespace YACY.Geometry
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
-	public class Wall : PencilBuildEntity, IStoredPosition, IEntity
+	public class Wall : PencilBuildEntity, IStoredPosition
 	{
 		public Color Color { get; set; }
 
@@ -75,7 +75,7 @@ namespace YACY.Geometry
 			_meshInstance.Mesh = ThickWallGenerator.GenerateComplexWall(this, startWalls, endWalls, Level, propagate);
 		}
 		
-		public Mesh CreateSelectionMesh()
+		public override Mesh CreateSelectionMesh()
 		{
 			return _meshInstance.Mesh.CreateOutline(0.05f);
 		}

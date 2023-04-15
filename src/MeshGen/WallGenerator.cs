@@ -12,12 +12,12 @@ namespace YACY.MeshGen
 	public static class WallGenerator
 	{
 
-		public static Mesh GenerateFlatWall(Vector2 start, Vector2 end, int level, float minHeight, float maxHeight)
+		public static Mesh GenerateFlatWall(Vector2 start, Vector2 end, int level, Color color, float minHeight, float maxHeight)
 		{
 			float bottom = (level + minHeight) * Constants.LevelHeight;
 			float top = (level + maxHeight) * Constants.LevelHeight;
 
-			return GenerateWall(start, end, top, bottom, Colors.White, 0f);
+			return GenerateWall(start, end, top, bottom, color, 0f);
 		}
 
 		public static Mesh GenerateSelectionFlatWall(Vector2 start, Vector2 end, int level, float minHeight,
