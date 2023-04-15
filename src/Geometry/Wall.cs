@@ -30,7 +30,6 @@ namespace YACY.Geometry
 		private static Random random = new Random();
 
 		private static readonly List<Color> AvailableColors = new List<Color>
-			//{Colors.Aqua, Colors.Bisque, Colors.Brown, Colors.Gainsboro, Colors.Ivory, Colors.Orange, Colors.MintCream};
 			{
 				Colors.SpringGreen, Colors.DodgerBlue, Colors.Firebrick, Colors.DarkSlateBlue, Colors.HotPink, Colors.Maroon
 			};
@@ -73,7 +72,7 @@ namespace YACY.Geometry
 
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
 		{
-			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, Level, propagate);
+			_meshInstance.Mesh = ThickWallGenerator.GenerateComplexWall(this, startWalls, endWalls, Level, propagate);
 		}
 		
 		public Mesh CreateSelectionMesh()
