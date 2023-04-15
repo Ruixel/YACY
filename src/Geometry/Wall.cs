@@ -74,12 +74,11 @@ namespace YACY.Geometry
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
 		{
 			_meshInstance.Mesh = WallGenerator.GenerateComplexWall(this, startWalls, endWalls, Level, propagate);
-			//GD.Print($"FrontLine: {FrontLine.Item1}");
 		}
 		
 		public Mesh CreateSelectionMesh()
 		{
-			throw new NotImplementedException();
+			return _meshInstance.Mesh.CreateOutline(0.05f);
 		}
 
 		public IEnumerable<Vector2> GetPositions()
