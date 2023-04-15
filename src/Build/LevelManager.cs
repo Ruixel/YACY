@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using YACY.Entities;
 
@@ -12,9 +13,9 @@ namespace YACY.Build
 		private Spatial _levelContainer;
 		private bool _containerAdded;
 
-		private Dictionary<Type, Dictionary<int, BuildEntity>> _entities;
+		private Dictionary<int, BuildEntity> _entities;
 		private LevelData[] _levelData;
-		
+
 		public int MaxLevel { get; }
 		public int MinLevel { get; }
 
@@ -22,7 +23,7 @@ namespace YACY.Build
 		{
 			_levelContainer = new Spatial();
 			_levelContainer.Name = "LevelContainer";
-			_entities = new Dictionary<Type, Dictionary<int, BuildEntity>>();
+			_entities = new Dictionary<int, BuildEntity>();
 
 			MaxLevel = 20;
 			MinLevel = 0;
@@ -34,12 +35,12 @@ namespace YACY.Build
 				_levelData[i] = levelData;
 			}
 		}
-		
+
 		public void AddNodeContainer(Node root)
 		{
 			if (_containerAdded)
 				return;
-			
+
 			root.AddChild(_levelContainer);
 
 			_containerAdded = true;
@@ -54,18 +55,10 @@ namespace YACY.Build
 		{
 			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
 			var levelItemMap = _levelData[receivedLevel]._itemMap;
-			
-			// Check main container exists
-			if (!_entities.TryGetValue(typeof(T), out var list))
-			{
-				list = new Dictionary<int, BuildEntity>();
-				_entities.Add(typeof(T), list);
-			}
-			
-			
+
 			// Add to entity container
 			_levelContainer.AddChild(entity);
-			list.Add(entity.Id, entity);
+			_entities.Add(entity.Id, entity);
 
 			// If positions of entity need to be remembered
 			if (entity is IStoredPosition entityWithStoredPos)
@@ -76,7 +69,7 @@ namespace YACY.Build
 					var gridMap = new Dictionary<Vector2, List<int>>();
 					levelItemMap.Add(typeof(T), gridMap);
 				}
-			
+
 				var positionsToAdd = entityWithStoredPos.GetPositions();
 				var entityId = entity.Id;
 
@@ -94,31 +87,24 @@ namespace YACY.Build
 				}
 			}
 		}
-		
-		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1, int? level = null) where T : BuildEntity, IStoredPosition
+
+		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1, int? level = null)
+			where T : BuildEntity, IStoredPosition
 		{
 			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
 			var levelItemMap = _levelData[receivedLevel]._itemMap;
 			
 			if (!levelItemMap.ContainsKey(typeof(T))) return new List<T>();
-			
-			if (levelItemMap[typeof(T)].TryGetValue(pos, out var entities))
-			{
-				var foundEntities = new List<T>();
-				foreach (var entityId in entities)
-				{
-					if (_entities[typeof(T)].TryGetValue(entityId, out var entity))
-					{
-						if (omitId != entity.Id)
-							foundEntities.Add(entity as T);
-					}
-				}
+			if (!levelItemMap[typeof(T)].TryGetValue(pos, out var entities)) return new List<T>();
 
-				return foundEntities;
-			}
-			
-			return new List<T>();
+			var entitiesIterator =
+				from entityId in entities
+				where omitId != entityId
+				select _entities[entityId] as T;
+
+			return entitiesIterator.ToList();
 		}
+
 
 		public void Ready()
 		{
