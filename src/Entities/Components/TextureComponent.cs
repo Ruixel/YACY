@@ -7,8 +7,8 @@ public class TextureComponent : Component
 {
 	public TextureComponent(BuildEntity entity) : base(entity) { }
 
-	public string TextureName { get; private set; }
-	public Color Color { get; private set; }
+	public string TextureName { get; private set; } = "Color";
+	public Color Color { get; private set; } = Colors.White;
 
 	public void ChangeColor(Color newColor)
 	{
@@ -23,8 +23,5 @@ public class TextureComponent : Component
 	public override void ExecuteCommand(ICommand command)
 	{
 		GD.Print("Shouldn't be here :P");
-		//if (command is ChangeTextureCommand textureCommand)
-		//{
-		//}
 	}
 }

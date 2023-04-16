@@ -110,14 +110,13 @@ namespace YACY.Build
 			return entitiesIterator.ToList();
 		}
 
-		public void BroadcastCommandToSelectedEntity(BuildEntity entity, ICommand command)
+		public void BroadcastCommandToEntity(int entityId, ICommand command)
 		{
-			var selectionManager = Core.GetManager<SelectionManager>();
-			var selectedEntity = selectionManager.GetItemsSelected()[0];
-
+			var selectedEntity = GetEntity(entityId);
 			if (selectedEntity != null)
 			{
-				entity.ExecuteCommand(command);
+				selectedEntity?.ExecuteCommand(command);
+				GD.Print(command.GetInfo());
 			}
 		}
 

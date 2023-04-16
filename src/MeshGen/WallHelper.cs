@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using YACY.Legacy;
+using YACY.Util;
 
 namespace YACY.MeshGen;
 
@@ -9,8 +11,11 @@ public static class WallHelper
 	
 	public static readonly Material ColorMaterial =
 			ResourceLoader.Load<SpatialMaterial>("res://res/materials/test_mat.tres");
+	
+	public static readonly ShaderMaterial ArrayTextureMaterial =
+			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture.tres");
 
-	public static void AddQuad(SurfaceTool surfaceTool, List<Vector3> vertices, int textureID, Color color,
+	public static void AddQuad(SurfaceTool surfaceTool, List<Vector3> vertices, TextureInfo? textureInfo, Color color,
 		ref int indexOffset, bool generateBack = false)
 	{
 		if (generateBack)
@@ -20,9 +25,17 @@ public static class WallHelper
 		var wallLength = Mathf.Sqrt(Mathf.Pow(vertices[2].z - vertices[0].z, 2) +
 		                            Mathf.Pow(vertices[2].x - vertices[0].x, 2));
 
-		var textureFloat = textureID / 256;
+		var textureFloat = 0.0f;
 		var textureScale = new Vector2(1, 1); // Get it from somewhere
-		var textureSize = 1;
+		var textureSize = Constants.TextureSize;
+
+		if (textureInfo.HasValue)
+		{
+			textureFloat = (textureInfo.Value.Id+1.0f) / 256.0f;
+			textureScale = textureInfo.Value.Scale;
+		}
+		
+		color.a = textureFloat;
 
 		for (int i = 0; i < 4; i++)
 		{

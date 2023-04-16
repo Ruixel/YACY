@@ -37,13 +37,15 @@ namespace YACY.Legacy.Objects
 			_meshInstance = new MeshInstance();
 			Level = Core.GetManager<BuildManager>().Level;
 			AddChild(_meshInstance);
+			
+			AddComponent(new TextureComponent(this));
 		}
 
 		public override void GenerateMesh()
 		{
 			var textureComponent = GetComponent<TextureComponent>();
 			if (!StartPosition.IsEqualApprox(EndPosition))
-				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(StartPosition, EndPosition, Level, Colors.Aqua, 0, 1);
+				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(StartPosition, EndPosition, Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
 		}
 		
 		public override Mesh CreateSelectionMesh()

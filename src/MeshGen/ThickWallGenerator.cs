@@ -260,20 +260,20 @@ public class ThickWallGenerator : Node
 		}*/
 
 		var index = 0;
-		WallHelper.AddQuad(surfaceTool, vertices, 1, wall.Color, ref index);
-		WallHelper.AddQuad(surfaceTool, vertices.GetRange(4, 4), 1, wall.Color, ref index, true);
+		WallHelper.AddQuad(surfaceTool, vertices, null, wall.Color, ref index);
+		WallHelper.AddQuad(surfaceTool, vertices.GetRange(4, 4), null, wall.Color, ref index, true);
 
 		var frontVertices = new List<Vector3> {vertices[2], vertices[3], vertices[7], vertices[6]};
-		WallHelper.AddQuad(surfaceTool, frontVertices, 1, wall.Color, ref index, true);
+		WallHelper.AddQuad(surfaceTool, frontVertices, null, wall.Color, ref index, true);
 
 		var backVertices = new List<Vector3> {vertices[0], vertices[1], vertices[5], vertices[4]};
-		WallHelper.AddQuad(surfaceTool, backVertices, 1, wall.Color, ref index, true);
+		WallHelper.AddQuad(surfaceTool, backVertices, null, wall.Color, ref index, true);
 
 		var topVertices = new List<Vector3> {vertices[0], vertices[3], vertices[7], vertices[4]};
-		WallHelper.AddQuad(surfaceTool, topVertices, 1, wall.Color, ref index);
+		WallHelper.AddQuad(surfaceTool, topVertices, null, wall.Color, ref index);
 
 		var bottomVertices = new List<Vector3> {vertices[1], vertices[2], vertices[6], vertices[5]};
-		WallHelper.AddQuad(surfaceTool, bottomVertices, 1, wall.Color, ref index, true);
+		WallHelper.AddQuad(surfaceTool, bottomVertices, null, wall.Color, ref index, true);
 
 		if (startWalls.Count >= 2)
 		{

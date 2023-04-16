@@ -36,10 +36,8 @@ public class BuildEntity : Spatial
 
 	public void ExecuteCommand(ICommand command)
 	{
-		foreach (var component in _components)
-		{
-			component.ExecuteCommand(command);
-		}
+		command.Execute();
+		GenerateMesh();
 	}
 
 	public virtual void GenerateMesh()
