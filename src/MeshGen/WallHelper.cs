@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using YACY.Legacy;
@@ -16,7 +17,7 @@ public static class WallHelper
 			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture.tres");
 
 	public static void AddQuad(SurfaceTool surfaceTool, List<Vector3> vertices, TextureInfo? textureInfo, Color color,
-		ref int indexOffset, bool generateBack = false)
+		ref int indexOffset, bool generateBack = false, bool readjust = false)
 	{
 		if (generateBack)
 			vertices = new List<Vector3> {vertices[3], vertices[2], vertices[1], vertices[0]};
@@ -24,6 +25,12 @@ public static class WallHelper
 		var normal = CalculateNormal(vertices);
 		var wallLength = Mathf.Sqrt(Mathf.Pow(vertices[2].z - vertices[0].z, 2) +
 		                            Mathf.Pow(vertices[2].x - vertices[0].x, 2));
+		
+		// Mostly used for thick walls since sometimes a texture will repeat for a lil bit and it looks off
+		if (readjust && wallLength % 1 < 0.25 && wallLength > 1)
+		{
+			wallLength = Mathf.Floor(wallLength);
+		}
 
 		var textureFloat = 0.0f;
 		var textureScale = new Vector2(1, 1); // Get it from somewhere
