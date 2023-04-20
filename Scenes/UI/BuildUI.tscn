@@ -1,7 +1,8 @@
-[gd_scene load_steps=24 format=2]
+[gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/Label.gd" type="Script" id=1]
 [ext_resource path="res://res/fonts/aileron_kindabig.tres" type="DynamicFont" id=2]
+[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=3]
 [ext_resource path="res://scripts/gui/SelectedItem.gd" type="Script" id=4]
 [ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=5]
 [ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=6]
@@ -78,6 +79,14 @@ shadow_size = 3
 shadow_offset = Vector2( 0, 2 )
 
 [sub_resource type="StyleBoxEmpty" id=37]
+
+[sub_resource type="StyleBoxEmpty" id=42]
+
+[sub_resource type="StyleBoxFlat" id=40]
+bg_color = Color( 0, 0, 0, 0.603922 )
+
+[sub_resource type="StyleBoxFlat" id=41]
+bg_color = Color( 0.964706, 0, 0, 0.776471 )
 
 [node name="BuildUI" type="Control"]
 anchor_right = 1.0
@@ -325,7 +334,7 @@ margin_right = -8.0
 [node name="VBoxContainer" type="VBoxContainer" parent="ItemEditor/MarginContainer"]
 margin_right = 240.0
 margin_bottom = 387.0
-custom_constants/separation = 8
+custom_constants/separation = 0
 
 [node name="TitleVBox" type="VBoxContainer" parent="ItemEditor/MarginContainer/VBoxContainer"]
 margin_right = 240.0
@@ -348,10 +357,38 @@ custom_fonts/font = ExtResource( 19 )
 text = "Properties"
 align = 1
 
-[node name="ItemList" type="ItemList" parent="ItemEditor/MarginContainer/VBoxContainer"]
-margin_top = 68.0
+[node name="HSeparator" type="HSeparator" parent="ItemEditor/MarginContainer/VBoxContainer"]
+margin_top = 60.0
 margin_right = 240.0
-margin_bottom = 68.0
+margin_bottom = 70.0
+custom_constants/separation = 10
+custom_styles/separator = SubResource( 42 )
+
+[node name="Panel" type="Panel" parent="ItemEditor/MarginContainer/VBoxContainer"]
+margin_top = 70.0
+margin_right = 240.0
+margin_bottom = 94.0
+rect_min_size = Vector2( 0, 24 )
+custom_styles/panel = SubResource( 40 )
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ItemEditor/MarginContainer/VBoxContainer/Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+rect_min_size = Vector2( 24, 24 )
+
+[node name="Panel" type="Panel" parent="ItemEditor/MarginContainer/VBoxContainer/Panel/HBoxContainer"]
+margin_right = 24.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 24, 24 )
+custom_styles/panel = SubResource( 41 )
+
+[node name="Label" type="Label" parent="ItemEditor/MarginContainer/VBoxContainer/Panel/HBoxContainer"]
+margin_left = 28.0
+margin_top = 2.0
+margin_right = 86.0
+margin_bottom = 22.0
+custom_fonts/font = ExtResource( 3 )
+text = " Texture"
 
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Up" to="LevelSelector" method="_on_Up_pressed"]
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Down" to="LevelSelector" method="_on_Down_pressed"]

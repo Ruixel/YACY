@@ -40,6 +40,13 @@ namespace YACY
 			_cursorMode = new PencilCursor<T>(this);
 			_cursorMode.Enable();
 		}
+		
+		public void UsePlacementCursor<T>() where T : BuildEntity, new()
+		{
+			_cursorMode.Delete();
+			_cursorMode = new PlacementCursor<T>(this);
+			_cursorMode.Enable();
+		}
 
 		public override void _Ready()
 		{

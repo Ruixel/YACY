@@ -22,18 +22,18 @@ namespace YACY.Build
 		private Control _ui;
 
 		private Spatial _previewContainer;
-		
+
 		private PackedScene _uiScene = ResourceLoader.Load<PackedScene>("res://Scenes/UI/BuildUI.tscn");
 
 		public event EventHandler<int> OnLevelChange;
 		public event EventHandler<(ToolType, Type)> OnToolChange;
-		
+
 		public int Level { get; private set; }
 
 		public BuildManager()
 		{
 			Level = 1;
-			
+
 			_enabled = false;
 		}
 
@@ -76,7 +76,7 @@ namespace YACY.Build
 			{
 				RemovePreviewMesh();
 			}
-			
+
 			_previewContainer.AddChild(entity);
 		}
 
@@ -135,6 +135,7 @@ namespace YACY.Build
 		{
 			BuildItemAttribute itemMetadata = null;
 			var attrs = System.Attribute.GetCustomAttributes(typeof(T));
+
 			foreach (var attribute in attrs)
 			{
 				if (attribute is BuildItemAttribute itemAttribute)
@@ -145,9 +146,23 @@ namespace YACY.Build
 
 			if (itemMetadata != null)
 			{
-				_cursor.UsePencilCursor<T>();
-				//OnToolChange?.Invoke(this, (itemMetadata.Tool, typeof(T)));
+				if (itemMetadata.Tool == ToolType.Pencil)
+				{
+					_cursor.UsePencilCursor<T>();
+				}
+				else if (itemMetadata.Tool == ToolType.Placement)
+				{
+					_cursor.UsePlacementCursor<T>();
+				}
+
+				OnToolChange?.Invoke(this, (itemMetadata.Tool, typeof(T)));
 			}
+		}
+
+		public void TempSetPlacementTool<T>() where T : BuildEntity, new()
+		{
+			_cursor.UsePlacementCursor<T>();
+			OnToolChange?.Invoke(this, (ToolType.Placement, typeof(T)));
 		}
 
 		public void Ready()

@@ -1,13 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Runtime.InteropServices;
-using System.Xml;
 using Godot;
 using YACY.Entities;
-using YACY.Geometry;
-using YACY.Legacy.Objects;
-using YACY.MeshGen;
 
 namespace YACY.Build.Tools
 {

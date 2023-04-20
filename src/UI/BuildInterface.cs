@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using Godot;
 using Godot.Collections;
 using YACY.Build;
@@ -33,12 +34,13 @@ public class BuildInterface : Control
 
 		CreatePreviewButton<Wall>();
 		CreatePreviewButton<LegacyWall>();
+		CreatePreviewButton<LegacyPlatform>();
 
 		var textureProperties = new TexturePropertyUI();
 		textureProperties.Render(_itemEditor); 
 	}
 
-	private void CreatePreviewButton<T>() where T : PencilBuildEntity, new()
+	private void CreatePreviewButton<T>() where T : BuildEntity, new()
 	{
 		BuildItemAttribute itemMetadata = null;
 		var attrs = System.Attribute.GetCustomAttributes(typeof(T));
@@ -60,7 +62,20 @@ public class BuildInterface : Control
 			GD.Print($"Toggling {itemMetadata?.Name}");
 
 			GetNode<Control>("ItemSelected").Call("change_item", itemMetadata?.SelectionPreview, itemMetadata?.Name );
-			Core.GetManager<BuildManager>().SetTool<T>();
+			
+			// Choose the correct tool depending on how
+			var buildManager = Core.GetManager<BuildManager>();
+			MethodInfo setToolMethod = typeof(BuildManager).GetMethod("SetTool");
+			if (typeof(T).IsSubclassOf(typeof(PencilBuildEntity)))
+			{
+				//Core.GetManager<BuildManager>().SetTool<T>();
+				MethodInfo genericSetToolMethod = setToolMethod?.MakeGenericMethod(typeof(T));
+				genericSetToolMethod?.Invoke(buildManager, null);
+			}
+			else
+			{
+				buildManager.TempSetPlacementTool<T>();
+			}
 		};
 		
 		GetNode<GridContainer>("ItemPanel/GridContainer").AddChild(previewButton);

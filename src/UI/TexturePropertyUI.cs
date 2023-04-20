@@ -14,6 +14,6 @@ public class TexturePropertyUI : IPropertyUI
 		}
 
 		_itemList = new TextureSelectorUi();
-		root.AddChild(_itemList);
+		root.GetNode<Control>("MarginContainer/VBoxContainer").AddChild(_itemList);
 	}
 }

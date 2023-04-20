@@ -8,6 +8,7 @@ namespace YACY.Util
 	}
 	public enum ToolType
 	{
-		Pencil
+		Pencil,
+		Placement
 	}
 }

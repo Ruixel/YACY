@@ -46,8 +46,8 @@ public static class WallHelper
 
 		for (int i = 0; i < 4; i++)
 		{
-			var uvX = (i == 0 || i == 3) ? 0 : wallLength;
-			var uvY = (i == 0 || i == 1) ? vertices[2].y : vertices[0].y;
+			var uvX = (i is 0 or 3) ? 0 : wallLength;
+			var uvY = (i is 0 or 1) ? vertices[2].y : vertices[0].y;
 
 			surfaceTool.AddColor(color);
 			surfaceTool.AddUv(new Vector2(uvX * textureScale.x * textureSize, uvY * textureScale.y * textureSize));

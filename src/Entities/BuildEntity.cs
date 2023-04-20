@@ -8,11 +8,14 @@ namespace YACY.Entities;
 public class BuildEntity : Spatial
 {
 	public int Id { get; }
+	public Vector2 Position;
 	private readonly List<Component> _components = new List<Component>();
 
 	public BuildEntity()
 	{
 		Id = Core.GetCore().GetNextId();
+		
+		Position = Vector2.Zero;
 	}
 
 	public void AddComponent(Component component)
