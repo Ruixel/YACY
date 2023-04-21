@@ -9,6 +9,7 @@ public class BuildEntity : Spatial
 {
 	public int Id { get; }
 	public Vector2 Position;
+	public bool IsTransparent;
 	private readonly List<Component> _components = new List<Component>();
 
 	public BuildEntity()
@@ -16,6 +17,7 @@ public class BuildEntity : Spatial
 		Id = Core.GetCore().GetNextId();
 		
 		Position = Vector2.Zero;
+		IsTransparent = false;
 	}
 
 	public void AddComponent(Component component)

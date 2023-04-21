@@ -2,6 +2,7 @@ using System;
 using Godot;
 using Godot.Collections;
 using YACY.Entities;
+using YACY.Util;
 
 namespace YACY.Build.Tools;
 
@@ -21,6 +22,7 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 	public PlacementCursor(Node parent)
 	{
 		_prototype = new T();
+		_prototype.IsTransparent = true;
 		parent.AddChild(_prototype);
 		
 		_prototypeMesh = new MeshInstance();
@@ -64,7 +66,7 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 
 		if (_prototype != null)
 		{
-			_prototype.Translation = new Vector3(_gridPos.x * grid.Spacing, grid.Height, _gridPos.y * grid.Spacing);
+			_prototype.Translation = new Vector3(_gridPos.x * grid.Spacing, grid.Height - Constants.LevelHeight + 0.01f, _gridPos.y * grid.Spacing);
 		}
 		
 		//if (parent.mousePlacePressed)
@@ -93,14 +95,23 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 
 	public void onMousePress()
 	{
+		Core.GetManager<SelectionManager>().Deselect();
+		
+		var grid = _buildManager.GetGrid();
 		var newEntity = new T();
-		newEntity.Position.x = _gridPos.x % _prototypeSize.x;
-		newEntity.Position.y = _gridPos.y % _prototypeSize.y;
+		newEntity.Position.x = _gridPos.x * grid.Spacing;
+		newEntity.Position.y = _gridPos.y * grid.Spacing;
+		
+		Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
+		newEntity.GenerateMesh();
+		
+		Core.GetManager<SelectionManager>().SelectEntity(newEntity);
 	}
 
 	public void onMouseRelease()
 	{
-		throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
+		return;
 	}
 
 	public void onKeyPressed(string scancode)

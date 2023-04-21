@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using Godot;
+using YACY.Legacy;
+using YACY.Util;
 
 namespace YACY.MeshGen;
 
@@ -47,7 +49,7 @@ public class FloorHelper
 		indexOffset += 3;
 	}
 	
-	public static void AddQuad(SurfaceTool surfaceTool, IList<Vector3> vertices, int textureID, Color color,
+	public static void AddQuad(SurfaceTool surfaceTool, IList<Vector3> vertices, TextureInfo? textureInfo, Color color,
 		ref int indexOffset, bool generateBack = false)
 	{
 		if (generateBack)
@@ -55,14 +57,22 @@ public class FloorHelper
 
 		var normal = -(vertices[2] - vertices[1]).Cross(vertices[0] - vertices[1]).Normalized();
 
-		var textureFloat = textureID / 256;
+		var textureFloat = 0.0f;
 		var textureScale = new Vector2(1, 1); // Get it from somewhere
+		var textureSize = Constants.TextureSize;
 
-		var textureSize = 1;
+		if (textureInfo.HasValue)
+		{
+			textureFloat = (textureInfo.Value.Id+1.0f) / 256.0f;
+			textureScale = textureInfo.Value.Scale;
+		}
+		
+		color.a = textureFloat;
 
 		for (var i = 0; i < 4; i++)
 		{
 			surfaceTool.AddColor(color);
+			surfaceTool.AddUv(new Vector2(vertices[i].x * textureScale.x * textureSize, vertices[i].z * textureScale.y * textureSize));
 			surfaceTool.AddNormal(normal);
 			surfaceTool.AddVertex(vertices[i]);
 		}

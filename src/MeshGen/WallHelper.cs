@@ -15,6 +15,13 @@ public static class WallHelper
 	
 	public static readonly ShaderMaterial ArrayTextureMaterial =
 			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture.tres");
+	
+	public static readonly ShaderMaterial ArrayTextureMaterialTranslucent =
+			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture_translucent.tres");
+	
+	public static readonly ShaderMaterial ArrayTextureMaterialPreview =
+			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture_prototype.tres");
+
 
 	public static void AddQuad(SurfaceTool surfaceTool, List<Vector3> vertices, TextureInfo? textureInfo, Color color,
 		ref int indexOffset, bool generateBack = false, bool readjust = false)

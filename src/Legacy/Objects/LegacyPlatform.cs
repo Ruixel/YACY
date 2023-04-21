@@ -45,13 +45,15 @@ namespace YACY.Legacy.Objects
 		{
 			var textureComponent = GetComponent<TextureComponent>();
 			//_meshInstance.Mesh = WallGenerator.GenerateFlatWall(new Vector2(0,0), new Vector2(2, 2), Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
-			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(new Vector2(0,0), new Vector2(2, 2), Level, 0, "Grass", textureComponent.Color, 0, 0);
+			Console.WriteLine($"Level: {Level}");
+			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level, 0, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0, 0);
 		}
 
 		public override Mesh CreateSelectionMesh()
 		{
 			//return PlatformGenerator.GenerateSelectionFlatPlatform(StartPosition, EndPosition, Level, 0, 1, 0.05f);
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
+			return new CubeMesh();
 		}
 	}
 }
