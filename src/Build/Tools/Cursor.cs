@@ -12,19 +12,17 @@ namespace YACY
 {
 	public class Cursor : Spatial
 	{
-		private readonly IBuildManager _buildManager;
+		private readonly BuildManager _buildManager;
 		private ICursorMode _cursorMode;
 
 		private Vector2 _mouseMotion;
 		private bool _isMousePressed;
 
-		public Cursor(IBuildManager buildManager)
+		public Cursor(BuildManager buildManager)
 		{
 			_buildManager = buildManager;
 			_buildManager.OnLevelChange += onLevelChange;
 			_buildManager.OnToolChange += onToolChange;
-
-			_cursorMode = new PencilCursor<Wall>(this);
 
 			_mouseMotion = new Vector2();
 			_isMousePressed = false;
@@ -36,14 +34,14 @@ namespace YACY
 
 		public void UsePencilCursor<T>() where T : PencilBuildEntity, new()
 		{
-			_cursorMode.Delete();
+			_cursorMode?.Delete();
 			_cursorMode = new PencilCursor<T>(this);
 			_cursorMode.Enable();
 		}
 		
 		public void UsePlacementCursor<T>() where T : BuildEntity, new()
 		{
-			_cursorMode.Delete();
+			_cursorMode?.Delete();
 			_cursorMode = new PlacementCursor<T>(this);
 			_cursorMode.Enable();
 		}

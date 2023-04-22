@@ -1,9 +1,10 @@
 using System;
-using System.Runtime.InteropServices;
+using System.Collections.Generic;
 using Godot;
 using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.Geometry;
+using YACY.Legacy.Objects;
 using YACY.UI;
 using YACY.Util;
 
@@ -23,6 +24,8 @@ namespace YACY.Build
 
 		private Spatial _previewContainer;
 
+		private Dictionary<Type, BuildEntity> _defaultEntities;
+
 		private PackedScene _uiScene = ResourceLoader.Load<PackedScene>("res://Scenes/UI/BuildUI.tscn");
 
 		public event EventHandler<int> OnLevelChange;
@@ -33,8 +36,8 @@ namespace YACY.Build
 		public BuildManager()
 		{
 			Level = 1;
-
 			_enabled = false;
+
 		}
 
 		public void EnableBuildMode(Node root)
@@ -96,6 +99,8 @@ namespace YACY.Build
 			_grid = new Grid();
 			_previewContainer = new Spatial();
 			_ui = _uiScene.Instance<BuildInterface>();
+			
+			SetTool<Wall>();
 
 			root.AddChild(_editorCamera);
 			root.AddChild(_cursor);
@@ -165,8 +170,23 @@ namespace YACY.Build
 			OnToolChange?.Invoke(this, (ToolType.Placement, typeof(T)));
 		}
 
+		public BuildEntity GetDefaultEntity(Type entityType)
+		{
+			return _defaultEntities.TryGetValue(entityType, out var entity) ? entity : null;
+		}
+
 		public void Ready()
 		{
+			// TODO: Should be loaded up from a item list
+			_defaultEntities = new Dictionary<Type, BuildEntity>()
+			{
+				{typeof(LegacyWall), new LegacyWall()},
+				{typeof(LegacyPlatform), new LegacyPlatform()},
+				{typeof(Wall), new Wall()}
+			};
+			
+			GD.Print($"type of wall {typeof(LegacyWall)}");
+			
 			GD.Print("Build Manager: Ready");
 		}
 	}

@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using Godot;
 using YACY.Build;
@@ -16,5 +17,10 @@ public abstract class Component
 	public virtual void ExecuteCommand(ICommand command)
 	{
 		GD.PushWarning($"No ExecuteCommand() given for ${MethodBase.GetCurrentMethod().Name}");
+	}
+
+	public virtual void RenderUI(Control itemEditor)
+	{
+		throw new NotImplementedException();
 	}
 }

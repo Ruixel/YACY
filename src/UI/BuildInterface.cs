@@ -6,6 +6,7 @@ using YACY.Build;
 using YACY.Entities;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
+using YACY.Util;
 
 namespace YACY.UI;
 
@@ -36,8 +37,29 @@ public class BuildInterface : Control
 		CreatePreviewButton<LegacyWall>();
 		CreatePreviewButton<LegacyPlatform>();
 
-		var textureProperties = new TexturePropertyUI();
-		textureProperties.Render(_itemEditor); 
+		_buildManager.OnToolChange += (sender, info) =>
+		{
+			var (toolType, type) = info;
+			
+			var entity = _buildManager.GetDefaultEntity(type);
+			if (entity != null)
+			{
+				foreach (var property in _itemEditor.GetNode<Control>("MarginContainer/VBoxContainer").GetChildren())
+				{
+					var node = (Node) property;
+					if (node is IPropertyUI ui)
+					{
+						GD.Print($"Hi :3");
+						ui.Disconnect();
+					}
+				}
+				Console.WriteLine($"Found entity {entity}");
+				foreach (var component in entity.GetAllComponents())
+				{
+					component.RenderUI(_itemEditor);
+				}
+			}
+		};
 	}
 
 	private void CreatePreviewButton<T>() where T : BuildEntity, new()

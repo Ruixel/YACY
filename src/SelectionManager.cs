@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using YACY.Build;
 using YACY.Entities;
+using YACY.Util;
 
 namespace YACY
 {
@@ -16,6 +18,8 @@ namespace YACY
 
 		private SpatialMaterial _selectionMaterial =
 			ResourceLoader.Load<SpatialMaterial>("res://res/materials/selection.tres");
+		
+		public event EventHandler<BuildEntity> OnSelection;
 
 		public SelectionManager()
 		{
@@ -35,6 +39,8 @@ namespace YACY
 		public void SelectEntity(BuildEntity entity)
 		{
 			_selected = new List<BuildEntity> {entity};
+			OnSelection?.Invoke(this, entity);
+			
 			GenerateSelectionMesh();
 		}
 

@@ -39,6 +39,11 @@ public class BuildEntity : Spatial
 		return null;
 	}
 
+	public List<Component> GetAllComponents()
+	{
+		return _components;
+	}
+
 	public void ExecuteCommand(ICommand command)
 	{
 		command.Execute();

@@ -29,7 +29,7 @@ namespace YACY.Build
 			MinLevel = 0;
 
 			_levelData = new LevelData[MaxLevel - MinLevel + 1];
-			for (int i = MinLevel; i <= MaxLevel; i++)
+			for (var i = MinLevel; i <= MaxLevel; i++)
 			{
 				var levelData = new LevelData(i);
 				_levelData[i] = levelData;
