@@ -49,11 +49,10 @@ public class BuildInterface : Control
 					var node = (Node) property;
 					if (node is IPropertyUI ui)
 					{
-						GD.Print($"Hi :3");
 						ui.Disconnect();
 					}
 				}
-				Console.WriteLine($"Found entity {entity}");
+				
 				foreach (var component in entity.GetAllComponents())
 				{
 					component.RenderUI(_itemEditor);

@@ -22,7 +22,6 @@ namespace YACY.Geometry
 
 		public float StartHeight { get; set; }
 		public float EndHeight { get; set; }
-		public int Level { get; }
 
 		private MeshInstance _meshInstance;
 		private MeshInstance _meshOutline;

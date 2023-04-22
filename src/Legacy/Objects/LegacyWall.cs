@@ -16,8 +16,6 @@ namespace YACY.Legacy.Objects
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
 	public class LegacyWall : PencilBuildEntity
 	{
-		public int Level { get; }
-
 		public Tuple<Vector2, Vector2> FrontLine;
 		public Tuple<Vector2, Vector2> BackLine;
 

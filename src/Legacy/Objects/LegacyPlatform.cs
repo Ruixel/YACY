@@ -15,8 +15,6 @@ namespace YACY.Legacy.Objects
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/Platform.tscn")]
 	public class LegacyPlatform : BuildEntity
 	{
-		public int Level { get; }
-
 		private MeshInstance _meshInstance;
 
 		public LegacyPlatform(Vector2 position, int level)

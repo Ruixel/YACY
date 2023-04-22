@@ -23,6 +23,7 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 	{
 		_prototype = new T();
 		_prototype.IsTransparent = true;
+		_prototype.Level = 1;
 		parent.AddChild(_prototype);
 		
 		_prototypeMesh = new MeshInstance();

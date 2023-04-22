@@ -9,6 +9,8 @@ public class BuildEntity : Spatial
 {
 	public int Id { get; }
 	public Vector2 Position;
+	public int Level;
+	
 	public bool IsTransparent;
 	private readonly List<Component> _components = new List<Component>();
 
@@ -18,6 +20,7 @@ public class BuildEntity : Spatial
 		
 		Position = Vector2.Zero;
 		IsTransparent = false;
+		Level = 1;
 	}
 
 	public void AddComponent(Component component)
