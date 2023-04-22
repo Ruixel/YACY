@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 using YACY.Build;
 using YACY.Entities;
@@ -9,7 +10,8 @@ namespace YACY.UI;
 public class TexturePropertyUI : Control, IPropertyUI
 {
 	private readonly ItemList _textureItemList;
-	
+	private Dictionary<string, int> _textureIndex;
+
 	public TexturePropertyUI()
 	{
 		AnchorRight = 1.0f;
@@ -34,7 +36,7 @@ public class TexturePropertyUI : Control, IPropertyUI
 		var textureComponent = entity.GetComponent<TextureComponent>();
 		if (textureComponent != null)
 		{
-			GD.Print($"Texture: {textureComponent.TextureName}");
+			_textureItemList.Select(_textureIndex[textureComponent.TextureName]);
 		}
 	}
 
@@ -48,9 +50,12 @@ public class TexturePropertyUI : Control, IPropertyUI
 		textureItemList.AnchorRight = 1.0f;
 		textureItemList.Connect("item_selected", this, nameof(OnItemSelected));
 
+		var index = 0;
+		_textureIndex = new Dictionary<string, int>();
 		foreach (var texture in Core.GetManager<TextureManager>().Textures.Values)
 		{
 			textureItemList.AddItem(texture.TextureInfo.Name, texture.ImageTexture);
+			_textureIndex.Add(texture.TextureInfo.Name, index++);
 		}
 
 		return textureItemList;
