@@ -1,16 +1,23 @@
 using Godot;
+using MessagePack;
 using YACY.Build;
 using YACY.UI;
 
 namespace YACY.Entities.Components;
 
+[MessagePackObject]
 public class TextureComponent : Component
 {
 	public TextureComponent(BuildEntity entity) : base(entity)
+	{ }
+
+	public TextureComponent() : base()
 	{
 	}
 
-	public string TextureName { get; private set; } = "Color";
+	[Key(1)]
+	public string TextureName { get; set; } = "Color";
+	[Key(2)]
 	public Color Color { get; private set; } = Colors.White;
 
 	public void ChangeColor(Color newColor)

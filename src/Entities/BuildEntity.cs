@@ -3,20 +3,19 @@ using Godot;
 using MessagePack;
 using YACY.Build;
 using YACY.Entities.Components;
+using static YACY.Build.ItemList;
 
 namespace YACY.Entities;
 
 public class BuildEntity : Spatial
 {
-	[Key(0)]
 	public int Id { get; }
-	[Key(1)]
 	public Vector2 Position;
-	[Key(2)]
 	public int Level;
 	
-	//[Key(3)]
-	private readonly List<Component> _components = new List<Component>();
+	public BuildEntityType Type = BuildEntityType.Unknown;
+	
+	private List<Component> _components = new List<Component>();
 	
 	[IgnoreMember]
 	public bool IsTransparent;
@@ -59,6 +58,11 @@ public class BuildEntity : Spatial
 	public List<Component> GetAllComponents()
 	{
 		return _components;
+	}
+
+	public void ReplaceComponents(List<Component> newComponents)
+	{
+		_components = newComponents;
 	}
 
 	public void ExecuteCommand(ICommand command)

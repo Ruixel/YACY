@@ -1,17 +1,29 @@
 using System;
 using System.Reflection;
 using Godot;
+using MessagePack;
 using YACY.Build;
 
 namespace YACY.Entities.Components;
 
+[Union(0, typeof(TextureComponent))]
+[MessagePackObject]
 public abstract class Component
 {
+	[Key(0)] 
+	public int ComponentId { get; }
+	
 	protected BuildEntity _entity;
 
 	public Component(BuildEntity entity)
 	{
 		_entity = entity;
+		ComponentId = Core.GetCore().GetNextId();
+	}
+
+	public Component()
+	{
+		ComponentId = Core.GetCore().GetNextId();
 	}
 
 	public virtual void ExecuteCommand(ICommand command)

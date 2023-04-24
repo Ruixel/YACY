@@ -5,6 +5,7 @@ using YACY.Build;
 using YACY.Entities;
 using YACY.MeshGen;
 using YACY.Util;
+using ItemList = YACY.Build.ItemList;
 
 namespace YACY.Geometry
 {
@@ -49,6 +50,7 @@ namespace YACY.Geometry
 		{
 			StartHeight = 0;
 			EndHeight = 1;
+			Type = ItemList.BuildEntityType.Wall;
 
 			Color = AvailableColors[random.Next(AvailableColors.Count)];
 

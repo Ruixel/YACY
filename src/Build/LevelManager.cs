@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Godot;
 using MessagePack;
+using MessagePack.Resolvers;
 using YACY.Entities;
 using YACY.Legacy.Objects;
+using YACY.Util;
 
 namespace YACY.Build
 {
@@ -130,8 +132,13 @@ namespace YACY.Build
 				var wrapper = BuildEntityWrapper.CreateWrapper(entity.Value);
 				wrappedEntities.AddLast(wrapper);
 			}
-			
-			return MessagePackSerializer.Serialize(wrappedEntities);
+
+			var resolver = MessagePack.Resolvers.CompositeResolver.Create(
+				GodotColorResolver.Instance,
+				StandardResolver.Instance
+			);
+			var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
+			return MessagePackSerializer.Serialize(wrappedEntities, options);
 		}
 
 		public void ClearLevel()
@@ -146,11 +153,20 @@ namespace YACY.Build
 			_entities = new Dictionary<int, BuildEntity>();
 		}
 		
-		public void LoadLevel(LinkedList<BuildEntityWrapper> wrappedEntities)
+		public void LoadLevel(byte[] data)
 		{
-			foreach (var wrappedEntity in wrappedEntities)
+			var resolver = MessagePack.Resolvers.CompositeResolver.Create(
+				GodotColorResolver.Instance,
+				StandardResolver.Instance
+			);
+			var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
+			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, options);
+			
+			ClearLevel();
+			
+			foreach (var wrappedEntity in levelData)
 			{
-				var entity = BuildEntityWrapper.Unwrap<LegacyPlatform>(wrappedEntity);
+				var entity = BuildEntityWrapper.Unwrap(wrappedEntity);
 				AddEntity<LegacyPlatform>(entity);
 				//_entities.Add(entity.Id, entity);
 				entity.GenerateMesh();

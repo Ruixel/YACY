@@ -7,6 +7,7 @@ using YACY.Entities;
 using YACY.Entities.Components;
 using YACY.MeshGen;
 using YACY.Util;
+using ItemList = YACY.Build.ItemList;
 
 namespace YACY.Legacy.Objects
 {
@@ -26,6 +27,8 @@ namespace YACY.Legacy.Objects
 		{
 			_meshInstance = new MeshInstance();
 			Level = level;	
+			Type = ItemList.BuildEntityType.LegacyWall;
+			
 			AddChild(_meshInstance);
 			
 			AddComponent(new TextureComponent(this));
@@ -35,6 +38,8 @@ namespace YACY.Legacy.Objects
 		{
 			_meshInstance = new MeshInstance();
 			Level = Core.GetManager<BuildManager>().Level;
+			Type = ItemList.BuildEntityType.LegacyWall;
+			
 			AddChild(_meshInstance);
 			
 			AddComponent(new TextureComponent(this));

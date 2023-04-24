@@ -165,10 +165,7 @@ public class BuildInterface : Control
 		var content = file.GetBuffer((long) file.GetLen());
 		file.Close();
 
-		var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(content);
-		
-		Core.GetManager<LevelManager>().ClearLevel();
-		Core.GetManager<LevelManager>().LoadLevel(levelData);
+		Core.GetManager<LevelManager>().LoadLevel(content);
 		
 		GD.Print("Loaded successfully");
 	}
