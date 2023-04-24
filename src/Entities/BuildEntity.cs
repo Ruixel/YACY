@@ -30,6 +30,13 @@ public class BuildEntity : Spatial
 		Level = 1;
 	}
 
+	//public BuildEntity(int id, Vector2 position, int level)
+	//{
+	//	Id = id;
+	//	Position = position;
+	//	Level = level;
+	//}
+
 	public void AddComponent(Component component)
 	{
 		_components.Add(component);

@@ -134,6 +134,29 @@ namespace YACY.Build
 			return MessagePackSerializer.Serialize(wrappedEntities);
 		}
 
+		public void ClearLevel()
+		{
+			Core.GetManager<SelectionManager>().Deselect();
+			
+			foreach (var buildEntity in _entities)
+			{
+				buildEntity.Value.QueueFree();
+			}
+
+			_entities = new Dictionary<int, BuildEntity>();
+		}
+		
+		public void LoadLevel(LinkedList<BuildEntityWrapper> wrappedEntities)
+		{
+			foreach (var wrappedEntity in wrappedEntities)
+			{
+				var entity = BuildEntityWrapper.Unwrap<LegacyPlatform>(wrappedEntity);
+				AddEntity<LegacyPlatform>(entity);
+				//_entities.Add(entity.Id, entity);
+				entity.GenerateMesh();
+			}
+		}
+
 		public void Ready()
 		{
 			GD.Print("Level Manager: Ready");

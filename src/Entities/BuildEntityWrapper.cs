@@ -22,4 +22,13 @@ public class BuildEntityWrapper
 
 		return newWrapper;
 	}
+
+	public static T Unwrap<T>(BuildEntityWrapper wrappedEntity) where T : BuildEntity, new()
+	{
+		var entity = new T();
+		entity.Position = new Vector2(wrappedEntity.Position.x, wrappedEntity.Position.y);
+		entity.Level = wrappedEntity.Level;
+
+		return entity;
+	}
 }

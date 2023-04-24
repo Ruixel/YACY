@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Godot;
 using Godot.Collections;
@@ -38,6 +39,9 @@ public class BuildInterface : Control
 		
 		var saveButton = _menuBar.GetNode<Button>("Save");
 		saveButton.Connect("pressed", this, nameof(SaveLevelDialog));
+		var loadButton = _menuBar.GetNode<Button>("Load");
+		loadButton.Connect("pressed", this, nameof(LoadLevelDialog));
+
 
 		CreatePreviewButton<Wall>();
 		CreatePreviewButton<LegacyWall>();
@@ -116,6 +120,7 @@ public class BuildInterface : Control
 	private void SaveLevelDialog()
 	{
 		var saveDialog = new FileDialog();
+		saveDialog.Mode = FileDialog.ModeEnum.SaveFile;
 		saveDialog.CurrentPath = "res://res/levels/test/Untitled.cy";
 		saveDialog.RectMinSize = new Vector2(700, 450);
 		saveDialog.Resizable = false;
@@ -137,6 +142,35 @@ public class BuildInterface : Control
 		file.Open(path, File.ModeFlags.Write);
 		file.StoreBuffer(levelData);
 		file.Close();
+	}
+	
+	private void LoadLevelDialog()
+	{
+		var loadDialog = new FileDialog();
+		loadDialog.Mode = FileDialog.ModeEnum.OpenFile;
+		loadDialog.CurrentPath = "res://res/levels/test/";
+		loadDialog.RectMinSize = new Vector2(700, 450);
+		loadDialog.Resizable = false;
+		
+		loadDialog.Connect("file_selected", this, nameof(LoadLevel));
+		
+		AddChild(loadDialog);
+		loadDialog.PopupCentered();
+	}
+	
+	private void LoadLevel(string path)
+	{
+		var file = new File();
+		file.Open(path, File.ModeFlags.Read);
+		var content = file.GetBuffer((long) file.GetLen());
+		file.Close();
+
+		var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(content);
+		
+		Core.GetManager<LevelManager>().ClearLevel();
+		Core.GetManager<LevelManager>().LoadLevel(levelData);
+		
+		GD.Print("Loaded successfully");
 	}
 	
 	private void GoDownLevel()
