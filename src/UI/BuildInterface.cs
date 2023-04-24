@@ -2,6 +2,7 @@ using System;
 using System.Reflection;
 using Godot;
 using Godot.Collections;
+using MessagePack;
 using YACY.Build;
 using YACY.Entities;
 using YACY.Geometry;
@@ -14,6 +15,7 @@ public class BuildInterface : Control
 {
 	private Control _levelSelector;
 	private Control _itemEditor;
+	private Control _menuBar;
 	private BuildManager _buildManager;
 	
 	private PackedScene _itemPreviewButton = ResourceLoader.Load<PackedScene>("res://Scenes/UI/Previews/PreviewItemButton.tscn");
@@ -23,6 +25,7 @@ public class BuildInterface : Control
 		
 		_levelSelector = GetNode<Control>("LevelSelector");
 		_itemEditor = GetNode<Control>("ItemEditor");
+		_menuBar = GetNode<Control>("MenuBar/HBoxContainer");
 		_buildManager.OnLevelChange += (sender, level) =>
 		{
 			_levelSelector.GetNode<Label>("MarginContainer/VBoxContainer/Label").Text = level.ToString();
@@ -32,6 +35,9 @@ public class BuildInterface : Control
 		levelUpButton.Connect("pressed", this, "GoUpLevel");
 		var levelDownButton = _levelSelector.GetNode<TextureButton>("MarginContainer/VBoxContainer/Down");
 		levelDownButton.Connect("pressed", this, "GoDownLevel");
+		
+		var saveButton = _menuBar.GetNode<Button>("Save");
+		saveButton.Connect("pressed", this, nameof(SaveLevelDialog));
 
 		CreatePreviewButton<Wall>();
 		CreatePreviewButton<LegacyWall>();
@@ -105,6 +111,32 @@ public class BuildInterface : Control
 	private void GoUpLevel()
 	{
 		_buildManager.SetLevel(_buildManager.Level + 1);
+	}
+
+	private void SaveLevelDialog()
+	{
+		var saveDialog = new FileDialog();
+		saveDialog.CurrentPath = "res://res/levels/test/Untitled.cy";
+		saveDialog.RectMinSize = new Vector2(700, 450);
+		saveDialog.Resizable = false;
+		
+		saveDialog.Connect("file_selected", this, nameof(SaveLevel));
+		
+		AddChild(saveDialog);
+		saveDialog.PopupCentered();
+	}
+
+	private void SaveLevel(string path)
+	{
+		var levelData = Core.GetManager<LevelManager>().SerializeLevel();
+		
+		GD.Print(path);
+		GD.Print(MessagePackSerializer.ConvertToJson(levelData));
+
+		var file = new File();
+		file.Open(path, File.ModeFlags.Write);
+		file.StoreBuffer(levelData);
+		file.Close();
 	}
 	
 	private void GoDownLevel()

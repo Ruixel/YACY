@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
+using MessagePack;
 using YACY.Entities;
+using YACY.Legacy.Objects;
 
 namespace YACY.Build
 {
@@ -118,6 +120,18 @@ namespace YACY.Build
 				selectedEntity?.ExecuteCommand(command);
 				GD.Print(command.GetInfo());
 			}
+		}
+
+		public byte[] SerializeLevel()
+		{
+			var wrappedEntities = new LinkedList<BuildEntityWrapper>();
+			foreach (var entity in _entities)
+			{
+				var wrapper = BuildEntityWrapper.CreateWrapper(entity.Value);
+				wrappedEntities.AddLast(wrapper);
+			}
+			
+			return MessagePackSerializer.Serialize(wrappedEntities);
 		}
 
 		public void Ready()

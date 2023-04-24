@@ -1,5 +1,6 @@
 using System;
 using Godot;
+using MessagePack;
 using YACY.Build;
 using YACY.Entities;
 using YACY.Entities.Components;
@@ -8,6 +9,7 @@ using YACY.Util;
 
 namespace YACY.Legacy.Objects
 {
+	[MessagePackObject]
 	[BuildItem(
 		Name = "Platform",
 		Tool = ToolType.Placement,
@@ -15,6 +17,7 @@ namespace YACY.Legacy.Objects
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/Platform.tscn")]
 	public class LegacyPlatform : BuildEntity
 	{
+		[IgnoreMember]
 		private MeshInstance _meshInstance;
 
 		public LegacyPlatform(Vector2 position, int level)
@@ -25,7 +28,7 @@ namespace YACY.Legacy.Objects
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
 
-			AddComponent(new TextureComponent(this));
+			//AddComponent(new TextureComponent(this));
 		}
 
 		public LegacyPlatform()
@@ -36,15 +39,16 @@ namespace YACY.Legacy.Objects
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
 			
-			AddComponent(new TextureComponent(this));
+			//AddComponent(new TextureComponent(this));
 		}
 
 		public override void GenerateMesh()
 		{
-			var textureComponent = GetComponent<TextureComponent>();
+			//var textureComponent = GetComponent<TextureComponent>();
 			//_meshInstance.Mesh = WallGenerator.GenerateFlatWall(new Vector2(0,0), new Vector2(2, 2), Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
 			Console.WriteLine($"Level: {Level}");
-			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level, 0, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0, 0);
+			//_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level, 0, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0, 0);
+			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level, 0, "Grass", Colors.White, IsTransparent, 0, 0);
 		}
 
 		public override Mesh CreateSelectionMesh()

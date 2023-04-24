@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using MessagePack;
 using YACY.Build;
 using YACY.Entities.Components;
 
@@ -7,12 +8,18 @@ namespace YACY.Entities;
 
 public class BuildEntity : Spatial
 {
+	[Key(0)]
 	public int Id { get; }
+	[Key(1)]
 	public Vector2 Position;
+	[Key(2)]
 	public int Level;
 	
-	public bool IsTransparent;
+	//[Key(3)]
 	private readonly List<Component> _components = new List<Component>();
+	
+	[IgnoreMember]
+	public bool IsTransparent;
 
 	public BuildEntity()
 	{

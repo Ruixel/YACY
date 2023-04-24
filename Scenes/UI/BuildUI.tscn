@@ -390,5 +390,39 @@ margin_bottom = 22.0
 custom_fonts/font = ExtResource( 3 )
 text = " Texture"
 
+[node name="MenuBar" type="Control" parent="."]
+margin_left = 40.0
+margin_top = 20.0
+margin_right = 270.0
+margin_bottom = 72.0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MenuBar"]
+margin_right = 40.0
+margin_bottom = 40.0
+custom_constants/separation = 50
+
+[node name="Save" type="Button" parent="MenuBar/HBoxContainer"]
+margin_right = 41.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+custom_fonts/font = ExtResource( 19 )
+custom_styles/hover = SubResource( 38 )
+custom_styles/pressed = SubResource( 39 )
+custom_styles/focus = SubResource( 37 )
+custom_styles/normal = ExtResource( 20 )
+text = "Save"
+
+[node name="Load" type="Button" parent="MenuBar/HBoxContainer"]
+margin_left = 91.0
+margin_right = 135.0
+margin_bottom = 40.0
+rect_min_size = Vector2( 40, 40 )
+custom_fonts/font = ExtResource( 19 )
+custom_styles/hover = SubResource( 38 )
+custom_styles/pressed = SubResource( 39 )
+custom_styles/focus = SubResource( 37 )
+custom_styles/normal = ExtResource( 20 )
+text = "Load"
+
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Up" to="LevelSelector" method="_on_Up_pressed"]
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Down" to="LevelSelector" method="_on_Down_pressed"]

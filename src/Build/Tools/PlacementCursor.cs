@@ -17,7 +17,6 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 	private Vector2 _gridPos = new Vector2();
 
 	private BuildEntity _prototype = null;
-	private MeshInstance _prototypeMesh;
 
 	public PlacementCursor(Node parent)
 	{
@@ -25,9 +24,6 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 		_prototype.IsTransparent = true;
 		_prototype.Level = 1;
 		parent.AddChild(_prototype);
-		
-		_prototypeMesh = new MeshInstance();
-		parent.AddChild(_prototypeMesh);
 		
 		_prototypeSize = new Vector2(1, 1);
 	}
@@ -61,7 +57,7 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 			{
 				_gridPos.x = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.x / grid.Spacing), 0, grid.Size.x);
 				_gridPos.y = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.z / grid.Spacing), 0, grid.Size.y);
-				Console.WriteLine($"X: {_gridPos.x}, Y: {_gridPos.y}");
+				//Console.WriteLine($"X: {_gridPos.x}, Y: {_gridPos.y}");
 			}
 		}
 
@@ -117,7 +113,8 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 
 	public void onKeyPressed(string scancode)
 	{
-		throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
+		return;
 	}
 
 	public void onToolChange()
