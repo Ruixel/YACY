@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using MessagePack;
 using YACY.Build;
@@ -25,21 +26,27 @@ namespace YACY.Legacy.Objects
 		
 		public LegacyWall(Vector2 startPosition, Vector2 endPosition, int level) : base(startPosition, endPosition)
 		{
-			_meshInstance = new MeshInstance();
 			Level = level;	
-			Type = ItemList.BuildEntityType.LegacyWall;
-			
-			AddChild(_meshInstance);
-			
-			AddComponent(new TextureComponent(this));
+			AddDefaultProperties();
 		}
 
 		public LegacyWall() : base(Vector2.Zero, Vector2.Zero)
 		{
-			_meshInstance = new MeshInstance();
 			Level = Core.GetManager<BuildManager>().Level;
+			AddDefaultProperties();
+		}
+		
+		public LegacyWall(int id, List<Component> components) : base(id, components)
+		{
+			Level = Core.GetManager<BuildManager>().Level;
+			AddDefaultProperties();
+		}
+
+		private void AddDefaultProperties()
+		{
 			Type = ItemList.BuildEntityType.LegacyWall;
 			
+			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
 			
 			AddComponent(new TextureComponent(this));

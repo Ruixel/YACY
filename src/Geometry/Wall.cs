@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using YACY.Build;
 using YACY.Entities;
+using YACY.Entities.Components;
 using YACY.MeshGen;
 using YACY.Util;
 using ItemList = YACY.Build.ItemList;
@@ -41,6 +42,12 @@ namespace YACY.Geometry
 		}
 
 		public Wall(): base(Vector2.Zero, Vector2.Zero)
+		{
+			Level = Core.GetManager<BuildManager>().Level;
+			AddDefaultProperties();
+		}
+
+		public Wall(int id, List<Component> components) : base(id, components)
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();

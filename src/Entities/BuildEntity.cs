@@ -15,7 +15,7 @@ public class BuildEntity : Spatial
 	
 	public BuildEntityType Type = BuildEntityType.Unknown;
 	
-	private List<Component> _components = new List<Component>();
+	private readonly List<Component> _components = new List<Component>();
 	
 	[IgnoreMember]
 	public bool IsTransparent;
@@ -23,6 +23,16 @@ public class BuildEntity : Spatial
 	public BuildEntity()
 	{
 		Id = Core.GetCore().GetNextId();
+		
+		Position = Vector2.Zero;
+		IsTransparent = false;
+		Level = 1;
+	}
+
+	public BuildEntity(int id, List<Component> components)
+	{
+		Id = id;
+		_components = components;
 		
 		Position = Vector2.Zero;
 		IsTransparent = false;
@@ -58,11 +68,6 @@ public class BuildEntity : Spatial
 	public List<Component> GetAllComponents()
 	{
 		return _components;
-	}
-
-	public void ReplaceComponents(List<Component> newComponents)
-	{
-		_components = newComponents;
 	}
 
 	public void ExecuteCommand(ICommand command)

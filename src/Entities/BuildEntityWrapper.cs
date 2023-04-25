@@ -13,7 +13,7 @@ namespace YACY.Entities;
 public class BuildEntityWrapper
 {
 	[Key(0)] public int Id { get; set; }
-	[Key(1)] public (float x, float y) Position { get; set; }
+	[Key(1)] public Vector2 Position { get; set; }
 	[Key(2)] public int Level { get; set; }
 	[Key(3)] public ItemList.BuildEntityType EntityType { get; set; }
 	
@@ -24,7 +24,7 @@ public class BuildEntityWrapper
 		var newWrapper = new BuildEntityWrapper
 		{
 			Id = entity.Id,
-			Position = (entity.Position.x, entity.Position.y),
+			Position = entity.Position,
 			Level = entity.Level,
 			EntityType = entity.Type,
 			Components = entity.GetAllComponents()
@@ -37,15 +37,14 @@ public class BuildEntityWrapper
 	{
 		var entity = wrappedEntity.EntityType switch
 		{
-			ItemList.BuildEntityType.Wall => new Wall(),
-			ItemList.BuildEntityType.LegacyWall => new LegacyWall(),
-			ItemList.BuildEntityType.LegacyPlatform => new LegacyPlatform(),
-			_ => new BuildEntity()
+			ItemList.BuildEntityType.Wall => new Wall(wrappedEntity.Id, wrappedEntity.Components),
+			ItemList.BuildEntityType.LegacyWall => new LegacyWall(wrappedEntity.Id, wrappedEntity.Components),
+			ItemList.BuildEntityType.LegacyPlatform => new LegacyPlatform(wrappedEntity.Id, wrappedEntity.Components),
+			_ => new BuildEntity(wrappedEntity.Id, wrappedEntity.Components)
 		};
 
-		entity.Position = new Vector2(wrappedEntity.Position.x, wrappedEntity.Position.y);
+		entity.Position = wrappedEntity.Position;
 		entity.Level = wrappedEntity.Level;
-		entity.ReplaceComponents(wrappedEntity.Components);
 
 		return entity;
 	}

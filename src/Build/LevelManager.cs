@@ -133,12 +133,7 @@ namespace YACY.Build
 				wrappedEntities.AddLast(wrapper);
 			}
 
-			var resolver = MessagePack.Resolvers.CompositeResolver.Create(
-				GodotColorResolver.Instance,
-				StandardResolver.Instance
-			);
-			var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
-			return MessagePackSerializer.Serialize(wrappedEntities, options);
+			return MessagePackSerializer.Serialize(wrappedEntities, LevelSerializerResolver.Options);
 		}
 
 		public void ClearLevel()
@@ -155,12 +150,7 @@ namespace YACY.Build
 		
 		public void LoadLevel(byte[] data)
 		{
-			var resolver = MessagePack.Resolvers.CompositeResolver.Create(
-				GodotColorResolver.Instance,
-				StandardResolver.Instance
-			);
-			var options = MessagePackSerializerOptions.Standard.WithResolver(resolver);
-			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, options);
+			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, LevelSerializerResolver.Options);
 			
 			ClearLevel();
 			

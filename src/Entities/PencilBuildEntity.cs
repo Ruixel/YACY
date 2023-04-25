@@ -1,4 +1,6 @@
+using System.Collections.Generic;
 using Godot;
+using YACY.Entities.Components;
 
 namespace YACY.Entities
 {
@@ -11,6 +13,12 @@ namespace YACY.Entities
 		{
 			StartPosition = startPosition;
 			EndPosition = endPosition;
+		}
+		
+		public PencilBuildEntity(int id, List<Component> components): base(id, components)
+		{
+			StartPosition = Vector2.Zero;
+			EndPosition = Vector2.Zero;
 		}
 	}
 }

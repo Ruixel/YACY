@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Godot;
 using MessagePack;
 using YACY.Build;
@@ -25,18 +26,24 @@ namespace YACY.Legacy.Objects
 		{
 			Position = position;
 			Level = level;
-			Type = ItemList.BuildEntityType.LegacyPlatform;
-			
-			_meshInstance = new MeshInstance();
-			AddChild(_meshInstance);
-
-			AddComponent(new TextureComponent(this));
+			AddDefaultProperties();
 		}
 
 		public LegacyPlatform()
 		{
 			Position = Vector2.Zero;
 			Level = Core.GetManager<BuildManager>().Level;
+			AddDefaultProperties();
+		}
+
+		public LegacyPlatform(int id, List<Component> components): base(id, components)
+		{
+			Position = Vector2.Zero;
+			Level = 1;
+			AddDefaultProperties();
+		}	
+		
+		private void AddDefaultProperties() {
 			Type = ItemList.BuildEntityType.LegacyPlatform;
 			
 			_meshInstance = new MeshInstance();
