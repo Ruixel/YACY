@@ -260,31 +260,31 @@ public class ThickWallGenerator : Node
 		}*/
 
 		var index = 0;
-		WallHelper.AddQuad(surfaceTool, vertices, null, wall.Color, ref index, false, true);
-		WallHelper.AddQuad(surfaceTool, vertices.GetRange(4, 4), null, wall.Color, ref index, true, true);
+		WallHelper.AddQuad(surfaceTool, vertices, null, Colors.White, ref index, false, true);
+		WallHelper.AddQuad(surfaceTool, vertices.GetRange(4, 4), null, Colors.White, ref index, true, true);
 
 		var frontVertices = new List<Vector3> {vertices[2], vertices[3], vertices[7], vertices[6]};
-		WallHelper.AddQuad(surfaceTool, frontVertices, null, wall.Color, ref index, true, true);
+		WallHelper.AddQuad(surfaceTool, frontVertices, null, Colors.White, ref index, true, true);
 
 		var backVertices = new List<Vector3> {vertices[0], vertices[1], vertices[5], vertices[4]};
-		WallHelper.AddQuad(surfaceTool, backVertices, null, wall.Color, ref index, true, true);
+		WallHelper.AddQuad(surfaceTool, backVertices, null, Colors.White, ref index, true, true);
 
 		var topVertices = new List<Vector3> {vertices[0], vertices[3], vertices[7], vertices[4]};
-		WallHelper.AddQuad(surfaceTool, topVertices, null, wall.Color, ref index, false, true);
+		WallHelper.AddQuad(surfaceTool, topVertices, null, Colors.White, ref index, false, true);
 
 		var bottomVertices = new List<Vector3> {vertices[1], vertices[2], vertices[6], vertices[5]};
-		WallHelper.AddQuad(surfaceTool, bottomVertices, null, wall.Color, ref index, true, true);
+		WallHelper.AddQuad(surfaceTool, bottomVertices, null, Colors.White, ref index, true, true);
 
 		if (startWalls.Count >= 2)
 		{
 			var gapfill = new List<Vector3> {vertices[0], vertices[4], new Vector3(start.x, top, start.y)};
-			FloorHelper.AddTri(surfaceTool, gapfill, 1, wall.Color, ref index, true);
+			FloorHelper.AddTri(surfaceTool, gapfill, 1, Colors.White, ref index, true);
 		}
 
 		if (endWalls.Count >= 2)
 		{
 			var gapfill = new List<Vector3> {vertices[3], vertices[7], new Vector3(end.x, top, end.y)};
-			FloorHelper.AddTri(surfaceTool, gapfill, 1, wall.Color, ref index, false);
+			FloorHelper.AddTri(surfaceTool, gapfill, 1, Colors.White, ref index, false);
 		}
 
 		surfaceTool.Index();

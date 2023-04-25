@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Godot;
-using MessagePack;
 using YACY.Build;
-using YACY.Build.Tools;
 using YACY.Entities;
 using YACY.Entities.Components;
 using YACY.MeshGen;
@@ -17,20 +15,11 @@ namespace YACY.Legacy.Objects
         Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
-	public class LegacyWall : PencilBuildEntity
+	public class LegacyWall : BuildEntity
 	{
-		public Tuple<Vector2, Vector2> FrontLine;
-		public Tuple<Vector2, Vector2> BackLine;
-
 		private MeshInstance _meshInstance;
 		
-		public LegacyWall(Vector2 startPosition, Vector2 endPosition, int level) : base(startPosition, endPosition)
-		{
-			Level = level;	
-			AddDefaultProperties();
-		}
-
-		public LegacyWall() : base(Vector2.Zero, Vector2.Zero)
+		public LegacyWall()
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
@@ -50,18 +39,25 @@ namespace YACY.Legacy.Objects
 			AddChild(_meshInstance);
 			
 			AddComponent(new TextureComponent(this));
+			AddComponent(new DisplacementComponent());
 		}
 
 		public override void GenerateMesh()
 		{
 			var textureComponent = GetComponent<TextureComponent>();
-			if (!StartPosition.IsEqualApprox(EndPosition))
-				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(StartPosition, EndPosition, Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
+			var displacementComponent = GetComponent<DisplacementComponent>();
+
+			var endPosition = displacementComponent.Displacement;
+			if (!Position.IsEqualApprox(endPosition))
+				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(Position, endPosition, Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
 		}
 		
 		public override Mesh CreateSelectionMesh()
 		{
-			return WallGenerator.GenerateSelectionFlatWall(StartPosition, EndPosition, Level, 0, 1, 0.05f);
+			var displacementComponent = GetComponent<DisplacementComponent>();
+
+			var endPosition = displacementComponent.Displacement;
+			return WallGenerator.GenerateSelectionFlatWall(Position, endPosition, Level, 0, 1, 0.05f);
 		}
 	}
 }

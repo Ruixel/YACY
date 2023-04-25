@@ -95,18 +95,7 @@ public class BuildInterface : Control
 			GetNode<Control>("ItemSelected").Call("change_item", itemMetadata?.SelectionPreview, itemMetadata?.Name );
 			
 			// Choose the correct tool depending on how
-			var buildManager = Core.GetManager<BuildManager>();
-			MethodInfo setToolMethod = typeof(BuildManager).GetMethod("SetTool");
-			if (typeof(T).IsSubclassOf(typeof(PencilBuildEntity)))
-			{
-				//Core.GetManager<BuildManager>().SetTool<T>();
-				MethodInfo genericSetToolMethod = setToolMethod?.MakeGenericMethod(typeof(T));
-				genericSetToolMethod?.Invoke(buildManager, null);
-			}
-			else
-			{
-				buildManager.TempSetPlacementTool<T>();
-			}
+			_buildManager.SetTool<T>();
 		};
 		
 		GetNode<GridContainer>("ItemPanel/GridContainer").AddChild(previewButton);

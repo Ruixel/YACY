@@ -15,33 +15,17 @@ namespace YACY.Geometry
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
-	public class Wall : PencilBuildEntity, IStoredPosition
+	public class Wall : BuildEntity, IStoredPosition
 	{
-		public Color Color { get; set; }
-
+		private MeshInstance _meshInstance;
+		
 		public Tuple<Vector2, Vector2> FrontLine;
 		public Tuple<Vector2, Vector2> BackLine;
+		
+		public Vector2 StartPosition => Position;
+		public Vector2 EndPosition => GetComponent<DisplacementComponent>().Displacement;
 
-		public float StartHeight { get; set; }
-		public float EndHeight { get; set; }
-
-		private MeshInstance _meshInstance;
-		private MeshInstance _meshOutline;
-
-		private static Random random = new Random();
-
-		private static readonly List<Color> AvailableColors = new List<Color>
-			{
-				Colors.SpringGreen, Colors.DodgerBlue, Colors.Firebrick, Colors.DarkSlateBlue, Colors.HotPink, Colors.Maroon
-			};
-
-		public Wall(Vector2 startPosition, Vector2 endPosition, int level): base(startPosition, endPosition)
-		{
-			Level = level;
-			AddDefaultProperties();
-		}
-
-		public Wall(): base(Vector2.Zero, Vector2.Zero)
+		public Wall()
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
@@ -55,27 +39,24 @@ namespace YACY.Geometry
 
 		private void AddDefaultProperties()
 		{
-			StartHeight = 0;
-			EndHeight = 1;
 			Type = ItemList.BuildEntityType.Wall;
-
-			Color = AvailableColors[random.Next(AvailableColors.Count)];
 
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
-
-			_meshOutline = new MeshInstance();
-			_meshInstance.AddChild(_meshOutline);
+			
+			AddComponent(new DisplacementComponent());
 		}
 
 		public override void GenerateMesh()
 		{
-			if (!StartPosition.IsEqualApprox(EndPosition))
-			{
-				var startWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(StartPosition, Id);
-				var endWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(EndPosition, Id);
-				GenerateMergedMesh(startWalls, endWalls, true);
-			}
+			var displacementComponent = GetComponent<DisplacementComponent>();
+			var endPosition = displacementComponent.Displacement;
+			
+			if (Position.IsEqualApprox(endPosition)) return;
+			
+			var startWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(Position, Id);
+			var endWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(endPosition, Id);
+			GenerateMergedMesh(startWalls, endWalls, true);
 		}
 
 		public void GenerateMergedMesh(List<Wall> startWalls, List<Wall> endWalls, bool propagate = false)
@@ -90,7 +71,7 @@ namespace YACY.Geometry
 
 		public IEnumerable<Vector2> GetPositions()
 		{
-			return new[] {StartPosition, EndPosition};
+			return new[] {Position, GetComponent<DisplacementComponent>().Displacement};
 		}
 	}
 }

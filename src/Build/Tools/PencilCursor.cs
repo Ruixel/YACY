@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using Godot;
 using YACY.Entities;
+using YACY.Entities.Components;
 
 namespace YACY.Build.Tools
 {
-	public class PencilCursor<T> : ICursorMode where T : PencilBuildEntity, new()
+	public class PencilCursor<T> : ICursorMode where T : BuildEntity, new()
 	{
 		private BuildManager _buildManager;
 
@@ -75,8 +76,8 @@ namespace YACY.Build.Tools
 				if (_previewEntity == null)
 				{
 					_previewEntity = new T();
-					_previewEntity.StartPosition = _pencilStart;
-					_previewEntity.EndPosition = _pencilEnd;
+					_previewEntity.Position = _pencilStart;
+					_previewEntity.GetComponent<DisplacementComponent>().ChangeDisplacement(_pencilEnd);
 					
 					Core.GetManager<SelectionManager>().Deselect();
 					
@@ -87,7 +88,7 @@ namespace YACY.Build.Tools
 				{
 					GD.Print($"start: {_pencilStart}, end {_pencilEnd}");
 					
-					_previewEntity.EndPosition = _pencilEnd;
+					_previewEntity.GetComponent<DisplacementComponent>().ChangeDisplacement(_pencilEnd);
 					_previewEntity.Visible = true;
 					_previewEntity.GenerateMesh();
 				}
@@ -114,8 +115,8 @@ namespace YACY.Build.Tools
 			if (!_pencilStart.IsEqualApprox(_pencilEnd))
 			{
 				var newEntity = new T();
-				newEntity.StartPosition = _pencilStart;
-				newEntity.EndPosition = _pencilEnd;
+				newEntity.Position = _pencilStart;
+				newEntity.GetComponent<DisplacementComponent>().ChangeDisplacement(_pencilEnd);
 				
 				Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
 				
