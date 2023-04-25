@@ -10,10 +10,12 @@ namespace YACY.Legacy
 {
     public static class CYLevelParser
     {
+        private static readonly string aMazerMagicValue = "[#name:";
+            
         // Parses Adobe Shockwave Lingo's file structure for CY Levels
         // It consists of a dictionary where keys can be defined with either "" or starting with a #
         // Keys are case insensitive
-        // Example: [#title: "Game Title, "Author": "ChallengeYou", ...]
+        // Example: [#name: "Game Title, "Author": "ChallengeYou", ...]
         public static LegacyLevelData ParseCYLevel(string levelCode)
         {
             var levelHeaders = new Dictionary<string, string>();
@@ -97,21 +99,19 @@ namespace YACY.Legacy
                 GD.PrintErr($"Level did not contain metadata");
             }
 
-            // Print Boards
-            // if (levelData.ContainsKey("board"))
-            // {
-            //     foreach (var board in levelData["board"])
-            //     {
-            //         GD.Print($"Board: {board}");
-            //         var boardProperties = ExtractObjectProperties(board);
-            //         foreach (var prop in boardProperties)
-            //         {
-            //             GD.Print($" - {prop}");
-            //         }
-            //     }
-            // }
-
-            GD.Print($"Loaded: {levelHeaders["name"]} by {levelHeaders["creator"]}");
+            //Print Boards
+            /*if (levelData.ContainsKey("board"))
+            {
+                foreach (var board in levelData["board"])
+                {
+                    GD.Print($"Board: {board}");
+                    var boardProperties = ExtractObjectProperties(board);
+                    foreach (var prop in boardProperties)
+                    {
+                        GD.Print($" - {prop}");
+                    }
+                }
+            }*/
 
             var rawLevelObjects = new Dictionary<string, ICollection<IList<string>>>();
             foreach (var data in levelData)
@@ -132,7 +132,6 @@ namespace YACY.Legacy
                 Title = levelHeaders["name"],
                 Author = levelHeaders["creator"],
                 RawObjectData = rawLevelObjects,
-                Objects = levelObjects
             };
             return legacyLevelData;
         }
@@ -280,6 +279,25 @@ namespace YACY.Legacy
             }
 
             return objectProperties;
+        }
+
+        public static bool CheckMagicValue(byte[] levelData)
+        {
+			var magicValueBytes = Encoding.ASCII.GetBytes(aMazerMagicValue);
+            if (levelData.Length < magicValueBytes.Length)
+            {
+                return false;
+            }
+        
+            for (var i = 0; i < magicValueBytes.Length; i++)
+            {
+                if (levelData[i] != magicValueBytes[i])
+                {
+                    return false;
+                }
+            }
+        
+            return true;
         }
     }
 }

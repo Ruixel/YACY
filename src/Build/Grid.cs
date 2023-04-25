@@ -53,7 +53,7 @@ namespace YACY.Build
 
 		private void GenerateMesh()
 		{
-			_gridMesh.Transform = new Transform(Basis.Identity, new Vector3(Size.x * Spacing / 2, Height + 0.001f, Size.y * Spacing / 2));
+			_gridMesh.Transform = new Transform(Basis.Identity, new Vector3(Size.x * Spacing / 2, Height + 0.005f, Size.y * Spacing / 2));
 			
 			var planeMesh = new PlaneMesh();
 			planeMesh.Size = Size * Spacing;

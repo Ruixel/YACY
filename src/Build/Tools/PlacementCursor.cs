@@ -100,7 +100,6 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 		newEntity.Position.y = _gridPos.y * grid.Spacing;
 		
 		Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
-		newEntity.GenerateMesh();
 		
 		Core.GetManager<SelectionManager>().SelectEntity(newEntity);
 	}

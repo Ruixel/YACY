@@ -118,7 +118,6 @@ namespace YACY.Build.Tools
 				newEntity.EndPosition = _pencilEnd;
 				
 				Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
-				newEntity.GenerateMesh();
 				
 				Core.GetManager<SelectionManager>().SelectEntity(newEntity);
 			}

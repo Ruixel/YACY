@@ -95,11 +95,32 @@ public class TextureManager : ITextureManager
 			8 => "Glass",
 			9 => "Stucco",
 			10 => "Bark",
-			11 => "Sci-Fi",
+			11 => "Sci-fi",
 			12 => "Tiles",
 			13 => "Rock",
 			14 => "Bookshelf",
 			16 => "Parquet",
+			_ => "Color"
+		};
+	}
+	
+	public string GetLegacyPlatformTextureName(int cyTexId)
+	{
+		return cyTexId switch
+		{
+			1 => "Grass",
+			2 => "Stucco",
+			3 => "Brick",
+			4 => "Stone",
+			5 => "Wood",
+			6 => "Happy",
+			7 => "Egypt",
+			8 => "Glass",
+			9 => "Bark",
+			10 => "Sci-fi",
+			11 => "Tiles",
+			13 => "Rock",
+			15 => "Parquet",
 			_ => "Color"
 		};
 	}

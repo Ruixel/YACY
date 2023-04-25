@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Godot;
 using MessagePack;
 using MessagePack.Resolvers;
 using YACY.Entities;
+using YACY.Legacy;
 using YACY.Legacy.Objects;
 using YACY.Util;
 
@@ -95,6 +97,8 @@ namespace YACY.Build
 					}
 				}
 			}
+			
+			entity.GenerateMesh();
 		}
 
 		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1, int? level = null)
@@ -136,7 +140,7 @@ namespace YACY.Build
 			return MessagePackSerializer.Serialize(wrappedEntities, LevelSerializerResolver.Options);
 		}
 
-		public void ClearLevel()
+		private void ClearLevel()
 		{
 			Core.GetManager<SelectionManager>().Deselect();
 			
@@ -150,16 +154,25 @@ namespace YACY.Build
 		
 		public void LoadLevel(byte[] data)
 		{
-			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, LevelSerializerResolver.Options);
 			
+			// Check if it's a legacy aMazer level (they all start with '[#name:')
+			if (CYLevelParser.CheckMagicValue(data))
+			{
+				var legacyLevelData = CYLevelParser.ParseCYLevel(data.GetStringFromUTF8());
+				Console.WriteLine($"Loaded \"{legacyLevelData.Title}\" by {legacyLevelData.Author}");
+				
+				ClearLevel();
+				CYLevelCoreFactory.CreateObjectsInWorld(legacyLevelData);
+				return;
+			}
+			
+			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, LevelSerializerResolver.Options);
 			ClearLevel();
 			
 			foreach (var wrappedEntity in levelData)
 			{
 				var entity = BuildEntityWrapper.Unwrap(wrappedEntity);
 				AddEntity<LegacyPlatform>(entity);
-				//_entities.Add(entity.Id, entity);
-				entity.GenerateMesh();
 			}
 		}
 
