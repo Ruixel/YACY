@@ -91,9 +91,9 @@ public class ThickWallGenerator : Node
 				if (propagate)
 				{
 					var otherWallsStartWalls = Core.GetManager<LevelManager>()
-						.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+						.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, BuildEntityList.Type.Wall, otherWall.Id);
 					var otherWallsEndWalls = Core.GetManager<LevelManager>()
-						.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
+						.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, BuildEntityList.Type.Wall, otherWall.Id);
 
 					otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 				}
@@ -178,9 +178,9 @@ public class ThickWallGenerator : Node
 				if (propagate)
 				{
 					var otherWallsStartWalls = Core.GetManager<LevelManager>()
-						.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+						.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, BuildEntityList.Type.Wall, otherWall.Id);
 					var otherWallsEndWalls = Core.GetManager<LevelManager>()
-						.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
+						.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, BuildEntityList.Type.Wall, otherWall.Id);
 
 					otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 				}
@@ -333,9 +333,9 @@ public class ThickWallGenerator : Node
 					if (propagate)
 					{
 						var otherWallsStartWalls = Core.GetManager<LevelManager>()
-							.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, otherWall.Id);
+							.GetEntitiesAtPosition<Wall>(otherWall.StartPosition, BuildEntityList.Type.Wall, otherWall.Id);
 						var otherWallsEndWalls = Core.GetManager<LevelManager>()
-							.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, otherWall.Id);
+							.GetEntitiesAtPosition<Wall>(otherWall.EndPosition, BuildEntityList.Type.Wall, otherWall.Id);
 
 						otherWall.GenerateMergedMesh(otherWallsStartWalls, otherWallsEndWalls, false);
 					}

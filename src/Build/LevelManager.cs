@@ -60,10 +60,11 @@ namespace YACY.Build
 			return _entities[id];
 		}
 
-		public void AddEntity<T>(BuildEntity entity, int? level = null) where T : BuildEntity
+		public void AddEntity(BuildEntity entity, int? level = null)
 		{
 			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
 			var levelItemMap = _levelData[receivedLevel]._itemMap;
+			var entityType = entity.Type;
 
 			// Add to entity container
 			_levelContainer.AddChild(entity);
@@ -73,10 +74,10 @@ namespace YACY.Build
 			if (entity is IStoredPosition entityWithStoredPos)
 			{
 				// Check level container exists
-				if (!levelItemMap.ContainsKey(typeof(T)))
+				if (!levelItemMap.ContainsKey(entityType))
 				{
 					var gridMap = new Dictionary<Vector2, List<int>>();
-					levelItemMap.Add(typeof(T), gridMap);
+					levelItemMap.Add(entityType, gridMap);
 				}
 
 				var positionsToAdd = entityWithStoredPos.GetPositions();
@@ -84,29 +85,29 @@ namespace YACY.Build
 
 				foreach (var pos in positionsToAdd)
 				{
-					if (levelItemMap[typeof(T)].TryGetValue(pos, out var grid))
+					if (levelItemMap[entityType].TryGetValue(pos, out var grid))
 					{
 						grid.Add(entityId);
 					}
 					else
 					{
 						grid = new List<int> {entityId};
-						levelItemMap[typeof(T)].Add(pos, grid);
+						levelItemMap[entityType].Add(pos, grid);
 					}
 				}
 			}
-			
+
 			entity.GenerateMesh();
 		}
 
-		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, int omitId = -1, int? level = null)
-			where T : BuildEntity, IStoredPosition
+		public List<T> GetEntitiesAtPosition<T>(Vector2 pos, BuildEntityList.Type entityType, int omitId = -1,
+			int? level = null) where T : BuildEntity
 		{
 			var receivedLevel = level ?? Core.GetManager<BuildManager>().Level;
 			var levelItemMap = _levelData[receivedLevel]._itemMap;
-			
-			if (!levelItemMap.ContainsKey(typeof(T))) return new List<T>();
-			if (!levelItemMap[typeof(T)].TryGetValue(pos, out var entities)) return new List<T>();
+
+			if (!levelItemMap.ContainsKey(entityType)) return new List<T>();
+			if (!levelItemMap[entityType].TryGetValue(pos, out var entities)) return new List<T>();
 
 			var entitiesIterator =
 				from entityId in entities
@@ -121,7 +122,7 @@ namespace YACY.Build
 			var selectedEntity = GetEntity(entityId);
 			if (selectedEntity != null)
 			{
-				selectedEntity?.ExecuteCommand(command);
+				selectedEntity.ExecuteCommand(command);
 				GD.Print(command.GetInfo());
 			}
 		}
@@ -141,12 +142,12 @@ namespace YACY.Build
 		private void ClearLevel()
 		{
 			Core.GetManager<SelectionManager>().Deselect();
-			
+
 			foreach (var buildEntity in _entities)
 			{
 				buildEntity.Value.QueueFree();
 			}
-			
+
 			_levelData = new LevelData[MaxLevel - MinLevel + 1];
 			for (var i = MinLevel; i <= MaxLevel; i++)
 			{
@@ -156,7 +157,7 @@ namespace YACY.Build
 
 			_entities = new Dictionary<int, BuildEntity>();
 		}
-		
+
 		public void LoadLevel(byte[] data)
 		{
 			// Check if it's a legacy aMazer level (they all start with '[#name:')
@@ -164,19 +165,21 @@ namespace YACY.Build
 			{
 				var legacyLevelData = CYLevelParser.ParseCYLevel(data.GetStringFromUTF8());
 				Console.WriteLine($"Loaded \"{legacyLevelData.Title}\" by {legacyLevelData.Author}");
-				
+
 				ClearLevel();
 				CYLevelCoreFactory.CreateObjectsInWorld(legacyLevelData);
 				return;
 			}
-			
-			var levelData = MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data, LevelSerializerResolver.Options);
+
+			var levelData =
+				MessagePackSerializer.Deserialize<LinkedList<BuildEntityWrapper>>(data,
+					LevelSerializerResolver.Options);
 			ClearLevel();
-			
+
 			foreach (var wrappedEntity in levelData)
 			{
 				var entity = BuildEntityWrapper.Unwrap(wrappedEntity);
-				AddEntity<LegacyPlatform>(entity, entity.Level);
+				AddEntity(entity, entity.Level);
 			}
 		}
 
@@ -188,13 +191,13 @@ namespace YACY.Build
 
 	class LevelData
 	{
-		public Dictionary<Type, Dictionary<Vector2, List<int>>> _itemMap;
+		public Dictionary<BuildEntityList.Type, Dictionary<Vector2, List<int>>> _itemMap;
 		private int _level;
 
 		public LevelData(int level)
 		{
 			_level = level;
-			_itemMap = new Dictionary<Type, Dictionary<Vector2, List<int>>>();
+			_itemMap = new Dictionary<BuildEntityList.Type, Dictionary<Vector2, List<int>>>();
 		}
 	}
 }

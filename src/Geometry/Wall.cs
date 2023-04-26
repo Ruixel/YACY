@@ -6,7 +6,6 @@ using YACY.Entities;
 using YACY.Entities.Components;
 using YACY.MeshGen;
 using YACY.Util;
-using ItemList = YACY.Build.ItemList;
 
 namespace YACY.Geometry
 {
@@ -41,7 +40,7 @@ namespace YACY.Geometry
 
 		private void AddDefaultProperties()
 		{
-			Type = ItemList.BuildEntityType.Wall;
+			Type = BuildEntityList.Type.Wall;
 
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
@@ -54,8 +53,8 @@ namespace YACY.Geometry
 			
 			if (Position.IsEqualApprox(endPosition)) return;
 			
-			var startWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(Position, Id);
-			var endWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(endPosition, Id);
+			var startWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(Position, BuildEntityList.Type.Wall, Id);
+			var endWalls = Core.GetManager<LevelManager>().GetEntitiesAtPosition<Wall>(endPosition, BuildEntityList.Type.Wall, Id);
 			GenerateMergedMesh(startWalls, endWalls, true);
 		}
 

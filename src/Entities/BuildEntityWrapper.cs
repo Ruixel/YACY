@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using MessagePack;
+using YACY.Build;
 using YACY.Entities.Components;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
-using ItemList = YACY.Build.ItemList;
 
 namespace YACY.Entities;
 
@@ -15,7 +15,7 @@ public class BuildEntityWrapper
 	[Key(0)] public int Id { get; set; }
 	[Key(1)] public Vector2 Position { get; set; }
 	[Key(2)] public int Level { get; set; }
-	[Key(3)] public ItemList.BuildEntityType EntityType { get; set; }
+	[Key(3)] public BuildEntityList.Type EntityType { get; set; }
 	
 	[Key(4)] public List<Component> Components = new List<Component>();
 
@@ -37,9 +37,9 @@ public class BuildEntityWrapper
 	{
 		var entity = wrappedEntity.EntityType switch
 		{
-			ItemList.BuildEntityType.Wall => new Wall(wrappedEntity.Id, wrappedEntity.Components),
-			ItemList.BuildEntityType.LegacyWall => new LegacyWall(wrappedEntity.Id, wrappedEntity.Components),
-			ItemList.BuildEntityType.LegacyPlatform => new LegacyPlatform(wrappedEntity.Id, wrappedEntity.Components),
+			BuildEntityList.Type.Wall => new Wall(wrappedEntity.Id, wrappedEntity.Components),
+			BuildEntityList.Type.LegacyWall => new LegacyWall(wrappedEntity.Id, wrappedEntity.Components),
+			BuildEntityList.Type.LegacyPlatform => new LegacyPlatform(wrappedEntity.Id, wrappedEntity.Components),
 			_ => new BuildEntity(wrappedEntity.Id, wrappedEntity.Components)
 		};
 

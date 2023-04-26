@@ -89,7 +89,7 @@ public class CYLevelCoreFactory
 			textureComponent.ChangeColor(colour);
 		}
 
-		Core.GetManager<LevelManager>().AddEntity<LegacyPlatform>(newPlat);
+		Core.GetManager<LevelManager>().AddEntity(newPlat);
 	}
 
 	private static void CreateWall(Vector2 displacement, Vector2 start, object texColour, object backTexColour,
@@ -129,6 +129,6 @@ public class CYLevelCoreFactory
 		//    newWall.BackColour = (Color)backTexColour;
 		//}
 
-		Core.GetManager<LevelManager>().AddEntity<LegacyWall>(newWall);
+		Core.GetManager<LevelManager>().AddEntity(newWall);
 	}
 }

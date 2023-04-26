@@ -6,7 +6,6 @@ using YACY.Entities;
 using YACY.Entities.Components;
 using YACY.MeshGen;
 using YACY.Util;
-using ItemList = YACY.Build.ItemList;
 
 namespace YACY.Legacy.Objects
 {
@@ -36,7 +35,7 @@ namespace YACY.Legacy.Objects
 
 		private void AddDefaultProperties()
 		{
-			Type = ItemList.BuildEntityType.LegacyWall;
+			Type = BuildEntityList.Type.LegacyWall;
 			
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);

@@ -3,7 +3,7 @@ using Godot;
 using MessagePack;
 using YACY.Build;
 using YACY.Entities.Components;
-using static YACY.Build.ItemList;
+using static YACY.Build.BuildEntityList;
 
 namespace YACY.Entities;
 
@@ -13,7 +13,7 @@ public class BuildEntity : Spatial
 	public Vector2 Position;
 	public int Level;
 	
-	public BuildEntityType Type = BuildEntityType.Unknown;
+	public Type Type = Type.Unknown;
 	
 	private readonly List<Component> _components = new List<Component>();
 	

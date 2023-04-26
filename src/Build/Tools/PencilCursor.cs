@@ -118,7 +118,7 @@ namespace YACY.Build.Tools
 				newEntity.Position = _pencilStart;
 				newEntity.GetComponent<DisplacementComponent>().ChangeDisplacement(_pencilEnd);
 				
-				Core.GetManager<LevelManager>().AddEntity<T>(newEntity, _buildManager.Level);
+				Core.GetManager<LevelManager>().AddEntity(newEntity, _buildManager.Level);
 				
 				Core.GetManager<SelectionManager>().SelectEntity(newEntity);
 			}
