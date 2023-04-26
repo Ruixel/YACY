@@ -29,6 +29,8 @@ namespace YACY.Geometry
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
+			
+			AddComponent(new DisplacementComponent());
 		}
 
 		public Wall(int id, List<Component> components) : base(id, components)
@@ -43,8 +45,6 @@ namespace YACY.Geometry
 
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
-			
-			AddComponent(new DisplacementComponent());
 		}
 
 		public override void GenerateMesh()

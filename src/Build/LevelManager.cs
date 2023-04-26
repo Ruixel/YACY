@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Godot;
 using MessagePack;
-using MessagePack.Resolvers;
 using YACY.Entities;
 using YACY.Legacy;
 using YACY.Legacy.Objects;
@@ -148,13 +146,19 @@ namespace YACY.Build
 			{
 				buildEntity.Value.QueueFree();
 			}
+			
+			_levelData = new LevelData[MaxLevel - MinLevel + 1];
+			for (var i = MinLevel; i <= MaxLevel; i++)
+			{
+				var levelData = new LevelData(i);
+				_levelData[i] = levelData;
+			}
 
 			_entities = new Dictionary<int, BuildEntity>();
 		}
 		
 		public void LoadLevel(byte[] data)
 		{
-			
 			// Check if it's a legacy aMazer level (they all start with '[#name:')
 			if (CYLevelParser.CheckMagicValue(data))
 			{
@@ -172,7 +176,7 @@ namespace YACY.Build
 			foreach (var wrappedEntity in levelData)
 			{
 				var entity = BuildEntityWrapper.Unwrap(wrappedEntity);
-				AddEntity<LegacyPlatform>(entity);
+				AddEntity<LegacyPlatform>(entity, entity.Level);
 			}
 		}
 

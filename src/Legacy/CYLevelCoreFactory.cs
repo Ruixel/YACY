@@ -24,7 +24,7 @@ public class CYLevelCoreFactory
 
 	private static void CreateObjects(string objType, ICollection<IList<string>> objects)
 	{
-		//if (objType == "walls") wall_createObject(objectLoader, objects);
+		if (objType == "walls") wall_createObject(objects);
 		if (objType == "plat") plat_createObject(objects);
 	}
 
@@ -51,6 +51,24 @@ public class CYLevelCoreFactory
 		}
 	}
 
+	// Wall
+	// [displacement_x, displacement_y, start_x, start_y, front_material, back_material, height, level]
+	private static void wall_createObject(ICollection<IList<string>> objs)
+	{
+		if (objs.Count <= 0) return;
+		var objectSize = objs.First().Count;
+
+		foreach (var obj in objs)
+		{
+			if (objectSize == 8)
+				CreateWall(ExtractVec2(obj[0], obj[1]), ExtractVec2(obj[2], obj[3]),
+					ExtractTexColor(obj[5]), ExtractTexColor(obj[4]), ExtractInt(obj[6]), ExtractInt(obj[7]));
+			else if (objectSize == 7)
+				CreateWall(ExtractVec2(obj[0], obj[1]), ExtractVec2(obj[2], obj[3]),
+					ExtractTexColor(obj[5]), ExtractTexColor(obj[4]), 1, ExtractInt(obj[6]));
+		}
+	}
+
 	private static void CreatePlat(Vector2 pos, int size, object texColour, int height, object shape, int level)
 	{
 		pos /= 5.0f;
@@ -58,7 +76,7 @@ public class CYLevelCoreFactory
 		LegacyPlatform newPlat = new LegacyPlatform();
 		newPlat.Position = pos;
 		newPlat.Level = level;
-		
+
 		var textureComponent = newPlat.GetComponent<TextureComponent>();
 
 		if (texColour is int textureId)
@@ -72,5 +90,45 @@ public class CYLevelCoreFactory
 		}
 
 		Core.GetManager<LevelManager>().AddEntity<LegacyPlatform>(newPlat);
+	}
+
+	private static void CreateWall(Vector2 displacement, Vector2 start, object texColour, object backTexColour,
+		int height, int level)
+	{
+		start /= 5.0f;
+		displacement /= 5.0f;
+		
+		LegacyWall newWall = new LegacyWall();
+		newWall.Position = start;
+		newWall.Level = level;
+		
+		// Displacement
+		var displacementComponent = newWall.GetComponent<DisplacementComponent>();
+		displacementComponent.ChangeDisplacement(start + displacement);
+
+		// Wall Materials
+		var textureComponent = newWall.GetComponent<TextureComponent>();
+
+		if (texColour is int textureId)
+		{
+			textureComponent.ChangeTexture(Core.GetManager<TextureManager>().GetLegacyWallTextureName(textureId));
+		}
+		else if (texColour is Color colour)
+		{
+			textureComponent.ChangeTexture("Color");
+			textureComponent.ChangeColor(colour);
+		}
+
+		//if (backTexColour is int)
+		//{
+		//    newWall.BackTexture = WorldTextures.GetWallTexture((int)backTexColour);
+		//}
+		//else
+		//{
+		//    newWall.BackTexture = WorldTextures.TextureID.COLOR;
+		//    newWall.BackColour = (Color)backTexColour;
+		//}
+
+		Core.GetManager<LevelManager>().AddEntity<LegacyWall>(newWall);
 	}
 }

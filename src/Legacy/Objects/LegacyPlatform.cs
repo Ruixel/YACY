@@ -34,6 +34,8 @@ namespace YACY.Legacy.Objects
 			Position = Vector2.Zero;
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
+			
+			AddComponent(new TextureComponent(this));
 		}
 
 		public LegacyPlatform(int id, List<Component> components): base(id, components)
@@ -48,8 +50,6 @@ namespace YACY.Legacy.Objects
 			
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
-			
-			AddComponent(new TextureComponent(this));
 		}
 
 		public override void GenerateMesh()

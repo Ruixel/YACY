@@ -23,6 +23,9 @@ namespace YACY.Legacy.Objects
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
+			
+			AddComponent(new TextureComponent(this));
+			AddComponent(new DisplacementComponent());
 		}
 		
 		public LegacyWall(int id, List<Component> components) : base(id, components)
@@ -37,9 +40,6 @@ namespace YACY.Legacy.Objects
 			
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
-			
-			AddComponent(new TextureComponent(this));
-			AddComponent(new DisplacementComponent());
 		}
 
 		public override void GenerateMesh()

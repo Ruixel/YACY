@@ -7,6 +7,7 @@ using YACY.Build;
 namespace YACY.Entities.Components;
 
 [Union(0, typeof(TextureComponent))]
+[Union(1, typeof(DisplacementComponent))]
 [MessagePackObject]
 public abstract class Component
 {
