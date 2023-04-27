@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
@@ -13,6 +14,9 @@ public class CYLevelCoreFactory
 	static Vector2 ExtractVec2(string x, string y) => ExtractValue.ExtractVec2(x, y);
 	static object ExtractTexColor(string property) => ExtractValue.ExtractTexColor(property);
 	static string ExtractStr(string property) => property;
+
+	private static readonly List<int> MaxHeightList = new() {4, 3, 2, 1, 2, 3, 4, 4, 4, 3};
+	private static readonly List<int> MinHeightList = new() {0, 0, 0, 0, 1, 2, 3, 2, 1, 1};
 
 	public static void CreateObjectsInWorld(LegacyLevelData level)
 	{
@@ -77,6 +81,12 @@ public class CYLevelCoreFactory
 		newPlat.Position = pos;
 		newPlat.Level = level;
 
+		var heightComponent = newPlat.GetComponent<HeightComponent>();
+		heightComponent.BottomHeight = height switch
+		{
+			1 => 0.00f, 2 => 0.25f, 3 => 0.50f, 4 => 0.75f, _ => 0.00f
+		};
+
 		var textureComponent = newPlat.GetComponent<TextureComponent>();
 
 		if (texColour is int textureId)
@@ -97,14 +107,19 @@ public class CYLevelCoreFactory
 	{
 		start /= 5.0f;
 		displacement /= 5.0f;
-		
+
 		LegacyWall newWall = new LegacyWall();
 		newWall.Position = start;
 		newWall.Level = level;
-		
+
 		// Displacement
 		var displacementComponent = newWall.GetComponent<DisplacementComponent>();
 		displacementComponent.ChangeDisplacement(start + displacement);
+
+		// Height
+		var heightComponent = newWall.GetComponent<HeightComponent>();
+		heightComponent.BottomHeight = MinHeightList[height - 1] / 4.0f;
+		heightComponent.TopHeight = MaxHeightList[height - 1] / 4.0f;
 
 		// Wall Materials
 		var textureComponent = newWall.GetComponent<TextureComponent>();

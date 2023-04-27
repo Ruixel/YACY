@@ -22,8 +22,8 @@ namespace YACY.Build.Tools
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
 
-		private static readonly List<int> MaxHeightList = new List<int> {3, 2, 1, 2, 3, 4, 4, 4, 3, 4};
-		private static readonly List<int> MinHeightList = new List<int> {0, 0, 0, 1, 2, 3, 2, 1, 1, 0};
+		private static readonly List<int> MaxHeightList = new() {3, 4, 3, 2, 1, 2, 3, 4, 4, 4};
+		private static readonly List<int> MinHeightList = new() {1, 0, 0, 0, 0, 1, 2, 3, 2, 1};
 		
 		private T _previewEntity; 
 
