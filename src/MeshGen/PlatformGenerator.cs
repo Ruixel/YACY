@@ -6,7 +6,7 @@ namespace YACY.MeshGen;
 
 public class PlatformGenerator
 {
-	public static Mesh GeneratePlatform(Vector2 position, Vector2 size, int level, int heightOffset, string textureName,
+	public static Mesh GeneratePlatform(Vector2 position, Vector2 size, int level, float heightOffset, string textureName,
 		Color color, bool transparent = false, float outlineWidth = 0.0f, float normalOffset = 0.0f)
 	{
 		var surfaceTool = new SurfaceTool();

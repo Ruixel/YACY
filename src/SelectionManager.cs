@@ -23,6 +23,8 @@ namespace YACY
 
 		public SelectionManager()
 		{
+			_selected = new List<BuildEntity>();
+			
 			_container = new Spatial();
 			_container.Name = "SelectionContainer";
 

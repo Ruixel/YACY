@@ -112,8 +112,24 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 
 	public void onKeyPressed(string scancode)
 	{
-		//throw new System.NotImplementedException();
-		return;
+		float? height = scancode switch
+		{
+			"1" => 0.00f,
+			"2" => 0.25f,
+			"3" => 0.50f,
+			"4" => 0.75f,
+			_ => null
+		};
+
+		if (height.HasValue)
+		{
+			var selection = Core.GetManager<SelectionManager>().GetItemsSelected();
+			if (selection.Count > 0 && selection[0] != null)
+			{
+				var command = new ChangeHeightCommand(selection[0].Id, height.Value, 1.0f);
+				Core.GetManager<LevelManager>().BroadcastCommandToEntity(selection[0].Id, command);
+			}
+		}
 	}
 
 	public void onToolChange()

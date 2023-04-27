@@ -18,35 +18,29 @@ namespace YACY.Legacy.Objects
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/Platform.tscn")]
 	public class LegacyPlatform : BuildEntity
 	{
-		[IgnoreMember]
-		private MeshInstance _meshInstance;
-
-		public LegacyPlatform(Vector2 position, int level)
-		{
-			Position = position;
-			Level = level;
-			AddDefaultProperties();
-		}
+		[IgnoreMember] private MeshInstance _meshInstance;
 
 		public LegacyPlatform()
 		{
 			Position = Vector2.Zero;
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
-			
+
 			AddComponent(new TextureComponent(this));
+			AddComponent(new HeightComponent());
 		}
 
-		public LegacyPlatform(int id, List<Component> components): base(id, components)
+		public LegacyPlatform(int id, List<Component> components) : base(id, components)
 		{
 			Position = Vector2.Zero;
 			Level = 1;
 			AddDefaultProperties();
-		}	
-		
-		private void AddDefaultProperties() {
+		}
+
+		private void AddDefaultProperties()
+		{
 			Type = BuildEntityList.Type.LegacyPlatform;
-			
+
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
 		}
@@ -54,8 +48,11 @@ namespace YACY.Legacy.Objects
 		public override void GenerateMesh()
 		{
 			var textureComponent = GetComponent<TextureComponent>();
+			var heightComponent = GetComponent<HeightComponent>();
 			//_meshInstance.Mesh = WallGenerator.GenerateFlatWall(new Vector2(0,0), new Vector2(2, 2), Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
-			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level, 0, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0, 0);
+			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level,
+				heightComponent.BottomHeight, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0,
+				0);
 		}
 
 		public override Mesh CreateSelectionMesh()
