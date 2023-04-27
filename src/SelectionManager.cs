@@ -57,6 +57,12 @@ namespace YACY
 			return _selected;
 		}
 
+		// Is this needed? Should this be called only as an event?
+		public void RegenerateSelectionMesh()
+		{
+			GenerateSelectionMesh();
+		}
+
 		private void GenerateSelectionMesh()
 		{
 			if (_selected.Count >= 1)

@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using Godot;
 using YACY.Entities;
 using YACY.Entities.Components;
+using YACY.Util;
 
 namespace YACY.Build.Tools
 {
@@ -20,9 +22,9 @@ namespace YACY.Build.Tools
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
 
-		private static readonly List<int> MaxHeightList = new List<int> {4, 3, 2, 1, 2, 3, 4, 4, 4, 3};
-		private static readonly List<int> MinHeightList = new List<int> {0, 0, 0, 0, 1, 2, 3, 2, 1, 1};
-
+		private static readonly List<int> MaxHeightList = new List<int> {3, 2, 1, 2, 3, 4, 4, 4, 3, 4};
+		private static readonly List<int> MinHeightList = new List<int> {0, 0, 0, 1, 2, 3, 2, 1, 1, 0};
+		
 		private T _previewEntity; 
 
 		public PencilCursor(Node parent)
@@ -133,7 +135,19 @@ namespace YACY.Build.Tools
 
 		public void onKeyPressed(string scancode)
 		{
-			GD.Print($"Scancode pressed: {scancode}");
+			var ch = (int)scancode.ToAscii()[0] - 48;
+			if (ch is >= 0 and <= 9)
+			{
+				var bottomHeight = MinHeightList[ch] / 4.0f;
+				var topHeight = MaxHeightList[ch] / 4.0f;
+					
+				var selection = Core.GetManager<SelectionManager>().GetItemsSelected();
+				if (selection.Count > 0 && selection[0] != null)
+				{
+					var command = new ChangeHeightCommand(selection[0].Id, bottomHeight, topHeight);
+					Core.GetManager<LevelManager>().BroadcastCommandToEntity(selection[0].Id, command);
+				}
+			}
 		}
 
 		public void onToolChange()

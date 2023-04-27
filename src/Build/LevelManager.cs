@@ -124,6 +124,8 @@ namespace YACY.Build
 			{
 				selectedEntity.ExecuteCommand(command);
 				GD.Print(command.GetInfo());
+				
+				Core.GetManager<SelectionManager>().RegenerateSelectionMesh();
 			}
 		}
 

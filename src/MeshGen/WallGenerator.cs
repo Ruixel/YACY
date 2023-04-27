@@ -15,8 +15,8 @@ namespace YACY.MeshGen
 		public static Mesh GenerateFlatWall(Vector2 start, Vector2 end, int level, string textureName, Color color,
 			float minHeight, float maxHeight)
 		{
-			float bottom = (level + minHeight) * Constants.LevelHeight;
-			float top = (level + maxHeight) * Constants.LevelHeight;
+			var bottom = (level + minHeight) * Constants.LevelHeight;
+			var top = (level + maxHeight) * Constants.LevelHeight;
 
 			return GenerateWall(start, end, top, bottom, textureName, color, 0f);
 		}
@@ -24,13 +24,13 @@ namespace YACY.MeshGen
 		public static Mesh GenerateSelectionFlatWall(Vector2 start, Vector2 end, int level, float minHeight,
 			float maxHeight, float outlineWidth)
 		{
-			float bottom = (level + minHeight) * Constants.LevelHeight;
-			float top = (level + maxHeight) * Constants.LevelHeight;
+			var bottom = (level + minHeight) * Constants.LevelHeight;
+			var top = (level + maxHeight) * Constants.LevelHeight;
 
 			return GenerateWall(start, end, top, bottom, "Color", Colors.White, outlineWidth, 0.02f);
 		}
 
-		public static Mesh GenerateWall(Vector2 start, Vector2 end, float top, float bottom, string textureName,
+		private static Mesh GenerateWall(Vector2 start, Vector2 end, float top, float bottom, string textureName,
 			Color color, float outlineWidth, float normalOffset = 0.0f)
 		{
 			var surfaceTool = new SurfaceTool();

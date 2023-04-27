@@ -11,22 +11,23 @@ namespace YACY.Legacy.Objects
 {
 	[BuildItem(
 		Name = "Wall",
-        Tool = ToolType.Pencil,
-		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn", 
+		Tool = ToolType.Pencil,
+		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn",
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
 	public class LegacyWall : BuildEntity
 	{
 		private MeshInstance _meshInstance;
-		
+
 		public LegacyWall()
 		{
 			Level = Core.GetManager<BuildManager>().Level;
 			AddDefaultProperties();
-			
+
 			AddComponent(new TextureComponent(this));
 			AddComponent(new DisplacementComponent());
+			AddComponent(new HeightComponent());
 		}
-		
+
 		public LegacyWall(int id, List<Component> components) : base(id, components)
 		{
 			Level = Core.GetManager<BuildManager>().Level;
@@ -36,7 +37,7 @@ namespace YACY.Legacy.Objects
 		private void AddDefaultProperties()
 		{
 			Type = BuildEntityList.Type.LegacyWall;
-			
+
 			_meshInstance = new MeshInstance();
 			AddChild(_meshInstance);
 		}
@@ -45,18 +46,24 @@ namespace YACY.Legacy.Objects
 		{
 			var textureComponent = GetComponent<TextureComponent>();
 			var displacementComponent = GetComponent<DisplacementComponent>();
+			var heightComponent = GetComponent<HeightComponent>();
 
 			var endPosition = displacementComponent.Displacement;
 			if (!Position.IsEqualApprox(endPosition))
-				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(Position, endPosition, Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
+			{
+				_meshInstance.Mesh = WallGenerator.GenerateFlatWall(Position, endPosition, Level,
+					textureComponent.TextureName, textureComponent.Color, heightComponent.BottomHeight,
+					heightComponent.TopHeight);
+			}
 		}
-		
+
 		public override Mesh CreateSelectionMesh()
 		{
 			var displacementComponent = GetComponent<DisplacementComponent>();
+			var heightComponent = GetComponent<HeightComponent>();
 
 			var endPosition = displacementComponent.Displacement;
-			return WallGenerator.GenerateSelectionFlatWall(Position, endPosition, Level, 0, 1, 0.05f);
+			return WallGenerator.GenerateSelectionFlatWall(Position, endPosition, Level, heightComponent.BottomHeight, heightComponent.TopHeight, 0.05f);
 		}
 	}
 }
