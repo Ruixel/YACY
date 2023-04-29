@@ -87,6 +87,9 @@ public class CYLevelCoreFactory
 			1 => 0.00f, 2 => 0.25f, 3 => 0.50f, 4 => 0.75f, _ => 0.00f
 		};
 
+		var sizeComponent = newPlat.GetComponent<SizeComponent>();
+		sizeComponent.Size = size;
+
 		var textureComponent = newPlat.GetComponent<TextureComponent>();
 
 		if (texColour is int textureId)

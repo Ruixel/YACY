@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using Godot;
 using YACY.Build;
 using YACY.Entities;
@@ -15,6 +16,7 @@ public class TexturePropertyUI : Control, IPropertyUI
 	public TexturePropertyUI()
 	{
 		AnchorRight = 1.0f;
+		RectMinSize = new Vector2(RectMinSize.x, 130);
 		
 		_textureItemList = CreateTextureItemList();
 		AddChild(_textureItemList);

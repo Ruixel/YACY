@@ -16,7 +16,7 @@ public class PlatformGenerator
 
 		var height = (level + heightOffset + 0.001f) * Constants.LevelHeight;
 
-		var halfSize = 2 / 2;
+		var halfSize = size.x / 2;
 		var start = new Vector2(position.x - halfSize, position.y - halfSize);
 		var end = new Vector2(position.x + halfSize, position.y + halfSize);
 

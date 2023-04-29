@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
 using MessagePack;
 using YACY.Build;
@@ -28,6 +29,7 @@ namespace YACY.Legacy.Objects
 
 			AddComponent(new TextureComponent(this));
 			AddComponent(new HeightComponent());
+			AddComponent(new SizeComponent(1, 4));
 		}
 
 		public LegacyPlatform(int id, List<Component> components) : base(id, components)
@@ -49,10 +51,22 @@ namespace YACY.Legacy.Objects
 		{
 			var textureComponent = GetComponent<TextureComponent>();
 			var heightComponent = GetComponent<HeightComponent>();
-			//_meshInstance.Mesh = WallGenerator.GenerateFlatWall(new Vector2(0,0), new Vector2(2, 2), Level, textureComponent.TextureName, textureComponent.Color, 0, 1);
-			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, new Vector2(2, 2), Level,
+			var sizeComponent = GetComponent<SizeComponent>();
+			
+			_meshInstance.Mesh = PlatformGenerator.GeneratePlatform(Position, GetSize(sizeComponent.Size), Level,
 				heightComponent.BottomHeight, textureComponent.TextureName, textureComponent.Color, IsTransparent, 0,
 				0);
+		}
+
+		private Vector2 GetSize(int sizeIndex)
+		{
+			return sizeIndex switch
+			{
+				2 => new Vector2(4, 4),
+				3 => new Vector2(8, 8),
+				4 => new Vector2(16, 16),
+				_ => new Vector2(2, 2)
+			};
 		}
 
 		public override Mesh CreateSelectionMesh()

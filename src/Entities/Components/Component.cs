@@ -9,6 +9,7 @@ namespace YACY.Entities.Components;
 [Union(0, typeof(TextureComponent))]
 [Union(1, typeof(DisplacementComponent))]
 [Union(2, typeof(HeightComponent))]
+[Union(3, typeof(SizeComponent))]
 [MessagePackObject]
 public abstract class Component
 {

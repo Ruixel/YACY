@@ -365,6 +365,7 @@ custom_constants/separation = 10
 custom_styles/separator = SubResource( 42 )
 
 [node name="Panel" type="Panel" parent="ItemEditor/MarginContainer/VBoxContainer"]
+visible = false
 margin_top = 70.0
 margin_right = 240.0
 margin_bottom = 94.0
