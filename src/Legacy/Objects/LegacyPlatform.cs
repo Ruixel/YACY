@@ -29,7 +29,7 @@ namespace YACY.Legacy.Objects
 
 			AddComponent(new TextureComponent(this));
 			AddComponent(new HeightComponent());
-			AddComponent(new SizeComponent(1, 4));
+			AddComponent(new SizeComponent(0,1, 4));
 		}
 
 		public LegacyPlatform(int id, List<Component> components) : base(id, components)

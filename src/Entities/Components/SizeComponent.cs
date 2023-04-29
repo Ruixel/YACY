@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Godot;
 using MessagePack;
@@ -10,20 +11,25 @@ namespace YACY.Entities.Components;
 [MessagePackObject]
 public class SizeComponent : Component
 {
-	public SizeComponent(int minSize, int maxSize)
+	public SizeComponent(int componentId, int minSize, int maxSize)
 	{
+		Console.WriteLine($"min: {minSize}, max: {maxSize}");
 		Debug.Assert(maxSize > minSize);
 
 		_minSize = minSize;
 		_maxSize = maxSize;
 	}
 
+	public SizeComponent()
+	{
+	}
+	
 	[Key(1)] public int Size { get; set; } = 1;
 
-	[IgnoreMember]
-	private int _minSize;
-	[IgnoreMember]
-	private int _maxSize;
+	//[IgnoreMember]
+	[Key(2)] private int _minSize;
+	//[IgnoreMember]
+	[Key(3)] private int _maxSize;
 
 	public void ChangeSize(int newSize)
 	{
