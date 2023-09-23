@@ -1,35 +1,33 @@
-using System;
 using Godot;
-using Object = Godot.Object;
 
 namespace YACY.Legacy
 {
-    public class CYTexture : Object
+    public partial class CYTexture
     {
-        public int Texture { get; }
+        public int Texture2D { get; }
         public Color Color { get; }
 
         public CYTexture(int texture)
         {
-            Texture = texture;
+            Texture2D = texture;
             Color = Colors.White;
         }
 
         public CYTexture(Color color)
         {
-            Texture = -1;
+            Texture2D = -1;
             Color = color;
         }
 
-        public object ToVariant()
+        public Godot.Variant ToVariant()
         {
-            if (this.Texture == -1)
+            if (this.Texture2D == -1)
             {
                 return Color;
             }
             else
             {
-                return Texture;
+                return Texture2D;
             }
         }
     }

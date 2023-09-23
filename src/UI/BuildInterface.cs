@@ -1,18 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection;
 using Godot;
-using Godot.Collections;
 using MessagePack;
 using YACY.Build;
 using YACY.Entities;
 using YACY.Geometry;
 using YACY.Legacy.Objects;
-using YACY.Util;
 
 namespace YACY.UI;
 
-public class BuildInterface : Control
+public partial class BuildInterface : Control
 {
 	private Control _levelSelector;
 	private Control _itemEditor;
@@ -27,36 +22,36 @@ public class BuildInterface : Control
 		_levelSelector = GetNode<Control>("LevelSelector");
 		_itemEditor = GetNode<Control>("ItemEditor");
 		_menuBar = GetNode<Control>("MenuBar/HBoxContainer");
-		_buildManager.OnLevelChange += (sender, level) =>
+		_buildManager.OnLevelChange += (_, level) =>
 		{
 			_levelSelector.GetNode<Label>("MarginContainer/VBoxContainer/Label").Text = level.ToString();
 		};
 
 		var levelUpButton = _levelSelector.GetNode<TextureButton>("MarginContainer/VBoxContainer/Up");
-		levelUpButton.Connect("pressed", this, "GoUpLevel");
+		levelUpButton.Connect("pressed", new Callable(this, "GoUpLevel"));
 		var levelDownButton = _levelSelector.GetNode<TextureButton>("MarginContainer/VBoxContainer/Down");
-		levelDownButton.Connect("pressed", this, "GoDownLevel");
+		levelDownButton.Connect("pressed", new Callable(this, "GoDownLevel"));
 		
 		var saveButton = _menuBar.GetNode<Button>("Save");
-		saveButton.Connect("pressed", this, nameof(SaveLevelDialog));
+		saveButton.Connect("pressed", new Callable(this, nameof(SaveLevelDialog)));
 		var loadButton = _menuBar.GetNode<Button>("Load");
-		loadButton.Connect("pressed", this, nameof(LoadLevelDialog));
+		loadButton.Connect("pressed", new Callable(this, nameof(LoadLevelDialog)));
 
 
 		CreatePreviewButton<Wall>();
 		CreatePreviewButton<LegacyWall>();
 		CreatePreviewButton<LegacyPlatform>();
 
-		_buildManager.OnToolChange += (sender, info) =>
+		_buildManager.OnToolChange += (_, info) =>
 		{
-			var (toolType, type) = info;
+			var (_, type) = info;
 			
 			var entity = _buildManager.GetDefaultEntity(type);
 			if (entity != null)
 			{
 				foreach (var property in _itemEditor.GetNode<Control>("MarginContainer/VBoxContainer").GetChildren())
 				{
-					var node = (Node) property;
+					var node = property;
 					if (node is IPropertyUI ui)
 					{
 						ui.Disconnect();
@@ -83,12 +78,12 @@ public class BuildInterface : Control
 			}
 		}
 		
-		var previewButton = _itemPreviewButton.Instance<PreviewItemButton>();
-		previewButton.GetNode<Viewport>("ViewportContainer/Viewport").World.ResourceLocalToScene = true;
+		var previewButton = _itemPreviewButton.Instantiate<PreviewItemButton>();
+		previewButton.GetNode<SubViewport>("SubViewportContainer/SubViewport").World3D.ResourceLocalToScene = true;
 		previewButton.AddMesh(itemMetadata?.ItemPanelPreview);
 		previewButton.SetName(itemMetadata?.Name);
 
-		previewButton.onPressed += (sender, args) =>
+		previewButton.onPressed += (_, _) =>
 		{
 			GD.Print($"Toggling {itemMetadata?.Name}");
 
@@ -101,20 +96,20 @@ public class BuildInterface : Control
 		GetNode<GridContainer>("ItemPanel/GridContainer").AddChild(previewButton);
 	}
 
-	private void GoUpLevel()
-	{
-		_buildManager.SetLevel(_buildManager.Level + 1);
-	}
+	// private void GoUpLevel()
+	// {
+	// 	_buildManager.SetLevel(_buildManager.Level + 1);
+	// }
 
 	private void SaveLevelDialog()
 	{
 		var saveDialog = new FileDialog();
-		saveDialog.Mode = FileDialog.ModeEnum.SaveFile;
+		saveDialog.FileMode = FileDialog.FileModeEnum.SaveFile;
 		saveDialog.CurrentPath = "res://res/levels/test/Untitled.cy";
-		saveDialog.RectMinSize = new Vector2(700, 450);
-		saveDialog.Resizable = false;
+		saveDialog.MinSize = new Vector2I(700, 450);
+		saveDialog.Unresizable = true;
 		
-		saveDialog.Connect("file_selected", this, nameof(SaveLevel));
+		saveDialog.Connect("file_selected", new Callable(this, nameof(SaveLevel)));
 		
 		AddChild(saveDialog);
 		saveDialog.PopupCentered();
@@ -127,8 +122,7 @@ public class BuildInterface : Control
 		GD.Print(path);
 		GD.Print(MessagePackSerializer.ConvertToJson(levelData));
 
-		var file = new File();
-		file.Open(path, File.ModeFlags.Write);
+		var file = FileAccess.Open(path, FileAccess.ModeFlags.Write);
 		file.StoreBuffer(levelData);
 		file.Close();
 	}
@@ -136,12 +130,12 @@ public class BuildInterface : Control
 	private void LoadLevelDialog()
 	{
 		var loadDialog = new FileDialog();
-		loadDialog.Mode = FileDialog.ModeEnum.OpenFile;
+		loadDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
 		loadDialog.CurrentPath = "res://res/levels/test/";
-		loadDialog.RectMinSize = new Vector2(700, 450);
-		loadDialog.Resizable = false;
+		loadDialog.MinSize = new Vector2I(700, 450);
+		loadDialog.Unresizable = true;
 		
-		loadDialog.Connect("file_selected", this, nameof(LoadLevel));
+		loadDialog.Connect("file_selected", new Callable(this, nameof(LoadLevel)));
 		
 		AddChild(loadDialog);
 		loadDialog.PopupCentered();
@@ -149,9 +143,8 @@ public class BuildInterface : Control
 	
 	private void LoadLevel(string path)
 	{
-		var file = new File();
-		file.Open(path, File.ModeFlags.Read);
-		var content = file.GetBuffer((long) file.GetLen());
+		var file = FileAccess.Open(path, FileAccess.ModeFlags.Read);
+		var content = file.GetBuffer((long) file.GetLength());
 		file.Close();
 
 		Core.GetManager<LevelManager>().LoadLevel(content);
@@ -159,8 +152,8 @@ public class BuildInterface : Control
 		GD.Print("Loaded successfully");
 	}
 	
-	private void GoDownLevel()
-	{
-		_buildManager.SetLevel(_buildManager.Level - 1);
-	}
+	// private void GoDownLevel()
+	// {
+	// 	_buildManager.SetLevel(_buildManager.Level - 1);
+	// }
 }

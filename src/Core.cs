@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Godot;
 using YACY.Build;
 
 namespace YACY
 {
-	public class Core : Node
+	public partial class Core : Node
 	{
 		private readonly List<Node> _buildTools;
 		private static Core _singleton;

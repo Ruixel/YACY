@@ -17,9 +17,9 @@ namespace YACY.Legacy.Objects
 		Tool = ToolType.Placement,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickPlatform.tscn",
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/Platform.tscn")]
-	public class LegacyPlatform : BuildEntity
+	public partial class LegacyPlatform : BuildEntity
 	{
-		[IgnoreMember] private MeshInstance _meshInstance;
+		[IgnoreMember] private MeshInstance3D _meshInstance;
 
 		public LegacyPlatform()
 		{
@@ -43,7 +43,7 @@ namespace YACY.Legacy.Objects
 		{
 			Type = BuildEntityList.Type.LegacyPlatform;
 
-			_meshInstance = new MeshInstance();
+			_meshInstance = new MeshInstance3D();
 			AddChild(_meshInstance);
 		}
 
@@ -73,7 +73,7 @@ namespace YACY.Legacy.Objects
 		{
 			//return PlatformGenerator.GenerateSelectionFlatPlatform(StartPosition, EndPosition, Level, 0, 1, 0.05f);
 			//throw new NotImplementedException();
-			return new CubeMesh();
+			return new BoxMesh();
 		}
 	}
 }

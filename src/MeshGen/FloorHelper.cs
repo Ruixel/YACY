@@ -26,18 +26,18 @@ public class FloorHelper
 		var textureSize = 1;
 
 		//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
-		surfaceTool.AddColor(color);
-		surfaceTool.AddNormal(normal);
+		surfaceTool.SetColor(color);
+		surfaceTool.SetNormal(normal);
 		surfaceTool.AddVertex(vertices[0]);
 
 		//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
-		surfaceTool.AddColor(color);
-		surfaceTool.AddNormal(normal);
+		surfaceTool.SetColor(color);
+		surfaceTool.SetNormal(normal);
 		surfaceTool.AddVertex(vertices[1]);
 
 		//surfaceTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
-		surfaceTool.AddColor(color);
-		surfaceTool.AddNormal(normal);
+		surfaceTool.SetColor(color);
+		surfaceTool.SetNormal(normal);
 		surfaceTool.AddVertex(vertices[2]);
 
 
@@ -67,13 +67,13 @@ public class FloorHelper
 			textureScale = textureInfo.Value.Scale;
 		}
 		
-		color.a = textureFloat;
+		color.A = textureFloat;
 
 		for (var i = 0; i < 4; i++)
 		{
-			surfaceTool.AddColor(color);
-			surfaceTool.AddUv(new Vector2(vertices[i].x * textureScale.x * textureSize, vertices[i].z * textureScale.y * textureSize));
-			surfaceTool.AddNormal(normal);
+			surfaceTool.SetColor(color);
+			surfaceTool.SetUV(new Vector2(vertices[i].X * textureScale.X * textureSize, vertices[i].Z * textureScale.Y * textureSize));
+			surfaceTool.SetNormal(normal);
 			surfaceTool.AddVertex(vertices[i]);
 		}
 

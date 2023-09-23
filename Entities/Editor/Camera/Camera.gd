@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 const CAM_ZOOM_MIN = 5
 const CAM_ZOOM_MAX = 20
@@ -8,7 +8,7 @@ const CAM_ANGLE_MAX = 85.0
 
 const CAM_DRAG_SPEED = 2
 
-onready var EditorGUI = get_node("../GUI")
+@onready var EditorGUI = get_node("../GUI")
 
 var camPosition = Vector2(0, 10)
 var camAngle = 35.0
@@ -48,9 +48,9 @@ func _process(delta: float) -> void:
 		pass
 	
 	# Move the camera away from the target (zoom distance)
-	$Camera.transform.origin.y = sin(deg2rad(camAngle)) * camZoom
-	$Camera.transform.origin.x = -cos(deg2rad(camAngle)) * camZoom
-	$Camera.rotation.x         = -deg2rad(camAngle)
+	$Camera3D.transform.origin.y = sin(deg_to_rad(camAngle)) * camZoom
+	$Camera3D.transform.origin.x = -cos(deg_to_rad(camAngle)) * camZoom
+	$Camera3D.rotation.x         = -deg_to_rad(camAngle)
 	
 	# Lerp camera to match grid position
 	var finalPos = Vector3(camPosition.x, camHeight, camPosition.y)

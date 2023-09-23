@@ -1,161 +1,153 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=3 uid="uid://gtsv4theh8nu"]
 
-[ext_resource path="res://Entities/PlayerController/PlayerController.tscn" type="PackedScene" id=1]
-[ext_resource path="res://scripts/Ladder.gd" type="Script" id=2]
-[ext_resource path="res://Entities/Legacy/Portal/Portal.tscn" type="PackedScene" id=3]
-[ext_resource path="res://Scenes/Env/LegacyEnv.tscn" type="PackedScene" id=4]
-[ext_resource path="res://Entities/Legacy/Jetpack/JetpackPickup.tscn" type="PackedScene" id=5]
-[ext_resource path="res://Entities/Legacy/Ladder/Ladder.tscn" type="PackedScene" id=6]
-[ext_resource path="res://Entities/Legacy/Diamond/Diamond.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Entities/Legacy/Iceman/Iceman.tscn" type="PackedScene" id=8]
-[ext_resource path="res://Entities/Legacy/SlingshotPickups/SlingshotPickup.tscn" type="PackedScene" id=9]
+[ext_resource type="PackedScene" path="res://Entities/PlayerController/PlayerController.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/Ladder.gd" id="2"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/Portal/Portal.tscn" id="3"]
+[ext_resource type="PackedScene" path="res://Scenes/Env/LegacyEnv.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/Jetpack/JetpackPickup.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/Ladder/Ladder.tscn" id="6"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/Diamond/Diamond.tscn" id="7"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/Iceman/Iceman.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://Entities/Legacy/SlingshotPickups/SlingshotPickup.tscn" id="9"]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id="1"]
 
-[sub_resource type="CubeMesh" id=2]
+[sub_resource type="BoxMesh" id="2"]
 
-[sub_resource type="BoxShape" id=3]
+[sub_resource type="BoxShape3D" id="3"]
 
-[sub_resource type="Animation" id=4]
+[sub_resource type="Animation" id="4"]
 resource_name = "New Anim"
 length = 6.0
-loop = true
+loop_mode = 1
 step = 1.0
-tracks/0/type = "transform"
-tracks/0/path = NodePath(".")
-tracks/0/interp = 2
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = PoolRealArray( 0, 1, 11.4854, -0.656561, 0, 0, 0, 0, 1, 1, 1, 1, 3, 1, 19.2509, -0.656561, 0, 0, 0, 0, 1, 1, 1, 1, 6, 1, 11.4854, -0.656561, 0, 0, 0, 0, 1, 1, 1, 1 )
 
-[sub_resource type="BoxShape" id=5]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2d15u"]
+_data = {
+"New Anim": SubResource("4")
+}
 
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.380392, 0.380392, 0.380392, 1 )
+[sub_resource type="BoxShape3D" id="5"]
 
-[sub_resource type="PlaneMesh" id=7]
+[sub_resource type="StandardMaterial3D" id="6"]
+albedo_color = Color(0.380392, 0.380392, 0.380392, 1)
 
-[node name="Spatial" type="Spatial"]
+[sub_resource type="PlaneMesh" id="7"]
 
-[node name="Environment" parent="." instance=ExtResource( 4 )]
+[node name="Node3D" type="Node3D"]
 
-[node name="CSGCombiner" type="CSGCombiner" parent="."]
+[node name="Environment" parent="." instance=ExtResource("4")]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="."]
 use_collision = true
 
-[node name="CSGBox" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 10.45, 0, 0, 0, 0.3, 0, 0, 0, 8.82, 0, 0, 0 )
-material_override = SubResource( 1 )
+[node name="CSGBox3D" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(10.45, 0, 0, 0, 0.3, 0, 0, 0, 8.82, 0, 0, 0)
+material_override = SubResource("1")
 
-[node name="CSGBox2" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1.75, 0, 0, 0, 1.15, 0, 0, 0, 1.8, -1, 0, 0 )
-material_override = SubResource( 1 )
+[node name="CSGBox2" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1.75, 0, 0, 0, 1.15, 0, 0, 0, 1.8, -1, 0, 0)
+material_override = SubResource("1")
 operation = 2
 
-[node name="CSGBox3" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.1575, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 0 )
-material_override = SubResource( 1 )
-width = 4.76461
-height = 3.65565
-depth = 2.30125
+[node name="CSGBox3" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.1575, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1, 0)
+material_override = SubResource("1")
+size = Vector3(4.76461, 3.65565, 2.30125)
 
-[node name="CSGBox8" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.1575, 0, 0, 0, 1, 0, 0, 0, 1, 1.67496, 1, 2.69836 )
-material_override = SubResource( 1 )
-width = 9.75225
-height = 3.65565
-depth = 0.27585
+[node name="CSGBox8" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.1575, 0, 0, 0, 1, 0, 0, 0, 1, 1.67496, 1, 2.69836)
+material_override = SubResource("1")
+size = Vector3(9.75225, 3.65565, 0.27585)
 
-[node name="CSGBox5" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.101239, -2.41304, 0, 0.120652, 2.02478, 0, 0, 0, 1, 6, 1, 4 )
-material_override = SubResource( 1 )
+[node name="CSGBox5" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.101239, -2.41304, 0, 0.120652, 2.02478, 0, 0, 0, 1, 6, 1, 4)
+material_override = SubResource("1")
 
-[node name="Ladder" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( -4.4253e-09, 1.05477e-07, -1, 0.0424634, 3.03335, 2.46697e-08, 0.151668, -0.849269, -3.60845e-08, 9.19466, 1, -0.486682 )
-material_override = SubResource( 1 )
-width = 0.975588
-height = 0.902592
-depth = 0.682049
+[node name="Ladder" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(-4.4253e-09, 1.05477e-07, -1, 0.0424634, 3.03335, 2.46697e-08, 0.151668, -0.849269, -3.60845e-08, 9.19466, 1, -0.486682)
+material_override = SubResource("1")
+size = Vector3(0.975588, 0.902592, 0.682049)
 
-[node name="CSGBox7" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.0546475, -2.95431, 0, 0.147716, 1.09295, 0, 0, 0, 1, 6, 1, -4.87004 )
-material_override = SubResource( 1 )
+[node name="CSGBox7" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.0546475, -2.95431, 0, 0.147716, 1.09295, 0, 0, 0, 1, 6, 1, -4.87004)
+material_override = SubResource("1")
 
-[node name="CSGBox6" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 0.101239, 2.41304, 0, -0.120652, 2.02478, 0, 0, 0, 1, 1.4, 1, 4 )
-material_override = SubResource( 1 )
+[node name="CSGBox6" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(0.101239, 2.41304, 0, -0.120652, 2.02478, 0, 0, 0, 1, 1.4, 1, 4)
+material_override = SubResource("1")
 
-[node name="CSGBox4" type="CSGBox" parent="CSGCombiner"]
-transform = Transform( 1.85, 0, 0, 0, 2, 0, 0, 0, 0.25, 8, 0, -1 )
-material_override = SubResource( 1 )
+[node name="CSGBox4" type="CSGBox3D" parent="CSGCombiner3D"]
+transform = Transform3D(1.85, 0, 0, 0, 2, 0, 0, 0, 0.25, 8, 0, -1)
+material_override = SubResource("1")
 
-[node name="CSGSphere" type="CSGSphere" parent="CSGCombiner"]
-transform = Transform( 3.55, 0, 0, 0, 2.75, 0, 0, 0, 2.925, 0, 0, 9 )
-material_override = SubResource( 1 )
+[node name="CSGSphere3D" type="CSGSphere3D" parent="CSGCombiner3D"]
+transform = Transform3D(3.55, 0, 0, 0, 2.75, 0, 0, 0, 2.925, 0, 0, 9)
+material_override = SubResource("1")
 radial_segments = 32
 rings = 12
 
-[node name="Portal" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.92653, 0.641757, 6.77555 )
+[node name="Portal" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.92653, 0.641757, 6.77555)
 
-[node name="KinematicBody2" type="KinematicBody" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4854, -0.656561, 0 )
+[node name="KinematicBody2" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.4854, -0.656561, 0)
 
-[node name="MeshInstance" type="MeshInstance" parent="KinematicBody2"]
-mesh = SubResource( 2 )
-material/0 = null
+[node name="MeshInstance3D" type="MeshInstance3D" parent="KinematicBody2"]
+mesh = SubResource("2")
 
-[node name="CollisionShape" type="CollisionShape" parent="KinematicBody2"]
-shape = SubResource( 3 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="KinematicBody2"]
+shape = SubResource("3")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="KinematicBody2"]
 autoplay = "New Anim"
-"anims/New Anim" = SubResource( 4 )
+libraries = {
+"": SubResource("AnimationLibrary_2d15u")
+}
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.00259, 1.04489, 7.25124 )
+[node name="Player" parent="." instance=ExtResource("1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.00259, 1.04489, 7.25124)
 
-[node name="Spatial" type="Spatial" parent="."]
-transform = Transform( 0.25, 0, 0, 0, 0.954016, 0.0149878, 0, -0.299757, 0.0477008, 9.37157, 1.25513, -0.433667 )
-script = ExtResource( 2 )
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 0.954016, 0.0149878, 0, -0.299757, 0.0477008, 9.37157, 1.25513, -0.433667)
+script = ExtResource("2")
 
-[node name="Area2" type="Area" parent="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, -9.53674e-07, 1, -0.00977707, 0.00769377, -0.0366526 )
+[node name="Area2" type="Area3D" parent="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, -9.53674e-07, 1, -0.00977707, 0.00769377, -0.0366526)
 
-[node name="CollisionShape" type="CollisionShape" parent="Spatial/Area2"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, -2.38419e-07, 1, 0, 0, 0 )
-shape = SubResource( 5 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/Area2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, -2.38419e-07, 1, 0, 0, 0)
+shape = SubResource("5")
 
-[node name="Ladder" type="Spatial" parent="."]
-transform = Transform( 0.25, 0, 0, 0, 1, 0, 0, 0, 1, 7.76066, 1.2454, -0.598392 )
-script = ExtResource( 2 )
+[node name="Ladder" type="Node3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 1, 0, 0, 0, 1, 7.76066, 1.2454, -0.598392)
+script = ExtResource("2")
 
-[node name="MeshInstance" type="MeshInstance" parent="Ladder"]
-transform = Transform( 1, 0, 0, 0, 0.173648, -0.984808, 0, 0.984808, 0.173648, 0, 0, 0 )
-material_override = SubResource( 6 )
-mesh = SubResource( 7 )
-material/0 = null
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ladder"]
+transform = Transform3D(1, 0, 0, 0, 0.173648, -0.984808, 0, 0.984808, 0.173648, 0, 0, 0)
+material_override = SubResource("6")
+mesh = SubResource("7")
 
-[node name="Area" type="Area" parent="Ladder"]
-transform = Transform( 1, 0, 0, 0, 0.984808, 0.00868241, 0, -0.173648, 0.0492404, 0, 0, 0.0535292 )
+[node name="Area3D" type="Area3D" parent="Ladder"]
+transform = Transform3D(1, 0, 0, 0, 0.984808, 0.00868241, 0, -0.173648, 0.0492404, 0, 0, 0.0535292)
 
-[node name="CollisionShape" type="CollisionShape" parent="Ladder/Area"]
-shape = SubResource( 5 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ladder/Area3D"]
+shape = SubResource("5")
 
-[node name="jetpack" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.17776, 1.07912, 1.41595 )
+[node name="jetpack" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.17776, 1.07912, 1.41595)
 
-[node name="Ladder2" parent="." instance=ExtResource( 6 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1.3, 0, -1, 0, -4.37114e-08, 6.374, 1.58, 0.225 )
+[node name="Ladder2" parent="." instance=ExtResource("6")]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1.3, 0, -1, 0, -4.37114e-08, 6.374, 1.58, 0.225)
 
-[node name="Diamond" parent="." instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84489, 1.07956, 0.738678 )
+[node name="Diamond" parent="." instance=ExtResource("7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.84489, 1.07956, 0.738678)
 
-[node name="Iceman" parent="." instance=ExtResource( 8 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6864, 0.361241, -2.62016 )
+[node name="Iceman" parent="." instance=ExtResource("8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.6864, 0.361241, -2.62016)
 
-[node name="SlingshotPickup" parent="." instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77279, 1.25073, 1.87974 )
+[node name="SlingshotPickup" parent="." instance=ExtResource("9")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.77279, 1.25073, 1.87974)
 
-[connection signal="body_entered" from="Spatial/Area2" to="Spatial" method="_on_Area2_body_entered"]
-[connection signal="area_entered" from="Ladder/Area" to="Ladder" method="_on_Area_area_entered"]
+[connection signal="body_entered" from="Node3D/Area2" to="Node3D" method="_on_Area2_body_entered"]
+[connection signal="area_entered" from="Ladder/Area3D" to="Ladder" method="_on_Area_area_entered"]

@@ -16,15 +16,15 @@ public class PlatformGenerator
 
 		var height = (level + heightOffset + 0.001f) * Constants.LevelHeight;
 
-		var halfSize = size.x / 2;
-		var start = new Vector2(position.x - halfSize, position.y - halfSize);
-		var end = new Vector2(position.x + halfSize, position.y + halfSize);
+		var halfSize = size.X / 2;
+		var start = new Vector2(position.X - halfSize, position.Y - halfSize);
+		var end = new Vector2(position.X + halfSize, position.Y + halfSize);
 
 		var platVertices = new List<Vector3>();
-		platVertices.Add(new Vector3(start.x, height, start.y));
-		platVertices.Add(new Vector3(end.x, height, start.y));
-		platVertices.Add(new Vector3(end.x, height, end.y));
-		platVertices.Add(new Vector3(start.x, height, end.y));
+		platVertices.Add(new Vector3(start.X, height, start.Y));
+		platVertices.Add(new Vector3(end.X, height, start.Y));
+		platVertices.Add(new Vector3(end.X, height, end.Y));
+		platVertices.Add(new Vector3(start.X, height, end.Y));
 
 		var index = 0;
 		FloorHelper.AddQuad(surfaceTool, platVertices, texture, color, ref index);

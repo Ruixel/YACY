@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class CSharpTest : Node
+public partial class CSharpTest : Node
 {
 	// Declare member variables here. Examples:
 	// private int a = 2;

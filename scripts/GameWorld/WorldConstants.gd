@@ -1,4 +1,4 @@
-tool
+@tool
 extends Node
 
 const LEVEL_HEIGHT = 2.6

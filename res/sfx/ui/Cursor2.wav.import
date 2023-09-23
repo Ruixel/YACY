@@ -1,13 +1,14 @@
 [remap]
 
 importer="wav"
-type="AudioStreamSample"
-path="res://.import/Cursor2.wav-1e2f0ff044c5913555ec8a3c80904bcb.sample"
+type="AudioStreamWAV"
+uid="uid://b3pra0dcnahat"
+path="res://.godot/imported/Cursor2.wav-1e2f0ff044c5913555ec8a3c80904bcb.sample"
 
 [deps]
 
 source_file="res://res/sfx/ui/Cursor2.wav"
-dest_files=[ "res://.import/Cursor2.wav-1e2f0ff044c5913555ec8a3c80904bcb.sample" ]
+dest_files=["res://.godot/imported/Cursor2.wav-1e2f0ff044c5913555ec8a3c80904bcb.sample"]
 
 [params]
 
@@ -17,5 +18,7 @@ force/max_rate=false
 force/max_rate_hz=44100
 edit/trim=false
 edit/normalize=false
-edit/loop=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
 compress/mode=0

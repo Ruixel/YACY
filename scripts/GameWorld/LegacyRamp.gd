@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 const toolType = WorldConstants.Tools.RAMP
 
 const canPlace = true
@@ -17,15 +17,15 @@ var min_height : float = 0.0
 const max_height_list = [4, 3, 2, 1, 2, 3, 4, 4, 4, 3]
 const min_height_list = [0, 0, 0, 0, 1, 2, 3, 2, 1, 1]
 
-var mesh : MeshInstance
-var selection_mesh : MeshInstance 
-var collision_mesh : StaticBody
-var collision_shape : CollisionShape
+var mesh : MeshInstance3D
+var selection_mesh : MeshInstance3D 
+var collision_mesh : StaticBody3D
+var collision_shape : CollisionShape3D
 
 func _init(position : Vector2, lvl : int):
-	mesh = MeshInstance.new()
-	collision_mesh = StaticBody.new()
-	collision_shape = CollisionShape.new()
+	mesh = MeshInstance3D.new()
+	collision_mesh = StaticBody3D.new()
+	collision_shape = CollisionShape3D.new()
 	
 	start = position
 	level = lvl
@@ -56,24 +56,24 @@ func _genMesh():
 	
 	# Set collision layers
 	var isOpaque = not WorldTextures.textures[self.texture].isTransparent()
-	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
-	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
+	collision_mesh.set_collision_layer_value(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_value(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
 
 func selectObj():
-	selection_mesh = MeshInstance.new()
+	selection_mesh = MeshInstance3D.new()
 	selection_mesh.mesh = buildRampSelectionMesh(start, end, level, min_height, max_height, 0.05)
 
 
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary= {}
-	dict["Texture"] = texture 
+	dict["Texture2D"] = texture 
 	dict["Colour"] = colour
 	dict["Height"] = Vector2(min_height, max_height)
 	
 	return dict
 
 const dictToObj = {
-	"Texture":"texture", 
+	"Texture2D":"texture", 
 	"Colour":"colour",
 	"Height":"minmaxVector2"
 }
@@ -107,7 +107,7 @@ static func buildRamp(start : Vector2, end : Vector2, level : int, min_height : 
 	
 	# Vertices
 	var line = end - start
-	var widthDir = (end - start).tangent().normalized()
+	var widthDir = (end - start).orthogonal().normalized()
 	var halfWidth = ((sqrt(8)-2)*abs(sin(2*atan2(line.y, line.x))) + 2) / 2.0
 	var width = widthDir * halfWidth
 	
@@ -188,7 +188,7 @@ static func buildRampSelectionMesh(start : Vector2, end : Vector2, level : int, 
 	
 	# Vertices
 	var line = end - start
-	var widthDir = (end - start).tangent().normalized()
+	var widthDir = (end - start).orthogonal().normalized()
 	var halfWidth = ((sqrt(8)-2)*abs(sin(2*atan2(line.y, line.x))) + 2) / 2.0
 	var width = widthDir * (halfWidth + outlineWidth)
 	

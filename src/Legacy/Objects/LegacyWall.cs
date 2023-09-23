@@ -14,9 +14,9 @@ namespace YACY.Legacy.Objects
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn",
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
-	public class LegacyWall : BuildEntity
+	public partial class LegacyWall : BuildEntity
 	{
-		private MeshInstance _meshInstance;
+		private MeshInstance3D _meshInstance;
 
 		public LegacyWall()
 		{
@@ -38,7 +38,7 @@ namespace YACY.Legacy.Objects
 		{
 			Type = BuildEntityList.Type.LegacyWall;
 
-			_meshInstance = new MeshInstance();
+			_meshInstance = new MeshInstance3D();
 			AddChild(_meshInstance);
 		}
 

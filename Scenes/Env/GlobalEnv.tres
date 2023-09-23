@@ -1,31 +1,19 @@
-[gd_resource type="Environment" load_steps=2 format=2]
+[gd_resource type="Environment" load_steps=2 format=3 uid="uid://d0xp6frxov2px"]
 
-[sub_resource type="ProceduralSky" id=1]
-ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
-ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
-sun_latitude = 23.23
-sun_longitude = 120.0
+[sub_resource type="Sky" id="1"]
 
 [resource]
 background_mode = 2
-background_sky = SubResource( 1 )
-background_color = Color( 0.54902, 0.54902, 0.54902, 0.0470588 )
-ambient_light_color = Color( 0.698039, 0.72549, 0.698039, 1 )
+background_color = Color(0.54902, 0.54902, 0.54902, 0.0470588)
+sky = SubResource("1")
+ambient_light_color = Color(0.698039, 0.72549, 0.698039, 1)
 tonemap_mode = 1
 tonemap_exposure = 0.9
 ssao_enabled = true
 ssao_radius = 0.8
-ssao_intensity = 2.0
-ssao_radius2 = 1.6
-ssao_color = Color( 0.223529, 0.223529, 0.223529, 1 )
-ssao_blur = 2
-dof_blur_far_distance = 0.58
-dof_blur_far_transition = 14.25
-dof_blur_near_distance = 3.64
 glow_enabled = true
-glow_levels/4 = true
-glow_levels/5 = false
+glow_levels/4 = 1.0
+glow_levels/5 = 0.0
 glow_intensity = 0.39
 glow_strength = 0.83
 glow_hdr_threshold = 0.7
-glow_bicubic_upscale = true

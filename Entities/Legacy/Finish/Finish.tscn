@@ -1,24 +1,24 @@
 [gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://res/txrs/Finish.png" type="Texture" id=1]
+[ext_resource path="res://res/txrs/Finish.png" type="Texture2D" id=1]
 [ext_resource path="res://Entities/Legacy/Finish/Finish.gd" type="Script" id=2]
 
-[sub_resource type="CubeMesh" id=1]
+[sub_resource type="BoxMesh" id=1]
 size = Vector3( 1.6, 0.05, 1.6 )
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="StandardMaterial3D" id=2]
 albedo_color = Color( 0, 0, 0, 1 )
 roughness = 0.63
 
 [sub_resource type="QuadMesh" id=3]
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="StandardMaterial3D" id=4]
 albedo_texture = ExtResource( 1 )
 
-[sub_resource type="BoxShape" id=5]
-extents = Vector3( 0.627518, 0.182316, 0.554375 )
+[sub_resource type="BoxShape3D" id=5]
+size = Vector3( 0.627518, 0.182316, 0.554375 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="StandardMaterial3D" id=6]
 resource_local_to_scene = true
 albedo_color = Color( 1, 0, 0, 1 )
 emission_enabled = true
@@ -27,42 +27,42 @@ emission_energy = 1.0
 emission_operator = 0
 emission_on_uv2 = false
 
-[sub_resource type="CubeMesh" id=7]
+[sub_resource type="BoxMesh" id=7]
 resource_local_to_scene = true
 material = SubResource( 6 )
 size = Vector3( 1.63, 0.02, 1.63 )
 
-[node name="Finish" type="Spatial"]
+[node name="Finish" type="Node3D"]
 script = ExtResource( 2 )
 
-[node name="Base" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0 )
+[node name="Base" type="MeshInstance3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0 )
 mesh = SubResource( 1 )
 material/0 = SubResource( 2 )
 
-[node name="CheckedFlag" type="MeshInstance" parent="."]
-transform = Transform( 1.6, 0, 0, 0, -2.60673e-07, 1, 0, -1.6, -1.62921e-07, 0, 0.06, 0 )
+[node name="CheckedFlag" type="MeshInstance3D" parent="."]
+transform = Transform3D( 1.6, 0, 0, 0, -2.60673e-07, 1, 0, -1.6, -1.62921e-07, 0, 0.06, 0 )
 mesh = SubResource( 3 )
 material/0 = SubResource( 4 )
 
-[node name="Area" type="Area" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
 collision_layer = 4
 collision_mask = 4
 
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
 shape = SubResource( 5 )
 
-[node name="On" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000246644, 0.0184727, -0.000194907 )
+[node name="On" type="MeshInstance3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000246644, 0.0184727, -0.000194907 )
 visible = false
 mesh = SubResource( 7 )
 material/0 = null
 
-[node name="SpotLight" type="SpotLight" parent="On"]
-transform = Transform( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.29901, -5.67816e-08 )
+[node name="SpotLight3D" type="SpotLight3D" parent="On"]
+transform = Transform3D( 1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 1.29901, -5.67816e-08 )
 light_color = Color( 1, 0.0941176, 0.0941176, 1 )
 spot_range = 1.94893
 spot_angle = 42.1666
 
-[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_Area_body_entered"]

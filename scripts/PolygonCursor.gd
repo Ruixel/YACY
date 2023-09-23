@@ -1,10 +1,10 @@
 extends "CursorBase.gd"
 
-onready var parent    = get_parent()
-onready var camera    = get_node("../../EditorCamera/Camera")
-onready var WorldAPI  = get_node("../../WorldInterface")
+@onready var parent    = get_parent()
+@onready var camera    = get_node("../../EditorCamera/Camera3D")
+@onready var WorldAPI  = get_node("../../WorldInterface")
 
-onready var VertexBase = get_node("VertexBase")
+@onready var VertexBase = get_node("VertexBase")
 var node_vertices = []
 var vertices = []
 var vertexChosen = null
@@ -19,8 +19,8 @@ func cursor_ready():
 	var selection = WorldAPI.get_selection()
 	on_selection_change(selection)
 	
-	WorldAPI.connect("change_selection", self, "on_selection_change")
-	self.connect("change_vertex", WorldAPI, "property_vertex")
+	WorldAPI.connect("change_selection", Callable(self, "on_selection_change"))
+	self.connect("change_vertex", Callable(WorldAPI, "property_vertex"))
 
 func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	if mouse_motion != Vector2():
@@ -101,8 +101,8 @@ func cleanup():
 
 func cursor_on_tool_change(newTool):
 	cleanup()
-	WorldAPI.disconnect("change_selection", self, "on_selection_change")
-	WorldAPI.disconnect("change_vertex", WorldAPI, "property_vertex")
+	WorldAPI.disconnect("change_selection", Callable(self, "on_selection_change"))
+	WorldAPI.disconnect("change_vertex", Callable(WorldAPI, "property_vertex"))
 
 # Dodgy check for making sure a polygon is convex
 # Useful to avoid weird shapes 

@@ -6,11 +6,11 @@ using YACY.MeshGen;
 
 namespace YACY;
 
-public class TextureManager : ITextureManager
+public partial class TextureManager : ITextureManager
 {
 	public List<TextureInfo> TextureInfo { get; private set; }
 	public Dictionary<string, GameTexture> Textures { get; private set; }
-	private TextureArray TextureArray;
+	private Texture2DArray _texture2DArray;
 
 	private const Image.Format TextureFormat = Image.Format.Rgba8;
 		
@@ -23,8 +23,8 @@ public class TextureManager : ITextureManager
 	{
 		LoadTextureInfo();
 
-		TextureArray = new TextureArray();
-		TextureArray.Create(256, 256, (uint) TextureInfo.Count, TextureFormat, 7);
+		_texture2DArray = new Texture2DArray();
+		//_texture2DArray.Create(256, 256, (uint) TextureInfo.Count, TextureFormat, 7);
 
 		Textures = new Dictionary<string, GameTexture>();
 
@@ -32,26 +32,28 @@ public class TextureManager : ITextureManager
 		foreach (var textureInfo in TextureInfo)
 		{
 			// Load into TextureArray
-			var streamTexture = GD.Load<StreamTexture>(textureInfo.ResLocation);
-			var imgData = streamTexture.GetData();
-			imgData.Decompress();
+			var streamTexture = GD.Load<CompressedTexture2D>(textureInfo.ResLocation);
+			var imgData = streamTexture.GetImage();
+			
+			//imgData.Decompress();
 			
 			if (imgData.GetFormat() != TextureFormat)
 				imgData.Convert(TextureFormat);
 
 			imgData.GenerateMipmaps();
 			
-			TextureArray.SetLayerData(imgData, layer);
+			//_texture2DArray.SetLayerData(imgData, layer);
+			_texture2DArray.UpdateLayer(imgData, layer);
 			
 			// Add into texture list
 			var texture = new ImageTexture();
-			texture.CreateFromImage(imgData);
+			texture.SetImage(imgData);
 			Textures.Add(textureInfo.Name, new GameTexture(texture, textureInfo));
 
 			layer++;
 		}
 		
-		WallHelper.ArrayTextureMaterial.SetShaderParam("texture_array", TextureArray);
+		WallHelper.ArrayTextureMaterial.SetShaderParameter("texture_array", _texture2DArray);
 	}
 
 	// TODO: Load from ini file or something

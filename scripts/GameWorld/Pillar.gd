@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 const toolType = WorldConstants.Tools.PILLAR
 
 const canPlace = true
@@ -19,15 +19,15 @@ var min_height : float = 0.0
 const max_height_list = [4, 3, 2, 1, 2, 3, 4, 4, 4, 3]
 const min_height_list = [0, 0, 0, 0, 1, 2, 3, 2, 1, 1]
 
-var mesh : MeshInstance
-var selection_mesh : MeshInstance 
-var collision_mesh : StaticBody
-var collision_shape : CollisionShape
+var mesh : MeshInstance3D
+var selection_mesh : MeshInstance3D 
+var collision_mesh : StaticBody3D
+var collision_shape : CollisionShape3D
 
 func _init(position : Vector2, lvl : int):
-	mesh = MeshInstance.new()
-	collision_mesh = StaticBody.new()
-	collision_shape = CollisionShape.new()
+	mesh = MeshInstance3D.new()
+	collision_mesh = StaticBody3D.new()
+	collision_shape = CollisionShape3D.new()
 	
 	pos = position
 	level = lvl 
@@ -60,7 +60,7 @@ func change_diagonal(isSet : bool):
 
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
-	dict["Texture"] = texture 
+	dict["Texture2D"] = texture 
 	dict["Colour"] = colour
 	dict["Height"] = Vector2(min_height, max_height)
 	dict["PillarSize"] = size
@@ -69,7 +69,7 @@ func get_property_dict() -> Dictionary:
 	return dict
 
 const dictToObj = {
-	"Texture":"texture", 
+	"Texture2D":"texture", 
 	"Colour":"colour",
 	"PillarSize":"size",
 	"Diagonal":"diagonal",
@@ -90,11 +90,11 @@ func _genMesh():
 	
 	# Set collision layers
 	var isOpaque = not WorldTextures.textures[self.texture].isTransparent()
-	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
-	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
+	collision_mesh.set_collision_layer_value(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_value(WorldConstants.OPAQUE_COLLISION_BIT, isOpaque)
 
 func selectObj():
-	selection_mesh = MeshInstance.new()
+	selection_mesh = MeshInstance3D.new()
 	selection_mesh.mesh = mesh.mesh.create_outline(0.05)
 	selection_mesh.mesh.surface_set_material(0, WorldTextures.selection_mat)
 

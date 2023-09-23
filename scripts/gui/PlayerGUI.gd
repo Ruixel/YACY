@@ -5,21 +5,21 @@ var total_icemen = 0
 var icemen = 0
 var time = 0
 var global_time = 0
-onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
+@onready var items_left_nodes = [$ItemsLeft/Diamonds, $ItemsLeft/Icemen]
 
 func reset():
 	# Shift back UI
 	if $BR/Jetpack.visible:
-		$BR/Ammo.rect_position.y += 50
+		$BR/Ammo.position.y += 50
 	
 	# Reset win screen
 	var win_screen = get_node_or_null("WinScreen")
 	if win_screen != null:
 		win_screen.queue_free()
 	
-	if not $Clock/Timer.is_connected("timeout", self, "_on_Timer_timeout"):
+	if not $Clock/Timer.is_connected("timeout", Callable(self, "_on_Timer_timeout")):
 		global_time -= time
-		$Clock/Timer.connect("timeout", self, "_on_Timer_timeout")
+		$Clock/Timer.connect("timeout", Callable(self, "_on_Timer_timeout"))
 	
 	# Reset Player Stats/Items
 	$BR/Jetpack.visible = false
@@ -36,7 +36,7 @@ func reset():
 	var global_minutes = global_time / 60
 	var global_seconds = global_time % 60
 	$Clock/GlobalClock.visible = true
-	$Clock/GlobalClock.bbcode_text = "[right]" + str("%02d" % global_minutes) + ":" + str("%02d" % global_seconds) + "[/right]"
+	$Clock/GlobalClock.text = "[right]" + str("%02d" % global_minutes) + ":" + str("%02d" % global_seconds) + "[/right]"
 	draw_clock()
 
 func setupCollectables(collectables: Dictionary):
@@ -56,15 +56,15 @@ func loadDiamonds(max_diamonds: int):
 
 func updateDiamonds(diamonds: int):
 	if diamonds == max_diamonds:
-		$ItemsLeft/Diamonds/Count.bbcode_text = " [wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
+		$ItemsLeft/Diamonds/Count.text = " [wave amp=20 freq=10][b]" + str(diamonds) + "[/b] / " + str(max_diamonds) + "[/wave]"
 		$ItemsLeft/Diamonds/Panel.get_stylebox("panel").bg_color = Color(0.2, 1.0, 0.2, 0.24)
 	else:
-		$ItemsLeft/Diamonds/Count.bbcode_text = " [b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
+		$ItemsLeft/Diamonds/Count.text = " [b]" + str(diamonds) + "[/b] / " + str(max_diamonds)
 		$ItemsLeft/Diamonds/Panel.get_stylebox("panel").bg_color = Color(0.0, 0.0, 0.0, 0.24)
 	
 	var big_text_width = $ItemsLeft/Diamonds/Count.get_font("bold_font").get_string_size(str(diamonds))
 	var small_text_width = $ItemsLeft/Diamonds/Count.get_font("normal_font").get_string_size("  / " + str(max_diamonds))
-	$ItemsLeft/Diamonds/Panel.rect_size.x = big_text_width.x + small_text_width.x + 66
+	$ItemsLeft/Diamonds/Panel.size.x = big_text_width.x + small_text_width.x + 66
 
 func loadIcemen(total_icemen: int):
 	if total_icemen:
@@ -80,26 +80,26 @@ func killedIceman():
 	self.icemen -= 1
 	
 	if self.icemen == 0:
-		$ItemsLeft/Icemen/Count.bbcode_text = " [wave amp=20 freq=10][b]" + str(self.icemen) + "[/b]  left[/wave]"
+		$ItemsLeft/Icemen/Count.text = " [wave amp=20 freq=10][b]" + str(self.icemen) + "[/b]  left[/wave]"
 		$ItemsLeft/Icemen/Panel.get_stylebox("panel").bg_color = Color(0.2, 1.0, 0.2, 0.24)
 	else:
-		$ItemsLeft/Icemen/Count.bbcode_text = " [b]" + str(self.icemen) + "[/b]  left"
+		$ItemsLeft/Icemen/Count.text = " [b]" + str(self.icemen) + "[/b]  left"
 		$ItemsLeft/Icemen/Panel.get_stylebox("panel").bg_color = Color(0.0, 0.0, 0.0, 0.24)
 	
 	var big_text_width = $ItemsLeft/Icemen/Count.get_font("bold_font").get_string_size(str(self.icemen))
 	var small_text_width = $ItemsLeft/Icemen/Count.get_font("normal_font").get_string_size("   left")
-	$ItemsLeft/Icemen/Panel.rect_size.x = big_text_width.x + small_text_width.x + 66
+	$ItemsLeft/Icemen/Panel.size.x = big_text_width.x + small_text_width.x + 66
 
 func updateItemsLeft():
 	var y = 25
 	for node in items_left_nodes:
 		if node.visible:
-			node.rect_position = Vector2(10, y)
+			node.position = Vector2(10, y)
 			y += 65
 
 func pickupJetpack():
 	$BR/Jetpack.visible = true
-	$BR/Ammo.rect_position.y -= 50
+	$BR/Ammo.position.y -= 50
 
 func toggleJetpack(on: bool):
 	if on:
@@ -109,15 +109,15 @@ func toggleJetpack(on: bool):
 
 func updateJetpackFuel(fuel_amount: float, max_fuel: float):
 	$BR/Jetpack/Fuel.color = Color.from_hsv((fuel_amount / max_fuel) * 0.33, 0.9, 0.95, 0.5)
-	$BR/Jetpack/Fuel.rect_scale = Vector2(fuel_amount / max_fuel, 1)
+	$BR/Jetpack/Fuel.scale = Vector2(fuel_amount / max_fuel, 1)
 
 func updateCrumbs(ammo: int):
-	$BR/Ammo/Count.bbcode_text = "[right][b]" + str(ammo) + "[/b] x[/right]"
+	$BR/Ammo/Count.text = "[right][b]" + str(ammo) + "[/b] x[/right]"
 	$BR/Ammo.visible = true
 
 func updateKeys(keys: Array):
 	# Show if user has collected any keys
-	if keys.empty():
+	if keys.is_empty():
 		$Items/Keys.visible = false
 		return
 	$Items/Keys.visible = true
@@ -141,7 +141,7 @@ func freezeScreen(seconds: float):
 	$FrozenScreen.visible = true
 	$FrozenScreen.modulate = Color(1, 1, 1, 0.37)
 	
-	yield(get_tree().create_timer(seconds), "timeout") 
+	await get_tree().create_timer(seconds).timeout 
 	$FrozenScreen/Tween.interpolate_property($FrozenScreen, "modulate", 
 	  Color(1, 1, 1, 0.37), Color(1, 1, 1, 0), 1.0,Tween.TRANS_QUAD, Tween.EASE_OUT)
 	$FrozenScreen/Tween.start()
@@ -151,7 +151,7 @@ func draw_clock():
 	var minutes = time / 60
 	var seconds = time % 60
 	
-	$Clock.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b][/center]"
+	$Clock.text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b][/center]"
 
 func _on_Timer_timeout():
 	time += 1
@@ -165,9 +165,9 @@ func time_save(seconds: int):
 	draw_clock()
 
 func display_level_finish():
-	if $Clock/Timer.is_connected("timeout", self, "_on_Timer_timeout"):
-		$Clock/Timer.disconnect("timeout", self, "_on_Timer_timeout")
+	if $Clock/Timer.is_connected("timeout", Callable(self, "_on_Timer_timeout")):
+		$Clock/Timer.disconnect("timeout", Callable(self, "_on_Timer_timeout"))
 		
-	var finish_ui = load("res://Scenes/UI/WinScreen.tscn").instance()
+	var finish_ui = load("res://Scenes/UI/WinScreen.tscn").instantiate()
 	add_child(finish_ui)
 	finish_ui.set_time(time)

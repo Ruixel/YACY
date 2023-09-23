@@ -4,7 +4,7 @@ using YACY.Build;
 
 namespace YACY.UI;
 
-public class SpinboxUI : Control, IPropertyUI
+public partial class SpinboxUI : Control, IPropertyUI
 {
 	private readonly Func<int, int, ICommand> _getCommand;
 	private readonly PackedScene SpinBox = ResourceLoader.Load<PackedScene>("res://Scenes/UI/Properties/SpinBox.tscn");
@@ -14,7 +14,7 @@ public class SpinboxUI : Control, IPropertyUI
 	public SpinboxUI(string name, int min, int max, Func<int, int, ICommand> getCommand)
 	{
 		_getCommand = getCommand;
-		_spinBox = SpinBox.Instance<HBoxContainer>();
+		_spinBox = SpinBox.Instantiate<HBoxContainer>();
 		_spinBox.GetNode<Label>("Label").Text = name;
 
 		var spinBox = _spinBox.GetNode<SpinBox>("SpinBox");
@@ -22,7 +22,7 @@ public class SpinboxUI : Control, IPropertyUI
 		spinBox.MaxValue = max;
 		spinBox.Value = 1;
 		
-		spinBox.Connect("value_changed", this, nameof(OnSpinBoxChange));
+		spinBox.Connect("value_changed", new Callable(this, nameof(OnSpinBoxChange)));
 		AddChild(_spinBox);
 	}
 

@@ -1,12 +1,12 @@
 extends Node
 
-onready var grass_mat = load("res://res/materials/grass.tres") # Grass Texture
-onready var selection_mat = load("res://res/materials/selection.tres")
+@onready var grass_mat = load("res://res/materials/grass.tres") # Grass Texture2D
+@onready var selection_mat = load("res://res/materials/selection.tres")
 var prototype_grass_mat 
 
 func _ready():
 	prototype_grass_mat = grass_mat.duplicate()
-	prototype_grass_mat.set_feature(SpatialMaterial.FEATURE_TRANSPARENT, true)
+	prototype_grass_mat.set_feature(StandardMaterial3D.FEATURE_TRANSPARENT, true)
 	prototype_grass_mat.set_albedo(Color(1, 1, 1, 0.5))
 
 var quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 

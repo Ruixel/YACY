@@ -4,7 +4,7 @@ using MessagePack;
 namespace YACY.Entities.Components;
 
 [MessagePackObject]
-public class DisplacementComponent : Component
+public partial class DisplacementComponent : Component
 {
 	public DisplacementComponent()
 	{

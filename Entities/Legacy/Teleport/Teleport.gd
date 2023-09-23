@@ -1,4 +1,4 @@
-extends MeshInstance
+extends MeshInstance3D
 
 const TeleportColours = [
 	"F2F2F2", "00B5E2", "E10098", "003DA5", "FEDD00", "EE2737", "948794", 
@@ -17,8 +17,8 @@ func set_number(num : int):
 	else:
 		number = num
 	
-	$Viewport/Text.set_text(text)
-	var t = $Viewport.get_texture()
+	$SubViewport/Text.set_text(text)
+	var t = $SubViewport.get_texture()
 	$Number.mesh.surface_get_material(0).albedo_texture = t
 	self.mesh.surface_get_material(0).emission = Color(TeleportColours[number-1])
 	
@@ -37,7 +37,7 @@ func _process(delta):
 		set_process(false)
 		return
 		
-	if not $Area.overlaps_body(player):
+	if not $Area3D.overlaps_body(player):
 		player.tp_busy = false
 		set_process(false)
 	
@@ -50,5 +50,5 @@ func _process(delta):
 			player.set_transform(tp.get_node("Pos").get_global_transform().translated(Vector3(0, -0.1, 0)))
 			
 		set_process(false)
-		yield(get_tree().create_timer(1.0), "timeout")
+		await get_tree().create_timer(1.0).timeout
 		player.tp_busy = false

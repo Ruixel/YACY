@@ -157,11 +157,11 @@ func create_hole(pos : Vector2, size : int, level : int):
 #		print("hole issues")
 
 func create_spawn(pos : Vector2, direction : int, level : int):
-	var new_spawn = preload("res://Entities/Legacy/Spawn/Spawn.tscn").instance()
+	var new_spawn = preload("res://Entities/Legacy/Spawn/Spawn.tscn").instantiate()
 	new_spawn.set_name("SpawnLocation")
 	
 	pos = pos / 5.0
-	new_spawn.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+	new_spawn.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
 	match (direction):
 		1: new_spawn.set_rotation_degrees(Vector3(0, 0, 0))
@@ -172,10 +172,10 @@ func create_spawn(pos : Vector2, direction : int, level : int):
 	get_parent().call("add_entity", new_spawn)
 
 func create_finish(pos: Vector2, condition: int, level: int):
-	var new_finish = preload("res://Entities/Legacy/Finish/Finish.tscn").instance()
+	var new_finish = preload("res://Entities/Legacy/Finish/Finish.tscn").instantiate()
 	
 	pos = pos / 5.0
-	new_finish.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+	new_finish.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
 	new_finish.set_condition(condition)
 	
@@ -183,14 +183,14 @@ func create_finish(pos: Vector2, condition: int, level: int):
 	get_parent().call("set_finish_condition", condition)
 
 func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, level : int):
-	var new_board = preload("res://Entities/Legacy/MessageBoard/MsgBoard.tscn").instance()
-	new_board.get_node("Viewport/Text").set_text(msg)
+	var new_board = preload("res://Entities/Legacy/MessageBoard/MsgBoard.tscn").instantiate()
+	new_board.get_node("SubViewport/Text").set_text(msg)
 	
-	var t = new_board.get_node("Viewport").get_texture()
+	var t = new_board.get_node("SubViewport").get_texture()
 	new_board.get_node("Front").mesh.surface_get_material(0).albedo_texture = t
 	
 	pos = pos / 5.0
-	new_board.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_board.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
 	match (direction):
 		1: new_board.set_rotation_degrees(Vector3(0, 0, 0))
@@ -203,54 +203,54 @@ func create_msgBoard(pos : Vector2, msg : String, direction : int, height: int, 
 		8: new_board.set_rotation_degrees(Vector3(0, 315, 0))
 	
 	match (height):
-		2: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/4.0, 0))
-		3: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/2.0, 0))
-		4: new_board.set_translation(new_board.get_translation() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 3/4.0, 0))
+		2: new_board.set_position(new_board.get_position() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/4.0, 0))
+		3: new_board.set_position(new_board.get_position() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 1/2.0, 0))
+		4: new_board.set_position(new_board.get_position() + Vector3(0, WorldConstants.LEVEL_HEIGHT * 3/4.0, 0))
 	
 	get_parent().call("add_entity", new_board)
 
 func create_portal(pos : Vector2, title : String, condition : int, gameNumber: String, level : int):
-	var new_portal = preload("res://Entities/Legacy/Portal/Portal.tscn").instance()
-	new_portal.get_node("Viewport/Text").set_text(title)
+	var new_portal = preload("res://Entities/Legacy/Portal/Portal.tscn").instantiate()
+	new_portal.get_node("SubViewport/Text").set_text(title)
 	gameNumber = gameNumber.substr(1, gameNumber.length() - 2)
-	if gameNumber.is_valid_integer():
+	if gameNumber.is_valid_int():
 		new_portal.set_gameNumber(int(gameNumber))
 	
-	var t = new_portal.get_node("Viewport").get_texture()
-	new_portal.get_node("TextArea").get_surface_material(0).albedo_texture = t
+	var t = new_portal.get_node("SubViewport").get_texture()
+	new_portal.get_node("TextArea").get_surface_override_material(0).albedo_texture = t
 	
 	new_portal.set_condition(condition)
 	
 	pos = pos / 5.0
-	new_portal.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_portal.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
 	get_parent().call("add_entity", new_portal)
 	get_parent().call("add_optional_condition", WorldConstants.Objectives.PORTAL)
 
 func create_teleport(pos : Vector2, number : int, level : int):
-	var new_tp = preload("res://Entities/Legacy/Teleport/Teleport.tscn").instance()
+	var new_tp = preload("res://Entities/Legacy/Teleport/Teleport.tscn").instantiate()
 	
 	new_tp.set_number(number)
 	
 	pos = pos / 5.0
-	new_tp.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+	new_tp.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 	
 	get_parent().call("add_entity", new_tp)
 
 func create_jetpack(pos: Vector2, needs_fuel: int, level: int):
-	var new_jp = preload("res://Entities/Legacy/Jetpack/JetpackPickup.tscn").instance()
+	var new_jp = preload("res://Entities/Legacy/Jetpack/JetpackPickup.tscn").instantiate()
 	
 	match needs_fuel:
 		1: new_jp.set_unlimited_fuel(true)
 		2: new_jp.set_unlimited_fuel(false)
 	
 	pos = pos / 5.0
-	new_jp.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	new_jp.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
 	
 	get_parent().call("add_entity", new_jp)
 
 func create_fuel(pos: Vector2, fuel_amount: int, level: int):
-	var new_fuel = preload("res://Entities/Legacy/Fuel/FuelPickup.tscn").instance()
+	var new_fuel = preload("res://Entities/Legacy/Fuel/FuelPickup.tscn").instantiate()
 	
 	var fuel_sec = 0
 	match fuel_amount:
@@ -262,19 +262,19 @@ func create_fuel(pos: Vector2, fuel_amount: int, level: int):
 	new_fuel.set_fuel_amount(fuel_sec)
 	
 	pos = pos / 5.0
-	new_fuel.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
+	new_fuel.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
 	
 	get_parent().call("add_entity", new_fuel)
 
 func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
-	var new_door = preload("res://Entities/Legacy/Door/Door.tscn").instance()
+	var new_door = preload("res://Entities/Legacy/Door/Door.tscn").instantiate()
 	
 	pos = pos / 5.0
 	if dir == 1:
-		new_door.set_translation(Vector3(pos.x + 0.5, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
+		new_door.set_position(Vector3(pos.x + 0.5, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y))
 		new_door.set_scale(Vector3(0.5, WorldConstants.LEVEL_HEIGHT / 2.0, 0.5))
 	else:
-		new_door.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y - 0.5))
+		new_door.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.003, pos.y - 0.5))
 		new_door.set_scale(Vector3(0.5, WorldConstants.LEVEL_HEIGHT / 2.0, 0.5))
 		new_door.set_rotation_degrees(Vector3(0,0,0))
 	
@@ -288,19 +288,19 @@ func create_door(pos: Vector2, dir: int, key: int, texColour, level: int):
 	get_parent().call("add_entity", new_door)
 
 func create_key(pos: Vector2, key_number: int, level: int):
-	var new_key = preload("res://Entities/Legacy/Key/Key.tscn").instance()
+	var new_key = preload("res://Entities/Legacy/Key/Key.tscn").instantiate()
 	
 	pos = pos / 5.0
-	new_key.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	new_key.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
 	new_key.set_keyNumber(key_number-1)
 	
 	get_parent().call("add_entity", new_key)
 
 func create_ladder(pos: Vector2, direction: int, level: int):
-	var new_ladder = preload("res://Entities/Legacy/Ladder/Ladder.tscn").instance()
+	var new_ladder = preload("res://Entities/Legacy/Ladder/Ladder.tscn").instantiate()
 	
 	pos = pos / 5.0
-	new_ladder.set_translation(Vector3(pos.x, (level - 1 + 0.5) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_ladder.set_position(Vector3(pos.x, (level - 1 + 0.5) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	new_ladder.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
 	
 	match (direction):
@@ -316,7 +316,7 @@ func create_ladder(pos: Vector2, direction: int, level: int):
 	get_parent().call("add_entity", new_ladder)
 
 func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
-	var new_dia = preload("res://Entities/Legacy/Diamond/Diamond.tscn").instance()
+	var new_dia = preload("res://Entities/Legacy/Diamond/Diamond.tscn").instantiate()
 	
 	var lvlheight
 	match height:
@@ -328,19 +328,19 @@ func create_diamond(pos: Vector2, time_bonus: int, height: int, level: int):
 	new_dia.set_type(time_bonus)
 	
 	pos = pos / 5.0
-	new_dia.set_translation(Vector3(pos.x, (level - 1 + lvlheight) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_dia.set_position(Vector3(pos.x, (level - 1 + lvlheight) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	new_dia.set_scale(Vector3(1, WorldConstants.LEVEL_HEIGHT / 2.0, 1))
 	
 	get_parent().call("add_collectable", "diamond")
 	get_parent().call("add_entity", new_dia)
 
 func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
-	var new_ice = preload("res://Entities/Legacy/Iceman/Iceman.tscn").instance()
+	var new_ice = preload("res://Entities/Legacy/Iceman/Iceman.tscn").instantiate()
 	
 	match speed:
-		1: new_ice.set_speed(50)
-		2: new_ice.set_speed(80)
-		3: new_ice.set_speed(130)
+		1: new_ice.set_velocity(50)
+		2: new_ice.set_velocity(80)
+		3: new_ice.set_velocity(130)
 	
 	match hits:
 		11: new_ice.set_hits(20)
@@ -348,41 +348,41 @@ func create_iceman(pos: Vector2, speed: int, hits: int, level: int):
 		_: new_ice.set_hits(hits)
 	
 	pos = pos / 5.0
-	new_ice.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
+	new_ice.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT, pos.y))
 	
 	get_parent().call("add_collectable", "iceman")
 	get_parent().call("add_entity", new_ice)
 	#new_ice.call_deferred("check_valid")
 
 func create_slingshot(pos: Vector2, level: int):
-	var new_ss = preload("res://Entities/Legacy/SlingshotPickups/SlingshotPickup.tscn").instance()
+	var new_ss = preload("res://Entities/Legacy/SlingshotPickups/SlingshotPickup.tscn").instantiate()
 	
 	pos = pos / 5.0
-	new_ss.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
+	new_ss.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.8, pos.y))
 	
 	get_parent().call("add_entity", new_ss)
 
 var crumb_amounts = [5, 10, 15, 30]
 func create_crumbs(pos: Vector2, amount: int, level: int):
-	var new_cr = preload("res://Entities/Legacy/SlingshotPickups/CrumbPack.tscn").instance()
+	var new_cr = preload("res://Entities/Legacy/SlingshotPickups/CrumbPack.tscn").instantiate()
 	
 	new_cr.set_crumb_amount(crumb_amounts[amount-1])
 	pos = pos / 5.0
-	new_cr.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
+	new_cr.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.005, pos.y))
 	
 	get_parent().call("add_entity", new_cr)
 
 func create_chaser(pos: Vector2, modelID: int, speed: int, level: int):
-	var new_ch = preload("res://Entities/Legacy/Chasers/Chaser.tscn").instance()
+	var new_ch = preload("res://Entities/Legacy/Chasers/Chaser.tscn").instantiate()
 	
 	match speed:
-		1: new_ch.set_speed(3.3)
-		2: new_ch.set_speed(4.2)
-		3: new_ch.set_speed(5.2)
+		1: new_ch.set_velocity(3.3)
+		2: new_ch.set_velocity(4.2)
+		3: new_ch.set_velocity(5.2)
 	
 	pos = pos / 5.0
 	new_ch.set_model(modelID)
-	new_ch.set_translation(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.5, pos.y))
+	new_ch.set_position(Vector3(pos.x, (level - 1) * WorldConstants.LEVEL_HEIGHT + 0.5, pos.y))
 	
 	get_parent().call("add_entity", new_ch)
 
@@ -398,7 +398,7 @@ func set_theme(pos : Vector2, themeID : int, level : int):
 		get_node("/root/Gameplay").remove_child(current_env)
 		current_env.queue_free()
 	
-	var new_env = load(Themes[themeID]).instance()
+	var new_env = load(Themes[themeID]).instantiate()
 	get_node("/root/Gameplay").add_child(new_env, true)
 	#new_env.name = "Environment"
 

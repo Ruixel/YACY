@@ -2,7 +2,7 @@ using YACY.Entities.Components;
 
 namespace YACY.Build.Commands;
 
-public class ChangeSizeCommand : ICommand
+public partial class ChangeSizeCommand : ICommand
 {
 	private int _entityId;
 	private int _size;

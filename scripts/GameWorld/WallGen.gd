@@ -1,10 +1,10 @@
 extends Node
 
-onready var EditorGUI = get_node("/root/Spatial/GUI")
+@onready var EditorGUI = get_node("/root/Node3D/GUI")
 
-onready var brick_mat = load("res://res/materials/brickwall.tres") # Brick Texture
-onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
-onready var selection_mat = load("res://res/materials/selection.tres")
+@onready var brick_mat = load("res://res/materials/brickwall.tres") # Brick Texture2D
+@onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
+@onready var selection_mat = load("res://res/materials/selection.tres")
 
 var quad_indices = [0, 1, 3, 1, 2, 3] # Magic array 
 func _createWallQuadMesh(start : Vector2, end : Vector2, 

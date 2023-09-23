@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ddtpuh6y7wfqc"
+path="res://.godot/imported/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/doorcreak.ogg"
-dest_files=[ "res://.import/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggstr" ]
+dest_files=["res://.godot/imported/doorcreak.ogg-09848660f49df1c2fd8b9cd85edd9b1d.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

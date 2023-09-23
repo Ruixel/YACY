@@ -3,10 +3,10 @@ using Godot;
 
 namespace YACY.UI;
 
-public class PreviewItemButton : Button
+public partial class PreviewItemButton : Button
 {
-	private Spatial _rotatingNode;
-	private Transform _originalNodeTransform;
+	private Node3D _rotatingNode;
+	private Transform3D _originalNodeTransform;
 	private bool _mouseEntered;
 	
 	private static float RotationSpeed = 3;
@@ -20,11 +20,11 @@ public class PreviewItemButton : Button
 	
 	public void AddMesh(string meshLocation)
 	{
-		_rotatingNode = ResourceLoader.Load<PackedScene>(meshLocation).Instance<Spatial>();
+		_rotatingNode = ResourceLoader.Load<PackedScene>(meshLocation).Instantiate<Node3D>();
 		_originalNodeTransform = _rotatingNode.Transform;
 
 		_rotatingNode.Name = "Mesh";
-		GetNode<Viewport>("ViewportContainer/Viewport").AddChild(_rotatingNode);
+		GetNode<SubViewport>("SubViewportContainer/SubViewport").AddChild(_rotatingNode);
 		
 		SetProcess(true);
 	}
@@ -41,7 +41,7 @@ public class PreviewItemButton : Button
 		onPressed?.Invoke(this, EventArgs.Empty);
 	}
 
-	public override void _Process(float delta)
+	public void _Process(float delta)
 	{
 		if (_mouseEntered)
 		{

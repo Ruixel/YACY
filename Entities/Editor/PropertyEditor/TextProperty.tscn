@@ -1,9 +1,9 @@
 [gd_scene format=2]
 
 [node name="TextProperty" type="TextEdit"]
-margin_top = 26.0
-margin_right = 220.0
-margin_bottom = 176.0
-rect_min_size = Vector2( 0, 150 )
+offset_top = 26.0
+offset_right = 220.0
+offset_bottom = 176.0
+custom_minimum_size = Vector2( 0, 150 )
 text = "Enter your message..."
 breakpoint_gutter = true

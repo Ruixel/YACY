@@ -21,12 +21,12 @@ func set_time(time):
 	self.time = time
 	
 	if world_record == -1 or time < world_record:
-		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You got the world record![/center]"
+		$VBoxContainer/Time.text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You got the world record![/center]"
 	elif time == world_record:
-		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You tied the world record![/center]"
+		$VBoxContainer/Time.text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You tied the world record![/center]"
 	else:
 		var diff = time - world_record
-		$VBoxContainer/Time.bbcode_text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You were " + str(diff) + " seconds off the record[/center]"
+		$VBoxContainer/Time.text = "[center][b]" + str("%02d" % minutes) + ":" + str("%02d" % seconds) + "[/b]         You were " + str(diff) + " seconds off the record[/center]"
 
 func _on_Menu_pressed():
 	var pause_menu = get_node_or_null("../../../PauseMenu")
@@ -66,7 +66,7 @@ func _on_Submit_pressed():
 	can_submit = false
 	
 	var mutation = '{"query": "mutation { submitHighscore(gameNumber: ' + str(gameNumber) + ', nickname: \\"' + nickname + '\\", time: ' + str(self.time) + ') }"}'
-	var headers : PoolStringArray
+	var headers : PackedStringArray
 	headers.append("Content-Type: application/json")
 	
 	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, mutation)
@@ -78,7 +78,9 @@ func _on_Submit_pressed():
 func _on_HTTPRequest_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
 	
-	var parse = JSON.parse(response)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(response)
+	var parse = test_json_conv.get_data()
 	if parse.error != OK:
 		$VBoxContainer/SubmissionStatus.text = "Error parsing response"
 		print(response_code, ": ", response)

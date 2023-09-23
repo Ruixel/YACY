@@ -1,8 +1,8 @@
 extends "CursorBase.gd"
 
-onready var parent    = get_parent()
-onready var camera    = get_node("../../EditorCamera/Camera")
-onready var WorldAPI  = get_node("../../WorldInterface")
+@onready var parent    = get_parent()
+@onready var camera    = get_node("../../EditorCamera/Camera3D")
+@onready var WorldAPI  = get_node("../../WorldInterface")
 
 const Vector2i = preload('res://scripts/Vec2i.gd')
 

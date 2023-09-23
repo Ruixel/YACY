@@ -6,7 +6,7 @@ using YACY.UI;
 namespace YACY.Entities.Components;
 
 [MessagePackObject]
-public class TextureComponent : Component
+public partial class TextureComponent : Component
 {
 	public TextureComponent(BuildEntity entity) : base(entity)
 	{ }

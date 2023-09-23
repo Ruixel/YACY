@@ -1,7 +1,7 @@
-extends Spatial
-onready var EditorGUI = get_node("../GUI")
-onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
-onready var Cursor = get_node("../3DCursor")
+extends Node3D
+@onready var EditorGUI = get_node("../GUI")
+@onready var PropertyGUI = EditorGUI.get_node("ObjProperties")
+@onready var Cursor = get_node("../3DCursor")
 
 const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
@@ -89,11 +89,11 @@ func obj_create(pos : Vector2, lvl : int = -1):
 	return new_obj
 
 func select_obj_from_raycast(ray_origin : Vector3, ray_direction : Vector3):
-	var space_state = get_world().direct_space_state
+	var space_state = get_world_3d().direct_space_state
 	var result = space_state.intersect_ray(ray_origin, (ray_direction*50) + ray_origin)
 	var allObjects = objects[WorldConstants.Tools.ALL]
 	
-	if result.empty() == false:
+	if result.is_empty() == false:
 		if allObjects.find(result.collider.get_parent()) != -1:
 			selection = allObjects[allObjects.find(result.collider.get_parent())]
 			mode = selection.toolType
@@ -173,7 +173,7 @@ func get_prototype(type) -> Array:
 	var prototype_size = Vector2()
 	
 	# Create instance
-	var prototype = MeshInstance.new()
+	var prototype = MeshInstance3D.new()
 	prototype.set_name("Prot")
 	add_child(prototype)
 	prototype.set_owner(self)
@@ -209,27 +209,27 @@ func remesh_world():
 # Signals
 func _ready(): 
 	# Connect GUI signals
-	EditorGUI.get_node("MapLevel").connect("s_changeLevel", self, "on_level_change")
-	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
-	EditorGUI.get_node("Misc").connect("s_toggleUpperFloors", self, "on_toggle_upper_levels")
-	EditorGUI.get_node("Misc").connect("s_saveFile", self, "on_save_file_json")
-	EditorGUI.get_node("Misc").connect("s_loadFile", self, "on_load_file_json")
+	EditorGUI.get_node("MapLevel").connect("s_changeLevel", Callable(self, "on_level_change"))
+	EditorGUI.get_node("ObjectList").connect("s_changeTool", Callable(self, "on_tool_change"))
+	EditorGUI.get_node("Misc").connect("s_toggleUpperFloors", Callable(self, "on_toggle_upper_levels"))
+	EditorGUI.get_node("Misc").connect("s_saveFile", Callable(self, "on_save_file_json"))
+	EditorGUI.get_node("Misc").connect("s_loadFile", Callable(self, "on_load_file_json"))
 	
 	# Connect property change signals
 	var PropertyGUI = EditorGUI.get_node("ObjProperties")
-	PropertyGUI.connect("s_changeTexture", self, "property_texture")
-	PropertyGUI.connect("s_changeColour", self, "property_colour")
-	PropertyGUI.connect("s_changeSize", self, "property_size")
-	PropertyGUI.connect("s_changeWallShape", self, "property_wallShape")
-	PropertyGUI.connect("s_changeBoolean", self, "property_boolean")
-	PropertyGUI.connect("s_changePlatShape", self, "property_platShape")
+	PropertyGUI.connect("s_changeTexture", Callable(self, "property_texture"))
+	PropertyGUI.connect("s_changeColour", Callable(self, "property_colour"))
+	PropertyGUI.connect("s_changeSize", Callable(self, "property_size"))
+	PropertyGUI.connect("s_changeWallShape", Callable(self, "property_wallShape"))
+	PropertyGUI.connect("s_changeBoolean", Callable(self, "property_boolean"))
+	PropertyGUI.connect("s_changePlatShape", Callable(self, "property_platShape"))
 	
-	PropertyGUI.connect("s_deleteObject", self, "selection_delete")
-	PropertyGUI.connect("s_setDefault", self, "selection_set_default")
+	PropertyGUI.connect("s_deleteObject", Callable(self, "selection_delete"))
+	PropertyGUI.connect("s_setDefault", Callable(self, "selection_set_default"))
 	
 	# Initialise level meshes
 	for lvl in range(0, WorldConstants.MAX_LEVELS+1):
-		var n = Spatial.new()
+		var n = Node3D.new()
 		n.set_name("Level" + str(lvl))
 		
 		add_child(n)
@@ -284,7 +284,7 @@ func on_toggle_upper_levels(toggle : bool):
 	showUpperLevels = toggle
 	if showUpperLevels:
 		for lvl in levelMeshes:
-			lvl.set_translation(Vector3(0,0,0))
+			lvl.set_position(Vector3(0,0,0))
 	else:
 		hide_upper_levels(level)
 
@@ -292,9 +292,9 @@ func hide_upper_levels(currentLevel):
 	# Hide objects by displacing them, this means that they wont affect the raycast selection
 	for lvl in range(0,WorldConstants.MAX_LEVELS+1):
 		if lvl <= currentLevel:
-			levelMeshes[lvl].set_translation(Vector3(0,0,0))
+			levelMeshes[lvl].set_position(Vector3(0,0,0))
 		else:
-			levelMeshes[lvl].set_translation(Vector3(5000000,5000000,5000000))
+			levelMeshes[lvl].set_position(Vector3(5000000,5000000,5000000))
 	
 	if selection != null and selection.has_method("get_level"):
 		if selection.get_level() > currentLevel:

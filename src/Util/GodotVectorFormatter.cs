@@ -4,12 +4,12 @@ using MessagePack.Formatters;
 
 namespace YACY.Util;
 
-public class GodotVectorFormatter : IMessagePackFormatter<Vector2>
+public partial class GodotVectorFormatter : IMessagePackFormatter<Vector2>
 {
 	public void Serialize(ref MessagePackWriter writer, Vector2 value, MessagePackSerializerOptions options)
 	{
-		writer.Write(value.x);
-		writer.Write(value.y);
+		writer.Write(value.X);
+		writer.Write(value.Y);
 	}
 
 	public Vector2 Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)

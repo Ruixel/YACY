@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/shrink.ogg-f4b3a5cf51f56770c9ca23f1a8e2f9a4.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://85dbvtg4cc7x"
+path="res://.godot/imported/shrink.ogg-f4b3a5cf51f56770c9ca23f1a8e2f9a4.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/shrink.ogg"
-dest_files=[ "res://.import/shrink.ogg-f4b3a5cf51f56770c9ca23f1a8e2f9a4.oggstr" ]
+dest_files=["res://.godot/imported/shrink.ogg-f4b3a5cf51f56770c9ca23f1a8e2f9a4.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

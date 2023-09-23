@@ -7,7 +7,7 @@ using YACY.Util;
 
 namespace YACY.MeshGen;
 
-public class ThickWallGenerator : Node
+public partial class ThickWallGenerator : Node
 {
 	public static Mesh GenerateComplexWall(Wall wall, List<Wall> startWalls, List<Wall> endWalls, int level,
 		bool propagate = false)
@@ -22,29 +22,29 @@ public class ThickWallGenerator : Node
 		var end = wall.EndPosition;
 
 		var flatVertices = new List<Vector3>();
-		flatVertices.Add(new Vector3(start.x, top, start.y));
-		flatVertices.Add(new Vector3(start.x, bottom, start.y));
-		flatVertices.Add(new Vector3(end.x, bottom, end.y));
-		flatVertices.Add(new Vector3(end.x, top, end.y));
+		flatVertices.Add(new Vector3(start.X, top, start.Y));
+		flatVertices.Add(new Vector3(start.X, bottom, start.Y));
+		flatVertices.Add(new Vector3(end.X, bottom, end.Y));
+		flatVertices.Add(new Vector3(end.X, top, end.Y));
 
 		var normal = (flatVertices[2] - flatVertices[1]).Cross(flatVertices[0] - flatVertices[1]).Normalized();
 		var vertices = flatVertices.ConvertAll(v => v + normal * 0.1f);
 		vertices.AddRange(flatVertices.ConvertAll(v => v - normal * 0.1f));
 
 		// Calculate lines 
-		var frontStart = new Vector2(vertices[0].x, vertices[0].z);
-		var frontEnd = new Vector2(vertices[3].x, vertices[3].z);
+		var frontStart = new Vector2(vertices[0].X, vertices[0].Z);
+		var frontEnd = new Vector2(vertices[3].X, vertices[3].Z);
 		wall.FrontLine = new Tuple<Vector2, Vector2>(frontStart, (frontEnd - frontStart).Normalized());
 
-		var backStart = new Vector2(vertices[4].x, vertices[4].z);
-		var backEnd = new Vector2(vertices[7].x, vertices[7].z);
+		var backStart = new Vector2(vertices[4].X, vertices[4].Z);
+		var backEnd = new Vector2(vertices[7].X, vertices[7].Z);
 		wall.BackLine = new Tuple<Vector2, Vector2>(backStart, (backEnd - backStart).Normalized());
 
 		// Get first wall
 		if (startWalls.Count >= 1)
 		{
-			var closestFrontIntersect = new Vector2(vertices[0].x, vertices[0].z);
-			var closestBackIntersect = new Vector2(vertices[4].x, vertices[4].z);
+			var closestFrontIntersect = new Vector2(vertices[0].X, vertices[0].Z);
+			var closestBackIntersect = new Vector2(vertices[4].X, vertices[4].Z);
 
 			var frontLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
 			var frontLineDot = -3f;
@@ -102,7 +102,7 @@ public class ThickWallGenerator : Node
 
 			if (Math.Abs(frontLineDot - (-1f)) > 0.01)
 			{
-				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+				var frontIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.FrontLine.Item1,
 					wall.FrontLine.Item2,
 					frontLine.Item1, frontLine.Item2);
 
@@ -111,26 +111,26 @@ public class ThickWallGenerator : Node
 
 			if (Math.Abs(backLineDot - (-1f)) > 0.01)
 			{
-				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+				var backIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.BackLine.Item1,
 					wall.BackLine.Item2,
 					backLine.Item1, backLine.Item2);
 
 				closestBackIntersect = backIntersect;
 			}
 
-			vertices[0] = new Vector3(closestFrontIntersect.x, top, closestFrontIntersect.y);
-			vertices[1] = new Vector3(closestFrontIntersect.x, bottom, closestFrontIntersect.y);
+			vertices[0] = new Vector3(closestFrontIntersect.X, top, closestFrontIntersect.Y);
+			vertices[1] = new Vector3(closestFrontIntersect.X, bottom, closestFrontIntersect.Y);
 
-			vertices[4] = new Vector3(closestBackIntersect.x, top, closestBackIntersect.y);
-			vertices[5] = new Vector3(closestBackIntersect.x, bottom, closestBackIntersect.y);
+			vertices[4] = new Vector3(closestBackIntersect.X, top, closestBackIntersect.Y);
+			vertices[5] = new Vector3(closestBackIntersect.X, bottom, closestBackIntersect.Y);
 		}
 
 
 		// Wall end point
 		if (endWalls.Count >= 1)
 		{
-			var closestFrontIntersect = new Vector2(vertices[2].x, vertices[2].z);
-			var closestBackIntersect = new Vector2(vertices[6].x, vertices[6].z);
+			var closestFrontIntersect = new Vector2(vertices[2].X, vertices[2].Z);
+			var closestBackIntersect = new Vector2(vertices[6].X, vertices[6].Z);
 
 			var frontLine = new Tuple<Vector2, Vector2>(Vector2.Zero, Vector2.Zero);
 			var frontLineDot = -3f;
@@ -189,7 +189,7 @@ public class ThickWallGenerator : Node
 
 			if (Math.Abs(frontLineDot - (-1f)) > 0.01)
 			{
-				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+				var frontIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.FrontLine.Item1,
 					wall.FrontLine.Item2,
 					frontLine.Item1, frontLine.Item2);
 
@@ -198,18 +198,18 @@ public class ThickWallGenerator : Node
 
 			if (Math.Abs(backLineDot - (-1f)) > 0.01)
 			{
-				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+				var backIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.BackLine.Item1,
 					wall.BackLine.Item2,
 					backLine.Item1, backLine.Item2);
 
 				closestBackIntersect = backIntersect;
 			}
 
-			vertices[3] = new Vector3(closestFrontIntersect.x, top, closestFrontIntersect.y);
-			vertices[2] = new Vector3(closestFrontIntersect.x, bottom, closestFrontIntersect.y);
+			vertices[3] = new Vector3(closestFrontIntersect.X, top, closestFrontIntersect.Y);
+			vertices[2] = new Vector3(closestFrontIntersect.X, bottom, closestFrontIntersect.Y);
 
-			vertices[7] = new Vector3(closestBackIntersect.x, top, closestBackIntersect.y);
-			vertices[6] = new Vector3(closestBackIntersect.x, bottom, closestBackIntersect.y);
+			vertices[7] = new Vector3(closestBackIntersect.X, top, closestBackIntersect.Y);
+			vertices[6] = new Vector3(closestBackIntersect.X, bottom, closestBackIntersect.Y);
 		}
 
 		// Get end first wall
@@ -231,14 +231,14 @@ public class ThickWallGenerator : Node
 				}
 
 				// Start lin
-				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+				var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine(wall.FrontLine.Item1,
 					wall.FrontLine.Item2,
 					frontLine.Item1, frontLine.Item2);
 
 				vertices[2] = new Vector3(frontIntersect.x, bottom, frontIntersect.y);
 				vertices[3] = new Vector3(frontIntersect.x, top, frontIntersect.y);
 
-				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+				var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine(wall.BackLine.Item1,
 					wall.BackLine.Item2,
 					backLine.Item1, backLine.Item2);
 
@@ -277,13 +277,13 @@ public class ThickWallGenerator : Node
 
 		if (startWalls.Count >= 2)
 		{
-			var gapfill = new List<Vector3> {vertices[0], vertices[4], new Vector3(start.x, top, start.y)};
+			var gapfill = new List<Vector3> {vertices[0], vertices[4], new Vector3(start.X, top, start.Y)};
 			FloorHelper.AddTri(surfaceTool, gapfill, 1, Colors.White, ref index, true);
 		}
 
 		if (endWalls.Count >= 2)
 		{
-			var gapfill = new List<Vector3> {vertices[3], vertices[7], new Vector3(end.x, top, end.y)};
+			var gapfill = new List<Vector3> {vertices[3], vertices[7], new Vector3(end.X, top, end.Y)};
 			FloorHelper.AddTri(surfaceTool, gapfill, 1, Colors.White, ref index, false);
 		}
 
@@ -316,19 +316,19 @@ public class ThickWallGenerator : Node
 					}
 
 					// Start line
-					var frontIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.FrontLine.Item1,
+					var frontIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.FrontLine.Item1,
 						wall.FrontLine.Item2,
 						frontLine.Item1, frontLine.Item2);
 
-					vertices[0] = new Vector3(frontIntersect.x, vertices[0].y, frontIntersect.y);
-					vertices[1] = new Vector3(frontIntersect.x, vertices[1].y, frontIntersect.y);
+					vertices[0] = new Vector3(frontIntersect.X, vertices[0].Y, frontIntersect.Y);
+					vertices[1] = new Vector3(frontIntersect.X, vertices[1].Y, frontIntersect.Y);
 
-					var backIntersect = (Vector2) Godot.Geometry.LineIntersectsLine2d(wall.BackLine.Item1,
+					var backIntersect = (Vector2) Geometry2D.LineIntersectsLine(wall.BackLine.Item1,
 						wall.BackLine.Item2,
 						backLine.Item1, backLine.Item2);
 
-					vertices[4] = new Vector3(backIntersect.x, vertices[4].y, backIntersect.y);
-					vertices[5] = new Vector3(backIntersect.x, vertices[5].y, backIntersect.y);
+					vertices[4] = new Vector3(backIntersect.X, vertices[4].Y, backIntersect.Y);
+					vertices[5] = new Vector3(backIntersect.X, vertices[5].Y, backIntersect.Y);
 
 					if (propagate)
 					{

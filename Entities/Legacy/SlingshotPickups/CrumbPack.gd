@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var expiring: bool = false
 var crumb_amount: int = 10
@@ -14,5 +14,5 @@ func _on_Area_body_entered(body):
 		
 		print("Picked up " + str(crumb_amount) + " crumbs")
 		$PickupSFX.play()
-		yield($PickupSFX, "finished")
+		await $PickupSFX.finished
 		self.queue_free()

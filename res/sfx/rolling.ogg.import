@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/rolling.ogg-98b685c4f9c8d10f12a7623dcc25f819.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://biiwonyuf4aan"
+path="res://.godot/imported/rolling.ogg-98b685c4f9c8d10f12a7623dcc25f819.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/rolling.ogg"
-dest_files=[ "res://.import/rolling.ogg-98b685c4f9c8d10f12a7623dcc25f819.oggstr" ]
+dest_files=["res://.godot/imported/rolling.ogg-98b685c4f9c8d10f12a7623dcc25f819.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

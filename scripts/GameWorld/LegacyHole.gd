@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 const toolType = WorldConstants.Tools.HOLE
 
 const canPlace = true
@@ -14,15 +14,15 @@ const size_offset = 0.05
 
 var platShape = WorldConstants.PlatShape.QUAD
 
-var mesh : MeshInstance
-var selection_mesh : MeshInstance
-var collision_mesh : StaticBody
-var collision_shape : CollisionShape
+var mesh : MeshInstance3D
+var selection_mesh : MeshInstance3D
+var collision_mesh : StaticBody3D
+var collision_shape : CollisionShape3D
 
 func _init(position : Vector2, lvl : int):
-	mesh = MeshInstance.new()
-	collision_mesh = StaticBody.new()
-	collision_shape = CollisionShape.new()
+	mesh = MeshInstance3D.new()
+	collision_mesh = StaticBody3D.new()
+	collision_shape = CollisionShape3D.new()
 	
 	pos = position
 	level = lvl 
@@ -62,7 +62,7 @@ func genPrototypeMesh(pLevel : int) -> Mesh:
 	return buildPlatform(Vector2(0,0), pLevel, 0, 0, Color(0,0,0), size, platShape, true)
 
 func selectObj():
-	selection_mesh = MeshInstance.new()
+	selection_mesh = MeshInstance3D.new()
 	selection_mesh.mesh = buildPlatSelectionMesh(pos, level, size, 0, 0.05)
 
 func get_property_dict() -> Dictionary:
@@ -160,13 +160,13 @@ static func _createPlatQuadMesh(surface_tool : SurfaceTool, wall_vertices : Arra
 	for idx in quad_indices:
 		surface_tool.add_index(sIndex + idx)
 
-func get_vertices() -> PoolVector2Array:
+func get_vertices() -> PackedVector2Array:
 	var halfSize = (size_list[size-1] / 2) - size_offset
 	
 	var start = Vector2(pos.x - halfSize, pos.y - halfSize)
 	var end   = Vector2(pos.x + halfSize, pos.y + halfSize)
 	
-	var hole_vertices : PoolVector2Array
+	var hole_vertices : PackedVector2Array
 	hole_vertices.insert(0, Vector2(start.x, start.y))
 	hole_vertices.insert(1, Vector2(end.x,   start.y))
 	hole_vertices.insert(2, Vector2(end.x,   end.y))

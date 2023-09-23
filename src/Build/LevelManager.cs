@@ -12,9 +12,9 @@ namespace YACY.Build
 {
 	// Holds level data for the world
 	// Also, it is where all the Godot entities reside
-	public class LevelManager : ILevelManager
+	public partial class LevelManager : ILevelManager
 	{
-		private Spatial _levelContainer;
+		private Node3D _levelContainer;
 		private bool _containerAdded;
 
 		private Dictionary<int, BuildEntity> _entities;
@@ -25,7 +25,7 @@ namespace YACY.Build
 
 		public LevelManager()
 		{
-			_levelContainer = new Spatial();
+			_levelContainer = new Node3D();
 			_levelContainer.Name = "LevelContainer";
 			_entities = new Dictionary<int, BuildEntity>();
 
@@ -50,7 +50,7 @@ namespace YACY.Build
 			_containerAdded = true;
 		}
 
-		public Spatial GetContainer()
+		public Node3D GetContainer()
 		{
 			return _levelContainer;
 		}
@@ -165,7 +165,7 @@ namespace YACY.Build
 			// Check if it's a legacy aMazer level (they all start with '[#name:')
 			if (CYLevelParser.CheckMagicValue(data))
 			{
-				var legacyLevelData = CYLevelParser.ParseCYLevel(data.GetStringFromUTF8());
+				var legacyLevelData = CYLevelParser.ParseCYLevel(data.GetStringFromUtf8());
 				Console.WriteLine($"Loaded \"{legacyLevelData.Title}\" by {legacyLevelData.Author}");
 
 				ClearLevel();

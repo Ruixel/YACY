@@ -4,7 +4,7 @@ using MessagePack;
 namespace YACY.Entities.Components;
 
 [MessagePackObject]
-public class HeightComponent : Component
+public partial class HeightComponent : Component
 {
 	public HeightComponent(BuildEntity entity) : base(entity)
 	{

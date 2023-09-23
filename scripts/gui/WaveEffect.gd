@@ -1,6 +1,6 @@
-extends Spatial
+extends Node3D
 
-export var wave_speed: float
+@export var wave_speed: float
 
 var p = PI/2
 

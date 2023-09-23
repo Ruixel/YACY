@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 var velocity = Vector3(0, -1, 0)
 
@@ -15,7 +15,7 @@ func _physics_process(delta):
 	
 	var collision_data = move_and_collide(velocity)
 	if collision_data != null:
-		$ChaserTrap/CollisionShape.disabled = false
+		$ChaserTrap/CollisionShape3D.disabled = false
 		set_physics_process(false)
 
 

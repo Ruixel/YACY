@@ -1,14 +1,14 @@
 extends Control
 
 func _ready():
-	get_parent().connect("get_level_info", self, "set_level_info")
+	get_parent().connect("get_level_info", Callable(self, "set_level_info"))
 
 func showLevel(title: String, author: String):
 	$Timer.stop()
 	$Tween.stop_all()
 	set_modulate(Color(1,1,1,0))
 	
-	yield(get_tree().create_timer(1.0), "timeout")
+	await get_tree().create_timer(1.0).timeout
 	
 	$Title.text = title
 	$Author.text = "By " + author

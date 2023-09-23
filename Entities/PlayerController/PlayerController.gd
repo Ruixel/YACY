@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 const rotationSpeed = 2.0 / 1000
 const maxSpeedOnGround = 3.5
@@ -12,21 +12,21 @@ var ladderUpVector := Vector3()
 var ladderCrossVector := Vector3()
 var canMove := true
 var gravity := 18.0
-var spawnPoint := Transform()
+var spawnPoint := Transform3D()
 
 # Player Controller Children
-onready var camera = $EyePoint
+@onready var camera = $EyePoint
 
 # GUI
-onready var gui = $PlayerGUI
-onready var gui_mouseLock = $PlayerGUI/MouseLockWarning
+@onready var gui = $PlayerGUI
+@onready var gui_mouseLock = $PlayerGUI/MouseLockWarning
 
 # Camera Variables
 var lock_mouse = true
 var yaw_delta = 0
 var pitch_delta = 0
 var pitch = 0
-onready var camera_angles = [$EyePoint/FPSCamera, $EyePoint/TPSCameraBehind, $EyePoint/TPSCameraFront ]
+@onready var camera_angles = [$EyePoint/FPSCamera, $EyePoint/TPSCameraBehind, $EyePoint/TPSCameraFront ]
 var camera_show_body = [false, true, true]
 enum CAMERA_TYPE { FPS, BEHIND, FRONT }
 var cType = CAMERA_TYPE.FPS
@@ -69,11 +69,11 @@ func _ready():
 	_setup()
 	reset()
 	
-	self.connect("s_updateAmmo", self, "updateAmmo")
+	self.connect("s_updateAmmo", Callable(self, "updateAmmo"))
 	var pause_node = get_node_or_null("../PauseMenu")
 	if pause_node != null:
-		pause_node.connect("pause", self, "onPause")
-		pause_node.connect("unpause", self, "onUnpause")
+		pause_node.connect("pause", Callable(self, "onPause"))
+		pause_node.connect("unpause", Callable(self, "onUnpause"))
 
 func set_can_pause(value: bool):
 	var pause_node = get_node_or_null("../PauseMenu")
@@ -164,7 +164,7 @@ func _physics_process(delta):
 		onFloorLastFrame = true
 		targetVelocity = getMoveDirection() * maxSpeedOnGround * speedMultiplier
 		targetVelocity += Vector3(0, -5, 0)
-		charVelocity = charVelocity.linear_interpolate(targetVelocity, movementSharpnessGround * delta)
+		charVelocity = charVelocity.lerp(targetVelocity, movementSharpnessGround * delta)
 		
 		if (Input.is_action_pressed("jump") and canMove):
 			charVelocity = Vector3(charVelocity.x, 0, charVelocity.z)
@@ -192,14 +192,16 @@ func _physics_process(delta):
 			charVelocity += Vector3.DOWN * gravity * delta
 	
 	#move_and_slide_with_snap(charVelocity, Vector3(0, -2, 0), Vector3(0, 1, 0))
-	move_and_slide(charVelocity, Vector3(0, 1, 0))
+	set_velocity(charVelocity)
+	set_up_direction(Vector3(0, 1, 0))
+	move_and_slide()
 
 func checkIfGrounded():
-	var space = get_world().direct_space_state as PhysicsDirectSpaceState
-	var params = PhysicsShapeQueryParameters.new()
+	var space = get_world_3d().direct_space_state as PhysicsDirectSpaceState3D
+	var params = PhysicsShapeQueryParameters3D.new()
 	params.exclude = [self]
-	params.set_shape($CollisionShape.shape)
-	params.set_transform($CollisionShape.global_transform)
+	params.set_shape($CollisionShape3D.shape)
+	params.set_transform($CollisionShape3D.global_transform)
 
 	var motionTest = space.cast_motion(params, Vector3(0, -1, 0))
 	print (motionTest)
@@ -207,7 +209,7 @@ func checkIfGrounded():
 	# Get collision info
 	params.transform.origin += Vector3(0, -1, 0) * motionTest[1]
 	var restInfo = space.get_rest_info(params)
-	if (not restInfo.empty()):
+	if (not restInfo.is_empty()):
 		var angle = Vector3(0, 1, 0).dot(restInfo["normal"])
 		print("Normal: " + str(angle))
 	
@@ -329,7 +331,7 @@ func fallInWater():
 	set_can_pause(false)
 	currentCam.environment = underwater_env
 	
-	yield(get_tree().create_timer(2.5), "timeout")
+	await get_tree().create_timer(2.5).timeout
 	
 	gravity = 18
 	charVelocity = Vector3(0, 0, 0)
@@ -339,7 +341,7 @@ func fallInWater():
 	currentCam.environment = null
 	self.set_transform(self.spawnPoint)
 
-func setSpawnPoint(transform: Transform):
+func setSpawnPoint(transform: Transform3D):
 	self.spawnPoint = transform
 
 func pickupJetpack(has_unlimited_fuel: bool) -> bool:
@@ -384,8 +386,8 @@ func pickupDiamond(time_save: int = 0):
 
 func pickupSlingshot() -> bool:
 	if not hasSlingshot:
-		var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instance()
-		slingshot.connect("s_updateAmmo", self, "updateAmmo")
+		var slingshot = preload("res://Entities/PlayerController/Slingshot/Slingshot.tscn").instantiate()
+		slingshot.connect("s_updateAmmo", Callable(self, "updateAmmo"))
 		slingshot.add_connection(self)
 		$EyePoint/Hand.add_child(slingshot)
 		
@@ -404,7 +406,7 @@ func pickupCrumbs(amount: int):
 
 func dropCrumb():
 	if self.ammo > 0:
-		var crumb = preload("res://Entities/PlayerController/Slingshot/CrumbDrop.tscn").instance()
+		var crumb = preload("res://Entities/PlayerController/Slingshot/CrumbDrop.tscn").instantiate()
 		var level_debris = get_parent().get_node("LevelDebris")
 		level_debris.add_child(crumb)
 		crumb.global_translate(self.global_transform.origin)
@@ -428,14 +430,14 @@ func freeze():
 	emit_signal("s_disabled")
 	
 	gui.freezeScreen(3.6)
-	yield(get_tree().create_timer(3.3), "timeout")
+	await get_tree().create_timer(3.3).timeout
 	
 	self.busy = false
 	self.canMove = true
 	emit_signal("s_enabled")
 	
 	# Wait a while for the player to move around
-	yield(get_tree().create_timer(2.5), "timeout")
+	await get_tree().create_timer(2.5).timeout
 	self.invulnerable = false
 
 # Chaser stuff

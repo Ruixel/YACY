@@ -7,7 +7,7 @@ using static YACY.Build.BuildEntityList;
 
 namespace YACY.Entities;
 
-public class BuildEntity : Spatial
+public partial class BuildEntity : Node3D
 {
 	public int Id { get; }
 	public Vector2 Position;

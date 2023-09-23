@@ -9,7 +9,7 @@
 
 [node name="Environment" parent="." instance=ExtResource( 4 )]
 
-[node name="LegacyLevel" type="Spatial" parent="."]
+[node name="LegacyLevel" type="Node3D" parent="."]
 script = ExtResource( 1 )
 
 [node name="ObjectLoader" type="Node" parent="LegacyLevel"]
@@ -21,21 +21,21 @@ script = ExtResource( 2 )
 script = ExtResource( 3 )
 _loaderNodePath = NodePath("../LegacyLevel")
 
-[node name="BGCamera" type="Camera" parent="."]
-transform = Transform( -0.899474, 0.0758798, -0.430336, 0, 0.984808, 0.173648, 0.436974, 0.156192, -0.885809, 34.1838, 13.6522, 16.1528 )
+[node name="BGCamera" type="Camera3D" parent="."]
+transform = Transform3D( -0.899474, 0.0758798, -0.430336, 0, 0.984808, 0.173648, 0.436974, 0.156192, -0.885809, 34.1838, 13.6522, 16.1528 )
 fov = 30.0
 far = 2000.0
 
-[node name="OmniLight" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9531, 23.9635, 18.464 )
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9531, 23.9635, 18.464 )
 visible = false
 light_color = Color( 0.960784, 0.972549, 0.733333, 1 )
 light_energy = 1.48
 light_indirect_energy = 3.69
 omni_range = 12.2223
 
-[node name="OmniLight2" type="OmniLight" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.56, 23.9635, 18.464 )
+[node name="OmniLight2" type="OmniLight3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 39.56, 23.9635, 18.464 )
 visible = false
 light_color = Color( 0.960784, 0.972549, 0.733333, 1 )
 light_energy = 1.48

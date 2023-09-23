@@ -1,7 +1,6 @@
 using System;
 using System.Text;
 using Godot;
-using Object = Godot.Object;
 
 namespace YACY.Legacy
 {
@@ -12,9 +11,9 @@ namespace YACY.Legacy
             return new Vector2(x.ToFloat(), y.ToFloat());
         }
 
-        public static object ExtractTexColor(string material)
+        public static Godot.Variant ExtractTexColor(string material)
         {
-            if (material.IsValidInteger())
+            if (material.IsValidInt())
             {
                 return new CYTexture(material.ToInt()).ToVariant();
             }
@@ -30,7 +29,7 @@ namespace YACY.Legacy
             if (split.Length != 3)
             {
                 GD.PushError($"Could not convert {material} into a Godot Colour");
-                return new CYTexture(new Color(0, 0, 0));
+                return new CYTexture(new Color(0, 0, 0)).ToVariant();
             }
 
             return new CYTexture(new Color(split[0].ToFloat()/255.0f, split[1].ToFloat()/255.0f, split[2].ToFloat()/255.0f)).ToVariant();

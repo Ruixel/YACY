@@ -1,9 +1,9 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://res/txrs/sky.jpg" type="Texture" id=1]
-[ext_resource path="res://res/txrs/water.jpg" type="Texture" id=2]
+[ext_resource path="res://res/txrs/sky.jpg" type="Texture2D" id=1]
+[ext_resource path="res://res/txrs/water.jpg" type="Texture2D" id=2]
 
-[sub_resource type="PanoramaSky" id=1]
+[sub_resource type="Sky" id=1]
 panorama = ExtResource( 1 )
 
 [sub_resource type="Environment" id=2]
@@ -33,7 +33,7 @@ glow_strength = 0.83
 glow_hdr_threshold = 0.7
 glow_bicubic_upscale = true
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="StandardMaterial3D" id=3]
 flags_unshaded = true
 albedo_color = Color( 0.294118, 0.294118, 0.294118, 1 )
 albedo_texture = ExtResource( 2 )
@@ -43,14 +43,14 @@ uv1_scale = Vector3( 70, 70, 200 )
 material = SubResource( 3 )
 size = Vector2( 2000, 2000 )
 
-[node name="Environment" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )
+[node name="Environment" type="Node3D"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0170565, 0.0341148, 0.00547564 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource( 2 )
 
-[node name="DirectionalLight" type="DirectionalLight" parent="."]
-transform = Transform( -0.97277, -0.0134269, 0.231384, 0.162328, -0.752044, 0.638811, 0.165433, 0.658976, 0.733745, 3.72529e-09, 3.77881, 1.19675e-07 )
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D( -0.97277, -0.0134269, 0.231384, 0.162328, -0.752044, 0.638811, 0.165433, 0.658976, 0.733745, 3.72529e-09, 3.77881, 1.19675e-07 )
 light_color = Color( 0.811765, 0.890196, 0.905882, 1 )
 light_energy = 1.2
 shadow_enabled = true
@@ -58,12 +58,12 @@ shadow_color = Color( 0.027451, 0.0352941, 0.239216, 1 )
 shadow_bias = 0.0
 directional_shadow_normal_bias = 0.3
 
-[node name="Water" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, -10, 0 )
+[node name="Water" type="MeshInstance3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, -10, 0 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="Water2" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, -1, 1.62921e-07, 0, -3.25841e-07, -0.5, 0, -10, 0 )
+[node name="Water2" type="MeshInstance3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, -1, 1.62921e-07, 0, -3.25841e-07, -0.5, 0, -10, 0 )
 mesh = SubResource( 4 )
 material/0 = null

@@ -9,7 +9,7 @@ using YACY.UI;
 namespace YACY.Entities.Components;
 
 [MessagePackObject]
-public class SizeComponent : Component
+public partial class SizeComponent : Component
 {
 	public SizeComponent(int componentId, int minSize, int maxSize)
 	{

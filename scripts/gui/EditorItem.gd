@@ -2,8 +2,8 @@ extends Button
 
 var normal_pos
 
-onready var tween = $Tween
-onready var spinning_mesh = $ViewportContainer2/Viewport/Mesh
+@onready var tween = $Tween
+@onready var spinning_mesh = $ViewportContainer2/SubViewport/Mesh
 
 var spinning_mesh_initial_position
 var mouse_entered = false

@@ -8,27 +8,25 @@ using Poly2Tri.Triangulation.Polygon;
 
 namespace YACY.Legacy
 {
-	public class FloorGenerator : Node
+	public partial class FloorGenerator : Node
 	{
-		private IList<DelaunayTriangle> GetTriangles(ICollection<Vector2> vertices, Array<Object> holes)
+		private IList<DelaunayTriangle> GetTriangles(ICollection<Vector2> vertices, Array<Variant> holes)
 		{
 			// Generate base polygon from floor vertices
 			var points =
-				vertices.Select(vertex => new PolygonPoint(vertex.x, vertex.y));
+				vertices.Select(vertex => new PolygonPoint(vertex.X, vertex.Y));
 
 			var polygon = new Polygon(points);
 
 			// Add holes
 			foreach (var hole in holes)
 			{
-				if (hole.Call("get_vertices") is Vector2[] holeVertices)
-				{
-					var holePoints =
-						holeVertices.Select(point => new PolygonPoint(point.x, point.y));
+				var holeVertices = hole.AsCallable().Call("get_vertices").AsVector2Array();
+				var holePoints =
+					holeVertices.Select(point => new PolygonPoint(point.X, point.Y));
 
-					var holePolygon = new Polygon(holePoints);
-					polygon.AddHole(holePolygon);
-				}
+				var holePolygon = new Polygon(holePoints);
+				polygon.AddHole(holePolygon);
 			}
 
 			P2T.Triangulate(polygon);
@@ -42,7 +40,7 @@ namespace YACY.Legacy
 			Node worldConstants = GetNode("/root/WorldConstants");
 			Node worldTextures = GetNode("/root/WorldTextures");
 
-			var normal = new Vector3(vertices[2] - vertices[0]).Cross(vertices[1] - vertices[0]);
+			var normal = (vertices[2] - vertices[0]).Cross(vertices[1] - vertices[0]);
 			normal = normal.Normalized();
 
 			var textureFloat = (float) ((tex + 1.0) / 256.0);
@@ -51,11 +49,11 @@ namespace YACY.Legacy
 
 			for (int i = 0; i < 3; i++)
 			{
-				sTool.AddColor(new Color(color.r, color.g, color.b, textureFloat));
-				sTool.AddUv(new Vector2(vertices[i].x * textureScale.x * textureSize,
-					vertices[i].z * textureScale.y * textureSize));
+				sTool.SetColor(new Color(color.R, color.G, color.B, textureFloat));
+				sTool.SetUV(new Vector2(vertices[i].X * textureScale.X * textureSize,
+					vertices[i].Z * textureScale.Y * textureSize));
 
-				sTool.AddNormal(normal);
+				sTool.SetNormal(normal);
 				sTool.AddVertex(vertices[i]);
 			}
 
@@ -65,8 +63,8 @@ namespace YACY.Legacy
 			}
 		}
 
-		public ArrayMesh GenerateFloorMesh(Array<Vector2> vertices, int level, int floorTexture, Color floorColor,
-			int ceilTexture, Color ceilColor, Array<Object> holes)
+		private ArrayMesh GenerateFloorMesh(Array<Vector2> vertices, int level, int floorTexture, Color floorColor,
+			int ceilTexture, Color ceilColor, Array<Variant> holes)
 		{
 			var sTool = new SurfaceTool();
 			sTool.Begin(Mesh.PrimitiveType.Triangles);
@@ -88,10 +86,10 @@ namespace YACY.Legacy
 			// Not sure what the point of this is lol
 			var v = new List<Vector2>
 			{
-				new Vector2(vertices[0].x, vertices[0].y),
-				new Vector2(vertices[1].x, vertices[1].y),
-				new Vector2(vertices[2].x, vertices[2].y),
-				new Vector2(vertices[3].x, vertices[3].y)
+				new Vector2(vertices[0].X, vertices[0].Y),
+				new Vector2(vertices[1].X, vertices[1].Y),
+				new Vector2(vertices[2].X, vertices[2].Y),
+				new Vector2(vertices[3].X, vertices[3].Y)
 			};
 
 			var tris = GetTriangles(v, holes);

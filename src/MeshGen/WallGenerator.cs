@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using Godot;
-using YACY.Build;
-using YACY.Geometry;
 using YACY.Legacy;
-using YACY.Legacy.Objects;
 using YACY.Util;
 
 namespace YACY.MeshGen
@@ -44,7 +39,7 @@ namespace YACY.MeshGen
 
 			var texture = Core.GetManager<TextureManager>().Textures[textureName]?.TextureInfo;
 
-			var normalVector = new Vector3(wallVector.x, 0, wallVector.y).Cross(new Vector3(0, 1, 0));
+			var normalVector = new Vector3(wallVector.X, 0, wallVector.Y).Cross(new Vector3(0, 1, 0));
 
 			var vertices = WallHelper.CreateWallVertices(start, end, top, bottom);
 			var frontVertices = vertices.ConvertAll(v => v - (normalVector * normalOffset));

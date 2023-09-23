@@ -12,7 +12,7 @@ namespace YACY.Legacy
 	// |
 	// ----------- StartHeight
 	//
-	public class CYHeight
+	public partial class CYHeight
 	{
 		private static readonly int[] MaxHeightList = new int[] {4, 3, 2, 1, 2, 3, 4, 4, 4, 3};
 		private static readonly int[] MinHeightList = new int[] {0, 0, 0, 0, 1, 2, 3, 2, 1, 1};

@@ -1,4 +1,4 @@
-extends StaticBody
+extends StaticBody3D
 
 const ladderIncline = 10 # Degrees
 
@@ -12,10 +12,10 @@ func _on_Area_body_entered(body):
 			print(rotation)
 			
 			var ladderNormal = Vector3(0, 1, 0)
-			var ladderUpVector = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-ladderIncline))
+			var ladderUpVector = ladderNormal.rotated(Vector3(1, 0, 0), deg_to_rad(-ladderIncline))
 			ladderUpVector = ladderUpVector.rotated(Vector3(0, 1, 0), rotation)
 			
-			ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg2rad(-ladderIncline + 90))
+			ladderNormal = ladderNormal.rotated(Vector3(1, 0, 0), deg_to_rad(-ladderIncline + 90))
 			ladderNormal = ladderNormal.rotated(Vector3(0, 1, 0), rotation)
 			
 			body.getOnLadder(ladderNormal, ladderUpVector)

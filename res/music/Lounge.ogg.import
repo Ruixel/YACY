@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/Lounge.ogg-ccab3b85e324ce425981f146d45778ad.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://do3lnmb8814pl"
+path="res://.godot/imported/Lounge.ogg-ccab3b85e324ce425981f146d45778ad.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/music/Lounge.ogg"
-dest_files=[ "res://.import/Lounge.ogg-ccab3b85e324ce425981f146d45778ad.oggstr" ]
+dest_files=["res://.godot/imported/Lounge.ogg-ccab3b85e324ce425981f146d45778ad.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

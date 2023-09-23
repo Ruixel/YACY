@@ -1,8 +1,8 @@
-extends Particles2D
+extends GPUParticles2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	get_tree().get_root().connect("size_changed", self, "resize")
+	get_tree().get_root().connect("size_changed", Callable(self, "resize"))
 	resize()
 
 func resize():

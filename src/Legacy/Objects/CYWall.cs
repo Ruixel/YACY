@@ -9,7 +9,7 @@ namespace YACY.Legacy.Objects
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/CYWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/CYWall.tscn")]
-	public class CYWall : ICYObject
+	public partial class CYWall : ICYObject
 	{
 		public Vector2 StartPosition;
 		public Vector2 Displacement;

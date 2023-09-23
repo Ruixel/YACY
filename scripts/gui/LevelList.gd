@@ -17,16 +17,16 @@ const searchTypeValues = ["level", "user", "random"]
 
 var active = true
 
-onready var scrollGui = get_node("..")
-onready var paginationGui = get_node("../../Pagination")
-onready var levelBrowserGui = get_node("../..")
-onready var searchTermsGui = get_node("../../SearchTerms")
-onready var searchTypeGui = get_node("../../SearchTerms/SearchType")
-onready var orderTypeGui = get_node("../../SearchTerms/OrderType")
-onready var searchGui = get_node("../../SearchTerms/Search")
-onready var fadeGui = get_node("/root/Main/Fade")
-onready var errorLabelGui = get_node("../../ErrorLabel")
-onready var mainScene = get_node("/root/Main/")
+@onready var scrollGui = get_node("..")
+@onready var paginationGui = get_node("../../Pagination")
+@onready var levelBrowserGui = get_node("../..")
+@onready var searchTermsGui = get_node("../../SearchTerms")
+@onready var searchTypeGui = get_node("../../SearchTerms/SearchType")
+@onready var orderTypeGui = get_node("../../SearchTerms/OrderType")
+@onready var searchGui = get_node("../../SearchTerms/Search")
+@onready var fadeGui = get_node("/root/Main/Fade")
+@onready var errorLabelGui = get_node("../../ErrorLabel")
+@onready var mainScene = get_node("/root/Main/")
 
 func _ready():
 	searchTypeGui.add_item("Search Levels")
@@ -37,7 +37,7 @@ func _ready():
 	orderTypeGui.add_item("Oldest")
 	orderTypeGui.add_item("Popularity")
 	
-	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+	$HTTPRequest.connect("request_completed", Callable(self, "_on_request_completed"))
 	loadPage(1)  
 
 func loadPage(pageNumber : int):
@@ -46,7 +46,7 @@ func loadPage(pageNumber : int):
 	errorLabelGui.set_text("Loading levels...")
 	
 	var query = '{"query": "{ searchLevels(query: \\"' + str(searchQuery) + '\\", page: ' + str(pageNumber) + ', pageSize: 24, searchType: ' + searchType + ', orderBy: ' + orderType + ' ) { title, author, gameNumber, plays, screenshot, mazeFile}}"}'
-	var headers : PoolStringArray
+	var headers : PackedStringArray
 	headers.append("Content-Type: application/json")
 	
 	# Use a different query for random searches
@@ -59,7 +59,7 @@ func clear():
 	# Cancel remaining image requests
 	for imgReq in imageRequests:
 		imgReq.cancel_request()
-		imgReq.disconnect("request_completed", self, "_img_request_completed")
+		imgReq.disconnect("request_completed", Callable(self, "_img_request_completed"))
 		imgReq.queue_free()
 	imageRequests.clear()
 	
@@ -74,7 +74,9 @@ func _on_request_completed(result, response_code, headers, body):
 	data = []
 	
 	if response_code == 200:
-		var jparse = JSON.parse(response)
+		var test_json_conv = JSON.new()
+		test_json_conv.parse(response)
+		var jparse = test_json_conv.get_data()
 		if jparse.get_error() != OK:
 			errorLabelGui.set_text("Error: Could not parse HTTP Response")
 			return
@@ -107,7 +109,7 @@ func loadLevels():
 	for item in data:
 		errorLabelGui.set_text("")
 		
-		var new_lvl = Level.instance()
+		var new_lvl = Level.instantiate()
 		levels.append(new_lvl)
 		new_lvl.setMazeFile(item.mazeFile)
 		new_lvl.setGameNumber(item.gameNumber)
@@ -134,11 +136,11 @@ func loadLevels():
 			var img_request = HTTPRequest.new()
 			add_child(img_request)
 			img_request.set_name("ImgRequest")
-			img_request.connect("request_completed", self, "_img_request_completed", [new_lvl, item.screenshot])
+			img_request.connect("request_completed", Callable(self, "_img_request_completed").bind(new_lvl, item.screenshot))
 			img_request.request(WorldConstants.SERVER + item.screenshot)
 			imageRequests.append(img_request)
 		
-		new_lvl.connect("pressed", self, "_level_selected", [new_lvl])
+		new_lvl.connect("pressed", Callable(self, "_level_selected").bind(new_lvl))
 		add_child(new_lvl)
 
 func _img_request_completed(result, response_code, headers, body, new_lvl, screenshot):
@@ -179,19 +181,19 @@ func _level_selected(btn):
 	$LoadLevel.play()
 	
 	fadeGui.fade(0.6)
-	yield(fadeGui, "s_fade_complete")
+	await fadeGui.s_fade_complete
 	
 	var gameNumber = btn.gameNumber
 	mainScene.unload_background()
 	
 	var level_scene = load("res://Scenes/PlayLegacyLevel.tscn")
-	var level = level_scene.instance()
+	var level = level_scene.instantiate()
 	get_node("/root/").add_child(level)
 	#level.get_node("LegacyWorldLoader/Button").loadLevel(mazeFile)
 	level.get_node("LegacyLevel").load_level(gameNumber)
 	
 	levelBrowserGui.set_visible(false)
-	yield(level.get_node("LegacyLevel"), "s_levelLoaded")
+	await level.get_node("LegacyLevel").s_levelLoaded
 	
 	#fadeGui.unfade(1)
 	#yield(fadeGui, "s_unfade_complete")

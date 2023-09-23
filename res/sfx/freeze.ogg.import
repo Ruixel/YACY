@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/freeze.ogg-300bb1ce2ad1d88839d465e39f9d52b7.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://csmlxh4vnio4e"
+path="res://.godot/imported/freeze.ogg-300bb1ce2ad1d88839d465e39f9d52b7.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/freeze.ogg"
-dest_files=[ "res://.import/freeze.ogg-300bb1ce2ad1d88839d465e39f9d52b7.oggstr" ]
+dest_files=["res://.godot/imported/freeze.ogg-300bb1ce2ad1d88839d465e39f9d52b7.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

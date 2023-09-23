@@ -10,7 +10,7 @@ using YACY.Legacy.Objects;
 namespace YACY.Entities;
 
 [MessagePackObject]
-public class BuildEntityWrapper
+public partial class BuildEntityWrapper
 {
 	[Key(0)] public int Id { get; set; }
 	[Key(1)] public Vector2 Position { get; set; }

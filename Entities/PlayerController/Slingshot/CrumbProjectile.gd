@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 var speed := 1000
 var y_speed := 90
@@ -17,12 +17,12 @@ func set_p_owner(body):
 func get_p_owner():
 	return p_owner
 
-func set_speed(speed: int):
+func set_velocity(speed: int):
 	self.speed = speed
 
 func explode(pos: Vector3, play_blast: bool = true):
-	var particle_fx = preload("res://Entities/PlayerController/Slingshot/CrumbExplosion.tscn").instance()
-	particle_fx.translation = pos - Vector3(0, 0.1, 0)
+	var particle_fx = preload("res://Entities/PlayerController/Slingshot/CrumbExplosion.tscn").instantiate()
+	particle_fx.position = pos - Vector3(0, 0.1, 0)
 	particle_fx.play_sfx = play_blast
 	get_parent().add_child(particle_fx)
 	destroy_on_physics_process = true

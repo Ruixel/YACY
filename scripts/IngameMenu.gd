@@ -1,7 +1,7 @@
 extends Control
 
-onready var menu = get_node("/root/Main")
-onready var fade = get_node("/root/Main/Fade")
+@onready var menu = get_node("/root/Main")
+@onready var fade = get_node("/root/Main/Fade")
 
 const month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
@@ -14,7 +14,7 @@ const CONDITION_TYPE = 0
 const CONDITION_STRING = 1
 const CONDITION_COMPLETED = 2
 
-export var can_pause = true
+@export var can_pause = true
 
 signal pause
 signal unpause
@@ -22,10 +22,10 @@ signal unpause
 signal change_music_volume
 
 func _ready():
-	get_parent().connect("get_level_info", self, "set_level_info")
-	get_parent().connect("s_levelLoaded", self, "unpause")
-	get_parent().connect("get_finish_conditions", self, "set_level_conditions")
-	get_parent().connect("all_collected", self, "on_player_all_collected")
+	get_parent().connect("get_level_info", Callable(self, "set_level_info"))
+	get_parent().connect("s_levelLoaded", Callable(self, "unpause"))
+	get_parent().connect("get_finish_conditions", Callable(self, "set_level_conditions"))
+	get_parent().connect("all_collected", Callable(self, "on_player_all_collected"))
 	
 	var volume = PlayerSettings.music_volume
 	$MusicVolume/HSlider.value = volume
@@ -38,10 +38,10 @@ func exit_level():
 	PlayerSettings.save_settings()
 	
 	fade.fade(0.5)
-	yield(fade, "s_fade_complete")
+	await fade.s_fade_complete
 	
 	# Wait a tiny bit more time for fade to fully complete
-	yield(get_tree().create_timer(0.1), "timeout") 
+	await get_tree().create_timer(0.1).timeout 
 	
 	menu.load_menu()
 	get_tree().paused = false
@@ -77,7 +77,7 @@ func set_level_info(info):
 		$Stats/Plays.text = str(plays)
 	
 	# Server returns datetime in milliseconds, however unix uses seconds
-	var date = OS.get_datetime_from_unix_time(int(info.lastEdited) / 1000)
+	var date = Time.get_datetime_dict_from_system_from_unix_time(int(info.lastEdited) / 1000)
 	$Stats/Date.text = str(date.day) + " " + month_names[date.month-1] + " " + str(date.year)
 	
 	# Rating is done in 5 stars, switch to like ratio out of lazyness
@@ -134,7 +134,7 @@ func set_level_conditions(conditions):
 			WorldConstants.Objectives.PORTAL: 
 				self.conditions.append([condition[0], "There are portals that lead to other levels", condition[1]])
 	
-	if self.conditions.empty():
+	if self.conditions.is_empty():
 		self.conditions.append([WorldConstants.Objectives.NONE, "None, feel free to explore around", false])
 	
 	update_description_and_conditions()
@@ -149,7 +149,7 @@ func update_description_and_conditions():
 		else: 
 			desc_and_obj += " - " + condition[CONDITION_STRING] + "\n"
 	
-	$Description.bbcode_text = desc_and_obj
+	$Description.text = desc_and_obj
 
 func on_player_all_collected(name: String):
 	if name == "diamond":

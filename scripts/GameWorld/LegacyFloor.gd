@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 const toolType = WorldConstants.Tools.GROUND
 
 const canPlace = false
@@ -9,13 +9,13 @@ const default_dict = {
 	"Visible": false,
 	"Points": [Vector2(0, 10), Vector2(10, 10), Vector2(10, 0), Vector2(0, 0)],
 	
-	"Texture": 1,
+	"Texture2D": 1,
 	"Colour": Color(1, 1, 1),
 	"C_Texture": 1,
 	"C_Colour": Color(1, 1, 1)
 }
 
-var vertices : PoolVector2Array
+var vertices : PackedVector2Array
 var level : int
 var isVisible : bool
 
@@ -24,16 +24,16 @@ var floor_colour := Color(1, 1, 1)
 var ceil_texture : int = 2
 var ceil_colour := Color(1, 1, 1)
 
-var mesh : MeshInstance
-var selection_mesh : MeshInstance
-var collision_mesh : StaticBody
-var collision_shape : CollisionShape
+var mesh : MeshInstance3D
+var selection_mesh : MeshInstance3D
+var collision_mesh : StaticBody3D
+var collision_shape : CollisionShape3D
 
 func _init(lvl : int):
 	self.name = "Floor"
-	mesh = MeshInstance.new()
-	collision_mesh = StaticBody.new()
-	collision_shape = CollisionShape.new()
+	mesh = MeshInstance3D.new()
+	collision_mesh = StaticBody3D.new()
+	collision_shape = CollisionShape3D.new()
 	
 	#vertices.insert(0, Vector2(0, 80))
 	#vertices.insert(1, Vector2(80, 80))
@@ -81,13 +81,13 @@ func selectObj():
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
 	dict["Visible"] = isVisible
-	dict["Texture"] = floor_texture 
+	dict["Texture2D"] = floor_texture 
 	dict["Colour"] = floor_colour
 	
 	return dict
 
 const dictToObj = {
-	"Texture":"floor_texture", 
+	"Texture2D":"floor_texture", 
 	"Colour":"floor_colour",
 	"Visible":"isVisible",
 }
@@ -99,12 +99,12 @@ func set_property_dict(dict : Dictionary):
 func buildFloor() -> Mesh:
 	var gen = get_node_or_null("/root/Main/FloorGenerator")
 	if gen == null:
-		gen = get_node("/root/Spatial/FloorGenerator") # Change for editor, TODO: Fix
+		gen = get_node("/root/Node3D/FloorGenerator") # Change for editor, TODO: Fix
 
 	# Set collision layers
 	var isOpaque = not WorldTextures.textures[self.floor_texture].isTransparent()
-	collision_mesh.set_collision_layer_bit(WorldConstants.GEOMETRY_COLLISION_BIT, true)
-	collision_mesh.set_collision_layer_bit(WorldConstants.OPAQUE_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_value(WorldConstants.GEOMETRY_COLLISION_BIT, true)
+	collision_mesh.set_collision_layer_value(WorldConstants.OPAQUE_COLLISION_BIT, true)
 
 	var holes = HoleManager.get_holes(level)
 	return gen.GenerateFloorMesh(vertices, level, floor_texture, 

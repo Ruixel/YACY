@@ -14,9 +14,9 @@ namespace YACY.Geometry
 		Tool = ToolType.Pencil,
 		ItemPanelPreview = "res://Scenes/UI/Previews/ItemPanel/ThickWall.tscn", 
 		SelectionPreview = "res://Scenes/UI/Previews/Selected/ThickWall.tscn")]
-	public class Wall : BuildEntity, IStoredPosition
+	public partial class Wall : BuildEntity, IStoredPosition
 	{
-		private MeshInstance _meshInstance;
+		private MeshInstance3D _meshInstance;
 		
 		public Tuple<Vector2, Vector2> FrontLine;
 		public Tuple<Vector2, Vector2> BackLine;
@@ -42,7 +42,7 @@ namespace YACY.Geometry
 		{
 			Type = BuildEntityList.Type.Wall;
 
-			_meshInstance = new MeshInstance();
+			_meshInstance = new MeshInstance3D();
 			AddChild(_meshInstance);
 		}
 

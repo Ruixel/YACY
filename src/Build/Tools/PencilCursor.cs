@@ -7,7 +7,7 @@ using YACY.Util;
 
 namespace YACY.Build.Tools
 {
-	public class PencilCursor<T> : ICursorMode where T : BuildEntity, new()
+	public partial class PencilCursor<T> : ICursorMode where T : BuildEntity, new()
 	{
 		private BuildManager _buildManager;
 
@@ -17,7 +17,7 @@ namespace YACY.Build.Tools
 		private PackedScene _cursorMesh =
 			ResourceLoader.Load<PackedScene>("res://Entities/Editor/Cursor/WallCursorMesh.tscn");
 
-		private Spatial _mesh;
+		private Node3D _mesh;
 
 		private Vector2 _pencilStart;
 		private Vector2 _pencilEnd;
@@ -32,7 +32,7 @@ namespace YACY.Build.Tools
 			_mouseDown = false;
 			_position = new Vector2();
 			
-			_mesh = _cursorMesh.Instance<Spatial>();
+			_mesh = _cursorMesh.Instantiate<Node3D>();
 			_mesh.Visible = false;
 			parent.AddChild(_mesh);
 		}
@@ -59,14 +59,14 @@ namespace YACY.Build.Tools
 				var ray = _buildManager.GetMouseRay();
 				var grid = _buildManager.GetGrid();
 
-				var gridIntersection = grid.GridPlane.IntersectRay(ray.Origin - new Vector3(0, grid.Height, 0), ray.Direction);
+				var gridIntersection = grid.GridPlane.IntersectsRay(ray.Origin - new Vector3(0, grid.Height, 0), ray.Direction);
 				if (gridIntersection.HasValue)
 				{
-					_position.x = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.x / grid.Spacing), 0, grid.Size.x);
-					_position.y = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.z / grid.Spacing), 0, grid.Size.y);
+					_position.X = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.X / grid.Spacing), 0, grid.Size.X);
+					_position.Y = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.Z / grid.Spacing), 0, grid.Size.Y);
 
-					var newPosition = new Vector3(_position.x * grid.Spacing, grid.Height, _position.y * grid.Spacing);
-					_mesh.Transform = new Transform(_mesh.Transform.basis, newPosition);
+					var newPosition = new Vector3(_position.X * grid.Spacing, grid.Height, _position.Y * grid.Spacing);
+					_mesh.Transform = new Transform3D(_mesh.Transform.Basis, newPosition);
 				}
 			}
 
@@ -135,7 +135,7 @@ namespace YACY.Build.Tools
 
 		public void onKeyPressed(string scancode)
 		{
-			var ch = (int)scancode.ToAscii()[0] - 48;
+			var ch = (int)scancode.ToAsciiBuffer()[0] - 48;
 			if (ch is >= 0 and <= 9)
 			{
 				var bottomHeight = MinHeightList[ch] / 4.0f;

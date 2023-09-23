@@ -6,11 +6,11 @@ func str2vector2(v2str : String) -> Vector2:
 	
 	return Vector2(float(arr[0]), float(arr[1]))
 
-func str2v2array(arrStr : String) -> PoolVector2Array:
+func str2v2array(arrStr : String) -> PackedVector2Array:
 	arrStr = arrStr.substr(0, arrStr.length() - 4)
 	var v2arr = arrStr.split("),")
 	
-	var vertices = PoolVector2Array()
+	var vertices = PackedVector2Array()
 	for v2 in v2arr:
 		v2 = v2.substr(2)
 		var arr = v2.split(',')
@@ -24,6 +24,6 @@ func json2obj(obj, objType):
 		TYPE_VECTOR2: return str2vector2(obj)
 		TYPE_INT: return int(obj)
 		TYPE_COLOR: return Color(obj)
-		TYPE_REAL: return float(obj)
+		TYPE_FLOAT: return float(obj)
 		TYPE_BOOL: return bool(obj)
-		TYPE_VECTOR2_ARRAY: return str2v2array(obj)
+		TYPE_PACKED_VECTOR2_ARRAY: return str2v2array(obj)

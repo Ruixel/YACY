@@ -4,14 +4,14 @@ using MessagePack.Formatters;
 
 namespace YACY.Util;
 
-public class GodotColorFormatter : IMessagePackFormatter<Color>
+public partial class GodotColorFormatter : IMessagePackFormatter<Color>
 {
 	public void Serialize(ref MessagePackWriter writer, Color value, MessagePackSerializerOptions options)
 	{
-		writer.Write(value.r);
-		writer.Write(value.g);
-		writer.Write(value.b);
-		writer.Write(value.a);
+		writer.Write(value.R);
+		writer.Write(value.G);
+		writer.Write(value.B);
+		writer.Write(value.A);
 	}
 
 	public Color Deserialize(ref MessagePackReader reader, MessagePackSerializerOptions options)

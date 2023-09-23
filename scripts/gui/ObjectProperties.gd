@@ -1,6 +1,6 @@
 extends Panel
 
-onready var EditorGUI = get_parent()
+@onready var EditorGUI = get_parent()
 
 signal s_changeTexture
 signal s_changeColour
@@ -37,7 +37,7 @@ const Property = {
 	"PillarSize": {"type": BasicProperty.NumericalProperty, "init_func": "setup_sizeProperty", "min":1, "max":5},
 	"Diagonal": {"type": BasicProperty.BooleanProperty, "init_func": "setup_boolProperty"},
 	"Visible": {"type": BasicProperty.BooleanProperty, "init_func": "setup_boolProperty"},
-	"Texture": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
+	"Texture2D": {"type": BasicProperty.TextureProperty, "init_func": "setup_textureProperty"},
 	"Colour": {"type": BasicProperty.ColourProperty, "init_func": "setup_colourProperty"},
 	"WallShape": {"type": BasicProperty.WallShapeProperty, "init_func": "setup_wallShapeProperty"},
 	"PlatShape": {"type": BasicProperty.PlatShapeProperty, "init_func": "setup_platShapeProperty"},
@@ -45,17 +45,17 @@ const Property = {
 
 const ObjectProperties = { 
 	WorldConstants.Tools.NOTHING: [],
-	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture"],
-	WorldConstants.Tools.PLATFORM: ["PlatShape", "Size", "Colour", "Texture"],
-	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture"],
-	WorldConstants.Tools.RAMP: ["Colour", "Texture"],
-	WorldConstants.Tools.GROUND: ["Visible", "Colour", "Texture"],
+	WorldConstants.Tools.WALL: ["WallShape", "Colour", "Texture2D"],
+	WorldConstants.Tools.PLATFORM: ["PlatShape", "Size", "Colour", "Texture2D"],
+	WorldConstants.Tools.PILLAR: ["PillarSize", "Diagonal", "Colour", "Texture2D"],
+	WorldConstants.Tools.RAMP: ["Colour", "Texture2D"],
+	WorldConstants.Tools.GROUND: ["Visible", "Colour", "Texture2D"],
 	WorldConstants.Tools.HOLE: ["Size"]
 }
 
 # Connect to tool change signal
 func _ready():
-	EditorGUI.get_node("ObjectList").connect("s_changeTool", self, "on_tool_change")
+	EditorGUI.get_node("ObjectList").connect("s_changeTool", Callable(self, "on_tool_change"))
 
 func on_tool_change(nTool):
 	# Clear the GUI
@@ -85,15 +85,15 @@ func on_tool_change(nTool):
 		var propSceneObj = propBasic.get("obj")
 		
 		if propBasic.get("use_label"):
-			var propLabel = PropertyLabelEntity.instance()
+			var propLabel = PropertyLabelEntity.instantiate()
 			propLabel.set_text(propName)
 			
-			$MarginContainer/Values.add_child_below_node(next_node, propLabel)
+			$MarginContainer/Values.add_sibling(next_node, propLabel)
 			next_node = propLabel
 			properties[properties.size()] = propLabel
 		
-		var propScene = propSceneObj.instance()
-		$MarginContainer/Values.add_child_below_node(next_node, propScene)
+		var propScene = propSceneObj.instantiate()
+		$MarginContainer/Values.add_sibling(next_node, propScene)
 		next_node = propScene
 		properties[propName] = propScene
 		
@@ -122,7 +122,7 @@ func update_properties(dict : Dictionary, tType):
 
 func setup_sizeProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("Label").set_text(propName)
-	propScene.get_node("SpinBox").connect("value_changed", self, "on_change_size")
+	propScene.get_node("SpinBox").connect("value_changed", Callable(self, "on_change_size"))
 	
 	var spinbox = propScene.get_node("SpinBox")
 	spinbox.set_min(propInfo.get("min"))
@@ -130,20 +130,20 @@ func setup_sizeProperty(propScene, propInfo : Dictionary, propName : String):
 
 func setup_textureProperty(propScene, propInfo : Dictionary, propName : String):
 	# propScene.get_node("TextureList").connect("s_wallTextureChange", self, "on_select_texture")
-	propScene.connect("s_textureChange", self, "on_select_texture")
+	propScene.connect("s_textureChange", Callable(self, "on_select_texture"))
 
 func setup_colourProperty(propScene, propInfo : Dictionary, propName : String):
-	propScene.get_node("ColorPickerButton").connect("color_changed", self, "on_select_colour")
+	propScene.get_node("ColorPickerButton").connect("color_changed", Callable(self, "on_select_colour"))
 
 func setup_wallShapeProperty(propScene, propInfo : Dictionary, propName : String):
-	propScene.connect("s_changeWallShape", self, "on_select_wallShape")
+	propScene.connect("s_changeWallShape", Callable(self, "on_select_wallShape"))
 
 func setup_platShapeProperty(propScene, propInfo : Dictionary, propName : String):
-	propScene.connect("s_changePlatShape", self, "on_select_platShape")
+	propScene.connect("s_changePlatShape", Callable(self, "on_select_platShape"))
 
 func setup_boolProperty(propScene, propInfo : Dictionary, propName : String):
 	propScene.get_node("Label").set_text(propName)
-	propScene.get_node("CheckBox").connect("toggled", self, "on_select_" + propName.to_lower())
+	propScene.get_node("CheckBox").connect("toggled", Callable(self, "on_select_" + propName.to_lower()))
 
 func on_change_size(size):
 	emit_signal("s_changeSize", size)

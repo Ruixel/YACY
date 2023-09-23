@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var expiring: bool = false
 var key: int = 0
@@ -23,5 +23,5 @@ func _on_Area_body_entered(body):
 			body.pickupKey(self.key)
 		
 		$PickupSFX.play()
-		yield($PickupSFX, "finished")
+		await $PickupSFX.finished
 		self.queue_free()

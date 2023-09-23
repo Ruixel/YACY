@@ -8,7 +8,7 @@ using ItemList = Godot.ItemList;
 
 namespace YACY.UI;
 
-public class TexturePropertyUI : Control, IPropertyUI
+public partial class TexturePropertyUI : Control, IPropertyUI
 {
 	private readonly ItemList _textureItemList;
 	private Dictionary<string, int> _textureIndex;
@@ -16,7 +16,7 @@ public class TexturePropertyUI : Control, IPropertyUI
 	public TexturePropertyUI()
 	{
 		AnchorRight = 1.0f;
-		RectMinSize = new Vector2(RectMinSize.x, 130);
+		CustomMinimumSize = new Vector2(CustomMinimumSize.X, 130);
 		
 		_textureItemList = CreateTextureItemList();
 		AddChild(_textureItemList);
@@ -27,7 +27,7 @@ public class TexturePropertyUI : Control, IPropertyUI
 	public void Disconnect()
 	{
 		GD.PushWarning("Disconnecting :(");
-		_textureItemList.Disconnect("item_selected", _textureItemList, nameof(OnItemSelected));
+		_textureItemList.Disconnect("item_selected", new Callable(_textureItemList, nameof(OnItemSelected)));
 		Core.GetManager<SelectionManager>().OnSelection -= OnSelectionEvent;
 		
 		QueueFree();
@@ -46,11 +46,11 @@ public class TexturePropertyUI : Control, IPropertyUI
 	{
 		var textureItemList = new ItemList();
 		textureItemList.FixedColumnWidth = 182;
-		textureItemList.FixedIconSize = new Vector2(32, 32);
+		textureItemList.FixedIconSize = new Vector2I(32, 32);
 		
-		textureItemList.RectMinSize = new Vector2(200, 120);
+		textureItemList.CustomMinimumSize = new Vector2(200, 120);
 		textureItemList.AnchorRight = 1.0f;
-		textureItemList.Connect("item_selected", this, nameof(OnItemSelected));
+		textureItemList.Connect("item_selected", new Callable(this, nameof(OnItemSelected)));
 
 		var index = 0;
 		_textureIndex = new Dictionary<string, int>();

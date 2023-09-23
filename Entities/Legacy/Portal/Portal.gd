@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var gameNumber : int = -1
 var conditions = []
@@ -12,8 +12,8 @@ func set_condition(condition):
 	if condition == 2:
 		return
 	
-	yield(self, "ready")
-	get_parent().get_parent().connect("all_collected", self, "on_condition_finished")
+	await self.ready
+	get_parent().get_parent().connect("all_collected", Callable(self, "on_condition_finished"))
 	if condition == 1 or condition == 4:
 		conditions.append("diamond")
 	if condition == 3 or condition == 4:
@@ -28,13 +28,13 @@ func set_condition(condition):
 			
 	$Condition.visible = true
 	
-	$Viewport/FrontTexture.texture = load("res://Entities/Legacy/Portal/portal_blocked.png")
+	$SubViewport/FrontTexture.texture = load("res://Entities/Legacy/Portal/portal_blocked.png")
 	$AnimationPlayer.play("Spin")
 
 func enable_portal():
 	self.enabled = true
 	
-	$Viewport/FrontTexture.texture = load("res://Entities/Legacy/Portal/portal.png")
+	$SubViewport/FrontTexture.texture = load("res://Entities/Legacy/Portal/portal.png")
 	$Condition.visible = false
 	$AnimationPlayer.stop()
 
@@ -43,7 +43,7 @@ func on_condition_finished(condition_name):
 	if self.conditions.has(condition_name):
 		self.conditions.erase(condition_name)
 	
-	if self.conditions.empty():
+	if self.conditions.is_empty():
 		enable_portal()
 
 func _on_Area_body_entered(body):
@@ -52,7 +52,7 @@ func _on_Area_body_entered(body):
 		body.pause = true
 		var fade = get_node("/root/Main/Fade")
 		fade.fade(0.3)
-		yield(fade, "s_fade_complete")
+		await fade.s_fade_complete
 		
 		get_node("/root/Gameplay/LegacyLevel").clear_level()
 		get_node("/root/Gameplay/LegacyLevel").load_level(gameNumber)

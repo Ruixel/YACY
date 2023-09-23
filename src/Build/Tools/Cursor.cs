@@ -10,7 +10,7 @@ using YACY.Util;
 
 namespace YACY
 {
-	public class Cursor : Spatial
+	public partial class Cursor : Node3D
 	{
 		private readonly BuildManager _buildManager;
 		private ICursorMode _cursorMode;
@@ -53,7 +53,7 @@ namespace YACY
 			_cursorMode.Enable();
 		}
 
-		public override void _Process(float delta)
+		public void _Process(float delta)
 		{
 			_cursorMode.Process(delta, _mouseMotion);
 
@@ -69,7 +69,7 @@ namespace YACY
 			{
 				if (keyEvent.Pressed)
 				{
-					_cursorMode.onKeyPressed(OS.GetScancodeString(keyEvent.Scancode));
+					_cursorMode.onKeyPressed(OS.GetKeycodeString(keyEvent.Keycode));
 				}
 			}
 		}
@@ -78,7 +78,7 @@ namespace YACY
 		{
 			if (@event is InputEventMouseButton mouseButton)
 			{
-				if (mouseButton.ButtonIndex == 1)
+				if (mouseButton.ButtonIndex == MouseButton.Left)
 				{
 					var isPressed = mouseButton.Pressed;
 					if (_isMousePressed ^ isPressed)

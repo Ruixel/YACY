@@ -1,0 +1,147 @@
+[gd_scene load_steps=17 format=3 uid="uid://c8mse5sbnur7u"]
+
+[ext_resource type="Texture2D" uid="uid://cmw056hp1sukk" path="res://res/txrs/grass256.jpg" id="1_xck54"]
+[ext_resource type="Texture2D" uid="uid://dkc8madxygtrs" path="res://res/txrs/bricks.jpg" id="2_cfp6b"]
+[ext_resource type="Texture2D" uid="uid://db42i02fxiedl" path="res://res/txrs/wood256.jpg" id="3_1kvwe"]
+[ext_resource type="Texture2D" uid="uid://cypchluolu4pe" path="res://res/txrs/sky.jpg" id="4_vcxx2"]
+
+[sub_resource type="StandardMaterial3D" id="1"]
+albedo_texture = ExtResource("1_xck54")
+
+[sub_resource type="PlaneMesh" id="2"]
+material = SubResource("1")
+
+[sub_resource type="StandardMaterial3D" id="3"]
+albedo_texture = ExtResource("2_cfp6b")
+
+[sub_resource type="PlaneMesh" id="4"]
+material = SubResource("3")
+
+[sub_resource type="MeshLibrary" id="5"]
+item/0/name = "Hey"
+item/0/mesh = SubResource("2")
+item/0/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/shapes = []
+item/0/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/0/navigation_layers = 1
+item/1/name = "Brick"
+item/1/mesh = SubResource("4")
+item/1/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/shapes = []
+item/1/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/1/navigation_layers = 1
+item/2/name = "none\\"
+item/2/mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/2/shapes = []
+item/2/navigation_mesh_transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+item/2/navigation_layers = 1
+
+[sub_resource type="BoxMesh" id="6"]
+
+[sub_resource type="StandardMaterial3D" id="8"]
+albedo_texture = ExtResource("3_1kvwe")
+
+[sub_resource type="PlaneMesh" id="9"]
+material = SubResource("8")
+
+[sub_resource type="BoxMesh" id="10"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_toaj4"]
+panorama = ExtResource("4_vcxx2")
+
+[sub_resource type="Sky" id="Sky_mpp0b"]
+sky_material = SubResource("PanoramaSkyMaterial_toaj4")
+
+[sub_resource type="Environment" id="Environment_yle2k"]
+background_mode = 2
+sky = SubResource("Sky_mpp0b")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+tonemap_exposure = 1.1
+ssao_enabled = true
+ssao_intensity = 4.0
+ssao_light_affect = 0.54
+ssil_enabled = true
+volumetric_fog_density = 0.1991
+
+[node name="TestArea" type="Node3D"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.01, 17)
+
+[node name="GridMap" type="GridMap" parent="."]
+mesh_library = SubResource("5")
+data = {
+"cells": PackedInt32Array(0, 0, 0, 65532, 0, 2, 65533, 0, 2, 65534, 0, 0, 65535, 0, 0, 0, 1, 0, 65532, 1, 2, 65533, 1, 2, 65534, 1, 0, 65535, 1, 0, 0, 2, 0, 65532, 2, 2, 65533, 2, 2, 65534, 2, 0, 65535, 2, 0, 0, 3, 0, 65533, 3, 2, 65534, 3, 0, 65535, 3, 0, 65533, 4, 2, 65533, 5, 2, 65533, 6, 2, 65533, 7, 2, 65532, 8, 2, 0, 65535, 0, 65532, 65535, 2, 65535, 65535, 0)
+}
+
+[node name="MeshInstance5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.1, 0, 1, -4.37114e-09, 0, 0, 0, 0.1, -3.00228, 1.92902, 1.96194)
+mesh = SubResource("6")
+
+[node name="MeshInstance6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, -0.1, 0, 1, -4.37114e-09, 0, 0, 0, 0.1, -3.00228, 1.92902, 3.92462)
+mesh = SubResource("6")
+
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.339869, 0, 0.593679)
+
+[node name="MeshInstance3" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="MeshInstance4" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="Spatial3" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32465, -0.017353, 0.59591)
+
+[node name="MeshInstance3" type="MeshInstance3D" parent="Spatial3"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="MeshInstance4" type="MeshInstance3D" parent="Spatial3"]
+transform = Transform3D(1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="Spatial2" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -0.0751307, 6.25, 0.598679)
+
+[node name="MeshInstance3" type="MeshInstance3D" parent="Spatial2"]
+transform = Transform3D(-4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="MeshInstance4" type="MeshInstance3D" parent="Spatial2"]
+transform = Transform3D(1.19249e-08, 1, 0, -1, 1.19249e-08, 0, 0, 0, 1, -3.34061, 1.92902, 2.34577)
+mesh = SubResource("9")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.807199, 0.590279, 0, -0.590279, 0.807199, 0, 1.63266, -0.215308)
+mesh = SubResource("9")
+
+[node name="MeshInstance2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.762921, -0.646492, 0, 0.646492, -0.762921, 0.13357, 1.74578, 6.68922)
+mesh = SubResource("10")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.70281, 2.12039, 1.79636)
+light_color = Color(1, 0.0745098, 0.0745098, 1)
+shadow_enabled = true
+omni_attenuation = 1.51572
+
+[node name="OmniLight2" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.1599, 3.24208, 2.08484)
+light_color = Color(1, 0.0745098, 0.0745098, 1)
+shadow_enabled = true
+omni_attenuation = 1.41421
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.858817, 0.165929, -0.484666, -2.83163e-08, 0.946091, 0.323901, 0.512283, -0.278172, 0.812519, 0, 3.26053, 0)
+light_energy = 0.742
+shadow_enabled = true
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.607376, 0.261256, -0.750227, 0, 0.944376, 0.328867, 0.794415, 0.199746, -0.573591, -5.99459, 3.74036, -1.2196)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yle2k")

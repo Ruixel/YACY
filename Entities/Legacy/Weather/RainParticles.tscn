@@ -2,7 +2,7 @@
 
 [ext_resource path="res://res/sfx/rain.ogg" type="AudioStream" id=1]
 
-[sub_resource type="GradientTexture" id=1]
+[sub_resource type="GradientTexture2D" id=1]
 
 [sub_resource type="Curve" id=2]
 _data = [ Vector2( 0.0379747, 0.254545 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
@@ -10,14 +10,14 @@ _data = [ Vector2( 0.0379747, 0.254545 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 
 [sub_resource type="CurveTexture" id=3]
 curve = SubResource( 2 )
 
-[sub_resource type="ParticlesMaterial" id=4]
+[sub_resource type="ParticleProcessMaterial" id=4]
 trail_size_modifier = SubResource( 3 )
 trail_color_modifier = SubResource( 1 )
 emission_shape = 2
 emission_box_extents = Vector3( 10, 1, 10 )
 gravity = Vector3( 0, -80, 0 )
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="StandardMaterial3D" id=5]
 flags_transparent = true
 flags_unshaded = true
 params_billboard_mode = 2
@@ -28,8 +28,8 @@ material = SubResource( 5 )
 size = Vector2( 0.01, 1 )
 
 [node name="RainParticles" type="Particles"]
-pause_mode = 2
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
+process_mode = 3
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
 amount = 500
 lifetime = 0.8
 visibility_aabb = AABB( -11.1052, -13.3061, -11.2199, 22.2105, 26.6121, 22.4398 )

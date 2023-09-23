@@ -1,6 +1,6 @@
-extends Spatial
+extends Node3D
 
-onready var parts = [$Meshes/Part1, $Meshes/Part2, $Meshes/Part3, $Meshes/Part4]
+@onready var parts = [$Meshes/Part1, $Meshes/Part2, $Meshes/Part3, $Meshes/Part4]
 var parts_props = {}
 
 func _ready():

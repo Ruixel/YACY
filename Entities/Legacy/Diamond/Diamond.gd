@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var time_save := 0
 var expiring := false
@@ -13,7 +13,7 @@ const time_save_types = [0, 5, 15, 60]
 func collect(body):
 	expiring = true
 	$Mesh.visible = false
-	$OmniLight.visible = false
+	$OmniLight3D.visible = false
 	
 	if body.has_method("pickupDiamond"):
 		body.pickupDiamond(time_save)
@@ -22,7 +22,7 @@ func collect(body):
 	level_manager.call("player_collect", "diamond")
 	
 	$PickupSFX.play()
-	yield($PickupSFX, "finished")
+	await $PickupSFX.finished
 	self.queue_free()
 
 func _physics_process(delta):
@@ -46,7 +46,7 @@ func set_type(type: int):
 	if type < 1 or type > albedo.size():
 		return
 	
-	$Mesh.get_surface_material(0).albedo_color = Color(albedo[type-1])
-	$Mesh.get_surface_material(0).emission = Color(emission[type-1])
-	$OmniLight.light_color = Color(light[type-1])
+	$Mesh.get_surface_override_material(0).albedo_color = Color(albedo[type-1])
+	$Mesh.get_surface_override_material(0).emission = Color(emission[type-1])
+	$OmniLight3D.light_color = Color(light[type-1])
 	self.time_save = time_save_types[type-1]

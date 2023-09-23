@@ -6,7 +6,7 @@ using YACY.Util;
 
 namespace YACY.Build.Tools;
 
-public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
+public partial class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 {
 	private BuildManager _buildManager;
 
@@ -52,18 +52,21 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 		{
 			var ray = _buildManager.GetMouseRay();
         
-			var gridIntersection = grid.GridPlane.IntersectRay(ray.Origin - new Vector3(0, grid.Height, 0), ray.Direction);
+			var gridIntersection = grid.GridPlane.IntersectsRay(ray.Origin - new Vector3(0, grid.Height, 0), ray.Direction);
 			if (gridIntersection.HasValue)
 			{
-				_gridPos.x = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.x / grid.Spacing), 0, grid.Size.x);
-				_gridPos.y = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.z / grid.Spacing), 0, grid.Size.y);
+				_gridPos.X = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.X / grid.Spacing), 0, grid.Size.X);
+				_gridPos.Y = Mathf.Clamp(Mathf.RoundToInt(gridIntersection.Value.Z / grid.Spacing), 0, grid.Size.Y);
 				//Console.WriteLine($"X: {_gridPos.x}, Y: {_gridPos.y}");
 			}
 		}
 
 		if (_prototype != null)
 		{
-			_prototype.Translation = new Vector3(_gridPos.x * grid.Spacing, grid.Height - Constants.LevelHeight + 0.01f, _gridPos.y * grid.Spacing);
+			// Why is this Vector3 and why did it work before?
+			//_prototype.Position = new Vector3(_gridPos.X * grid.Spacing, grid.Height - Constants.LevelHeight + 0.01f, _gridPos.Y * grid.Spacing);
+			
+			_prototype.Position = new Vector2(_gridPos.X * grid.Spacing, _gridPos.Y * grid.Spacing);
 		}
 		
 		//if (parent.mousePlacePressed)
@@ -96,8 +99,8 @@ public class PlacementCursor<T> : ICursorMode where T : BuildEntity, new()
 		
 		var grid = _buildManager.GetGrid();
 		var newEntity = new T();
-		newEntity.Position.x = _gridPos.x * grid.Spacing;
-		newEntity.Position.y = _gridPos.y * grid.Spacing;
+		newEntity.Position.X = _gridPos.X * grid.Spacing;
+		newEntity.Position.Y = _gridPos.Y * grid.Spacing;
 		
 		Core.GetManager<LevelManager>().AddEntity(newEntity, _buildManager.Level);
 		

@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 # Called when the cursor is selected
 func cursor_ready():

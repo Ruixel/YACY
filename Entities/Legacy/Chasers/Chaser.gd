@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 var player_inside = null
 var active := false
@@ -20,12 +20,12 @@ const models := {
 func _ready():
 	set_meta("type", "chaser")
 
-func set_speed(chaser_speed):
+func set_velocity(chaser_speed):
 	max_speed = chaser_speed
 
 func _physics_process(delta):
 	if active and player_inside:
-		if $RayCast.is_colliding():
+		if $RayCast3D.is_colliding():
 			target_player()
 			unreachable_frames += 1
 			if unreachable_frames > 5:
@@ -37,7 +37,7 @@ func _physics_process(delta):
 			speed -= 0.4 * delta
 		
 		move_and_collide(global_transform.basis.z * Vector3(1, 0, 1) * speed * delta * speed_multiplier, false)
-		self.translation.y = y_pos
+		self.position.y = y_pos
 
 func disable():
 	if player_inside != null:
@@ -52,7 +52,7 @@ func disable():
 
 func set_material_opacity(opacity: float):
 	if model != null:
-		var mesh = model.get_node_or_null("Mesh/MeshInstance")
+		var mesh = model.get_node_or_null("Mesh/MeshInstance3D")
 		if mesh != null:
 			var surfaces = mesh.mesh.get_surface_count()
 			for i in range(surfaces):
@@ -68,20 +68,20 @@ func set_model(model_id):
 		return
 	
 	self.id = model_id
-	model = load(models.get(model_id)).instance()
+	model = load(models.get(model_id)).instantiate()
 	add_child(model)
 	
-	yield(model, "ready")
-	var mesh = model.get_node_or_null("Mesh/MeshInstance")
+	await model.ready
+	var mesh = model.get_node_or_null("Mesh/MeshInstance3D")
 	var surfaces = mesh.mesh.get_surface_count()
 	for i in range(surfaces):
 		var surface = mesh.mesh.surface_get_material(i).duplicate()
 		mesh.mesh.surface_set_material(i, surface)
 
 func check_if_player_behind_wall(player):
-	var space_state = get_world().direct_space_state
+	var space_state = get_world_3d().direct_space_state
 	var ray = space_state.intersect_ray(self.global_transform.origin, player.global_transform.origin, [player], WorldConstants.GEOMETRY_COLLISION_BIT)
-	if not ray.empty():
+	if not ray.is_empty():
 		return true
 	
 	return false
@@ -92,7 +92,7 @@ func _on_NearArea_body_entered(body):
 			return 
 		
 		active = true
-		y_pos = self.translation.y
+		y_pos = self.position.y
 		speed = max_speed
 		player_inside = body
 		$Timer.start()
@@ -128,7 +128,7 @@ func target_player():
 		if abs(angle) < 0.01 or abs(dot) > 0.99:
 			var test = self_transform + (dir * 0.2)
 			if self_transform.distance_to(player_transform) < test.distance_to(player_transform):
-				rotate_y(deg2rad(180.0))
+				rotate_y(deg_to_rad(180.0))
 				
 			return
 

@@ -3,11 +3,11 @@ using Godot.Collections;
 
 namespace YACY.Legacy
 {
-	public class LegacyWorldLoaderNode : Node
+	public partial class LegacyWorldLoaderNode : Node
 	{
 		[Export] private NodePath _loaderNodePath;
 
-		HTTPClient Client;
+		HttpClient Client;
 
 		private Node ObjectLoader;
 		private Node WorldApi;
@@ -34,8 +34,7 @@ namespace YACY.Legacy
 
 		public void LoadLevelFromFilesystem(string fileName)
 		{
-			var gameFile = new File();
-			if (gameFile.FileExists(fileName))
+			if (FileAccess.FileExists(fileName))
 			{
 				GD.Print($"[C#] Found: {fileName}");
 			}
@@ -45,7 +44,7 @@ namespace YACY.Legacy
 				return;
 			}
 
-			gameFile.Open(fileName, File.ModeFlags.Read);
+			var gameFile = FileAccess.Open(fileName, FileAccess.ModeFlags.Read);
 			var level = CYLevelParser.ParseCYLevel(gameFile.GetAsText());
 			gameFile.Close();
 			

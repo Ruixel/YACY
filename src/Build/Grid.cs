@@ -3,20 +3,20 @@ using YACY.Util;
 
 namespace YACY.Build
 {
-	public class Grid : Node
+	public partial class Grid : Node
 	{
 		public Plane GridPlane { get; private set; }
 		public float Spacing { get; }
 		public Vector2 Size { get; }
 		public float Height { get; private set; }
 
-		private SpatialMaterial _gridMaterial = GD.Load<SpatialMaterial>("res://Entities/Editor/Grid/GridMaterial.tres");
+		private StandardMaterial3D _gridMaterial = GD.Load<StandardMaterial3D>("res://Entities/Editor/Grid/GridMaterial.tres");
 
-		private MeshInstance _gridMesh;
+		private MeshInstance3D _gridMesh;
 
 		public Grid()
 		{
-			_gridMesh = new MeshInstance();
+			_gridMesh = new MeshInstance3D();
 			AddChild(_gridMesh);
 			
 			// Generate simple grid to CY coordinates
@@ -53,11 +53,11 @@ namespace YACY.Build
 
 		private void GenerateMesh()
 		{
-			_gridMesh.Transform = new Transform(Basis.Identity, new Vector3(Size.x * Spacing / 2, Height + 0.005f, Size.y * Spacing / 2));
+			_gridMesh.Transform = new Transform3D(Basis.Identity, new Vector3(Size.X * Spacing / 2, Height + 0.005f, Size.Y * Spacing / 2));
 			
 			var planeMesh = new PlaneMesh();
 			planeMesh.Size = Size * Spacing;
-			_gridMaterial.Uv1Scale = new Vector3(Size.x, Size.y, 1);
+			_gridMaterial.Uv1Scale = new Vector3(Size.X, Size.Y, 1);
 			planeMesh.Material = _gridMaterial;
 
 			_gridMesh.Mesh = planeMesh;

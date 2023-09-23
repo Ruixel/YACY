@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 const Wall = preload("res://scripts/GameWorld/LegacyWall.gd")
 const Plat = preload("res://scripts/GameWorld/LegacyPlatform.gd")
@@ -42,9 +42,9 @@ const toolToObjectDict = {
 
 func _ready():
 	EntityManager._reset()
-	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+	$HTTPRequest.connect("request_completed", Callable(self, "_on_request_completed"))
 	if get_node_or_null("PauseMenu") != null:
-		$PauseMenu.connect("change_music_volume", self, "on_music_volume_change")
+		$PauseMenu.connect("change_music_volume", Callable(self, "on_music_volume_change"))
 	
 	# Initialise default objects
 	for obj in toolToObjectDict.keys():
@@ -73,13 +73,13 @@ func setupLevel():
 	
 	# Initialise level meshes
 	for lvl in range(0, WorldConstants.MAX_LEVELS + 1):
-		var n = Spatial.new()
+		var n = Node3D.new()
 		n.set_name("Level" + str(lvl))
 		
 		add_child(n)
 		levelMeshes.append(n)
 	
-	var ent = Spatial.new()
+	var ent = Node3D.new()
 	ent.set_name("Entities")
 	add_child(ent)
 	entityLocation = ent
@@ -119,7 +119,7 @@ func level_finished_loading():
 func spawnPlayer():
 	if player == null:
 #		player = preload("res://Entities/Player/player.tscn").instance()
-		player = preload("res://Entities/PlayerController/PlayerController.tscn").instance()
+		player = preload("res://Entities/PlayerController/PlayerController.tscn").instantiate()
 		player.set_name("Player")
 		add_child(player)
 #		player.get_node("camera_base/camera_rot/Camera").make_current()
@@ -130,8 +130,8 @@ func spawnPlayer():
 		player.setSpawnPoint(spawnLocation.get_node("Pos").get_global_transform())
 	else:
 		# Player spawns at [200, 390] in the original CY by default  
-		player.set_transform(Transform(Basis(Vector3(0,0,0)), Vector3(40, 1, 76)))
-		player.setSpawnPoint(Transform(Basis(Vector3(0,0,0)), Vector3(40, 1, 76)))
+		player.set_transform(Transform3D(Basis(Vector3(0,0,0)), Vector3(40, 1, 76)))
+		player.setSpawnPoint(Transform3D(Basis(Vector3(0,0,0)), Vector3(40, 1, 76)))
 	
 	player.reset()
 	player._setup()
@@ -189,7 +189,7 @@ func clear_level():
 
 func get_mazeFile(gameNumber):
 	var query = '{"query": "{ getLevel(gameNumber: ' + str(gameNumber) + ') { title, author, mazeFile, description, lastEdited, plays, numRating, totalRating, highscore { nickname, time } }}"}'
-	var headers : PoolStringArray
+	var headers : PackedStringArray
 	headers.append("Content-Type: application/json")
 	
 	$HTTPRequest.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, query)
@@ -197,7 +197,7 @@ func get_mazeFile(gameNumber):
 
 func add_play_count(gameNumber):
 	var mutation = '{"query": "mutation { addPlayCount(gameNumber: ' + str(gameNumber) + ') }"}'
-	var headers : PoolStringArray
+	var headers : PackedStringArray
 	headers.append("Content-Type: application/json")
 	
 	$AddPlayCount.request(WorldConstants.SERVER + "/graphql", headers, true, HTTPClient.METHOD_POST, mutation)
@@ -213,7 +213,7 @@ func restart_level():
 	if self.gameNumber != null:
 		var fade = get_node("/root/Main/Fade")
 		fade.fade(0.3)
-		yield(fade, "s_fade_complete")
+		await fade.s_fade_complete
 		
 		clear_level()
 		get_mazeFile(self.gameNumber)
@@ -221,7 +221,9 @@ func restart_level():
 func _on_request_completed(result, response_code, headers, body):
 	var response = body.get_string_from_utf8()
 	
-	var r = JSON.parse(response).result
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(response).result
+	var r = test_json_conv.get_data()
 	
 	var obj_loader = get_node("ObjectLoader")
 	obj_loader.set_theme(Vector2(0,0), 1, 1)
@@ -247,7 +249,7 @@ func add_fog(fog_color, bg_color, fog_depth_curve: float, light_energy: float, f
 	if water != null:
 		water.mesh.surface_get_material(0).flags_unshaded = false
 	
-	var light = get_parent().get_node_or_null("Environment/DirectionalLight")
+	var light = get_parent().get_node_or_null("Environment/DirectionalLight3D")
 	if light != null:
 		light.light_energy = min(light_energy, light.light_energy)
 	
@@ -269,7 +271,7 @@ func add_fog(fog_color, bg_color, fog_depth_curve: float, light_energy: float, f
 
 func attach_to_player(obj_location):
 	if player != null:
-		var new_obj = load(obj_location).instance()
+		var new_obj = load(obj_location).instantiate()
 		player.get_node("Attachments").add_child(new_obj)
 	else:
 		push_warning("Tried to attach object to non-existent player: " + obj_location)

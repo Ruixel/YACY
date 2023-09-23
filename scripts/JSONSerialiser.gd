@@ -30,7 +30,7 @@ func save_file(fileName, objects, fixed_objects, toolToObjectDict):
 	# Save file to disk
 	var file = File.new()
 	file.open("user://" + fileName, File.WRITE)
-	file.store_string(JSON.print(level))
+	file.store_string(JSON.stringify(level))
 	file.close()
 
 # Note, objects and fixed_objects should be a reference 
@@ -42,12 +42,14 @@ func load_file(fileName, objects, fixed_objects, toolToObjectDict):
 	file.close()
 	
 	# Error handling
-	var attempt = JSON.parse(content)
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(content)
+	var attempt = test_json_conv.get_data()
 	if attempt.get_error() != OK:
-		print("Error loading " + fileName + ": " + attempt.get_error_string())
+		print("Error loading " + fileName + ": " + attempt.get_error_message())
 		return
 	
-	var level = attempt.get_result()
+	var level = attempt.get_data()
 	if typeof(level) != TYPE_DICTIONARY:
 		print("Unexpected object type when loading " + fileName)
 		return

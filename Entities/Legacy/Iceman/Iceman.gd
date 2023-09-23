@@ -1,4 +1,4 @@
-extends KinematicBody
+extends CharacterBody3D
 
 var speed = 100
 var hits := 1
@@ -14,7 +14,7 @@ func check_valid():
 	if $GroundRayCast.is_colliding():
 		active = true
 
-func set_speed(speed: int):
+func set_velocity(speed: int):
 	self.speed = speed
 
 func _process(delta):
@@ -55,7 +55,7 @@ func _physics_process(delta):
 	if active:
 		valid_movement = true
 		
-		if $RayCast.is_colliding() or $RayCast2.is_colliding():
+		if $RayCast3D.is_colliding() or $RayCast2.is_colliding():
 			valid_movement = false
 			if player_nearby and (randi() % 2) == 0:
 				target_player()
@@ -73,7 +73,10 @@ func _physics_process(delta):
 		
 		if valid_movement:
 			invalid_checks = 0
-			move_and_slide_with_snap(global_transform.basis.z * Vector3(1, 0, 1) * delta * speed, Vector3(0, -0.1, 0), Vector3(0, 1, 0))
+			set_velocity(global_transform.basis.z * Vector3(1, 0, 1) * delta * speed)
+			# TODOConverter3To4 looks that snap in Godot 4 is float, not vector like in Godot 3 - previous value `Vector3(0, -0.1, 0)`
+			set_up_direction(Vector3(0, 1, 0))
+			move_and_slide()
 		else:
 			invalid_checks += 1
 			if invalid_checks > 15:
@@ -96,7 +99,7 @@ func hit():
 	self.spin = true
 	$LoudHitSFX.play()
 	
-	yield(get_tree().create_timer(0.7), "timeout")
+	await get_tree().create_timer(0.7).timeout
 	self.spin = false
 
 func _on_HitBox_body_entered(body):
@@ -117,7 +120,7 @@ func _on_HitBox_body_entered(body):
 			body.explode(body.global_transform.origin, false)
 			
 			# Explode
-			var split = preload("res://Entities/Legacy/Iceman/Iceman_split.tscn").instance()
+			var split = preload("res://Entities/Legacy/Iceman/Iceman_split.tscn").instantiate()
 			split.global_transform = self.global_transform
 			get_parent().add_child(split)
 			

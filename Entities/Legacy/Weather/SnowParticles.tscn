@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=2]
 
-[sub_resource type="ParticlesMaterial" id=1]
+[sub_resource type="ParticleProcessMaterial" id=1]
 emission_shape = 2
 emission_box_extents = Vector3( 6, 1, 6 )
 direction = Vector3( 0, 1, 0 )
@@ -9,7 +9,7 @@ initial_velocity = -5.0
 damping = 0.1
 scale_random = 0.4
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="StandardMaterial3D" id=2]
 flags_transparent = true
 flags_unshaded = true
 params_billboard_mode = 2
@@ -20,8 +20,8 @@ material = SubResource( 2 )
 size = Vector2( 0.1, 0.1 )
 
 [node name="SnowParticles" type="Particles"]
-pause_mode = 2
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
+process_mode = 3
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10.9625, 0 )
 amount = 600
 lifetime = 2.5
 visibility_aabb = AABB( -11.1052, -13.3061, -11.2199, 22.2105, 26.6121, 22.4398 )

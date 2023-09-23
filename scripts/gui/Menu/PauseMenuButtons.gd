@@ -5,7 +5,7 @@ var normal_pos
 func on_mouse_hover(tween, label, hover_color):
 	tween.stop_all()
 	
-	tween.interpolate_property(label, "rect_position", label.rect_position, 
+	tween.interpolate_property(label, "position", label.position, 
 	 Vector2(15, 0), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
 	
@@ -18,7 +18,7 @@ func on_mouse_hover(tween, label, hover_color):
 func on_mouse_exit(tween, label):
 	tween.stop_all()
 	
-	tween.interpolate_property(label, "rect_position", label.rect_position, 
+	tween.interpolate_property(label, "position", label.position, 
 	 Vector2(0, 0), 0.2, Tween.TRANS_QUAD, Tween.EASE_OUT)
 	tween.start()
 	

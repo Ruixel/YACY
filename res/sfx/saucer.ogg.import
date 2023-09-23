@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/saucer.ogg-7e18501c507146a2a7dedd608f98b0b1.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bg7qcptn6qe2e"
+path="res://.godot/imported/saucer.ogg-7e18501c507146a2a7dedd608f98b0b1.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/saucer.ogg"
-dest_files=[ "res://.import/saucer.ogg-7e18501c507146a2a7dedd608f98b0b1.oggstr" ]
+dest_files=["res://.godot/imported/saucer.ogg-7e18501c507146a2a7dedd608f98b0b1.oggvorbisstr"]
 
 [params]
 
 loop=true
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

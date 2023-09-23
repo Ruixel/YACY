@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://Entities/Legacy/Spawn/start.png" type="Texture" id=1]
+[ext_resource path="res://Entities/Legacy/Spawn/start.png" type="Texture2D" id=1]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 flags_transparent = true
 albedo_texture = ExtResource( 1 )
 uv1_offset = Vector3( 1, 0.001, 0 )
@@ -10,9 +10,9 @@ uv1_offset = Vector3( 1, 0.001, 0 )
 [sub_resource type="PlaneMesh" id=2]
 material = SubResource( 1 )
 
-[node name="SpawnLocation" type="MeshInstance"]
+[node name="SpawnLocation" type="MeshInstance3D"]
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="Pos" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+[node name="Pos" type="Node3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )

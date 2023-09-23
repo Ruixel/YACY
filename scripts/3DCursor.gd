@@ -1,8 +1,8 @@
-extends Spatial
+extends Node3D
 
-onready var camera    = get_node("../EditorCamera/Camera")
-onready var WorldAPI  = get_node("../WorldInterface")
-onready var EditorGUI = get_node("../GUI")
+@onready var camera    = get_node("../EditorCamera/Camera3D")
+@onready var WorldAPI  = get_node("../WorldInterface")
+@onready var EditorGUI = get_node("../GUI")
 const Vector2i = preload('res://scripts/Vec2i.gd')
 
 # For handling different methods of placement
@@ -15,7 +15,7 @@ enum CursorType {
 var cMode = WorldConstants.Mode.CREATE  # Cursor Mode
 var cType = CursorType.PENCIL           # Cursor Type (How it interacts)
 var objType = WorldConstants.Tools.WALL # Object
-onready var childCursor = get_node("Pencil")
+@onready var childCursor = get_node("Pencil")
 
 # Input
 # For detecting mouse movement
@@ -56,7 +56,7 @@ func _input(event: InputEvent) -> void:
 # This takes in any input that wasn't used in the GUI 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		if event.get_button_index() == BUTTON_LEFT:
+		if event.get_button_index() == MOUSE_BUTTON_LEFT:
 			if event.is_pressed():
 				if mouse_place_pressed == false:
 					mouse_place_just_pressed = true
@@ -69,10 +69,10 @@ func _unhandled_input(event: InputEvent) -> void:
 				
 	elif event is InputEventKey:
 		# Change the height property of an object via shortcut
-		if event.get_scancode() >= KEY_0 and event.get_scancode() <= KEY_9:
+		if event.get_keycode() >= KEY_0 and event.get_keycode() <= KEY_9:
 			if event.is_echo() == false:
 				# Return a number between 0 and 9
-				WorldAPI.property_height_value(event.get_scancode() - KEY_0)
+				WorldAPI.property_height_value(event.get_keycode() - KEY_0)
 
 func on_tool_change(type) -> void:
 	childCursor.cursor_on_tool_change(type)

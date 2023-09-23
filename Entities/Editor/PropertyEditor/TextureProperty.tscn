@@ -5,9 +5,9 @@
 [sub_resource type="Theme" id=1]
 
 [node name="TextureList" type="ItemList"]
-margin_right = 212.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 212, 200 )
+offset_right = 212.0
+offset_bottom = 200.0
+custom_minimum_size = Vector2( 212, 200 )
 theme = SubResource( 1 )
 fixed_column_width = 182
 fixed_icon_size = Vector2( 32, 32 )

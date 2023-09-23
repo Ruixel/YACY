@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/blast.ogg-16a3dc91e75bcbb91f07f553e3c4b669.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dpt2sh5x3op4"
+path="res://.godot/imported/blast.ogg-16a3dc91e75bcbb91f07f553e3c4b669.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/blast.ogg"
-dest_files=[ "res://.import/blast.ogg-16a3dc91e75bcbb91f07f553e3c4b669.oggstr" ]
+dest_files=["res://.godot/imported/blast.ogg-16a3dc91e75bcbb91f07f553e3c4b669.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

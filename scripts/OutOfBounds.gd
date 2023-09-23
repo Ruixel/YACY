@@ -1,4 +1,4 @@
-extends Area
+extends Area3D
 
 func _on_OOBArea_body_entered(body):
 	if body.has_meta("player"):
@@ -8,6 +8,6 @@ func _on_OOBArea_body_entered(body):
 		$Bubbles.restart()
 		$Bubbles.emitting = true
 		$Bubbles.visible = true
-		yield(get_tree().create_timer(2.5), "timeout")
+		await get_tree().create_timer(2.5).timeout
 		$Bubbles.emitting = false
 		$Bubbles.visible = false

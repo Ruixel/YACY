@@ -1,11 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://dvtx4sloj8j3i"]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id="1"]
 code = "shader_type canvas_item;
 render_mode unshaded;
 
 //uniform float time : hint_range(0.0, 10.0);
-const float PI = 3.14159265359;
 
 void fragment()
 {
@@ -50,13 +49,11 @@ void fragment()
 	COLOR = ripples+rays;
 }"
 
-[sub_resource type="ShaderMaterial" id=2]
-shader = SubResource( 1 )
+[sub_resource type="ShaderMaterial" id="2"]
+shader = SubResource("1")
 
 [node name="ColorRect" type="ColorRect"]
-material = SubResource( 2 )
+material = SubResource("2")
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}

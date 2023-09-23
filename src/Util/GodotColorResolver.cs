@@ -4,7 +4,7 @@ using MessagePack.Formatters;
 
 namespace YACY.Util;
 
-public class GodotColorResolver : IFormatterResolver
+public partial class GodotColorResolver : IFormatterResolver
 {
     public static readonly IFormatterResolver Instance = new GodotColorResolver();
 

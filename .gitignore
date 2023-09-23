@@ -11,6 +11,9 @@ api.json
 # Mono-specific ignores
 .mono/
 .idea/
+.vscode/
+.godot/
+.import/
 
 # C++ Projects
 src/**/*.obj

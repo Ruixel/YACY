@@ -2,7 +2,7 @@ using YACY.Entities.Components;
 
 namespace YACY.Build;
 
-public class ChangeHeightCommand : ICommand
+public partial class ChangeHeightCommand : ICommand
 {
 	private int _entityId;
 	private float _bottomHeight;

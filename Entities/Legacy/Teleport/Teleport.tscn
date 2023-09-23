@@ -1,10 +1,10 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://Entities/Legacy/Teleport/Teleport.png" type="Texture" id=1]
-[ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://Entities/Legacy/Teleport/Teleport.png" type="Texture2D" id=1]
+[ext_resource path="res://res/fonts/arial.ttf" type="FontFile" id=2]
 [ext_resource path="res://Entities/Legacy/Teleport/Teleport.gd" type="Script" id=3]
 
-[sub_resource type="SpatialMaterial" id=1]
+[sub_resource type="StandardMaterial3D" id=1]
 resource_local_to_scene = true
 flags_transparent = true
 albedo_texture = ExtResource( 1 )
@@ -19,16 +19,16 @@ uv1_offset = Vector3( 1, 0.001, 0 )
 resource_local_to_scene = true
 material = SubResource( 1 )
 
-[sub_resource type="DynamicFont" id=3]
+[sub_resource type="FontFile" id=3]
 size = 200
 outline_size = 2
 outline_color = Color( 0.823529, 0.823529, 0.823529, 0.733333 )
 font_data = ExtResource( 2 )
 
 [sub_resource type="ViewportTexture" id=4]
-viewport_path = NodePath("Viewport")
+viewport_path = NodePath("SubViewport")
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="StandardMaterial3D" id=5]
 resource_local_to_scene = true
 render_priority = 1
 flags_transparent = true
@@ -38,15 +38,15 @@ albedo_texture = SubResource( 4 )
 resource_local_to_scene = true
 material = SubResource( 5 )
 
-[sub_resource type="BoxShape" id=7]
-extents = Vector3( 0.404882, 0.284678, 0.394621 )
+[sub_resource type="BoxShape3D" id=7]
+size = Vector3( 0.404882, 0.284678, 0.394621 )
 
-[node name="Teleport" type="MeshInstance"]
+[node name="Teleport" type="MeshInstance3D"]
 mesh = SubResource( 2 )
 material/0 = null
 script = ExtResource( 3 )
 
-[node name="Viewport" type="Viewport" parent="."]
+[node name="SubViewport" type="SubViewport" parent="."]
 size = Vector2( 256, 256 )
 transparent_bg = true
 hdr = false
@@ -55,30 +55,30 @@ usage = 0
 render_target_v_flip = true
 gui_disable_input = true
 
-[node name="Text" type="Label" parent="Viewport"]
+[node name="Text" type="Label" parent="SubViewport"]
 anchor_bottom = 1.0
-margin_right = 256.0
-custom_fonts/font = SubResource( 3 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-custom_colors/font_outline_modulate = Color( 1, 1, 1, 1 )
+offset_right = 256.0
+theme_override_fonts/font = SubResource( 3 )
+theme_override_colors/font_color = Color( 0, 0, 0, 1 )
+theme_override_colors/font_outline_color = Color( 1, 1, 1, 1 )
 text = "1"
 align = 1
 valign = 1
 autowrap = true
 clip_text = true
 
-[node name="Pos" type="Spatial" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+[node name="Pos" type="Node3D" parent="."]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
-[node name="Number" type="MeshInstance" parent="."]
-transform = Transform( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0.01, 0 )
+[node name="Number" type="MeshInstance3D" parent="."]
+transform = Transform3D( 0.5, 0, 0, 0, 1, 0, 0, 0, 0.5, 0, 0.01, 0 )
 mesh = SubResource( 6 )
 material/0 = null
 
-[node name="Area" type="Area" parent="."]
+[node name="Area3D" type="Area3D" parent="."]
 
-[node name="CollisionShape" type="CollisionShape" parent="Area"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321482, 0 )
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.321482, 0 )
 shape = SubResource( 7 )
 
-[connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_Area_body_entered"]

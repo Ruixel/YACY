@@ -1,4 +1,4 @@
-extends Spatial
+extends Node3D
 
 var debounce := false
 var pull_back := false
@@ -13,9 +13,9 @@ func _ready():
 		$Crumb.visible = false
 
 func add_connection(player):
-	player.connect("s_updateAmmo", self, "update_ammo")
-	player.connect("s_disabled", self, "disable")
-	player.connect("s_enabled", self, "enable")
+	player.connect("s_updateAmmo", Callable(self, "update_ammo"))
+	player.connect("s_disabled", Callable(self, "disable"))
+	player.connect("s_enabled", Callable(self, "enable"))
 
 func enable():
 	enabled = true
@@ -44,9 +44,9 @@ func _unhandled_input(event):
 		ammo = max(0, ammo)
 		emit_signal("s_updateAmmo", ammo)
 		
-		var projectile = preload("res://Entities/PlayerController/Slingshot/CrumbProjectile.tscn").instance()
+		var projectile = preload("res://Entities/PlayerController/Slingshot/CrumbProjectile.tscn").instantiate()
 		projectile.set_p_owner(get_node("../../.."))
-		projectile.set_speed(50 + $AnimationPlayer.current_animation_position * 2050)
+		projectile.set_velocity(50 + $AnimationPlayer.current_animation_position * 2050)
 		projectile.global_transform = $ProjectileSpawn.global_transform
 		get_parent().get_parent().get_parent().get_parent().add_child(projectile)
 		

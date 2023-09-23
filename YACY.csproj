@@ -1,11 +1,14 @@
-<Project Sdk="Godot.NET.Sdk/3.3.0">
+<Project Sdk="Godot.NET.Sdk/4.1.1">
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MessagePack" Version="2.5.108" />
+    <PackageReference Include="MessagePack" Version="2.5.124" />
     <PackageReference Include="Poly2Tri.NetStandard" Version="1.0.2" />
-    <PackageReference Include="SimpleInjector" Version="5.3.3" />
+    <PackageReference Include="SimpleInjector" Version="5.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Editor\" />
   </ItemGroup>
 </Project>

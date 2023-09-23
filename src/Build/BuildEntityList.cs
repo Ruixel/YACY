@@ -16,11 +16,11 @@ public static class BuildEntityList
 		LegacyPlatform
 	}
 
-	public static Dictionary<Type, System.Type> TypeMap = new Dictionary<Type, System.Type>
-	{
-		{Type.Unknown, typeof(BuildEntity)},
-		{Type.Wall, typeof(Wall)},
-		{Type.LegacyWall, typeof(LegacyWall)},
-		{Type.LegacyPlatform, typeof(LegacyPlatform)}
-	};
+	// public static Dictionary<Type, System.Type> TypeMap = new Dictionary<Type, System.Type>
+	// {
+	// 	{Type.Unknown, typeof(BuildEntity)},
+	// 	{Type.Wall, typeof(Wall)},
+	// 	{Type.LegacyWall, typeof(LegacyWall)},
+	// 	{Type.LegacyPlatform, typeof(LegacyPlatform)}
+	// };
 }

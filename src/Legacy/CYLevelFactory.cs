@@ -9,7 +9,7 @@ namespace YACY.Legacy
 	{
 		static int ExtractInt(string property) => ExtractValue.ExtractInt(property);
 		static Vector2 ExtractVec2(string x, string y) => ExtractValue.ExtractVec2(x, y);
-		static object ExtractTexColor(string property) => ExtractValue.ExtractTexColor(property);
+		static Godot.Variant ExtractTexColor(string property) => ExtractValue.ExtractTexColor(property);
 		static string ExtractStr(string property) => property;
 
 		public static void CreateObjectsInWorld(LegacyLevelData level, Node worldApi)

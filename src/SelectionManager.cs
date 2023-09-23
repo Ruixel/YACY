@@ -7,17 +7,17 @@ using YACY.Util;
 
 namespace YACY
 {
-	public class SelectionManager: ISelectionManager
+	public partial class SelectionManager: ISelectionManager
 	{
 		private List<BuildEntity> _selected;
 		
-		private Spatial _container;
+		private Node3D _container;
 		private bool _containerInLevel;
 
-		private MeshInstance _selectionMesh;
+		private MeshInstance3D _selectionMesh;
 
-		private SpatialMaterial _selectionMaterial =
-			ResourceLoader.Load<SpatialMaterial>("res://res/materials/selection.tres");
+		private StandardMaterial3D _selectionMaterial =
+			ResourceLoader.Load<StandardMaterial3D>("res://res/materials/selection.tres");
 		
 		public event EventHandler<BuildEntity> OnSelection;
 
@@ -25,10 +25,10 @@ namespace YACY
 		{
 			_selected = new List<BuildEntity>();
 			
-			_container = new Spatial();
+			_container = new Node3D();
 			_container.Name = "SelectionContainer";
 
-			_selectionMesh = new MeshInstance();
+			_selectionMesh = new MeshInstance3D();
 			_selectionMesh.Name = "SelectionMesh";
 			_container.AddChild(_selectionMesh);
 		}

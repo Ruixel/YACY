@@ -1,6 +1,6 @@
-extends Spatial
+extends Node3D
 
-onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres") 
+@onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres") 
 var open: bool = false
 var key_required: int = 0
 
@@ -69,7 +69,7 @@ func _on_Area_body_entered(body):
 		if key_required == 0 or body.hasKey(key_required):
 			$DoorSFX.play()
 			$Door.visible = false
-			$CollisionShape.translation = Vector3(0, 1.65, 0)
-			$CollisionShape.scale = Vector3(1, 0.35, 1)
+			$CollisionShape3D.position = Vector3(0, 1.65, 0)
+			$CollisionShape3D.scale = Vector3(1, 0.35, 1)
 			
 			open = true

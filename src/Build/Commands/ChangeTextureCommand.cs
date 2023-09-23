@@ -5,7 +5,7 @@ using YACY.Entities.Components;
 
 namespace YACY.Build;
 
-public class ChangeTextureCommand : ICommand
+public partial class ChangeTextureCommand : ICommand
 {
 	//private readonly IEnumerable<int> _entityIds;
 	

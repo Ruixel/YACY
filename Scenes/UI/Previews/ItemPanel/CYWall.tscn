@@ -1,42 +1,38 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=6 format=3 uid="uid://4mv5r5vfldix"]
 
-[ext_resource path="res://Scenes/UI/MeshOutlineEditor.tres" type="Material" id=1]
+[ext_resource type="Material" path="res://Scenes/UI/MeshOutlineEditor.tres" id="1"]
 
-[sub_resource type="PlaneMesh" id=34]
-size = Vector2( 0.5, 0.8 )
+[sub_resource type="PlaneMesh" id="34"]
+size = Vector2(0.5, 0.8)
 
-[sub_resource type="PlaneMesh" id=35]
+[sub_resource type="PlaneMesh" id="35"]
 flip_faces = true
-size = Vector2( 0.5, 0.8 )
+size = Vector2(0.5, 0.8)
 
-[sub_resource type="PlaneMesh" id=36]
-material = ExtResource( 1 )
-size = Vector2( 0.6, 0.9 )
+[sub_resource type="PlaneMesh" id="36"]
+material = ExtResource("1")
+size = Vector2(0.6, 0.9)
 
-[sub_resource type="PlaneMesh" id=37]
-material = ExtResource( 1 )
+[sub_resource type="PlaneMesh" id="37"]
+material = ExtResource("1")
 flip_faces = true
-size = Vector2( 0.6, 0.9 )
+size = Vector2(0.6, 0.9)
 
-[node name="Mesh" type="Spatial"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016, 0.246 )
+[node name="Mesh" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.016, 0.246)
 
-[node name="Cube" type="MeshInstance" parent="."]
-transform = Transform( 0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0, 0, 0 )
-mesh = SubResource( 34 )
-material/0 = null
+[node name="Cube" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0, 0, 0)
+mesh = SubResource("34")
 
-[node name="Cube2" type="MeshInstance" parent="."]
-transform = Transform( 0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0, 0, 0 )
-mesh = SubResource( 35 )
-material/0 = null
+[node name="Cube2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0, 0, 0)
+mesh = SubResource("35")
 
-[node name="WallOutline" type="MeshInstance" parent="."]
-transform = Transform( 0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, -0.001, 0, -0.001 )
-mesh = SubResource( 36 )
-material/0 = null
+[node name="WallOutline" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, -0.001, 0, -0.001)
+mesh = SubResource("36")
 
-[node name="WallOutline2" type="MeshInstance" parent="."]
-transform = Transform( 0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0.001, 0, 0.001 )
-mesh = SubResource( 37 )
-material/0 = null
+[node name="WallOutline2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.803493, 0.751265, -3.28388e-08, 0, -4.80825e-08, -1.1, -0.751265, 0.803493, -3.51218e-08, 0.001, 0, 0.001)
+mesh = SubResource("37")

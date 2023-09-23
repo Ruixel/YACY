@@ -21,54 +21,54 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -1024.0
-margin_top = -600.0
-margin_right = -784.0
-margin_bottom = -130.0
+offset_left = -1024.0
+offset_top = -600.0
+offset_right = -784.0
+offset_bottom = -130.0
 grow_horizontal = 2
-rect_min_size = Vector2( 0, 450 )
+custom_minimum_size = Vector2( 0, 450 )
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 230.0
-margin_bottom = 322.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 230.0
+offset_bottom = 322.0
 
 [node name="Values" type="VBoxContainer" parent="MarginContainer"]
-margin_right = 220.0
-margin_bottom = 312.0
-rect_min_size = Vector2( 220, 0 )
+offset_right = 220.0
+offset_bottom = 312.0
+custom_minimum_size = Vector2( 220, 0 )
 
 [node name="ObjectName" type="Label" parent="MarginContainer/Values"]
-margin_right = 220.0
-margin_bottom = 22.0
-rect_min_size = Vector2( 0, 22 )
-custom_styles/normal = SubResource( 1 )
+offset_right = 220.0
+offset_bottom = 22.0
+custom_minimum_size = Vector2( 0, 22 )
+theme_override_styles/normal = SubResource( 1 )
 text = "Object Value"
 align = 1
 valign = 1
 
 [node name="DefaultButton" type="Button" parent="MarginContainer/Values"]
-margin_top = 26.0
-margin_right = 220.0
-margin_bottom = 48.0
+offset_top = 26.0
+offset_right = 220.0
+offset_bottom = 48.0
 theme = ExtResource( 2 )
 text = "Set as Default"
 
 [node name="DeleteButton" type="Button" parent="."]
-margin_left = 10.0
-margin_top = 440.0
-margin_right = 230.0
-margin_bottom = 462.0
+offset_left = 10.0
+offset_top = 440.0
+offset_right = 230.0
+offset_bottom = 462.0
 grow_vertical = 2
 theme = ExtResource( 2 )
-custom_styles/hover = SubResource( 1382 )
-custom_styles/focus = SubResource( 1383 )
-custom_styles/normal = SubResource( 1384 )
+theme_override_styles/hover = SubResource( 1382 )
+theme_override_styles/focus = SubResource( 1383 )
+theme_override_styles/normal = SubResource( 1384 )
 action_mode = 0
 text = "Delete"
 __meta__ = {

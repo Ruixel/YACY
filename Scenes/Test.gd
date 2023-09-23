@@ -1,11 +1,11 @@
 extends Button
 
 func _ready():
-	$HTTPRequest.connect("request_completed", self, "_on_request_completed")
+	$HTTPRequest.connect("request_completed", Callable(self, "_on_request_completed"))
 	#loadLevel("Maze/258.GlassTower2.challengeyou.cy")
 
 func loadLevel(mazeFile):
-	var mazeFileEsc = mazeFile.substr(5).http_escape()
+	var mazeFileEsc = mazeFile.substr(5).uri_encode()
 	print(mazeFileEsc)
 	$HTTPRequest.request(WorldConstants.SERVER + "/levels/" + mazeFileEsc)
 	set_disabled(true)

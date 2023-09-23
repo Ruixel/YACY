@@ -12,7 +12,7 @@ namespace YACY.Build
 {
 	// Takes care of adding, editing and removing entities from the level
 	// When active, it gives the player building tools
-	public class BuildManager : IBuildManager
+	public partial class BuildManager : IBuildManager
 	{
 		private Node _root;
 		private bool _enabled;
@@ -22,7 +22,7 @@ namespace YACY.Build
 		private Grid _grid;
 		private Control _ui;
 
-		private Spatial _previewContainer;
+		private Node3D _previewContainer;
 
 		private Dictionary<Type, BuildEntity> _defaultEntities;
 
@@ -62,8 +62,8 @@ namespace YACY.Build
 		{
 			var mousePosition = _root.GetViewport().GetMousePosition();
 
-			var rayOrigin = _editorCamera.GetCamera().GetCameraTransform().origin;
-			var rayDirection = _editorCamera.GetCamera().ProjectRayNormal(mousePosition);
+			var rayOrigin = _editorCamera.GetCamera3d().GetCameraTransform().Origin;
+			var rayDirection = _editorCamera.GetCamera3d().ProjectRayNormal(mousePosition);
 
 			return new Ray(rayOrigin, rayDirection);
 		}
@@ -97,8 +97,8 @@ namespace YACY.Build
 			_editorCamera = new EditorCamera();
 			_cursor = new Cursor(this);
 			_grid = new Grid();
-			_previewContainer = new Spatial();
-			_ui = _uiScene.Instance<BuildInterface>();
+			_previewContainer = new Node3D();
+			//_ui = _uiScene.Instantiate<BuildInterface>();
 			
 			SetTool<Wall>();
 

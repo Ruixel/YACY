@@ -1,15 +1,19 @@
 [remap]
 
-importer="ogg_vorbis"
-type="AudioStreamOGGVorbis"
-path="res://.import/teleport.ogg-bbf7b8bdb00e1e3c8a6e655c357ca4cb.oggstr"
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://35qpdob184w4"
+path="res://.godot/imported/teleport.ogg-bbf7b8bdb00e1e3c8a6e655c357ca4cb.oggvorbisstr"
 
 [deps]
 
 source_file="res://res/sfx/teleport.ogg"
-dest_files=[ "res://.import/teleport.ogg-bbf7b8bdb00e1e3c8a6e655c357ca4cb.oggstr" ]
+dest_files=["res://.godot/imported/teleport.ogg-bbf7b8bdb00e1e3c8a6e655c357ca4cb.oggvorbisstr"]
 
 [params]
 
 loop=false
 loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

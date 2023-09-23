@@ -1,23 +1,23 @@
 [gd_scene load_steps=28 format=2]
 
 [ext_resource path="res://Scenes/Label.gd" type="Script" id=1]
-[ext_resource path="res://res/fonts/aileron_kindabig.tres" type="DynamicFont" id=2]
-[ext_resource path="res://res/fonts/aileron.tres" type="DynamicFont" id=3]
+[ext_resource path="res://res/fonts/aileron_kindabig.tres" type="FontFile" id=2]
+[ext_resource path="res://res/fonts/aileron.tres" type="FontFile" id=3]
 [ext_resource path="res://scripts/gui/SelectedItem.gd" type="Script" id=4]
 [ext_resource path="res://scripts/gui/PolygonRotate.gd" type="Script" id=5]
-[ext_resource path="res://res/fonts/Aileron-Bold.otf" type="DynamicFontData" id=6]
-[ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="DynamicFontData" id=8]
-[ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="DynamicFontData" id=9]
-[ext_resource path="res://res/fonts/aileron_bold_outline.tres" type="DynamicFont" id=10]
-[ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture" id=11]
-[ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture" id=12]
+[ext_resource path="res://res/fonts/Aileron-Bold.otf" type="FontFile" id=6]
+[ext_resource path="res://res/fonts/Inter-SemiBold.ttf" type="FontFile" id=8]
+[ext_resource path="res://res/fonts/Rubik-Regular.ttf" type="FontFile" id=9]
+[ext_resource path="res://res/fonts/aileron_bold_outline.tres" type="FontFile" id=10]
+[ext_resource path="res://res/txrs/editor/up_arrow.png" type="Texture2D" id=11]
+[ext_resource path="res://res/txrs/editor/down_arrow.png" type="Texture2D" id=12]
 [ext_resource path="res://Scenes/UI/DarkRoundFrame.tres" type="StyleBox" id=14]
 [ext_resource path="res://scripts/gui/LevelSelector.gd" type="Script" id=17]
 [ext_resource path="res://src/UI/BuildInterface.cs" type="Script" id=18]
-[ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=19]
+[ext_resource path="res://res/fonts/aileron_bold.tres" type="FontFile" id=19]
 [ext_resource path="res://Scenes/UI/BlackButton.tres" type="StyleBox" id=20]
 
-[sub_resource type="DynamicFont" id=19]
+[sub_resource type="FontFile" id=19]
 size = 72
 outline_size = 5
 outline_color = Color( 0, 0, 0, 0.584314 )
@@ -26,21 +26,21 @@ use_filter = true
 extra_spacing_char = 2
 font_data = ExtResource( 6 )
 
-[sub_resource type="DynamicFont" id=13]
+[sub_resource type="FontFile" id=13]
 size = 12
 outline_size = 1
 outline_color = Color( 0, 0, 0, 0.133333 )
 extra_spacing_char = 1
 font_data = ExtResource( 8 )
 
-[sub_resource type="DynamicFont" id=15]
+[sub_resource type="FontFile" id=15]
 size = 28
-extra_spacing_top = 5
-extra_spacing_bottom = 5
+spacing_top = 5
+spacing_bottom = 5
 extra_spacing_char = 1
 font_data = ExtResource( 8 )
 
-[sub_resource type="DynamicFont" id=16]
+[sub_resource type="FontFile" id=16]
 size = 78
 font_data = ExtResource( 9 )
 
@@ -97,8 +97,8 @@ script = ExtResource( 18 )
 [node name="ItemSelected" type="Control" parent="."]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_top = -40.0
-margin_right = 40.0
+offset_top = -40.0
+offset_right = 40.0
 script = ExtResource( 4 )
 
 [node name="Polygon2D" type="Polygon2D" parent="ItemSelected"]
@@ -106,7 +106,7 @@ position = Vector2( -165, -164 )
 scale = Vector2( 2.26946, 2.09677 )
 color = Color( 1, 1, 1, 0.298039 )
 offset = Vector2( -511.575, -114.462 )
-polygon = PoolVector2Array( 666.238, 153.093, 507, 176, 575, 288, 681.66, 256.108 )
+polygon = PackedVector2Array( 666.238, 153.093, 507, 176, 575, 288, 681.66, 256.108 )
 script = ExtResource( 5 )
 
 [node name="Polygon2D2" type="Polygon2D" parent="ItemSelected"]
@@ -114,39 +114,39 @@ position = Vector2( -165, -164 )
 scale = Vector2( 2.26946, 2.09677 )
 color = Color( 1, 1, 1, 0.298039 )
 offset = Vector2( -511.575, -114.462 )
-polygon = PoolVector2Array( 684.304, 162.631, 511.575, 153.093, 550.792, 275.662, 668.441, 258.493 )
+polygon = PackedVector2Array( 684.304, 162.631, 511.575, 153.093, 550.792, 275.662, 668.441, 258.493 )
 script = ExtResource( 5 )
 
 [node name="Polygon2D3" type="Polygon2D" parent="ItemSelected"]
 position = Vector2( -152, -37 )
 scale = Vector2( 2.26946, 2.09677 )
 color = Color( 1, 1, 1, 0.298039 )
-polygon = PoolVector2Array( -6.60945, -10.4923, 139.681, -33.3848, 155.984, 93.954, -18.066, 102.062, -7.58138, -0.943726 )
+polygon = PackedVector2Array( -6.60945, -10.4923, 139.681, -33.3848, 155.984, 93.954, -18.066, 102.062, -7.58138, -0.943726 )
 script = ExtResource( 5 )
 
 [node name="ItemName" type="RichTextLabel" parent="ItemSelected"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 86.0
-margin_top = -106.0
-margin_right = 422.0
-margin_bottom = -11.0
-custom_fonts/normal_font = SubResource( 19 )
+offset_left = 86.0
+offset_top = -106.0
+offset_right = 422.0
+offset_bottom = -11.0
+theme_override_fonts/normal_font = SubResource( 19 )
 bbcode_enabled = true
-bbcode_text = "[wave amp=30 freq=2] Platform[/wave]"
+text = "[wave amp=30 freq=2] Platform[/wave]"
 text = " Platform"
 fit_content_height = true
 
 [node name="ActionType" type="RichTextLabel" parent="ItemSelected"]
 anchor_top = 1.0
 anchor_bottom = 1.0
-margin_left = 85.0
-margin_top = -144.0
-margin_right = 288.0
-margin_bottom = -49.0
-custom_fonts/normal_font = ExtResource( 10 )
+offset_left = 85.0
+offset_top = -144.0
+offset_right = 288.0
+offset_bottom = -49.0
+theme_override_fonts/normal_font = ExtResource( 10 )
 bbcode_enabled = true
-bbcode_text = "
+text = "
 [wave amp=20 freq=3] Selected[/wave]
 "
 text = "
@@ -156,14 +156,14 @@ text = "
 [node name="LevelSelector" type="Panel" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -70.0
-margin_top = 20.0
-margin_right = -20.0
-margin_bottom = 175.0
+offset_left = -70.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 175.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 14 )
+theme_override_styles/panel = ExtResource( 14 )
 script = ExtResource( 17 )
 
 [node name="Label" type="Label" parent="LevelSelector"]
@@ -171,10 +171,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-margin_left = -23.5
-margin_right = 24.5
-margin_bottom = 21.0
-custom_fonts/font = SubResource( 13 )
+offset_left = -23.5
+offset_right = 24.5
+offset_bottom = 21.0
+theme_override_fonts/font = SubResource( 13 )
 text = "LEVEL"
 align = 1
 valign = 1
@@ -182,28 +182,28 @@ valign = 1
 [node name="MarginContainer" type="MarginContainer" parent="LevelSelector"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_right = -8.0
+offset_left = 8.0
+offset_right = -8.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="LevelSelector/MarginContainer"]
-margin_right = 34.0
-margin_bottom = 155.0
+offset_right = 34.0
+offset_bottom = 155.0
 alignment = 1
 
 [node name="Up" type="TextureButton" parent="LevelSelector/MarginContainer/VBoxContainer"]
 modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
-margin_top = 21.0
-margin_right = 34.0
-margin_bottom = 51.0
-rect_min_size = Vector2( 0, 30 )
+offset_top = 21.0
+offset_right = 34.0
+offset_bottom = 51.0
+custom_minimum_size = Vector2( 0, 30 )
 texture_normal = ExtResource( 11 )
 expand = true
 
 [node name="Label" type="Label" parent="LevelSelector/MarginContainer/VBoxContainer"]
-margin_top = 55.0
-margin_right = 34.0
-margin_bottom = 100.0
-custom_fonts/font = SubResource( 15 )
+offset_top = 55.0
+offset_right = 34.0
+offset_bottom = 100.0
+theme_override_fonts/font = SubResource( 15 )
 text = "1"
 align = 1
 valign = 1
@@ -212,217 +212,217 @@ script = ExtResource( 1 )
 
 [node name="Down" type="TextureButton" parent="LevelSelector/MarginContainer/VBoxContainer"]
 modulate = Color( 0.921569, 0.921569, 0.960784, 1 )
-margin_top = 104.0
-margin_right = 34.0
-margin_bottom = 134.0
-rect_min_size = Vector2( 0, 30 )
+offset_top = 104.0
+offset_right = 34.0
+offset_bottom = 134.0
+custom_minimum_size = Vector2( 0, 30 )
 texture_normal = ExtResource( 12 )
 expand = true
 
 [node name="Label" type="Label" parent="."]
 visible = false
-margin_left = 15.0
-margin_top = 665.0
-margin_right = 165.0
-margin_bottom = 760.0
-custom_fonts/font = SubResource( 16 )
+offset_left = 15.0
+offset_top = 665.0
+offset_right = 165.0
+offset_bottom = 760.0
+theme_override_fonts/font = SubResource( 16 )
 text = "wall"
 
 [node name="ItemPanel" type="Panel" parent="."]
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 449.0
-margin_top = -164.0
-margin_right = -20.0
-margin_bottom = -20.0
+offset_left = 449.0
+offset_top = -164.0
+offset_right = -20.0
+offset_bottom = -20.0
 mouse_filter = 1
-custom_styles/panel = SubResource( 26 )
+theme_override_styles/panel = SubResource( 26 )
 
 [node name="GridContainer" type="GridContainer" parent="ItemPanel"]
-margin_left = 10.0
-margin_top = 10.0
-margin_right = 1032.0
-margin_bottom = 134.0
-custom_constants/hseparation = 10
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 1032.0
+offset_bottom = 134.0
+theme_override_constants/h_separation = 10
 columns = 7
 
 [node name="ItemType" type="Control" parent="ItemPanel"]
-margin_top = -50.0
-margin_right = 549.0
-margin_bottom = -10.0
+offset_top = -50.0
+offset_right = 549.0
+offset_bottom = -10.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ItemPanel/ItemType"]
-margin_left = 20.0
-margin_right = 104.0
-margin_bottom = 40.0
-custom_constants/separation = 50
+offset_left = 20.0
+offset_right = 104.0
+offset_bottom = 40.0
+theme_override_constants/separation = 50
 
 [node name="Geometry" type="Button" parent="ItemPanel/ItemType/HBoxContainer"]
-margin_right = 84.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_right = 84.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Geometry"
 
 [node name="Gameplay" type="Button" parent="ItemPanel/ItemType/HBoxContainer"]
-margin_left = 134.0
-margin_right = 220.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_left = 134.0
+offset_right = 220.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Gameplay"
 
 [node name="Combat" type="Button" parent="ItemPanel/ItemType/HBoxContainer"]
-margin_left = 270.0
-margin_right = 339.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_left = 270.0
+offset_right = 339.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Combat"
 
 [node name="Fun" type="Button" parent="ItemPanel/ItemType/HBoxContainer"]
-margin_left = 389.0
-margin_right = 422.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_left = 389.0
+offset_right = 422.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Fun"
 
 [node name="Experimental" type="Button" parent="ItemPanel/ItemType/HBoxContainer"]
-margin_left = 472.0
-margin_right = 586.0
-margin_bottom = 40.0
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_left = 472.0
+offset_right = 586.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Experimental"
 
 [node name="ItemEditor" type="Panel" parent="."]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -380.0
-margin_top = 20.0
-margin_right = -124.0
-margin_bottom = 422.0
+offset_left = -380.0
+offset_top = 20.0
+offset_right = -124.0
+offset_bottom = 422.0
 mouse_filter = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_styles/panel = ExtResource( 14 )
+theme_override_styles/panel = ExtResource( 14 )
 
 [node name="MarginContainer" type="MarginContainer" parent="ItemEditor"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 15.0
-margin_right = -8.0
+offset_left = 8.0
+offset_top = 15.0
+offset_right = -8.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ItemEditor/MarginContainer"]
-margin_right = 240.0
-margin_bottom = 387.0
-custom_constants/separation = 0
+offset_right = 240.0
+offset_bottom = 387.0
+theme_override_constants/separation = 0
 
 [node name="TitleVBox" type="VBoxContainer" parent="ItemEditor/MarginContainer/VBoxContainer"]
-margin_right = 240.0
-margin_bottom = 60.0
-custom_constants/separation = -7
+offset_right = 240.0
+offset_bottom = 60.0
+theme_override_constants/separation = -7
 alignment = 1
 
 [node name="Name" type="Label" parent="ItemEditor/MarginContainer/VBoxContainer/TitleVBox"]
-margin_right = 240.0
-margin_bottom = 44.0
-custom_fonts/font = ExtResource( 2 )
+offset_right = 240.0
+offset_bottom = 44.0
+theme_override_fonts/font = ExtResource( 2 )
 text = "Wall"
 align = 1
 
 [node name="PropertiesLabel" type="Label" parent="ItemEditor/MarginContainer/VBoxContainer/TitleVBox"]
-margin_top = 37.0
-margin_right = 240.0
-margin_bottom = 60.0
-custom_fonts/font = ExtResource( 19 )
+offset_top = 37.0
+offset_right = 240.0
+offset_bottom = 60.0
+theme_override_fonts/font = ExtResource( 19 )
 text = "Properties"
 align = 1
 
 [node name="HSeparator" type="HSeparator" parent="ItemEditor/MarginContainer/VBoxContainer"]
-margin_top = 60.0
-margin_right = 240.0
-margin_bottom = 70.0
-custom_constants/separation = 10
-custom_styles/separator = SubResource( 42 )
+offset_top = 60.0
+offset_right = 240.0
+offset_bottom = 70.0
+theme_override_constants/separation = 10
+theme_override_styles/separator = SubResource( 42 )
 
 [node name="Panel" type="Panel" parent="ItemEditor/MarginContainer/VBoxContainer"]
 visible = false
-margin_top = 70.0
-margin_right = 240.0
-margin_bottom = 94.0
-rect_min_size = Vector2( 0, 24 )
-custom_styles/panel = SubResource( 40 )
+offset_top = 70.0
+offset_right = 240.0
+offset_bottom = 94.0
+custom_minimum_size = Vector2( 0, 24 )
+theme_override_styles/panel = SubResource( 40 )
 
 [node name="HBoxContainer" type="HBoxContainer" parent="ItemEditor/MarginContainer/VBoxContainer/Panel"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-rect_min_size = Vector2( 24, 24 )
+custom_minimum_size = Vector2( 24, 24 )
 
 [node name="Panel" type="Panel" parent="ItemEditor/MarginContainer/VBoxContainer/Panel/HBoxContainer"]
-margin_right = 24.0
-margin_bottom = 24.0
-rect_min_size = Vector2( 24, 24 )
-custom_styles/panel = SubResource( 41 )
+offset_right = 24.0
+offset_bottom = 24.0
+custom_minimum_size = Vector2( 24, 24 )
+theme_override_styles/panel = SubResource( 41 )
 
 [node name="Label" type="Label" parent="ItemEditor/MarginContainer/VBoxContainer/Panel/HBoxContainer"]
-margin_left = 28.0
-margin_top = 2.0
-margin_right = 86.0
-margin_bottom = 22.0
-custom_fonts/font = ExtResource( 3 )
-text = " Texture"
+offset_left = 28.0
+offset_top = 2.0
+offset_right = 86.0
+offset_bottom = 22.0
+theme_override_fonts/font = ExtResource( 3 )
+text = " Texture2D"
 
 [node name="MenuBar" type="Control" parent="."]
-margin_left = 40.0
-margin_top = 20.0
-margin_right = 270.0
-margin_bottom = 72.0
+offset_left = 40.0
+offset_top = 20.0
+offset_right = 270.0
+offset_bottom = 72.0
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MenuBar"]
-margin_right = 40.0
-margin_bottom = 40.0
-custom_constants/separation = 50
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/separation = 50
 
 [node name="Save" type="Button" parent="MenuBar/HBoxContainer"]
-margin_right = 41.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_right = 41.0
+offset_bottom = 40.0
+custom_minimum_size = Vector2( 40, 40 )
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Save"
 
 [node name="Load" type="Button" parent="MenuBar/HBoxContainer"]
-margin_left = 91.0
-margin_right = 135.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 40, 40 )
-custom_fonts/font = ExtResource( 19 )
-custom_styles/hover = SubResource( 38 )
-custom_styles/pressed = SubResource( 39 )
-custom_styles/focus = SubResource( 37 )
-custom_styles/normal = ExtResource( 20 )
+offset_left = 91.0
+offset_right = 135.0
+offset_bottom = 40.0
+custom_minimum_size = Vector2( 40, 40 )
+theme_override_fonts/font = ExtResource( 19 )
+theme_override_styles/hover = SubResource( 38 )
+theme_override_styles/pressed = SubResource( 39 )
+theme_override_styles/focus = SubResource( 37 )
+theme_override_styles/normal = ExtResource( 20 )
 text = "Load"
 
 [connection signal="pressed" from="LevelSelector/MarginContainer/VBoxContainer/Up" to="LevelSelector" method="_on_Up_pressed"]

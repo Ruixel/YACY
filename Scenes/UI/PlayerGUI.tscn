@@ -1,22 +1,22 @@
 [gd_scene load_steps=19 format=2]
 
-[ext_resource path="res://res/fonts/arial.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://res/fonts/arial.ttf" type="FontFile" id=1]
 [ext_resource path="res://scripts/gui/PlayerGUI.gd" type="Script" id=2]
-[ext_resource path="res://res/fonts/aileron_big.tres" type="DynamicFont" id=3]
-[ext_resource path="res://res/fonts/aileron_bold.tres" type="DynamicFont" id=4]
+[ext_resource path="res://res/fonts/aileron_big.tres" type="FontFile" id=3]
+[ext_resource path="res://res/fonts/aileron_bold.tres" type="FontFile" id=4]
 [ext_resource path="res://Entities/Legacy/Diamond/Diamond.glb" type="PackedScene" id=5]
 [ext_resource path="res://scripts/Spin.gd" type="Script" id=6]
 [ext_resource path="res://Scenes/Env/GlobalEnv.tres" type="Environment" id=7]
 [ext_resource path="res://Entities/Legacy/Iceman/Iceman.glb" type="PackedScene" id=8]
 [ext_resource path="res://Entities/Legacy/SlingshotPickups/CrumbPack.glb" type="PackedScene" id=9]
-[ext_resource path="res://res/txrs/iceman.jpg" type="Texture" id=10]
+[ext_resource path="res://res/txrs/iceman.jpg" type="Texture2D" id=10]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 size = 18
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="ProceduralSky" id=2]
+[sub_resource type="Sky" id=2]
 ground_bottom_color = Color( 0.294118, 0.517647, 0.741176, 1 )
 ground_horizon_color = Color( 0.443137, 0.698039, 0.764706, 1 )
 sun_latitude = 23.23
@@ -79,13 +79,13 @@ __meta__ = {
 
 [node name="MouseLockWarning" type="Label" parent="."]
 visible = false
-margin_left = 5.0
-margin_top = 5.0
-margin_right = 349.0
-margin_bottom = 56.0
-custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
-custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
-custom_fonts/font = SubResource( 1 )
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 349.0
+offset_bottom = 56.0
+theme_override_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+theme_override_colors/font_shadow_color = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+theme_override_fonts/font = SubResource( 1 )
 text = "MOUSE CONTROL OFF - PRESS 'T'"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -113,13 +113,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -354.0
-margin_top = -66.0506
-margin_right = -10.0001
-margin_bottom = -3.0506
-custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
-custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
-custom_fonts/font = SubResource( 1 )
+offset_left = -354.0
+offset_top = -66.0506
+offset_right = -10.0001
+offset_bottom = -3.0506
+theme_override_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+theme_override_colors/font_shadow_color = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+theme_override_fonts/font = SubResource( 1 )
 text = "JetPack OFF - Press 'F'
 "
 align = 2
@@ -132,13 +132,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -354.0
-margin_top = -48.0506
-margin_right = -10.0001
-margin_bottom = -3.0506
-custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
-custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
-custom_fonts/font = SubResource( 1 )
+offset_left = -354.0
+offset_top = -48.0506
+offset_right = -10.0001
+offset_bottom = -3.0506
+theme_override_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+theme_override_colors/font_shadow_color = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+theme_override_fonts/font = SubResource( 1 )
 text = "FUEL GAUGE"
 align = 2
 __meta__ = {
@@ -150,10 +150,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -357.0
-margin_top = -24.0001
-margin_right = -5.00012
-margin_bottom = -6.00006
+offset_left = -357.0
+offset_top = -24.0001
+offset_right = -5.00012
+offset_bottom = -6.00006
 color = Color( 1, 1, 1, 0.427451 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -164,10 +164,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -357.0
-margin_top = -24.0001
-margin_right = -5.00012
-margin_bottom = -6.00006
+offset_left = -357.0
+offset_top = -24.0001
+offset_right = -5.00012
+offset_bottom = -6.00006
 color = Color( 0.105882, 0.960784, 0.219608, 0.611765 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -179,40 +179,40 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = -298.0
-margin_top = -82.9999
-margin_right = -20.0
-margin_bottom = 25.0001
+offset_left = -298.0
+offset_top = -82.9999
+offset_right = -20.0
+offset_bottom = 25.0001
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Count" type="RichTextLabel" parent="BR/Ammo"]
-margin_left = 40.0
-margin_right = 213.0
-margin_bottom = 70.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 4 )
+offset_left = 40.0
+offset_right = 213.0
+offset_bottom = 70.0
+theme_override_fonts/bold_font = ExtResource( 3 )
+theme_override_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[right][b]24[/b][/right]"
+text = "[right][b]24[/b][/right]"
 text = "24"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViewportContainer" type="ViewportContainer" parent="BR/Ammo"]
-margin_left = 225.0
-margin_top = -8.0
-margin_right = 275.0
-margin_bottom = 62.0
+[node name="SubViewportContainer" type="SubViewportContainer" parent="BR/Ammo"]
+offset_left = 225.0
+offset_top = -8.0
+offset_right = 275.0
+offset_bottom = 62.0
 mouse_filter = 2
 stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="BR/Ammo/ViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="BR/Ammo/SubViewportContainer"]
 size = Vector2( 49, 70 )
 world = SubResource( 4 )
 transparent_bg = true
@@ -221,20 +221,20 @@ usage = 3
 debug_draw = 3
 render_target_update_mode = 0
 
-[node name="Camera" type="Camera" parent="BR/Ammo/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+[node name="Camera3D" type="Camera3D" parent="BR/Ammo/SubViewportContainer/SubViewport"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
 fov = 22.0
 
-[node name="Mesh" parent="BR/Ammo/ViewportContainer/Viewport" instance=ExtResource( 9 )]
-transform = Transform( 0.23, 0, 0, 0, 0.46, 0, 0, 0, 0.23, 0, 0, 0 )
+[node name="Mesh" parent="BR/Ammo/SubViewportContainer/SubViewport" instance=ExtResource( 9 )]
+transform = Transform3D( 0.23, 0, 0, 0, 0.46, 0, 0, 0, 0.23, 0, 0, 0 )
 script = ExtResource( 6 )
 spin_speed = 1.0
 
 [node name="Items" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 1.50732
-margin_right = 1.50732
+offset_left = 1.50732
+offset_right = 1.50732
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -244,20 +244,20 @@ __meta__ = {
 visible = false
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -40.0
-margin_bottom = 40.0
+offset_left = -40.0
+offset_bottom = 40.0
 mouse_filter = 2
 
 [node name="KeysCollected" type="Label" parent="Items/Keys"]
 anchor_left = 1.0
 anchor_right = 1.0
-margin_left = -354.0
-margin_top = 5.0
-margin_right = -10.0001
-margin_bottom = 68.0
-custom_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
-custom_colors/font_color_shadow = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
-custom_fonts/font = SubResource( 1 )
+offset_left = -354.0
+offset_top = 5.0
+offset_right = -10.0001
+offset_bottom = 68.0
+theme_override_colors/font_color = Color( 1, 0.721569, 0.0627451, 0.839216 )
+theme_override_colors/font_shadow_color = Color( 0.298039, 0.2, 0.0196078, 0.45098 )
+theme_override_fonts/font = SubResource( 1 )
 text = "Keys: None
 "
 align = 2
@@ -275,10 +275,10 @@ __meta__ = {
 
 [node name="Diamonds" type="Control" parent="ItemsLeft"]
 visible = false
-margin_left = 10.0
-margin_top = 25.0
-margin_right = 288.0
-margin_bottom = 133.0
+offset_left = 10.0
+offset_top = 25.0
+offset_right = 288.0
+offset_bottom = 133.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -287,41 +287,41 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="ItemsLeft/Diamonds"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 3.0
-margin_right = -139.0
-margin_bottom = -50.0
-custom_styles/panel = SubResource( 5 )
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -139.0
+offset_bottom = -50.0
+theme_override_styles/panel = SubResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Count" type="RichTextLabel" parent="ItemsLeft/Diamonds"]
-margin_left = 56.2754
-margin_top = 0.625061
-margin_right = 229.275
-margin_bottom = 70.6251
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 4 )
+offset_left = 56.2754
+offset_top = 0.625061
+offset_right = 229.275
+offset_bottom = 70.6251
+theme_override_fonts/bold_font = ExtResource( 3 )
+theme_override_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = " [b]5[/b] / 24"
+text = " [b]5[/b] / 24"
 text = " 5 / 24"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViewportContainer" type="ViewportContainer" parent="ItemsLeft/Diamonds"]
-margin_left = 4.94937
-margin_top = 5.98226
-margin_right = 54.9494
-margin_bottom = 55.9823
+[node name="SubViewportContainer" type="SubViewportContainer" parent="ItemsLeft/Diamonds"]
+offset_left = 4.94937
+offset_top = 5.98226
+offset_right = 54.9494
+offset_bottom = 55.9823
 mouse_filter = 2
 stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="ItemsLeft/Diamonds/ViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="ItemsLeft/Diamonds/SubViewportContainer"]
 size = Vector2( 50, 50 )
 world = SubResource( 6 )
 transparent_bg = true
@@ -330,20 +330,20 @@ usage = 3
 debug_draw = 3
 render_target_update_mode = 0
 
-[node name="Camera" type="Camera" parent="ItemsLeft/Diamonds/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+[node name="Camera3D" type="Camera3D" parent="ItemsLeft/Diamonds/SubViewportContainer/SubViewport"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
 fov = 22.0
 
-[node name="Diamond" parent="ItemsLeft/Diamonds/ViewportContainer/Viewport" instance=ExtResource( 5 )]
+[node name="Diamond" parent="ItemsLeft/Diamonds/SubViewportContainer/SubViewport" instance=ExtResource( 5 )]
 script = ExtResource( 6 )
 spin_speed = 2.0
 
 [node name="Icemen" type="Control" parent="ItemsLeft"]
 visible = false
-margin_left = 10.0
-margin_top = 75.0
-margin_right = 288.0
-margin_bottom = 183.0
+offset_left = 10.0
+offset_top = 75.0
+offset_right = 288.0
+offset_bottom = 183.0
 mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
@@ -352,41 +352,41 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="ItemsLeft/Icemen"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 3.0
-margin_right = -139.0
-margin_bottom = -50.0
-custom_styles/panel = SubResource( 7 )
+offset_left = 4.0
+offset_top = 3.0
+offset_right = -139.0
+offset_bottom = -50.0
+theme_override_styles/panel = SubResource( 7 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Count" type="RichTextLabel" parent="ItemsLeft/Icemen"]
-margin_left = 56.0394
-margin_top = -0.374939
-margin_right = 229.039
-margin_bottom = 69.6251
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 4 )
+offset_left = 56.0394
+offset_top = -0.374939
+offset_right = 229.039
+offset_bottom = 69.6251
+theme_override_fonts/bold_font = ExtResource( 3 )
+theme_override_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[b]24[/b] left"
+text = "[b]24[/b] left"
 text = "24 left"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="ViewportContainer" type="ViewportContainer" parent="ItemsLeft/Icemen"]
-margin_left = 4.94937
-margin_top = 5.98226
-margin_right = 54.9494
-margin_bottom = 55.9823
+[node name="SubViewportContainer" type="SubViewportContainer" parent="ItemsLeft/Icemen"]
+offset_left = 4.94937
+offset_top = 5.98226
+offset_right = 54.9494
+offset_bottom = 55.9823
 mouse_filter = 2
 stretch = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Viewport" type="Viewport" parent="ItemsLeft/Icemen/ViewportContainer"]
+[node name="SubViewport" type="SubViewport" parent="ItemsLeft/Icemen/SubViewportContainer"]
 size = Vector2( 50, 50 )
 world = SubResource( 8 )
 transparent_bg = true
@@ -395,26 +395,26 @@ usage = 3
 debug_draw = 3
 render_target_update_mode = 0
 
-[node name="Camera" type="Camera" parent="ItemsLeft/Icemen/ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
+[node name="Camera3D" type="Camera3D" parent="ItemsLeft/Icemen/SubViewportContainer/SubViewport"]
+transform = Transform3D( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3 )
 fov = 22.0
 
-[node name="Iceman" parent="ItemsLeft/Icemen/ViewportContainer/Viewport" instance=ExtResource( 8 )]
-transform = Transform( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -0.4, 0 )
+[node name="Iceman" parent="ItemsLeft/Icemen/SubViewportContainer/SubViewport" instance=ExtResource( 8 )]
+transform = Transform3D( 0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0, -0.4, 0 )
 script = ExtResource( 6 )
 spin_speed = 1.0
 
 [node name="Clock" type="RichTextLabel" parent="."]
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -86.5
-margin_top = 25.0
-margin_right = 86.4995
-margin_bottom = 95.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 4 )
+offset_left = -86.5
+offset_top = 25.0
+offset_right = 86.4995
+offset_bottom = 95.0
+theme_override_fonts/bold_font = ExtResource( 3 )
+theme_override_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[center][b]00:00[/b][/center]"
+text = "[center][b]00:00[/b][/center]"
 text = "00:00"
 __meta__ = {
 "_edit_use_anchors_": false
@@ -427,14 +427,14 @@ autostart = true
 visible = false
 anchor_left = 0.5
 anchor_right = 0.5
-margin_left = -108.5
-margin_top = 50.0
-margin_right = 64.4998
-margin_bottom = 120.0
-custom_fonts/bold_font = ExtResource( 3 )
-custom_fonts/normal_font = ExtResource( 4 )
+offset_left = -108.5
+offset_top = 50.0
+offset_right = 64.4998
+offset_bottom = 120.0
+theme_override_fonts/bold_font = ExtResource( 3 )
+theme_override_fonts/normal_font = ExtResource( 4 )
 bbcode_enabled = true
-bbcode_text = "[right]00:00[/right]"
+text = "[right]00:00[/right]"
 text = "00:00"
 __meta__ = {
 "_edit_use_anchors_": false

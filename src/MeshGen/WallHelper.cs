@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using Godot;
 using YACY.Legacy;
@@ -11,7 +10,7 @@ public static class WallHelper
 	private static readonly int[] QuadIndices = new[] {0, 1, 3, 1, 2, 3};
 	
 	public static readonly Material ColorMaterial =
-			ResourceLoader.Load<SpatialMaterial>("res://res/materials/test_mat.tres");
+			ResourceLoader.Load<StandardMaterial3D>("res://res/materials/test_mat.tres");
 	
 	public static readonly ShaderMaterial ArrayTextureMaterial =
 			ResourceLoader.Load<ShaderMaterial>("res://res/materials/ArrayTexture.tres");
@@ -30,8 +29,8 @@ public static class WallHelper
 			vertices = new List<Vector3> {vertices[3], vertices[2], vertices[1], vertices[0]};
 
 		var normal = CalculateNormal(vertices);
-		var wallLength = Mathf.Sqrt(Mathf.Pow(vertices[2].z - vertices[0].z, 2) +
-		                            Mathf.Pow(vertices[2].x - vertices[0].x, 2));
+		var wallLength = Mathf.Sqrt(Mathf.Pow(vertices[2].Z - vertices[0].Z, 2) +
+		                            Mathf.Pow(vertices[2].X - vertices[0].X, 2));
 		
 		// Mostly used for thick walls since sometimes a texture will repeat for a lil bit and it looks off
 		if (readjust && wallLength % 1 < 0.25 && wallLength > 1)
@@ -49,16 +48,16 @@ public static class WallHelper
 			textureScale = textureInfo.Value.Scale;
 		}
 		
-		color.a = textureFloat;
+		color.A = textureFloat;
 
 		for (int i = 0; i < 4; i++)
 		{
 			var uvX = (i is 0 or 3) ? 0 : wallLength;
-			var uvY = (i is 0 or 1) ? vertices[2].y : vertices[0].y;
+			var uvY = (i is 0 or 1) ? vertices[2].Y : vertices[0].Y;
 
-			surfaceTool.AddColor(color);
-			surfaceTool.AddUv(new Vector2(uvX * textureScale.x * textureSize, uvY * textureScale.y * textureSize));
-			surfaceTool.AddNormal(normal);
+			surfaceTool.SetColor(color);
+			surfaceTool.SetUV(new Vector2(uvX * textureScale.X * textureSize, uvY * textureScale.Y * textureSize));
+			surfaceTool.SetNormal(normal);
 			surfaceTool.AddVertex(vertices[(4 - i) % 4]);
 		}
 
@@ -77,17 +76,17 @@ public static class WallHelper
 
 	public static bool IsClockwise(Vector2 v1, Vector2 v2)
 	{
-		return v1.y * v2.x < v1.x * v2.y;
+		return v1.Y * v2.X < v1.X * v2.Y;
 	}
 
 	public static List<Vector3> CreateWallVertices(Vector2 start, Vector2 end, float top, float bottom)
 	{
 		return new List<Vector3>
 		{
-			new Vector3(start.x, top, start.y),
-			new Vector3(start.x, bottom, start.y),
-			new Vector3(end.x, bottom, end.y),
-			new Vector3(end.x, top, end.y)
+			new Vector3(start.X, top, start.Y),
+			new Vector3(start.X, bottom, start.Y),
+			new Vector3(end.X, bottom, end.Y),
+			new Vector3(end.X, top, end.Y)
 		};
 	}
 

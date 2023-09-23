@@ -1,8 +1,8 @@
 extends "CursorBase.gd"
 
-onready var parent    = get_parent()
-onready var camera    = get_node("../../EditorCamera/Camera")
-onready var WorldAPI  = get_node("../../WorldInterface")
+@onready var parent    = get_parent()
+@onready var camera    = get_node("../../EditorCamera/Camera3D")
+@onready var WorldAPI  = get_node("../../WorldInterface")
 
 func cursor_process(delta: float, mouse_motion : Vector2) -> void:
 	if parent.mouse_place_pressed:

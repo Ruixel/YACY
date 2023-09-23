@@ -1,7 +1,7 @@
 extends Node
 const toolType = WorldConstants.Tools.WALL
 
-onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
+@onready var aTexture_mat = load("res://res/materials/ArrayTexture.tres")
 
 var start : Vector2
 var end : Vector2 = Vector2(-1, -1) # Invalid vector
@@ -18,15 +18,15 @@ const min_height_list = [0, 0, 0, 0, 1, 2, 3, 2, 1, 1]
 
 var wallShape = WorldConstants.WallShape.FULLWALL
 
-var mesh : MeshInstance
-var selection_mesh : MeshInstance 
-var collision_mesh : StaticBody
-var collision_shape : CollisionShape
+var mesh : MeshInstance3D
+var selection_mesh : MeshInstance3D 
+var collision_mesh : StaticBody3D
+var collision_shape : CollisionShape3D
 
 func _init(parent, position : Vector2, lvl : int):
-	mesh = MeshInstance.new()
-	collision_mesh = StaticBody.new()
-	collision_shape = CollisionShape.new()
+	mesh = MeshInstance3D.new()
+	collision_mesh = StaticBody3D.new()
+	collision_shape = CollisionShape3D.new()
 	
 	start = position
 	level = lvl
@@ -70,13 +70,13 @@ func selectObj():
 	if end.x == -1:
 		return Mesh.new()
 		
-	selection_mesh = MeshInstance.new()
+	selection_mesh = MeshInstance3D.new()
 	selection_mesh.mesh = mesh.mesh.create_outline(0.05)
 	selection_mesh.mesh.surface_set_material(0, WorldTextures.selection_mat)
 
 func get_property_dict() -> Dictionary:
 	var dict : Dictionary = {}
-	dict["Texture"] = texture 
+	dict["Texture2D"] = texture 
 	dict["Colour"] = colour
 	dict["MinMaxHeight"] = Vector2(min_height, max_height)
 	dict["WallShape"] = wallShape
@@ -84,7 +84,7 @@ func get_property_dict() -> Dictionary:
 	return dict
 
 func set_property_dict(dict : Dictionary):
-	texture = dict["Texture"]
+	texture = dict["Texture2D"]
 	colour = dict["Colour"]
 	min_height = dict["MinMaxHeight"].x
 	max_height = dict["MinMaxHeight"].y

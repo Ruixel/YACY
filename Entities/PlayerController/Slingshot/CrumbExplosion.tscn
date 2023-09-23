@@ -4,13 +4,13 @@
 [ext_resource path="res://res/sfx/blast.ogg" type="AudioStream" id=2]
 
 [sub_resource type="Gradient" id=1]
-offsets = PoolRealArray( 0.474074, 1 )
-colors = PoolColorArray( 0.666667, 0.345098, 0.0745098, 1, 0.976471, 0.890196, 0.815686, 0.498039 )
+offsets = PackedFloat32Array( 0.474074, 1 )
+colors = PackedColorArray( 0.666667, 0.345098, 0.0745098, 1, 0.976471, 0.890196, 0.815686, 0.498039 )
 
-[sub_resource type="GradientTexture" id=2]
+[sub_resource type="GradientTexture2D" id=2]
 gradient = SubResource( 1 )
 
-[sub_resource type="ParticlesMaterial" id=3]
+[sub_resource type="ParticleProcessMaterial" id=3]
 lifetime_randomness = 0.15
 direction = Vector3( 0, 0.3, 0 )
 spread = 180.0
@@ -22,7 +22,7 @@ damping = 1.4
 damping_random = 0.2
 color_ramp = SubResource( 2 )
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="StandardMaterial3D" id=4]
 flags_unshaded = true
 vertex_color_use_as_albedo = true
 params_billboard_mode = 2

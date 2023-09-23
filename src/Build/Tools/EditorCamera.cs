@@ -4,9 +4,9 @@ using YACY.Util;
 
 namespace YACY.Build.Tools
 {
-	public class EditorCamera : Spatial
+	public partial class EditorCamera : Node3D
 	{
-		private readonly Camera _camera;
+		private readonly Camera3D _camera;
 		private Vector2 _mouseMotion;
 
 		private Vector2 _cameraPosition = new Vector2(0, 10);
@@ -24,8 +24,8 @@ namespace YACY.Build.Tools
 
 		public EditorCamera()
 		{
-			_camera = new Camera();
-			_camera.Rotation = new Vector3(Mathf.Deg2Rad(-45), Mathf.Deg2Rad(-90), 0);
+			_camera = new Camera3D();
+			_camera.Rotation = new Vector3(Mathf.DegToRad(-45), Mathf.DegToRad(-90), 0);
 
 			AddChild(_camera);
 
@@ -42,21 +42,21 @@ namespace YACY.Build.Tools
 			if (Input.IsActionPressed("editor_camera_rotate") || (modifier && Input.IsActionPressed("editor_camera_pan")))
 			{
 				// Rotate Vertically
-				_cameraAngle += _mouseMotion.y * delta * 10;
+				_cameraAngle += _mouseMotion.Y * delta * 10;
 				_cameraAngle = Mathf.Clamp(_cameraAngle, CamAngleMin, CamAngleMax);
 
 				// Rotate Horizontally
-				this.RotateY(-_mouseMotion.x * delta * 0.2f);
+				this.RotateY(-_mouseMotion.X * delta * 0.2f);
 			}
 			else if (Input.IsActionPressed("editor_camera_pan"))
 			{
-				var ySpeed = _mouseMotion.y * delta;
-				var xSpeed = _mouseMotion.x * delta;
+				var ySpeed = _mouseMotion.Y * delta;
+				var xSpeed = _mouseMotion.X * delta;
 
-				_cameraPosition.x += CamDragSpeed *
-				                     ((Mathf.Cos(this.Rotation.y) * ySpeed) + (Mathf.Sin(this.Rotation.y) * -xSpeed));
-				_cameraPosition.y += CamDragSpeed *
-				                     ((Mathf.Sin(this.Rotation.y) * -ySpeed) + (Mathf.Cos(this.Rotation.y) * -xSpeed));
+				_cameraPosition.X += CamDragSpeed *
+				                     ((Mathf.Cos(this.Rotation.Y) * ySpeed) + (Mathf.Sin(this.Rotation.Y) * -xSpeed));
+				_cameraPosition.Y += CamDragSpeed *
+				                     ((Mathf.Sin(this.Rotation.Y) * -ySpeed) + (Mathf.Cos(this.Rotation.Y) * -xSpeed));
 			}
 			
 			// Pan camera using keyboard
@@ -72,14 +72,14 @@ namespace YACY.Build.Tools
 				var ySpeed = (forwards - backwards) * delta;
 				var xSpeed = -(right - left) * delta;
 
-				_cameraPosition.x += CamKeyboardDragSpeed *
-				                     ((Mathf.Cos(this.Rotation.y) * ySpeed) + (Mathf.Sin(this.Rotation.y) * -xSpeed));
-				_cameraPosition.y += CamKeyboardDragSpeed *
-				                     ((Mathf.Sin(this.Rotation.y) * -ySpeed) + (Mathf.Cos(this.Rotation.y) * -xSpeed));
+				_cameraPosition.X += CamKeyboardDragSpeed *
+				                     ((Mathf.Cos(this.Rotation.Y) * ySpeed) + (Mathf.Sin(this.Rotation.Y) * -xSpeed));
+				_cameraPosition.Y += CamKeyboardDragSpeed *
+				                     ((Mathf.Sin(this.Rotation.Y) * -ySpeed) + (Mathf.Cos(this.Rotation.Y) * -xSpeed));
 			}
 		}
 
-		public override void _Process(float delta)
+		private void _Process(float delta)
 		{
 			// Input 
 			ProcessInput(delta);
@@ -87,19 +87,19 @@ namespace YACY.Build.Tools
 			// Move the camera away from target by the zoom distance
 			var cameraTransform = _camera.Transform;
 			var cameraRotation = _camera.Rotation;
-			cameraTransform.origin.y = Mathf.Sin(Mathf.Deg2Rad((_cameraAngle))) * _cameraZoom;
-			cameraTransform.origin.x = -Mathf.Cos(Mathf.Deg2Rad((_cameraAngle))) * _cameraZoom;
+			cameraTransform.Origin.X = Mathf.Sin(Mathf.DegToRad((_cameraAngle))) * _cameraZoom;
+			cameraTransform.Origin.X = -Mathf.Cos(Mathf.DegToRad((_cameraAngle))) * _cameraZoom;
 
-			cameraRotation.x = -Mathf.Deg2Rad(_cameraAngle);
+			cameraRotation.X = -Mathf.DegToRad(_cameraAngle);
 			_cameraHeight = Mathf.Lerp(_cameraHeight, _cameraHeightTarget, 0.2f);
 
 			_camera.Transform = cameraTransform;
 			_camera.Rotation = cameraRotation;
 
 			// Lerp the camera to match grid position
-			var finalPosition = new Vector3(_cameraPosition.x, _cameraHeight, _cameraPosition.y);
+			var finalPosition = new Vector3(_cameraPosition.X, _cameraHeight, _cameraPosition.Y);
 			//finalPosition = this.GlobalTransform.origin.LinearInterpolate(finalPosition, 0.4f);
-			this.GlobalTransform = new Transform(this.GlobalTransform.basis, finalPosition);
+			this.GlobalTransform = new Transform3D(this.GlobalTransform.Basis, finalPosition);
 
 			// Reset mouse movement
 			_mouseMotion = Vector2.Zero;
@@ -126,7 +126,7 @@ namespace YACY.Build.Tools
 			}
 		}
 
-		public Camera GetCamera()
+		public Camera3D GetCamera3d()
 		{
 			return _camera;
 		}

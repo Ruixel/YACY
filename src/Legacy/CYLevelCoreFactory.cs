@@ -8,7 +8,7 @@ using YACY.Legacy.Objects;
 
 namespace YACY.Legacy;
 
-public class CYLevelCoreFactory
+public partial class CYLevelCoreFactory
 {
 	static int ExtractInt(string property) => ExtractValue.ExtractInt(property);
 	static Vector2 ExtractVec2(string x, string y) => ExtractValue.ExtractVec2(x, y);
