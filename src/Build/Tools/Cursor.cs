@@ -53,9 +53,11 @@ namespace YACY
 			_cursorMode.Enable();
 		}
 
-		public void _Process(float delta)
+		public override void _Process(double delta)
 		{
-			_cursorMode.Process(delta, _mouseMotion);
+			var dt = (float) delta;
+			
+			_cursorMode.Process(dt, _mouseMotion);
 
 			_mouseMotion = Vector2.Zero; // Reset
 		}

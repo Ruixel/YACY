@@ -1,14 +1,14 @@
-[gd_resource type="StandardMaterial3D" load_steps=2 format=2]
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://dk2gqb2o54a3e"]
 
-[ext_resource path="res://res/txrs/editor/rect63.png" type="Texture2D" id=1]
+[ext_resource type="Texture2D" uid="uid://bdfgqu8gvjou1" path="res://res/txrs/editor/rect63.png" id="1"]
 
 [resource]
-flags_transparent = true
-albedo_texture = ExtResource( 1 )
+transparency = 1
+shading_mode = 2
+albedo_texture = ExtResource("1")
 detail_enabled = true
-detail_blend_mode = 0
-detail_uv_layer = 0
-uv1_scale = Vector3( 80, 80, 1 )
+uv1_scale = Vector3(80, 80, 1)
+texture_filter = 5
 distance_fade_mode = 1
 distance_fade_min_distance = 50.0
 distance_fade_max_distance = 0.0

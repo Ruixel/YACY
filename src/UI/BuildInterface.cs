@@ -79,7 +79,9 @@ public partial class BuildInterface : Control
 		}
 		
 		var previewButton = _itemPreviewButton.Instantiate<PreviewItemButton>();
-		previewButton.GetNode<SubViewport>("SubViewportContainer/SubViewport").World3D.ResourceLocalToScene = true;
+		var subViewport = previewButton.GetNode<SubViewport>("SubViewportContainer/SubViewport");
+		subViewport.World3D = new World3D();
+		subViewport.World3D.ResourceLocalToScene = true;
 		previewButton.AddMesh(itemMetadata?.ItemPanelPreview);
 		previewButton.SetName(itemMetadata?.Name);
 

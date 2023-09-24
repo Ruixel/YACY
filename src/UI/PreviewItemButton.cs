@@ -41,15 +41,17 @@ public partial class PreviewItemButton : Button
 		onPressed?.Invoke(this, EventArgs.Empty);
 	}
 
-	public void _Process(float delta)
+	public override void _Process(double delta)
 	{
+		var dt = (float) delta;
+		
 		if (_mouseEntered)
 		{
-			_rotatingNode.RotateY(RotationSpeed * delta);
+			_rotatingNode.RotateY(RotationSpeed * dt);
 		}
 		else
 		{
-			_rotatingNode.Transform = _rotatingNode.Transform.InterpolateWith(_originalNodeTransform, 10 * delta);
+			_rotatingNode.Transform = _rotatingNode.Transform.InterpolateWith(_originalNodeTransform, 10 * dt);
 		}
 	}
 

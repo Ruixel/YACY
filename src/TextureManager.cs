@@ -35,7 +35,7 @@ public partial class TextureManager : ITextureManager
 			var streamTexture = GD.Load<CompressedTexture2D>(textureInfo.ResLocation);
 			var imgData = streamTexture.GetImage();
 			
-			//imgData.Decompress();
+			imgData.Decompress();
 			
 			if (imgData.GetFormat() != TextureFormat)
 				imgData.Convert(TextureFormat);

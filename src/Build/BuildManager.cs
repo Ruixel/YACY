@@ -98,7 +98,7 @@ namespace YACY.Build
 			_cursor = new Cursor(this);
 			_grid = new Grid();
 			_previewContainer = new Node3D();
-			//_ui = _uiScene.Instantiate<BuildInterface>();
+			_ui = _uiScene.Instantiate<BuildInterface>();
 			
 			SetTool<Wall>();
 

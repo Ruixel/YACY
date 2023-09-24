@@ -30,9 +30,9 @@ func change_item(item_scene, item_name):
 	move_child(vp, 3)
 	vp.position = vp.position + Vector2(0, distance)
 	
-	var tween = vp.get_node("Tween")
-	tween.interpolate_property(vp, "position", vp.position, vp.position + Vector2(0, -distance), time, easing_method, Tween.EASE_OUT)
-	tween.start()
+	#var tween = vp.get_node("Tween")
+	#tween.interpolate_property(vp, "position", vp.position, vp.position + Vector2(0, -distance), time, easing_method, Tween.EASE_OUT)
+	#tween.start()
 
 
 func _on_Item_pressed(item_scene, item_name):

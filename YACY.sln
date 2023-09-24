@@ -1,34 +1,19 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YACY", "YACY.csproj", "{2F0C5D09-ACBA-4681-BA82-C93D531998FB}"
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YACY", "YACY.csproj", "{F22E562F-F865-4429-A376-E4B9F2F2FB2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|x64.Build.0 = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Debug|x86.Build.0 = Debug|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|x64.ActiveCfg = Release|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|x64.Build.0 = Release|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|x86.ActiveCfg = Release|Any CPU
-		{2F0C5D09-ACBA-4681-BA82-C93D531998FB}.Release|x86.Build.0 = Release|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{F22E562F-F865-4429-A376-E4B9F2F2FB2A}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
 	EndGlobalSection
 EndGlobal

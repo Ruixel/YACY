@@ -1,9 +1,9 @@
-[gd_scene load_steps=17 format=3 uid="uid://c8mse5sbnur7u"]
+[gd_scene load_steps=15 format=3 uid="uid://c8mse5sbnur7u"]
 
 [ext_resource type="Texture2D" uid="uid://cmw056hp1sukk" path="res://res/txrs/grass256.jpg" id="1_xck54"]
 [ext_resource type="Texture2D" uid="uid://dkc8madxygtrs" path="res://res/txrs/bricks.jpg" id="2_cfp6b"]
 [ext_resource type="Texture2D" uid="uid://db42i02fxiedl" path="res://res/txrs/wood256.jpg" id="3_1kvwe"]
-[ext_resource type="Texture2D" uid="uid://cypchluolu4pe" path="res://res/txrs/sky.jpg" id="4_vcxx2"]
+[ext_resource type="PackedScene" uid="uid://cdqjvf3qrtfsi" path="res://Scenes/Env/legacy_env_4.tscn" id="4_sgvnt"]
 
 [sub_resource type="StandardMaterial3D" id="1"]
 albedo_texture = ExtResource("1_xck54")
@@ -46,24 +46,7 @@ material = SubResource("8")
 
 [sub_resource type="BoxMesh" id="10"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_toaj4"]
-panorama = ExtResource("4_vcxx2")
-
-[sub_resource type="Sky" id="Sky_mpp0b"]
-sky_material = SubResource("PanoramaSkyMaterial_toaj4")
-
-[sub_resource type="Environment" id="Environment_yle2k"]
-background_mode = 2
-sky = SubResource("Sky_mpp0b")
-ambient_light_source = 3
-ambient_light_color = Color(1, 1, 1, 1)
-tonemap_mode = 2
-tonemap_exposure = 1.1
-ssao_enabled = true
-ssao_intensity = 4.0
-ssao_light_affect = 0.54
-ssil_enabled = true
-volumetric_fog_density = 0.1991
+[sub_resource type="BoxMesh" id="BoxMesh_es0jp"]
 
 [node name="TestArea" type="Node3D"]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 5, -1.01, 17)
@@ -135,13 +118,11 @@ light_color = Color(1, 0.0745098, 0.0745098, 1)
 shadow_enabled = true
 omni_attenuation = 1.41421
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.858817, 0.165929, -0.484666, -2.83163e-08, 0.946091, 0.323901, 0.512283, -0.278172, 0.812519, 0, 3.26053, 0)
-light_energy = 0.742
-shadow_enabled = true
-
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(-0.607376, 0.261256, -0.750227, 0, 0.944376, 0.328867, 0.794415, 0.199746, -0.573591, -5.99459, 3.74036, -1.2196)
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_yle2k")
+[node name="LegacyEnv4" parent="." instance=ExtResource("4_sgvnt")]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(4.19339, 0, 0, 0, 1, 0, 0, 0, 3.73294, -5.35456, 3.49549, -1.04448)
+mesh = SubResource("BoxMesh_es0jp")

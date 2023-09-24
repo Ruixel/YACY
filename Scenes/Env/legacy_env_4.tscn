@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=3 uid="uid://cdqjvf3qrtfsi"]
+
+[ext_resource type="Texture2D" uid="uid://cypchluolu4pe" path="res://res/txrs/sky.jpg" id="1_dqjyi"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_toaj4"]
+panorama = ExtResource("1_dqjyi")
+
+[sub_resource type="Sky" id="Sky_mpp0b"]
+sky_material = SubResource("PanoramaSkyMaterial_toaj4")
+
+[sub_resource type="Environment" id="Environment_yle2k"]
+background_mode = 2
+sky = SubResource("Sky_mpp0b")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+tonemap_mode = 2
+tonemap_exposure = 1.1
+ssao_enabled = true
+ssao_intensity = 4.0
+ssao_light_affect = 0.54
+ssil_enabled = true
+volumetric_fog_density = 0.1991
+
+[node name="LegacyEnv4" type="Node"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.858817, -0.165929, 0.484666, -2.83163e-08, 0.946091, 0.323901, -0.512283, 0.278172, -0.812519, 5, 2.25053, 17)
+light_energy = 0.742
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yle2k")

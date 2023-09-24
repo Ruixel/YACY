@@ -1,22 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://bqkhhydbijij3"]
 
 [ext_resource type="Script" path="res://src/Core.cs" id="1"]
+[ext_resource type="PackedScene" uid="uid://cdqjvf3qrtfsi" path="res://Scenes/Env/legacy_env_4.tscn" id="2_etc7q"]
 
-[sub_resource type="PlaneMesh" id="23"]
-size = Vector2(200, 200)
-
-[node name="Node3D" type="Node"]
+[node name="Node3D" type="Node3D"]
 script = ExtResource("1")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.0932, 3.02727, 8.57601)
-shadow_enabled = true
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("23")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.958998, -0.172437, 0.224919, 0, 0.793608, 0.608429, -0.283413, -0.583482, 0.761069, -0.940005, 1.62994, 0)
-shadow_enabled = true
-shadow_bias = -0.1
+[node name="LegacyEnv4" parent="." instance=ExtResource("2_etc7q")]
